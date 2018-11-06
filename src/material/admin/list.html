@@ -1,0 +1,49 @@
+<mat-card>
+  <h2 mat-card-header>{{ title }}</h2>
+  <button [routerLink]="baseEditUrl + newItemPath" mat-mini-fab color="primary">
+    <mat-icon>add</mat-icon>
+  </button>
+  <mat-card-content>
+    <mat-toolbar>
+      <div class="gngt-actions">
+        <mat-select #actionSel [disabled]="!selection.hasValue()" [placeholder]="'Action' | translate">
+          <mat-option value="delete">{{ 'Delete' | translate }}</mat-option>
+        </mat-select>
+        <span class="gngt-spacer"></span>
+        <button mat-raised-button [disabled]="!actionSel.value"
+            (click)="processAction(actionSel.value)">{{ 'Apply' | translate }}</button>
+      </div>
+      <span class="gngt-filler"></span>
+      <mat-paginator [pageSizeOptions]="[20, 50, 100]" showFirstLastButtons></mat-paginator>
+    </mat-toolbar>
+    <table mat-table [dataSource]="dataSource" matSort>
+      <ng-container matColumnDef="select">
+        <th mat-header-cell *matHeaderCellDef>
+          <mat-checkbox (change)="$event ? masterToggle() : null"
+                        [checked]="selection.hasValue() && isAllSelected()"
+                        [indeterminate]="selection.hasValue() && !isAllSelected()">
+          </mat-checkbox>
+        </th>
+        <td class="gngt-select" mat-cell *matCellDef="let row">
+          <mat-checkbox (click)="$event.stopPropagation()"
+                        (change)="$event ? selection.toggle(row) : null"
+                        [checked]="selection.isSelected(row)">
+          </mat-checkbox>
+        </td>
+      </ng-container>
+      <ng-container *ngFor="let header of headers"
+          [matColumnDef]="header.column">
+        <ng-container *ngIf="header.sortable; else notSortable">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ header.label | translate }}</th>
+        </ng-container>
+        <ng-template #notSortable>
+          <th mat-header-cell *matHeaderCellDef>{{ header.label | translate }}</th>
+        </ng-template>
+        <td [routerLink]="baseEditUrl + element.id" mat-cell *matCellDef="let element">{{ element[header.column] }}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </mat-card-content>
+</mat-card>

@@ -1,0 +1,37 @@
+package(default_visibility=["//visibility:public"])
+
+load("//tools:defaults.bzl", "ng_module", "ng_test_library", "ng_web_test_suite")
+
+ng_module(
+  name = "auth",
+  srcs = glob(["**/*.ts"], exclude=["**/*.spec.ts"]),
+  module_name = "@gngt/core/auth",
+  assets = [],
+  deps = [
+    "@angular//packages/common",
+    "@angular//packages/common/http",
+    "@angular//packages/core",
+    "@angular//packages/forms",
+    "@angular//packages/router",
+    "@ngrx//modules/effects",
+    "@ngrx//modules/store",
+    "@npm//@ngx-translate/core",
+    "@npm//@types/url-parse",
+    "@npm//url-parse",
+    "//src/core/reducers"
+  ],
+)
+
+ng_test_library(
+  name = "auth_test_sources",
+  srcs = glob(["**/*.spec.ts"]),
+  deps = [
+    "@angular//packages/platform-browser",
+    ":auth"
+  ]
+)
+
+ng_web_test_suite(
+  name = "unit_tests",
+  deps = [":auth_test_sources"],
+)

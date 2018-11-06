@@ -1,0 +1,34 @@
+{
+  "name": "@gngt/material-examples",
+  "version": "0.0.0-PLACEHOLDER",
+  "description": "Angular Material Examples",
+  "main": "./bundles/material-examples.umd.js",
+  "module": "./esm5/material-examples.es5.js",
+  "es2015": "./esm2015/material-examples.js",
+  "typings": "./material-examples.d.ts",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gnucoop/gngt.git"
+  },
+  "keywords": [
+    "angular",
+    "material",
+    "material design",
+    "components"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gnucoop/gngt/issues"
+  },
+  "homepage": "https://github.com/gnucoop/gngt#readme",
+  "peerDependencies": {
+    "@angular/core": "0.0.0-NG",
+    "@angular/common": "0.0.0-NG",
+    "@gngt/core": "0.0.0-PLACEHOLDER",
+    "@gngt/material": "0.0.0-PLACEHOLDER"
+  },
+  "dependencies": {
+    "tslib": "^1.7.1"
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "name": "@gngt/core",
+  "version": "0.0.0-PLACEHOLDER",
+  "description": "",
+  "main": "./bundles/core.umd.js",
+  "module": "./esm5/core.es5.js",
+  "es2015": "./esm2015/core.js",
+  "typings": "./core.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gnucoop/gngt.git"
+  },
+  "keywords": [
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gnucoop/gngt/issues"
+  },
+  "homepage": "https://github.com/gnucoop/gngt#readme",
+  "peerDependencies": {
+    "@angular/cdk": "0.0.0-NGM",
+    "@angular/core": "0.0.0-NG",
+    "@angular/common": "0.0.0-NG",
+    "@angular/forms": "0.0.0-NG",
+    "@angular/router": "0.0.0-NG",
+    "@ngrx/effects": "0.0.0-NGRX",
+    "@ngrx/store": "0.0.0-NGRX",
+    "@ngx-translate/core": "0.0.0-NGXT",
+    "url-parse": "^1.4.4"
+  },
+  "dependencies": {
+    "tslib": "^1.9.3"
+  },
+  "schematics": "./schematics/collection.json",
+  "ng-update": {
+    "migrations": "./schematics/migration.json"
+  },
+  "sideEffects": false
+}

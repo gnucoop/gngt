@@ -1,0 +1,46 @@
+# Gngt core
+/src/core/*                                        @trik
+/src/core/admin/*                                  @trik
+/src/core/auth/*                                   @trik
+/src/core/model/*                                  @trik
+/src/core/reducers/*                               @trik
+/src/core/translations/*                           @trik
+
+# Gngt material
+/src/material/*                                    @trik
+/src/material/admin/*                              @trik
+/src/material/auth/*                               @trik
+/src/material/model/*                              @trik
+/src/material/reducers/*                           @trik
+
+# Docs examples & guides
+/guides/**                                         @trik
+/src/material-examples/**                          @trik
+
+# Demo app
+/src/demo-app/*                                    @trik
+/src/demo-app/demo-app/**                          @trik
+/src/demo-app/example/**                           @trik
+/src/demo-app/examples-page/**                     @trik
+/src/demo-app/login/**                             @trik
+
+# E2E app
+/e2e/*                                             @trik
+/e2e/util/**                                       @trik
+/src/e2e-app/*                                     @trik
+/src/e2e-app/e2e-app/**                            @trik
+/src/e2e-app/login/**                              @trik
+
+# Universal app
+/src/universal-app/**                              @trik
+
+# Tooling
+/.circleci/**                                      @trik
+/scripts/**                                        @trik
+/test/**                                           @trik
+/tools/**                                          @trik
+
+# Misc
+/*                                                 @trik
+/.github/**                                        @trik
+/src/*                                             @trik

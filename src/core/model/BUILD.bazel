@@ -1,0 +1,31 @@
+package(default_visibility=["//visibility:public"])
+
+load("//tools:defaults.bzl", "ng_module", "ng_test_library", "ng_web_test_suite")
+
+ng_module(
+  name = "model",
+  srcs = glob(["**/*.ts"], exclude=["**/*.spec.ts"]),
+  module_name = "@gngt/core/model",
+  assets = [],
+  deps = [
+    "@angular//packages/common/http",
+    "@angular//packages/core",
+    "@ngrx//modules/effects",
+    "@ngrx//modules/store",
+    "//src/core/reducers",
+  ],
+)
+
+ng_test_library(
+  name = "model_test_sources",
+  srcs = glob(["**/*.spec.ts"]),
+  deps = [
+    "@angular//packages/platform-browser",
+    ":model"
+  ]
+)
+
+ng_web_test_suite(
+  name = "unit_tests",
+  deps = [":model_test_sources"],
+)

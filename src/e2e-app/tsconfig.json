@@ -1,0 +1,14 @@
+// Configuration for IDEs only.
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "rootDir": "..",
+    "baseUrl": ".",
+    "paths": {
+      "@gngt/core/*": ["../core/*"],
+      "@gngt/material/*": ["../material/*"],
+      "@gngt/material-examples": ["../material-examples/"]
+    }
+  },
+  "include": ["./**/*.ts"]
+}
