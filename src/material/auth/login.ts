@@ -19,7 +19,9 @@
  *
  */
 
-import {ChangeDetectionStrategy, Component, ViewEncapsulation} from '@angular/core';
+import {
+  ChangeDetectionStrategy, ChangeDetectorRef, Component, ViewEncapsulation
+} from '@angular/core';
 import {FormBuilder} from '@angular/forms';
 
 import {Store} from '@ngrx/store';
@@ -32,10 +34,13 @@ import {LoginComponent as CoreLoginComponent, reducers as fromAuth} from '@gngt/
   templateUrl: 'login.html',
   styleUrls: ['login.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
+  inputs: [
+    'disabled'
+  ]
 })
 export class LoginComponent extends CoreLoginComponent {
-  constructor(fb: FormBuilder, store: Store<fromAuth.State>) {
-    super(fb, store);
+  constructor(fb: FormBuilder, store: Store<fromAuth.State>, cdr: ChangeDetectorRef) {
+    super(fb, store, cdr);
   }
 }

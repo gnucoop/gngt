@@ -1,0 +1,15 @@
+// Configuration for IDEs only.
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "rootDir": "..",
+    "baseUrl": ".",
+    "paths": {
+      "@gngt/core": ["../core/public_api"],
+      "@gngt/core/*": ["./core/*"],
+      "@gngt/ionic": ["../ionic/public_api"],
+      "@gngt/ionic/*": ["../ionic/*"]
+    }
+  },
+  "include": ["./**/*.ts"]
+}

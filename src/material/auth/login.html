@@ -1,7 +1,7 @@
 <mat-card>
   <h2 mat-card-title translate>Login</h2>
   <mat-card-content>
-    <form [formGroup]="loginForm" class="login-form" (keyup.enter)="login()">
+    <form [formGroup]="loginForm" [gngtFormDisabled]="disabled" class="login-form" (keyup.enter)="login()">
       <mat-form-field>
         <input matInput [placeholder]="'Username'|translate"
             autocomplete="username" formControlName="username">

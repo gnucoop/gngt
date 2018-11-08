@@ -1,0 +1,39 @@
+// TypeScript config that extends the demo-app-ion tsconfig file. This config compiles the
+// "main-aot.ts" file and also enables templage code generation / AOT.
+{
+  "extends": "./tsconfig-build",
+  "compilerOptions": {
+    // Needed for Moment.js since it doesn't have a default export.
+    "allowSyntheticDefaultImports": true,
+    "experimentalDecorators": true,
+    "noUnusedParameters": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "outDir": "../../dist/packages/demo-app-ion",
+    "rootDirs": [
+      ".",
+      // Include the package output here because otherwise NGC won't be able to load
+      // the SCSS files.
+      "../../dist/packages/demo-app-ion"
+    ],
+    "paths": {
+      "@gngt/ionic/*": ["../../dist/releases/ionic/*"],
+      "@gngt/ionic": ["../../dist/releases/ionic"],
+      "@gngt/core/*": ["../../dist/releases/core/*"],
+      "@gngt/core": ["../../dist/releases/core"],
+      "@gngt/ionic-examples": ["../../dist/releases/ionic-examples"]
+    }
+  },
+  "files": [
+    "./demo-app-types.d.ts",
+    "./demo-app-module.ts",
+    "./empty.ts",
+    "./main-aot.ts"
+  ],
+  "angularCompilerOptions": {
+    "skipTemplateCodegen": false,
+    "fullTemplateTypeCheck": true
+  }
+}

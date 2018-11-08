@@ -7,6 +7,7 @@
 /bazel-out
 
 # Example module file will be auto-generated.
+/src/ionic-examples/example-module.ts
 /src/material-examples/example-module.ts
 
 # dependencies
@@ -43,6 +44,7 @@ testem.log
 /.git
 /.firebase
 node_env.sh
+firebase.json
 
 # schematics
 /src/lib/schematics/**/*.js

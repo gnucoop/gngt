@@ -10,7 +10,7 @@ describe('JwtHelperService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [JwtHelperService]
-    })
+    });
   });
 
   it(
@@ -54,21 +54,21 @@ describe('JwtHelperService', () => {
 function base64url(source: any) {
   // Encode in classical base64
   let encodedSource = CryptoJS.enc.Base64.stringify(source);
-  
+
   // Remove padding equal characters
   encodedSource = encodedSource.replace(/=+$/, '');
-  
+
   // Replace characters according to base64url specifications
   encodedSource = encodedSource.replace(/\+/g, '-');
   encodedSource = encodedSource.replace(/\//g, '_');
-  
+
   return encodedSource;
 }
 
 function createToken(exp: number = 0) {
   const header = {alg: 'HS256', typ: 'JWT'};
 
-  const data: any = {user_id: 1337, scopes:[], exp};
+  const data: any = {user_id: 1337, scopes: [], exp};
 
   const secret = 'My very confidential secret!!!';
 
@@ -78,7 +78,7 @@ function createToken(exp: number = 0) {
   const stringifiedData = CryptoJS.enc.Utf8.parse(JSON.stringify(data));
   const encodedData = base64url(stringifiedData);
 
-  const signature = CryptoJS.HmacSHA256(encodedHeader + "." + encodedData, secret);
+  const signature = CryptoJS.HmacSHA256(encodedHeader + '.' + encodedData, secret);
   const encodedSignature = base64url(signature);
 
   return `${encodedHeader}.${encodedData}.${encodedSignature}`;

@@ -21,7 +21,7 @@
 
 import {
   ChangeDetectionStrategy, ChangeDetectorRef, Component, Input,
-  OnDestroy, ViewChild, ViewEncapsulation
+  OnDestroy, OnInit, ViewChild, ViewEncapsulation
 } from '@angular/core';
 import {SelectionModel} from '@angular/cdk/collections';
 import {MatPaginator} from '@angular/material/paginator';
@@ -62,7 +62,7 @@ export class AdminListComponent<
     A7 extends ModelActions.ModelDeleteAllAction<T>,
     MS extends ModelService<T, S, A1, A2, A3, A4, A5, A6, A7>
   > extends BaseAdminListComponent<T, S, A1, A2, A3, A4, A5, A6, A7, MS>
-    implements OnDestroy {
+    implements OnDestroy, OnInit {
   @Input() dataSource: ModelDataSource<T, S, A1, A2, A3, A4, A5, A6, A7, MS>;
   @ViewChild(MatPaginator) paginatorCmp: MatPaginator;
   @ViewChild(MatSort) sortCmp: MatSort;
@@ -71,6 +71,11 @@ export class AdminListComponent<
 
   constructor(cdr: ChangeDetectorRef, aui: AdminUserInteractionsService) {
     super(cdr, aui);
+  }
+
+  ngOnInit(): void {
+    this.dataSource.paginator = this.paginatorCmp;
+    this.dataSource.sort = this.sortCmp;
   }
 
   getSelection(): T[] {

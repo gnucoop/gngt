@@ -1,6 +1,7 @@
 # Gngt core
 /src/core/*                                        @trik
 /src/core/admin/*                                  @trik
+/src/core/common/*                                 @trik
 /src/core/auth/*                                   @trik
 /src/core/model/*                                  @trik
 /src/core/reducers/*                               @trik
@@ -13,26 +14,56 @@
 /src/material/model/*                              @trik
 /src/material/reducers/*                           @trik
 
+# Gngt ionic
+/src/ionic/*                                       @trik
+/src/ionic/admin/*                                 @trik
+/src/ionic/auth/*                                  @trik
+/src/ionic/common/*                                @trik
+/src/ionic/model/*                                 @trik
+/src/ionic/reducers/*                              @trik
+
 # Docs examples & guides
 /guides/**                                         @trik
 /src/material-examples/**                          @trik
+/src/ionic-examples/**                             @trik
 
-# Demo app
-/src/demo-app/*                                    @trik
-/src/demo-app/demo-app/**                          @trik
-/src/demo-app/example/**                           @trik
-/src/demo-app/examples-page/**                     @trik
-/src/demo-app/login/**                             @trik
+# Demo app material
+/src/demo-app-mat/*                                @trik
+/src/demo-app-mat/demo-app/**                      @trik
+/src/demo-app-mat/example/**                       @trik
+/src/demo-app-mat/examples-page/**                 @trik
+/src/demo-app-mat/admin-edit/**                    @trik
+/src/demo-app-mat/login/**                         @trik
 
-# E2E app
-/e2e/*                                             @trik
-/e2e/util/**                                       @trik
-/src/e2e-app/*                                     @trik
-/src/e2e-app/e2e-app/**                            @trik
-/src/e2e-app/login/**                              @trik
+# Demo app ionic
+/src/demo-app-ion/*                                @trik
+/src/demo-app-ion/demo-app/**                      @trik
+/src/demo-app-ion/example/**                       @trik
+/src/demo-app-ion/examples-page/**                 @trik
+/src/demo-app-ion/admin-edit/**                    @trik
+/src/demo-app-ion/login/**                         @trik
 
-# Universal app
-/src/universal-app/**                              @trik
+# E2E app material
+/e2e-mat/*                                         @trik
+/e2e-mat/components/login-e2e.spec.ts              @trik
+/e2e-mat/util/**                                   @trik
+/src/e2e-app-mat/*                                 @trik
+/src/e2e-app-mat/e2e-app/**                        @trik
+/src/e2e-app-mat/login/**                          @trik
+
+# E2E app ionic
+/e2e-ion/*                                         @trik
+/e2e-ion/components/login-e2e.spec.ts              @trik
+/e2e-ion/util/**                                   @trik
+/src/e2e-app-ion/*                                 @trik
+/src/e2e-app-ion/e2e-app/**                        @trik
+/src/e2e-app-ion/login/**                          @trik
+
+# Universal app material
+/src/universal-app-mat/**                          @trik
+
+# Universal app ionic
+/src/universal-app-ion/**                          @trik
 
 # Tooling
 /.circleci/**                                      @trik

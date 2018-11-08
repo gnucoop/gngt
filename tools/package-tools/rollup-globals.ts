@@ -71,6 +71,8 @@ export const rollupGlobals = {
   '@angular/platform-server': 'ng.platformServer',
   '@angular/router': 'ng.router',
 
+  '@ionic/angular': 'ionic.angular',
+
   '@ngx-translate/core': 'ngxt.core',
   '@ngx-translate/http-loader': 'ngxt.httpLoader',
 

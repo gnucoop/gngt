@@ -16,10 +16,15 @@ const request = require('request');
 const bundlesDir = join(buildConfig.outputDir, 'bundles');
 
 /** Task which runs test against the size of material. */
-task('payload', ['material:clean-build'], async () => {
+task('payload', ['gngt:clean-build'], async () => {
 
   const results = {
     timestamp: Date.now(),
+    // Ionic bundles
+    ionic_umd: getBundleSize('ionic.umd.js'),
+    ionic_umd_minified_uglify: getBundleSize('ionic.umd.min.js'),
+    ionic_fesm_2015: getBundleSize('ionic.js') + getBundleSize('ionic/!(*.es5).js'),
+    ionic_fesm_2014: getBundleSize('ionic.es5.js') + getBundleSize('ionic/*.es5.js'),
     // Material bundles
     material_umd: getBundleSize('material.umd.js'),
     material_umd_minified_uglify: getBundleSize('material.umd.min.js'),
@@ -95,11 +100,15 @@ async function calculatePayloadDiff(database: firebaseAdmin.database.Database, c
   const coreFullSize = currentPayload.core_fesm_2015;
   const coreDiff = roundFileSize(coreFullSize - previousPayload.core_fesm_2015);
 
+  const ionicFullSize = currentPayload.ionic_fesm_2015;
+  const ionicDiff = roundFileSize(ionicFullSize - previousPayload.ionic_fesm_2015);
+
   const materialFullSize = currentPayload.material_fesm_2015;
   const materialDiff = roundFileSize(materialFullSize - previousPayload.material_fesm_2015);
 
   // Set the Github statuses for the packages by sending a HTTP request to the dashboard functions.
   await Promise.all([
+    updateGithubStatus(currentSha, 'ionic', ionicDiff, ionicFullSize, authToken),
     updateGithubStatus(currentSha, 'material', materialDiff, materialFullSize, authToken),
     updateGithubStatus(currentSha, 'core', coreDiff, coreFullSize, authToken)
   ]);

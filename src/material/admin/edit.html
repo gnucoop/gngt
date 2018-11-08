@@ -1,5 +1,5 @@
 <mat-card *ngIf="form|async as editForm">
-  <h2 mat-card-header>
+  <h2 *ngIf="title" mat-card-header>
     {{ title }}
     <span *ngIf="editForm.value['id']">#{{ editForm.value['id'] }}</span>
   </h2>

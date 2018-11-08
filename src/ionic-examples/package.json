@@ -1,0 +1,33 @@
+{
+  "name": "@gngt/ionic-examples",
+  "version": "0.0.0-PLACEHOLDER",
+  "description": "Angular Material Examples",
+  "main": "./bundles/ionic-examples.umd.js",
+  "module": "./esm5/ionic-examples.es5.js",
+  "es2015": "./esm2015/ionic-examples.js",
+  "typings": "./ionic-examples.d.ts",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gnucoop/gngt.git"
+  },
+  "keywords": [
+    "angular",
+    "ionic",
+    "components"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gnucoop/gngt/issues"
+  },
+  "homepage": "https://github.com/gnucoop/gngt#readme",
+  "peerDependencies": {
+    "@angular/core": "0.0.0-NG",
+    "@angular/common": "0.0.0-NG",
+    "@gngt/core": "0.0.0-PLACEHOLDER",
+    "@gngt/ionic": "0.0.0-PLACEHOLDER"
+  },
+  "dependencies": {
+    "tslib": "^1.7.1"
+  }
+}

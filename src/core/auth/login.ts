@@ -19,13 +19,15 @@
  *
  */
 
-import {EventEmitter, OnDestroy} from '@angular/core';
+import {ChangeDetectorRef, EventEmitter, OnDestroy} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 import {Observable, Subscription} from 'rxjs';
 import {map} from 'rxjs/operators';
 
 import {Store} from '@ngrx/store';
+
+import {forceBooleanProp} from '@gngt/core/common';
 
 import * as LoginPageActions from './login-page-actions';
 import * as fromAuth from './reducers';
@@ -34,10 +36,17 @@ export abstract class LoginComponent implements OnDestroy {
   readonly loginForm: FormGroup;
   readonly valid: Observable<boolean>;
 
+  private _disabled: boolean;
+  get disabled(): boolean { return this._disabled; }
+  set disabled(disabled: boolean) {
+    this._disabled = forceBooleanProp(disabled);
+    this._cdr.markForCheck();
+  }
+
   private _loginEvt: EventEmitter<void> = new EventEmitter<void>();
   private _loginSub: Subscription = Subscription.EMPTY;
 
-  constructor(fb: FormBuilder, store: Store<fromAuth.State>) {
+  constructor(fb: FormBuilder, store: Store<fromAuth.State>, private _cdr: ChangeDetectorRef) {
     this.loginForm = fb.group({
       username: [null, [Validators.required]],
       password: [null, [Validators.required]]

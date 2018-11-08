@@ -78,7 +78,8 @@ task('docs', sequenceTask(
     'markdown-docs-material',
     'markdown-docs-core',
     'build-highlighted-examples',
-    'build-examples-module',
+    'build-ion-examples-module',
+    'build-mat-examples-module',
     'api-docs',
     'copy-stackblitz-examples'
   ],
@@ -126,7 +127,13 @@ task('markdown-docs-core', () => {
  * Creates syntax-highlighted html files from the examples to be used for the source view of
  * live examples on the docs site.
  */
-task('build-highlighted-examples', () => {
+
+task('build-highlighted-examples', sequenceTask([
+  'build-highlighted-ionic-examples',
+  'build-highlighted-material-examples'
+]));
+
+task('build-highlighted-material-examples', () => {
   // rename files to fit format: [filename]-[filetype].html
   const renameFile = (filePath: any) => {
     const extension = filePath.extname.slice(1);
@@ -137,7 +144,21 @@ task('build-highlighted-examples', () => {
       .pipe(flatten())
       .pipe(rename(renameFile))
       .pipe(highlight())
-      .pipe(dest('dist/docs/examples'));
+      .pipe(dest('dist/docs/material-examples'));
+});
+
+task('build-highlighted-ionic-examples', () => {
+  // rename files to fit format: [filename]-[filetype].html
+  const renameFile = (filePath: any) => {
+    const extension = filePath.extname.slice(1);
+    filePath.basename = `${filePath.basename}-${extension}`;
+  };
+
+  return src('src/ionic-examples/**/*.+(html|css|ts)')
+      .pipe(flatten())
+      .pipe(rename(renameFile))
+      .pipe(highlight())
+      .pipe(dest('dist/docs/ionic-examples'));
 });
 
 /** Generates API docs from the source JsDoc using dgeni. */
@@ -159,7 +180,9 @@ task('minify-html-files', () => {
 /** Copies example sources to be used as stackblitz assets for the docs site. */
 task('copy-stackblitz-examples', () => {
   src(path.join(packagesDir, 'material-examples', '**/*'))
-      .pipe(dest(path.join(DIST_DOCS, 'stackblitz', 'examples')));
+      .pipe(dest(path.join(DIST_DOCS, 'stackblitz', 'material-examples')));
+  src(path.join(packagesDir, 'ionic-examples', '**/*'))
+      .pipe(dest(path.join(DIST_DOCS, 'stackblitz', 'ionic-examples')));
 });
 
 /** Updates the markdown file's content to work inside of the docs app. */
@@ -168,7 +191,7 @@ function transformMarkdownFiles(buffer: Buffer, file: any): string {
 
   // Replace <!-- example(..) --> comments with HTML elements.
   content = content.replace(EXAMPLE_PATTERN, (_match: string, name: string) =>
-    `<div material-docs-example="${name}"></div>`
+    `<div gngt-docs-example="${name}"></div>`
   );
 
   // Replace the URL in anchor elements inside of compiled markdown files.

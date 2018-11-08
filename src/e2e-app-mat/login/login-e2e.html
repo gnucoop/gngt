@@ -1,0 +1,14 @@
+<section>
+
+  <div>
+    <p>
+      isDisabled: {{isDisabled}}
+    </p>
+    <button mat-raised-button (click)="isDisabled=!isDisabled" id="disable-toggle">
+      Disable form
+    </button>
+  </div>
+  <div style="height: 300px; position: relative;">
+    <gngt-login [disabled]="isDisabled"></gngt-login>
+  </div>
+</section>

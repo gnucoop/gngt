@@ -26,7 +26,5 @@ export * from './edit-field-choice';
 export * from './edit-field-subtype';
 export * from './edit-field-type';
 export * from './edit-model';
-export * from './form-disabled';
 export * from './list';
 export * from './list-header';
-export * from './admin-module';

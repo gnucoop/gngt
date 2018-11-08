@@ -1,5 +1,6 @@
 {
   "projects": {
-    "staging": "gngt-dev"
+    "ionic-staging": "gngt-ionic-dev",
+    "material-staging": "gngt-material-dev"
   }
 }

@@ -6,12 +6,12 @@ load("//:packages.bzl", "MATERIAL_PACKAGES", "MATERIAL_TARGETS", "ROLLUP_GLOBALS
     "VERSION_PLACEHOLDER_REPLACEMENTS")
 load("//tools:defaults.bzl", "ng_module")
 
-# Root "@angular/material" entry-point.
+# Root "@gngt/material" entry-point.
 ng_module(
   name = "material",
   srcs = glob(["*.ts"], exclude=["**/*.spec.ts"]),
-  module_name = "@angular/material",
-  deps = ["//src/lib/%s" % p for p in MATERIAL_PACKAGES],
+  module_name = "@gngt/material",
+  deps = ["//src/material/%s" % p for p in MATERIAL_PACKAGES],
 )
 
 sass_bundle(

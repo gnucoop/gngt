@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Publish gngt docs assets to the gngt-docs-content repo
-# material.angular.io will pull from this assets repo to get the latest docs
+# gngt.io will pull from this assets repo to get the latest docs
 
 # The script should immediately exit if any command in the script fails.
 set -e
@@ -15,7 +15,9 @@ if [ -z ${GNGT_BUILDS_TOKEN} ]; then
 fi
 
 if [[ ! ${*} == *--no-build* ]]; then
-  $(npm bin)/gulp material-examples:build-release:clean
+  $(npm bin)/gulp clean
+  $(npm bin)/gulp ionic-examples:build-release
+  $(npm bin)/gulp material-examples:build-release
   $(npm bin)/gulp docs
 fi
 
@@ -28,7 +30,7 @@ docsDistPath="${projectPath}/dist/docs"
 # Path to the cloned docs-content repository.
 docsContentPath="${projectPath}/tmp/gngt-docs-content"
 
-# Path to the release output of the @angular/material-examples package.
+# Path to the release output of the @gngt/material-examples package.
 examplesPackagePath="${projectPath}/dist/releases/material-examples"
 
 # Git clone URL for the gngt-docs-content repository.
@@ -89,7 +91,7 @@ cp -R ${docsDistPath}/api/* ${docsContentPath}/api
 cp -r ${docsDistPath}/examples/* ${docsContentPath}/examples
 cp -r ${docsDistPath}/stackblitz/* ${docsContentPath}/stackblitz
 
-# Copy the @angular/material-examples package to the docs-content repository.
+# Copy the @gngt/material-examples package to the docs-content repository.
 cp -r ${examplesPackagePath}/* ${docsContentPath}/examples-package
 
 # Copy the license file to the docs-content repository.

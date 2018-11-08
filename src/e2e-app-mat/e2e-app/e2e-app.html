@@ -1,0 +1,12 @@
+<header role="banner">
+  <h1>Gngt E2E app</h1>
+</header>
+<nav role="navigation">
+  <button (click)="showLinks = !showLinks">Toggle Navigation Links</button>
+  <mat-nav-list *ngIf="showLinks">
+    <a mat-list-item [routerLink]="['login']">Login</a>
+  </mat-nav-list>
+</nav>
+<main role="main">
+  <router-outlet></router-outlet>
+</main>

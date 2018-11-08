@@ -38,18 +38,30 @@ System.config({
       'node:@ngx-translate/http-loader/bundles/ngx-translate-http-loader.umd.js',
 
     '@gngt/core': 'dist/packages/core/index.js',
+    '@gngt/ionic': 'dist/packages/ionic/index.js',
     '@gngt/material': 'dist/packages/material/index.js',
 
+    '@gngt/core/admin': 'dist/packages/core/admin/index.js',
     '@gngt/core/auth': 'dist/packages/core/auth/index.js',
+    '@gngt/core/common': 'dist/packages/core/common/index.js',
+    '@gngt/core/model': 'dist/packages/core/model/index.js',
     '@gngt/core/reducers': 'dist/packages/core/reducers/index.js',
     '@gngt/core/translations': 'dist/packages/core/translations/index.js',
+
+    '@gngt/ionic/admin': 'dist/packages/ionic/admin/index.js',
+    '@gngt/ionic/auth': 'dist/packages/ionic/auth/index.js',
+    '@gngt/ionic/common': 'dist/packages/ionic/common/index.js',
+
+    '@gngt/material/admin': 'dist/packages/material/admin/index.js',
+    '@gngt/material/auth': 'dist/packages/material/auth/index.js',
+    '@gngt/material/model': 'dist/packages/material/model/index.js',
   },
   packages: {
     // Thirdparty barrels.
     'rxjs': {main: 'index'},
     'rxjs/operators': {main: 'index'},
 
-    // Set the default extension for the root package, because otherwise the demo-app can't
+    // Set the default extension for the root package, because otherwise the demo-app-mat can't
     // be built within the production mode. Due to missing file extensions.
     '.': {
       defaultExtension: 'js'

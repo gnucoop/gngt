@@ -123,7 +123,7 @@
     }, "src/+(core|material)/**/!(*.spec).ts"],
     "require-license-banner": [
       true,
-      "src/+(core|material|demo-app)/**/!(*.spec).ts"
+      "src/+(core|material|demo-app-mat)/**/!(*.spec).ts"
     ],
     "missing-rollup-globals": [
       true,

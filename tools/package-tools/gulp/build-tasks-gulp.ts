@@ -74,6 +74,18 @@ export function createPackageBuildTasks(buildPackage: BuildPackage, preBuildTask
     `${taskName}:build:bundles`,
   ));
 
+  task(`${taskName}:build-no-deps`, sequenceTask(
+    // Run the pre build gulp tasks.
+    ...preBuildTasks,
+    // Build ESM and assets output.
+    `${taskName}:assets`,
+    `${taskName}:build:esm`,
+    // Inline assets into ESM output.
+    `${taskName}:assets:inline`,
+    // Build bundles on top of inlined ESM output.
+    `${taskName}:build:bundles`,
+  ));
+
   task(`${taskName}:build-no-bundles`, sequenceTask(
     // Build assets before building the ESM output. Since we compile with NGC, the compiler
     // tries to resolve all required assets.

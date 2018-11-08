@@ -1,9 +1,0 @@
-<button (click)="showLinks = !showLinks">Toggle Navigation Links</button>
-
-<mat-nav-list *ngIf="showLinks">
-  <a mat-list-item [routerLink]="['login']">Login</a>
-</mat-nav-list>
-
-<main>
-  <router-outlet></router-outlet>
-</main>

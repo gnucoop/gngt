@@ -39,8 +39,8 @@ import {RouterModule} from '@angular/router';
 
 import {TranslateModule} from '@ngx-translate/core';
 
+import {CommonModule as GngtCommonModule} from '@gngt/core/common';
 import {
-  AdminModule as CoreAdminModule,
   AdminUserInteractionsService as CoreAdminUserInteractionsService
 } from '@gngt/core/admin';
 
@@ -68,7 +68,7 @@ import {AdminListComponent} from './list';
     MatToolbarModule,
     RouterModule,
     TranslateModule,
-    CoreAdminModule
+    GngtCommonModule
   ],
   declarations: [
     AdminDeleteConfirmDialogComponent,

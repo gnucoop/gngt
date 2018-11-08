@@ -35,6 +35,7 @@ import {
   AuthModule as CoreAuthModule,
   AuthUserInteractionsService as CoreAuthUserInteractionsService
 } from '@gngt/core/auth';
+import {CommonModule as GngtCommonModule} from '@gngt/core/common';
 
 import {AuthUserInteractionsService} from './auth-user-interactions';
 import {LoginComponent} from './login';
@@ -51,7 +52,8 @@ import {LogoutConfirmDialogComponent} from './logout-confirm-dialog';
     MatInputModule,
     MatSnackBarModule,
     TranslateModule,
-    CoreAuthModule
+    CoreAuthModule,
+    GngtCommonModule
   ],
   declarations: [
     LoginComponent,

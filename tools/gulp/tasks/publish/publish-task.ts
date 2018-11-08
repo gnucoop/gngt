@@ -12,7 +12,8 @@ const {green, grey, yellow} = chalk;
 /** Packages that will be published to NPM by the release task. */
 export const releasePackages = [
   'core',
-  'material'
+  'material',
+  'ionic'
 ];
 
 /** Parse command-line arguments for release task. */

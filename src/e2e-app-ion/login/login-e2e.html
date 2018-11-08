@@ -1,0 +1,13 @@
+<section>
+  <div>
+    <p>
+      isDisabled: {{isDisabled}}
+    </p>
+    <ion-button (click)="isDisabled=!isDisabled" id="disable-toggle">
+      Disable form
+    </ion-button>
+  </div>
+  <div style="height: 300px; position: relative;">
+    <gngt-login [disabled]="isDisabled"></gngt-login>
+  </div>
+</section>

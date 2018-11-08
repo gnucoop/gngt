@@ -3,7 +3,7 @@ import {dest, src, task} from 'gulp';
 import {buildConfig, composeRelease, sequenceTask} from 'gngt-build-tools';
 import {join} from 'path';
 import {Bundler} from 'scss-bundle';
-import {materialPackage} from '../packages';
+import {corePackage, ionicPackage, materialPackage} from '../packages';
 
 // There are no type definitions available for these imports.
 const gulpRename = require('gulp-rename');
@@ -34,27 +34,33 @@ const allScssDedupeGlob = join(buildConfig.packagesDir, '**/*.scss');
  * Overwrite the release task for the material package. The material release will include special
  * files, like a bundled theming SCSS file or all prebuilt themes.
  */
-task('gngt:build-release', ['material:prepare-release'], () => composeRelease(materialPackage));
+task('gngt:build-release', ['gngt:prepare-release'], () => {
+  composeRelease(corePackage);
+  composeRelease(ionicPackage);
+  composeRelease(materialPackage);
+});
 
 /**
  * Task that will build the material package. Special treatment for this package includes:
  * - Copying all prebuilt themes into the package
  * - Bundling theming scss into a single theming file
  */
-task('material:prepare-release', sequenceTask(
-  ['material:build'],
+task('gngt:prepare-release', sequenceTask(
+  ['core:build-no-deps'],
+  ['ionic:build-no-deps'],
+  ['material:build-no-deps'],
   // ['material:copy-prebuilt-themes', 'material:bundle-theming-scss'],
 ));
 
 /** Copies all prebuilt themes into the release package under `prebuilt-themes/` */
-task('material:copy-prebuilt-themes', () => {
+task('gngt:copy-prebuilt-themes', () => {
   return src(prebuiltThemeGlob)
     .pipe(gulpRename({dirname: ''}))
     .pipe(dest(join(releasePath, 'prebuilt-themes')));
 });
 
 /** Bundles all scss requires for theming into a single scss file in the root of the package. */
-task('material:bundle-theming-scss', () => {
+task('gngt:bundle-theming-scss', () => {
   // Instantiates the SCSS bundler and bundles all imports of the specified entry point SCSS file.
   // A glob of all SCSS files in the library will be passed to the bundler. The bundler takes an
   // array of globs, which will match SCSS files that will be only included once in the bundle.

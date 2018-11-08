@@ -1,0 +1,12 @@
+<header role="banner">
+  <h1>Gngt E2E app</h1>
+</header>
+<nav role="navigation">
+  <ion-button (click)="showLinks = !showLinks">Toggle Navigation Links</ion-button>
+  <ion-list *ngIf="showLinks">
+    <ion-item [routerLink]="['login']"><ion-label>Login</ion-label></ion-item>
+  </ion-list>
+</nav>
+<main role="main">
+  <router-outlet></router-outlet>
+</main>

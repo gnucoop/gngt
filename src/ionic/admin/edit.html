@@ -1,0 +1,37 @@
+<ion-card *ngIf="form|async as editForm">
+  <ion-card-header>
+    <ion-card-title>
+      {{ title }}
+      <span *ngIf="editForm.value['id']">#{{ editForm.value['id'] }}</span>
+    </ion-card-title>
+  </ion-card-header>
+  <ion-card-content>
+    <ion-list [formGroup]="editForm" [gngtFormDisabled]="loading|async">
+      <ng-container *ngFor="let field of fields">
+        <ng-container [ngSwitch]="field.type">
+          <ion-item *ngSwitchCase="'input'">
+            <ion-label>{{ field.label | translate }}</ion-label>
+            <ion-input [formControlName]="field.name" [type]="field.subtype || 'text'"
+                [readonly]="field.readonly"></ion-input>
+          </ion-item>
+          <ion-item *ngSwitchCase="'textarea'">
+            <ion-label>{{ field.label | translate }}</ion-label>
+            <ion-textarea [formControlName]="field.name"></ion-textarea>
+          </ion-item>
+          <ion-item *ngSwitchCase="'select'">
+            <ion-label>{{ field.label | translate }}</ion-label>
+            <ion-select [formControlName]="field.name">
+              <ion-select-option *ngFor="let choice of field.choices|async"
+                  [value]="choice.value">{{ choice.label }}</ion-select-option>
+            </ion-select>
+          </ion-item>
+        </ng-container>
+      </ng-container>
+    </ion-list>
+    <div class="ion-actions">
+      <ion-spinner *ngIf="loading|async"></ion-spinner>
+      <ion-button (click)="save()" [disabled]="!editForm.valid">{{ saveLabel | translate }}</ion-button>
+      <ion-button (click)="goBack()" color="warning">{{ cancelLabel | translate }}</ion-button>
+    </div>
+  </ion-card-content>
+</ion-card>
