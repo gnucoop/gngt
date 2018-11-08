@@ -20,10 +20,16 @@ function generateRollupEntryPoints(packageName: string, entryPoints: string[]):
 const coreSecondaryEntryPoints = getSubdirectoryNames(join(buildConfig.packagesDir, 'core'));
 
 /** List of potential secondary entry-points for the material package. */
+const ionSecondaryEntryPoints = getSubdirectoryNames(join(buildConfig.packagesDir, 'ionic'));
+
+/** List of potential secondary entry-points for the material package. */
 const matSecondaryEntryPoints = getSubdirectoryNames(join(buildConfig.packagesDir, 'material'));
 
 /** Object with all core entry points in the format of Rollup globals. */
 const rollupCoreEntryPoints = generateRollupEntryPoints('core', coreSecondaryEntryPoints);
+
+/** Object with all material entry points in the format of Rollup globals. */
+const rollupIonEntryPoints = generateRollupEntryPoints('ionic', ionSecondaryEntryPoints);
 
 /** Object with all material entry points in the format of Rollup globals. */
 const rollupMatEntryPoints = generateRollupEntryPoints('material', matSecondaryEntryPoints);
@@ -85,6 +91,7 @@ export const rollupGlobals = {
 
   // Include secondary entry-points of the core and material packages
   ...rollupCoreEntryPoints,
+  ...rollupIonEntryPoints,
   ...rollupMatEntryPoints,
 
   'rxjs': 'rxjs',
