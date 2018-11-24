@@ -41,4 +41,5 @@ export * from './login';
 
 export {reducers};
 
+export * from './auth-module-options';
 export * from './auth-module';
