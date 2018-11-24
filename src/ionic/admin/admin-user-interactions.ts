@@ -46,7 +46,7 @@ export class AdminUserInteractionsService extends CoreAdminUserInteractionsServi
       }))),
       switchMap(alert => from(alert.present()).pipe(mapTo(alert))),
       switchMap(alert => from(alert.onDidDismiss())),
-      map(evt => evt.role === 'confirm')
+      map((evt: any) => evt.role === 'confirm')
     );
   }
 }
