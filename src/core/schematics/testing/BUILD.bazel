@@ -1,0 +1,18 @@
+package(default_visibility = ["//visibility:public"])
+
+load("//tools:defaults.bzl", "jasmine_node_test", "ts_library")
+
+ts_library(
+  name = "testing",
+  module_name = "@gngt/core/schematics/testing",
+  srcs = glob(["**/*.ts"]),
+  deps = [
+    "@gngtdeps//@angular-devkit/core",
+    "@gngtdeps//@angular-devkit/schematics",
+    "@gngtdeps//@schematics/angular",
+    "@gngtdeps//@types/node",
+    "@gngtdeps//@types/fs-extra",
+    "@gngtdeps//fs-extra",
+    "@gngtdeps//rxjs",
+  ],
+)
