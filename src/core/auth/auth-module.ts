@@ -19,8 +19,7 @@
  *
  */
 
-import {HTTP_INTERCEPTORS} from '@angular/common/http';
-import {ModuleWithProviders, NgModule} from '@angular/core';
+import {NgModule} from '@angular/core';
 
 import {EffectsModule} from '@ngrx/effects';
 import {StoreModule} from '@ngrx/store';
@@ -28,11 +27,8 @@ import {StoreModule} from '@ngrx/store';
 import {AuthService} from './auth';
 import {AuthEffects} from './auth-effects';
 import {AuthGuard} from './auth-guard';
-import {AuthModuleOptions} from './auth-module-options';
-import {AUTH_OPTIONS} from './auth-options-token';
 import {JwtHelperService} from './jwt-helper';
 import {JwtInterceptor} from './jwt-interceptor';
-import {JWT_OPTIONS} from './jwt-options-token';
 import {reducers} from './reducers';
 
 @NgModule({
@@ -48,28 +44,4 @@ import {reducers} from './reducers';
     JwtInterceptor
   ]
 })
-export class AuthModule {
-  static forRoot(options: AuthModuleOptions): ModuleWithProviders {
-    return {
-      ngModule: AuthModule,
-      providers: [
-        {
-          provide: HTTP_INTERCEPTORS,
-          useClass: JwtInterceptor,
-          multi: true
-        },
-        options.jwtOptionsProvider ||
-        {
-          provide: JWT_OPTIONS,
-          useValue: options.jwtConfig
-        },
-        options.authOptionsProvider ||
-        {
-          provide: AUTH_OPTIONS,
-          useValue: options.authConfig
-        },
-        JwtHelperService
-      ]
-    };
-  }
-}
+export class AuthModule { }

@@ -20,7 +20,8 @@
  */
 
 import {CommonModule} from '@angular/common';
-import {NgModule} from '@angular/core';
+import {HTTP_INTERCEPTORS} from '@angular/common/http';
+import {NgModule, ModuleWithProviders} from '@angular/core';
 import {ReactiveFormsModule} from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
@@ -32,8 +33,9 @@ import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
 import {TranslateModule} from '@ngx-translate/core';
 
 import {
-  AuthModule as CoreAuthModule,
-  AuthUserInteractionsService as CoreAuthUserInteractionsService
+  AUTH_OPTIONS, AuthModule as CoreAuthModule, AuthModuleOptions,
+  AuthUserInteractionsService as CoreAuthUserInteractionsService,
+  JWT_OPTIONS, JwtHelperService, JwtInterceptor
 } from '@gngt/core/auth';
 import {CommonModule as GngtCommonModule} from '@gngt/core/common';
 
@@ -73,4 +75,28 @@ import {LogoutConfirmDialogComponent} from './logout-confirm-dialog';
     }
   ]
 })
-export class AuthModule { }
+export class AuthModule {
+  static forRoot(options: AuthModuleOptions): ModuleWithProviders {
+    return {
+      ngModule: AuthModule,
+      providers: [
+        {
+          provide: HTTP_INTERCEPTORS,
+          useClass: JwtInterceptor,
+          multi: true
+        },
+        options.jwtOptionsProvider ||
+        {
+          provide: JWT_OPTIONS,
+          useValue: options.jwtConfig
+        },
+        options.authOptionsProvider ||
+        {
+          provide: AUTH_OPTIONS,
+          useValue: options.authConfig
+        },
+        JwtHelperService
+      ]
+    };
+  }
+}
