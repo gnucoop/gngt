@@ -1,0 +1,1 @@
+workspace(name = "ngx_translate_core")

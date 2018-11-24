@@ -34,7 +34,7 @@ env:
     # Keep Yarn version in sync with Yarn version within Bazel WORKSPACE.
     - YARN_VERSION=1.9.4
     - LOGS_DIR=/tmp/gngt-build/logs
-    - SAUCE_USERNAME=angular-ci
+    - SAUCE_USERNAME=gngt-ci
     - BROWSER_STACK_USERNAME=gngt
     - BROWSER_STACK_ACCESS_KEY=CaXMeMHD9pr5PHg8N7Jq
     - BROWSER_PROVIDER_READY_FILE=/tmp/gngt-build/readyfile

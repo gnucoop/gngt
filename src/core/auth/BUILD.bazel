@@ -15,9 +15,10 @@ ng_module(
     "@angular//packages/router",
     "@ngrx//modules/effects",
     "@ngrx//modules/store",
-    "@npm//@ngx-translate/core",
-    "@npm//@types/url-parse",
-    "@npm//url-parse",
+    "@ngx_translate_core//:core",
+    "@gngtdeps//@types/url-parse",
+    "@gngtdeps//url-parse",
+    "//src/core/common",
     "//src/core/reducers"
   ],
 )
@@ -27,6 +28,7 @@ ng_test_library(
   srcs = glob(["**/*.spec.ts"]),
   deps = [
     "@angular//packages/platform-browser",
+    "@gngtdeps//moment",
     ":auth"
   ]
 )

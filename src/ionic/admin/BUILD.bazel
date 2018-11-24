@@ -7,22 +7,17 @@ ng_module(
   name = "admin",
   srcs = glob(["**/*.ts"], exclude=["**/*.spec.ts"]),
   module_name = "@gngt/ionic/admin",
-  assets = [":delete-confirm.css", ":edit.css", ":list.css"] + glob(["**/*.html"]),
+  assets = [":edit.css", ":list.css"] + glob(["**/*.html"]),
   deps = [
     "@angular//packages/common",
     "@angular//packages/core",
     "@angular//packages/forms",
     "@angular//packages/router",
-    "@npm//@ngx-translate/core",
+    "@ngx_translate_core//:core",
+    "@ionic_angular//:angular",
     "//src/core/admin",
-    "//src/ionic/model",
+    "//src/core/common",
   ],
-)
-
-sass_binary(
-  name = "delete_confirm_scss",
-  src = "delete-confirm.scss",
-  deps = [],
 )
 
 sass_binary(

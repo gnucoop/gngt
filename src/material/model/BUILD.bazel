@@ -9,8 +9,7 @@ ng_module(
   assets = [],
   deps = [
     "@angular//packages/core",
-    "@angular_material//src/lib/paginator",
-    "@angular_material//src/lib/sort",
+    "@gngtdeps//@angular/material",
     "//src/core/model",
   ],
 )

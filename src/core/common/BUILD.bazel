@@ -3,25 +3,26 @@ package(default_visibility=["//visibility:public"])
 load("//tools:defaults.bzl", "ng_module", "ng_test_library", "ng_web_test_suite")
 
 ng_module(
-  name = "admin",
+  name = "common",
   srcs = glob(["**/*.ts"], exclude=["**/*.spec.ts"]),
   module_name = "@gngt/core/common",
   assets = [],
   deps = [
-    "@angular//packages/core"
+    "@angular//packages/core",
+    "@angular//packages/forms"
   ],
 )
 
 ng_test_library(
-  name = "admin_test_sources",
+  name = "common_test_sources",
   srcs = glob(["**/*.spec.ts"]),
   deps = [
     "@angular//packages/platform-browser",
-    ":admin"
+    ":common"
   ]
 )
 
 ng_web_test_suite(
   name = "unit_tests",
-  deps = [":admin_test_sources"],
+  deps = [":common_test_sources"],
 )

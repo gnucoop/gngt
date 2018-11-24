@@ -22,8 +22,9 @@ ng_module(
     "@angular_material//src/lib/progress-bar",
     "@angular_material//src/lib/table",
     "@angular_material//src/lib/toolbar",
-    "@npm//@ngx-translate/core",
+    "@ngx_translate_core//:core",
     "//src/core/admin",
+    "//src/core/common",
     "//src/material/model",
   ],
 )

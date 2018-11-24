@@ -14,21 +14,6 @@ ng_module(
   deps = ["//src/material/%s" % p for p in MATERIAL_PACKAGES],
 )
 
-sass_bundle(
-  name = "theming_bundle",
-  # Use the filegroup rules for these sass partials directly because sass_library doesn't
-  # act like a filegroup.
-  srcs = [
-    "//src/cdk/a11y:a11y_scss_partials",
-    "//src/cdk/overlay:overlay_scss_partials",
-    "//src/cdk/text-field:text_field_scss_partials",
-  ] + [
-    "//src/lib/%s:%s_scss_partials" % (p, p.replace('-', '_')) for p in MATERIAL_PACKAGES
-  ],
-  entry_point = '//src/lib/core:theming/_all-theme.scss',
-  output_name = "_theming.scss",
-)
-
 # Creates the @angular/material package published to npm.
 ng_package(
   name = "npm_package",
@@ -36,13 +21,6 @@ ng_package(
   entry_point = "src/lib/public_api.js",
   entry_point_name = "material",
   globals = ROLLUP_GLOBALS,
-  data = [
-    ":theming_bundle",
-    "//src/lib/prebuilt-themes:indigo-pink",
-    "//src/lib/prebuilt-themes:deeppurple-amber",
-    "//src/lib/prebuilt-themes:pink-bluegrey",
-    "//src/lib/prebuilt-themes:purple-green",
-  ],
   packages = ["//src/lib/schematics:npm_package"],
   replacements = VERSION_PLACEHOLDER_REPLACEMENTS,
   deps = MATERIAL_TARGETS,
