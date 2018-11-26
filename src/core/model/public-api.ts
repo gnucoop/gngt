@@ -24,6 +24,7 @@ import * as reducers from './reducers';
 
 export * from './get-params';
 export * from './list-params';
+export * from './list-result';
 export * from './model';
 export * from './model-effects';
 export * from './model-manager';
