@@ -21,7 +21,7 @@ MATERIAL_TARGETS = ["//src/material"] + ["//src/material/%s" % p for p in MATERI
 IONIC_PACKAGES = [
   "admin",
   "auth",
-  "model",
+  "common",
 ]
 
 IONIC_TARGETS = ["//src/ionic"] + ["//src/ionic/%s" % p for p in IONIC_PACKAGES]

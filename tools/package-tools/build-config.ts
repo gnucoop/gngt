@@ -11,6 +11,8 @@ export interface BuildConfig {
   ngrxVersion: string;
   /** Required Ngx Translate version for the project. */
   ngxtVersion: string;
+  /** Required Ionic version for the project. */
+  ionicVersion: string;
   /** Path to the root of the project. */
   projectDir: string;
   /** Path to the directory where all packages are living. */

@@ -33,6 +33,7 @@
   "requiredAngularMaterialVersion": ">=7.0.0",
   "requiredNgrxVersion": ">=6.1.2",
   "requiredNgxtVersion": ">=11.0.0",
+  "requiredIonicVersion": ">=4.0.0-beta.16",
   "dependencies": {
     "@angular/animations": "^7.0.0",
     "@angular/cdk": "^7.0.0",
@@ -43,7 +44,7 @@
     "@angular/forms": "^7.0.0",
     "@angular/material": "^7.0.0",
     "@angular/platform-browser": "^7.0.0",
-    "@ionic/angular": "^4.0.0-beta.15",
+    "@ionic/angular": "^4.0.0-beta.16",
     "@ngrx/effects": "^6.1.2",
     "@ngrx/store": "^6.1.2",
     "@ngx-translate/core": "^11.0.0",
