@@ -15,9 +15,9 @@ if [ -z ${GNGT_BUILDS_TOKEN} ]; then
   exit 1
 fi
 
-# Material packages that need to published.
-PACKAGES=(cdk material material-moment-adapter)
-REPOSITORIES=(cdk-builds gngt-builds gngt-moment-adapter-builds)
+# Gngt packages that need to published.
+PACKAGES=(core ionic material)
+REPOSITORIES=(gngt-core-builds gngt-ionic-builds gngt-material-builds)
 
 # Command line arguments.
 COMMAND_ARGS=${*}
@@ -42,7 +42,7 @@ publishPackage() {
   buildTagName="${branchName}-${commitSha}"
   buildCommitMessage="${branchName} - ${commitMessage}"
 
-  repoUrl="https://github.com/angular/${packageRepo}.git"
+  repoUrl="https://github.com/gnucoop/${packageRepo}.git"
   repoDir="tmp/${packageRepo}"
 
   echo "Starting publish process of ${packageName} for ${buildVersionName} into ${branchName}.."

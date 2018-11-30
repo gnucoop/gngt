@@ -121,7 +121,7 @@ task('deploy:devapp-ion', ['stage-deploy:devapp-ion'], () => {
 
 /*
  * Development app watch task. This task ensures that only the packages that have been affected
- * by a file-change are being rebuilt. This speeds-up development and makes working on Material
+ * by a file-change are being rebuilt. This speeds-up development and makes working on Gngt
  * easier.
  */
 
@@ -138,7 +138,7 @@ task(':watch:devapp-ion', () => {
 
   const ionicCoreThemingGlob = join(ionicPackage.sourceDir, '**/core/theming/**/*.scss');
 
-  // Material package watchers.
+  // Ionic package watchers.
   watchFiles([
     join(ionicPackage.sourceDir, '**/!(*-theme.scss)'), `!${ionicCoreThemingGlob}`
   ], ['ionic:build-no-bundles']);

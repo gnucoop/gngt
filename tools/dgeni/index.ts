@@ -13,7 +13,7 @@ import {TypeFormatFlags} from 'dgeni-packages/node_modules/typescript';
 import {sync as globSync} from 'glob';
 import * as path from 'path';
 
-// Dgeni packages that the Material docs package depends on.
+// Dgeni packages that the Gngt docs package depends on.
 const jsdocPackage = require('dgeni-packages/jsdoc');
 const nunjucksPackage = require('dgeni-packages/nunjucks');
 const typescriptPackage = require('dgeni-packages/typescript');
@@ -33,8 +33,12 @@ const corePackages = globSync(path.join(sourceDir, 'core', '*/'))
 const materialPackages = globSync(path.join(sourceDir, 'material', '*/'))
   .map(packagePath => path.basename(packagePath));
 
+/** List of Ionic packages that need to be documented. */
+const ionicPackages = globSync(path.join(sourceDir, 'ionic', '*/'))
+  .map(packagePath => path.basename(packagePath));
+
 /**
- * Dgeni package for the Angular Material docs. This just defines the package, but doesn't
+ * Dgeni package for the Gngt docs. This just defines the package, but doesn't
  * generate the docs yet.
  *
  * Dgeni packages are very similar to AngularJS modules. Those can contain:
@@ -114,6 +118,10 @@ apiDocsPackage.config((readTypeScriptModules: ReadTypeScriptModules, tsParser: T
     typescriptPathMap[`@gngt/material/${packageName}`] = [`./material/${packageName}/index.ts`];
   });
 
+  ionicPackages.forEach(packageName => {
+    typescriptPathMap[`@gngt/ionic/${packageName}`] = [`./ionic/${packageName}/index.ts`];
+  });
+
   // Add proper path mappings to the TSParser service of Dgeni. This ensures that properties
   // from mixins (e.g. color, disabled) are showing up properly in the docs.
   tsParser.options.paths = typescriptPathMap;
@@ -123,7 +131,8 @@ apiDocsPackage.config((readTypeScriptModules: ReadTypeScriptModules, tsParser: T
   // files will have docs generated.
   readTypeScriptModules.sourceFiles = [
     ...corePackages.map(packageName => `./core/${packageName}/index.ts`),
-    ...materialPackages.map(packageName => `./material/${packageName}/index.ts`)
+    ...materialPackages.map(packageName => `./material/${packageName}/index.ts`),
+    ...ionicPackages.map(packageName => `./ionic/${packageName}/index.ts`)
   ];
 });
 
@@ -131,7 +140,7 @@ apiDocsPackage.config((tsHost: Host) => {
   // Disable concatenation of multiple leading comments for a TypeScript node. Since all shipped
   // source files have a license banner at top, the license banner comment would be incorrectly
   // considered as "comment" for the first TypeScript node of a given file. Since there are
-  // various files in the Material project where the first node of a source file is exported and
+  // various files in the Gngt project where the first node of a source file is exported and
   // should only use the first leading comment, we need to disable comment concatenation.
   // See for example: src/core/auth/credentials.ts
   tsHost.concatMultipleLeadingComments = false;

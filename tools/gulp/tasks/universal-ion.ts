@@ -53,7 +53,7 @@ task('universal-ion:copy-files', copyTask(appDir, outDir));
 task('universal-ion:build-prerender-ts', tsBuildTask(tsconfigPrerenderPath));
 
 // As a workaround for https://github.com/angular/angular/issues/12249, we need to
-// copy the Material and Core ESM output inside of the universal-app-ion output.
+// copy the Ionic and Core ESM output inside of the universal-app-ion output.
 task('universal-ion:copy-release', () => {
   copySync(join(releasesDir, 'ionic'), join(outDir, 'ionic'));
   copySync(join(releasesDir, 'core'), join(outDir, 'core'));

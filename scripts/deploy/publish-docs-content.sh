@@ -36,7 +36,7 @@ examplesPackagePath="${projectPath}/dist/releases/material-examples"
 # Git clone URL for the gngt-docs-content repository.
 docsContentRepoUrl="https://github.com/gnucoop/gngt-docs-content"
 
-# Current version of Angular Material from the package.json file
+# Current version of Gngt from the package.json file
 buildVersion=$(node -pe "require('./package.json').version")
 
 # Name of the branch that is currently being deployed.

@@ -1,7 +1,7 @@
 {
   "name": "@gngt/material-examples",
   "version": "0.0.0-PLACEHOLDER",
-  "description": "Angular Material Examples",
+  "description": "Gngt Material Examples",
   "main": "./bundles/material-examples.umd.js",
   "module": "./esm5/material-examples.es5.js",
   "es2015": "./esm2015/material-examples.js",

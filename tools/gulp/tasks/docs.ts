@@ -20,12 +20,12 @@ const DIST_DOCS = path.join(outputDir, 'docs');
 
 // Our docs contain comments of the form `<!-- example(...) -->` which serve as placeholders where
 // example code should be inserted. We replace these comments with divs that have a
-// `material-docs-example` attribute which can be used to locate the divs and initialize the example
+// `gngt-docs-example` attribute which can be used to locate the divs and initialize the example
 // viewer.
 const EXAMPLE_PATTERN = /<!--\W*example\(([^)]+)\)\W*-->/g;
 
 // Markdown files can contain links to other markdown files.
-// Most of those links don't work in the Material docs, because the paths are invalid in the
+// Most of those links don't work in the Gngt docs, because the paths are invalid in the
 // documentation page. Using a RegExp to rewrite links in HTML files to work in the docs.
 const LINK_PATTERN = /(<a[^>]*) href="([^"]*)"/g;
 
@@ -75,6 +75,7 @@ const markdownOptions = {
 /** Generate all docs content. */
 task('docs', sequenceTask(
   [
+    'markdown-docs-ionic',
     'markdown-docs-material',
     'markdown-docs-core',
     'build-highlighted-examples',
@@ -217,7 +218,7 @@ function fixMarkdownDocLinks(link: string, filePath: string): string {
   let baseName = path.basename(link, path.extname(link));
 
   // Temporary link the file to the /guide URL because that's the route where the
-  // guides can be loaded in the Material docs.
+  // guides can be loaded in the Gngt docs.
   return `guide/${baseName}`;
 }
 

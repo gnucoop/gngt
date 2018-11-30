@@ -63,7 +63,7 @@ class StageReleaseTask {
   async run() {
     console.log();
     console.log(cyan('-----------------------------------------'));
-    console.log(cyan('  Angular Material stage release script'));
+    console.log(cyan('        Gngt stage release script'));
     console.log(cyan('-----------------------------------------'));
     console.log();
 

@@ -120,7 +120,7 @@ task('deploy:devapp-mat', ['stage-deploy:devapp-mat'], () => {
 
 /*
  * Development app watch task. This task ensures that only the packages that have been affected
- * by a file-change are being rebuilt. This speeds-up development and makes working on Material
+ * by a file-change are being rebuilt. This speeds-up development and makes working on Gngt
  * easier.
  */
 

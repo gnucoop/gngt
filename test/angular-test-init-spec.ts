@@ -5,7 +5,7 @@ import {
 } from '@angular/platform-browser-dynamic/testing';
 
 /*
- * Common setup / initialization for all unit tests in Angular Material and CDK.
+ * Common setup / initialization for all unit tests in Gngt.
  */
 
 const testBed = TestBed.initTestEnvironment(

@@ -1,7 +1,7 @@
 {
   "name": "@gngt/ionic-examples",
   "version": "0.0.0-PLACEHOLDER",
-  "description": "Angular Material Examples",
+  "description": "Gngt Ionic Examples",
   "main": "./bundles/ionic-examples.umd.js",
   "module": "./esm5/ionic-examples.es5.js",
   "es2015": "./esm2015/ionic-examples.js",

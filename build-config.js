@@ -1,6 +1,6 @@
 /**
  * Build configuration for the packaging tool. This file will be automatically detected and used
- * to build the different packages inside of Material.
+ * to build the different packages inside of Gngt.
  */
 const {join} = require('path');
 
@@ -10,7 +10,7 @@ const packageJson = require('./package.json');
 const buildVersion = packageJson.version;
 
 /**
- * Required Angular version for all Angular Material packages. This version will be used
+ * Required Angular version for all Gngt packages. This version will be used
  * as the peer dependency version for Angular in all release packages.
  */
 const angularVersion = packageJson.requiredAngularVersion;

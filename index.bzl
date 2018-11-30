@@ -1,5 +1,5 @@
 """Public API surface is re-exported here.
-This API is exported for users building Angular Material from source in
+This API is exported for users building Gngt from source in
 downstream projects.
 """
 
