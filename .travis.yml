@@ -32,7 +32,7 @@ jobs:
 env:
   global:
     # Keep Yarn version in sync with Yarn version within Bazel WORKSPACE.
-    - YARN_VERSION=1.9.4
+    - YARN_VERSION=1.12.1
     - LOGS_DIR=/tmp/gngt-build/logs
     - SAUCE_USERNAME=gngt-ci
     - BROWSER_STACK_USERNAME=gngt

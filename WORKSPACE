@@ -3,22 +3,22 @@ workspace(name = "gngt")
 # Add NodeJS rules (explicitly used for sass bundle rules)
 http_archive(
   name = "build_bazel_rules_nodejs",
-  url = "https://github.com/bazelbuild/rules_nodejs/archive/0.15.3.zip",
-  strip_prefix = "rules_nodejs-0.15.3",
+  url = "https://github.com/bazelbuild/rules_nodejs/archive/0.16.1.zip",
+  strip_prefix = "rules_nodejs-0.16.1",
 )
 
 # Add TypeScript rules
 http_archive(
   name = "build_bazel_rules_typescript",
-  url = "https://github.com/bazelbuild/rules_typescript/archive/8ea1a55cf5cf8be84ddfeefc0940769b80da792f.zip",
-  strip_prefix = "rules_typescript-8ea1a55cf5cf8be84ddfeefc0940769b80da792f",
+  url = "https://github.com/bazelbuild/rules_typescript/archive/0.21.0.zip",
+  strip_prefix = "rules_typescript-0.21.0",
 )
 
 # Add Angular source and Bazel rules.
 http_archive(
   name = "angular",
-  url = "https://github.com/angular/angular/archive/7.0.4.zip",
-  strip_prefix = "angular-7.0.4",
+  url = "https://github.com/angular/angular/archive/7.1.1.zip",
+  strip_prefix = "angular-7.1.1",
 )
 
 http_archive(
@@ -55,8 +55,8 @@ new_http_archive(
 
 new_http_archive(
   name = "ionic_angular",
-  url = "https://github.com/ionic-team/ionic/archive/v4.0.0-beta.16.zip",
-  strip_prefix = "ionic-4.0.0-beta.16/angular/src",
+  url = "https://github.com/ionic-team/ionic/archive/v4.0.0-beta.17.zip",
+  strip_prefix = "ionic-4.0.0-beta.17/angular/src",
   build_file="//tools/build_files/ionic:BUILD.bazel.ionic",
   workspace_file="//tools/build_files/ionic:WORKSPACE.ionic"
 )
@@ -64,10 +64,8 @@ new_http_archive(
 # Add sass rules
 http_archive(
   name = "io_bazel_rules_sass",
-  # Explicitly depend on SHA c93cadb20753f4e4d4eabe83f8ea882bfb8f2efe because this one includes
-  # the major API overhaul and fix for the NodeJS source map warnings.
-  url = "https://github.com/bazelbuild/rules_sass/archive/c93cadb20753f4e4d4eabe83f8ea882bfb8f2efe.zip",
-  strip_prefix = "rules_sass-c93cadb20753f4e4d4eabe83f8ea882bfb8f2efe",
+  url = "https://github.com/bazelbuild/rules_sass/archive/1.15.1.zip",
+  strip_prefix = "rules_sass-1.15.1",
 )
 
 # Since we are explitly fetching @build_bazel_rules_typescript, we should explicitly ask for
@@ -98,7 +96,7 @@ node_repositories(
   # For deterministic builds, specify explicit NodeJS and Yarn versions. Keep the Yarn version
   # in sync with the version of Travis.
   node_version = "10.10.0",
-  yarn_version = "1.9.4",
+  yarn_version = "1.12.1",
 )
 
 # @npm is temporarily needed to build @rxjs from source since its ts_library
