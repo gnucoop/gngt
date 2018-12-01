@@ -36,7 +36,7 @@ const rollupMatEntryPoints = generateRollupEntryPoints('material', matSecondaryE
 
 /** Map of globals that are used inside of the different packages. */
 export const rollupGlobals = {
-  'moment': 'moment',
+  'date-fns': 'date-fns',
   'tslib': 'tslib',
   'url-parse': 'urlParse',
 

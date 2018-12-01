@@ -1,6 +1,6 @@
 import {inject, TestBed} from '@angular/core/testing';
 
-import * as moment from 'moment';
+import {addDays, getTime, subDays} from 'date-fns';
 
 import {JwtHelperService} from './jwt-helper';
 
@@ -32,10 +32,10 @@ describe('JwtHelperService', () => {
   it(
     'should extract expiration date from a JWT token',
     inject([JwtHelperService], (service: JwtHelperService) => {
-      const exp = moment().add(1, 'day');
-      const token = createToken(exp.unix());
+      const exp = addDays(new Date(), 1);
+      const token = createToken(getTime(exp));
       const exp1 = Math.floor(+service.getTokenExpirationDate(token)!.getTime() / 1000);
-      const exp2 = Math.floor(+exp.toDate().getTime() / 1000);
+      const exp2 = Math.floor(+exp.getTime() / 1000);
       expect(exp1).toEqual(exp2);
     })
   );
@@ -43,8 +43,8 @@ describe('JwtHelperService', () => {
   it(
     'should detect if a token is expired',
     inject([JwtHelperService], (service: JwtHelperService) => {
-      const token1 = createToken(moment().add(1, 'day').unix());
-      const token2 = createToken(moment().subtract(1, 'day').unix());
+      const token1 = createToken(getTime(addDays(new Date(), 1)));
+      const token2 = createToken(getTime(subDays(new Date(), 1)));
       expect(service.isTokenExpired(token1)).toBeFalsy();
       expect(service.isTokenExpired(token2)).toBeTruthy();
     })

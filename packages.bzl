@@ -44,8 +44,9 @@ VERSION_PLACEHOLDER_REPLACEMENTS = {
 
 # Base rollup globals for everything in the repo.
 ROLLUP_GLOBALS = {
+  'date-fns': 'date-fns',
   'tslib': 'tslib',
-  'moment': 'moment',
+  'url-parse': 'url-parse',
   '@gngt/core': 'gngt.core',
   '@gngt/ionic': 'gngt.ionic',
   '@gngt/material': 'gngt.material',

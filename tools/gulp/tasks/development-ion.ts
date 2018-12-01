@@ -39,7 +39,7 @@ const appVendors = [
   'rxjs',
   'hammerjs',
   'core-js',
-  'moment',
+  'date-fns',
   'tslib',
   'url-parse',
   '@webcomponents',

@@ -33,7 +33,7 @@ System.config({
     'rxjs': 'node:rxjs',
     'main': 'main.js',
     'tslib': 'node:tslib/tslib.js',
-    'moment': 'node:moment/min/moment-with-locales.min.js',
+    'date-fns': 'node:date-fns/min/index.js',
     'url-parse': 'node:url-parse/dist/url-parse.min.js',
 
     // Angular specific mappings.

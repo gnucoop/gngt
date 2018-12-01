@@ -11,7 +11,7 @@ System.config({
     'systemjs-babel-build': 'node:systemjs-plugin-babel/systemjs-babel-browser.js',
     'rxjs': 'node:rxjs',
     'main': 'main.js',
-    'moment': 'node:moment/min/moment-with-locales.min.js',
+    'date-fns': 'node:date-fns/min/index.js',
     'tslib': 'node:tslib/tslib.js',
     'url-parse': 'node:url-parse/dist/url-parse.min.js',
 
