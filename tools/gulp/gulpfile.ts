@@ -17,7 +17,6 @@ import './tasks/all-packages';
 import './tasks/aot-ion';
 import './tasks/aot-mat';
 import './tasks/breaking-changes';
-import './tasks/changelog';
 import './tasks/ci';
 import './tasks/clean';
 import './tasks/default';
