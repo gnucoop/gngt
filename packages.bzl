@@ -30,8 +30,16 @@ IONIC_TARGETS = ["//src/ionic"] + ["//src/ionic/%s" % p for p in IONIC_PACKAGES]
 # all in-sync. This map is passed to each ng_package rule to stamp out the appropriate
 # version for the placeholders.
 ANGULAR_PACKAGE_VERSION = ">=7.0.0"
+ANGULAR_MATERIAL_PACKAGE_VERSION = ">=7.1.0"
+NGRX_PACKAGE_VERSION = ">=7.0.0-beta.0"
+NGXT_PACKAGE_VERSION = ">=11.0.0"
+IONIC_PACKAGE_VERSION = ">=4.0.0-beta.17"
 VERSION_PLACEHOLDER_REPLACEMENTS = {
+  "0.0.0-NGM": ANGULAR_MATERIAL_PACKAGE_VERSION,
+  "0.0.0-NGRX": NGRX_PACKAGE_VERSION,
+  "0.0.0-NGXT": NGXT_PACKAGE_VERSION,
   "0.0.0-NG": ANGULAR_PACKAGE_VERSION,
+  "0.0.0-ION": IONIC_PACKAGE_VERSION
 }
 
 # Base rollup globals for everything in the repo.
@@ -39,6 +47,7 @@ ROLLUP_GLOBALS = {
   'tslib': 'tslib',
   'moment': 'moment',
   '@gngt/core': 'gngt.core',
+  '@gngt/ionic': 'gngt.ionic',
   '@gngt/material': 'gngt.material',
 }
 
