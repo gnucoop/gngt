@@ -18,7 +18,6 @@ ts_library(
   srcs = glob(["**/*.ts"], exclude=[
     "**/files/**/*.ts",
     "**/*.spec.ts",
-    "ng-update/test-cases/**/*.ts",
     "testing/**/*.ts"
   ]),
   tsconfig = ":tsconfig.json",
@@ -49,7 +48,7 @@ npm_package(
 jasmine_node_test(
   name = "unit_tests",
   srcs = [":schematics_test_sources"],
-  data = [":schematics_assets", ":schematics_test_cases"],
+  data = [":schematics_assets"],
 )
 
 ts_library(
@@ -67,14 +66,5 @@ ts_library(
     ":schematics",
   ],
   tsconfig = ":tsconfig.json",
-  testonly = True,
-)
-
-filegroup(
-  name = "schematics_test_cases",
-  srcs = glob([
-    "ng-update/test-cases/**/*_input.ts",
-    "ng-update/test-cases/**/*_expected_output.ts"
-  ]),
   testonly = True,
 )

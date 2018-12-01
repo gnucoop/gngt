@@ -19,5 +19,6 @@
  *
  */
 
-export * from './admin-model-options';
-export * from './build-admin-model';
+export * from './model-options';
+export * from './build-model';
+export * from './ast-utils';

@@ -19,5 +19,16 @@
  *
  */
 
-export * from './get-file-content';
-export * from './test-app';
+import {chain, Rule} from '@angular-devkit/schematics';
+import {buildModel} from '../../utils/build-model';
+import {Schema} from './schema';
+
+/**
+ * Scaffolds a new model.
+ * Internally it bootstraps the base component schematic
+ */
+export default function(options: Schema): Rule {
+  return chain([
+    buildModel(options)
+  ]);
+}

@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "declaration": true,
     "lib": ["es2017"],
     "module": "commonjs",
     "moduleResolution": "node",
@@ -9,26 +10,17 @@
     "skipDefaultLibCheck": true,
     "skipLibCheck": true,
     "sourceMap": true,
-    "declaration": true,
-    "target": "es6",
+    "target": "es2015",
     "types": [
       "jasmine",
       "node"
     ],
     "baseUrl": ".",
-    "paths": {
-    }
+    "paths": {}
   },
-  "references": [
-  ],
   "exclude": [
+    "**/files/**/*",
     "**/*.spec.ts",
-    // Exclude the test-setup utility files. Those should not be part of the output.
-    "test-setup/**/*.ts",
-    // Exclude template files that will be copied by the schematics. Those are not valid TS.
-    "ng-generate/*/files/**/*.ts",
-    // Exclude all test-case files because those should not be included in the schematics output.
-    "ng-update/test-cases/**/*.ts",
     "testing/**/*.ts"
   ],
   "bazelOptions": {

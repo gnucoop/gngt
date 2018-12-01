@@ -19,5 +19,16 @@
  *
  */
 
-export * from './get-file-content';
-export * from './test-app';
+export interface ModelOptions  {
+  /** Path of the new model. */
+  path: string;
+
+  /** Name of the project. */
+  project: string;
+
+  /** Name of the model package. */
+  package: string;
+
+  /** Name of the model. */
+  model: string;
+}

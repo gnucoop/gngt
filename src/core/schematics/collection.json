@@ -14,6 +14,13 @@
       "private": true,
       "factory": "./ng-add/setup-project",
       "schema": "./ng-add/schema.json"
+    },
+    // Create a model
+    "model": {
+      "description": "Create a model",
+      "factory": "./ng-generate/model/index",
+      "schema": "./ng-generate/model/schema.json",
+      "aliases": ["gngt-model"]
     }
   }
 }

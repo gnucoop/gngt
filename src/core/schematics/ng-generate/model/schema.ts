@@ -19,13 +19,4 @@
  *
  */
 
-export interface AdminModelOptions  {
-  /** Name of the project. */
-  project: string;
-
-  /** Name of the model package. */
-  package: string;
-
-  /** Name of the model. */
-  model: string;
-}
+export {ModelOptions as Schema} from '../../utils';
