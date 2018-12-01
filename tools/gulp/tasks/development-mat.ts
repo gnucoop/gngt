@@ -8,13 +8,13 @@ import {
   copyFiles,
   inlineResourcesForDirectory,
   sequenceTask,
-  watchFiles,
 } from 'gngt-build-tools';
 import {
   corePackage,
   materialPackage,
   matExamplesPackage,
 } from '../packages';
+import {watchFilesAndReload} from '../util/watch-files-reload';
 
 // These imports don't have any typings provided.
 const firebaseTools = require('firebase-tools');
@@ -61,7 +61,7 @@ task(':build:devapp-mat:assets', copyTask(assetsGlob, outDir));
 task(':build:devapp-mat:scss', () => buildScssPipeline(appDir).pipe(dest(outDir)));
 task(':build:devapp-mat:inline-resources', () => inlineResourcesForDirectory(outDir));
 
-task(':serve:devapp-mat', serverTask(outDir, true));
+task(':serve:devapp-mat', serverTask(outDir));
 
 task('build:devapp-mat', sequenceTask(
   'core:build-no-bundles',
@@ -125,28 +125,29 @@ task('deploy:devapp-mat', ['stage-deploy:devapp-mat'], () => {
  */
 
 task(':watch:devapp-mat', () => {
-  watchFiles(join(appDir, '**/*.ts'), [':build:devapp-mat:ts']);
-  watchFiles(join(appDir, '**/*.scss'), [':watch:devapp-mat:rebuild-scss']);
-  watchFiles(join(appDir, '**/*.html'), [':watch:devapp-mat:rebuild-html']);
+  watchFilesAndReload(join(appDir, '**/*.ts'), [':build:devapp-mat:ts']);
+  watchFilesAndReload(join(appDir, '**/*.scss'), [':watch:devapp-mat:rebuild-scss']);
+  watchFilesAndReload(join(appDir, '**/*.html'), [':watch:devapp-mat:rebuild-html']);
 
   // Custom watchers for all packages that are used inside of the demo-app-mat. This is necessary
   // because we only want to build the changed package (using the build-no-bundles task).
 
   // Core package watchers.
-  watchFiles(join(corePackage.sourceDir, '**/*'), ['core:build-no-bundles']);
+  watchFilesAndReload(join(corePackage.sourceDir, '**/*'), ['core:build-no-bundles']);
 
   const materialCoreThemingGlob = join(materialPackage.sourceDir, '**/core/theming/**/*.scss');
 
   // Material package watchers.
-  watchFiles([
+  watchFilesAndReload([
     join(materialPackage.sourceDir, '**/!(*-theme.scss)'), `!${materialCoreThemingGlob}`
   ], ['material:build-no-bundles']);
-  watchFiles([
+  watchFilesAndReload([
     join(materialPackage.sourceDir, '**/*-theme.scss'), materialCoreThemingGlob
   ], [':build:devapp-mat:scss']);
 
   // Example package watchers.
-  watchFiles(join(matExamplesPackage.sourceDir, '**/*'), ['material-examples:build-no-bundles']);
+  watchFilesAndReload(join(matExamplesPackage.sourceDir, '**/*'),
+    ['material-examples:build-no-bundles']);
 });
 
 // Note that we need to rebuild the TS here, because the resource inlining

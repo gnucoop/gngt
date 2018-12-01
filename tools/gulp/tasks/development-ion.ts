@@ -8,13 +8,13 @@ import {
   copyFiles,
   inlineResourcesForDirectory,
   sequenceTask,
-  watchFiles,
 } from 'gngt-build-tools';
 import {
   corePackage,
   ionicPackage,
   ionExamplesPackage,
 } from '../packages';
+import {watchFilesAndReload} from '../util/watch-files-reload';
 
 // These imports don't have any typings provided.
 const firebaseTools = require('firebase-tools');
@@ -62,7 +62,7 @@ task(':build:devapp-ion:assets', copyTask(assetsGlob, outDir));
 task(':build:devapp-ion:scss', () => buildScssPipeline(appDir).pipe(dest(outDir)));
 task(':build:devapp-ion:inline-resources', () => inlineResourcesForDirectory(outDir));
 
-task(':serve:devapp-ion', serverTask(outDir, true));
+task(':serve:devapp-ion', serverTask(outDir));
 
 task('build:devapp-ion', sequenceTask(
   'core:build-no-bundles',
@@ -126,28 +126,29 @@ task('deploy:devapp-ion', ['stage-deploy:devapp-ion'], () => {
  */
 
 task(':watch:devapp-ion', () => {
-  watchFiles(join(appDir, '**/*.ts'), [':build:devapp-ion:ts']);
-  watchFiles(join(appDir, '**/*.scss'), [':watch:devapp-ion:rebuild-scss']);
-  watchFiles(join(appDir, '**/*.html'), [':watch:devapp-ion:rebuild-html']);
+  watchFilesAndReload(join(appDir, '**/*.ts'), [':build:devapp-ion:ts']);
+  watchFilesAndReload(join(appDir, '**/*.scss'), [':watch:devapp-ion:rebuild-scss']);
+  watchFilesAndReload(join(appDir, '**/*.html'), [':watch:devapp-ion:rebuild-html']);
 
   // Custom watchers for all packages that are used inside of the demo-app-ion. This is necessary
   // because we only want to build the changed package (using the build-no-bundles task).
 
   // Core package watchers.
-  watchFiles(join(corePackage.sourceDir, '**/*'), ['core:build-no-bundles']);
+  watchFilesAndReload(join(corePackage.sourceDir, '**/*'), ['core:build-no-bundles']);
 
   const ionicCoreThemingGlob = join(ionicPackage.sourceDir, '**/core/theming/**/*.scss');
 
   // Ionic package watchers.
-  watchFiles([
+  watchFilesAndReload([
     join(ionicPackage.sourceDir, '**/!(*-theme.scss)'), `!${ionicCoreThemingGlob}`
   ], ['ionic:build-no-bundles']);
-  watchFiles([
+  watchFilesAndReload([
     join(ionicPackage.sourceDir, '**/*-theme.scss'), ionicCoreThemingGlob
   ], [':build:devapp-ion:scss']);
 
   // Example package watchers.
-  watchFiles(join(ionExamplesPackage.sourceDir, '**/*'), ['ionic-examples:build-no-bundles']);
+  watchFilesAndReload(join(ionExamplesPackage.sourceDir, '**/*'),
+    ['ionic-examples:build-no-bundles']);
 });
 
 // Note that we need to rebuild the TS here, because the resource inlining

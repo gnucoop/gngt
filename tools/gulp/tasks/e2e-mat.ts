@@ -1,10 +1,9 @@
 import {task} from 'gulp';
-import {buildConfig, sequenceTask, triggerLivereload, watchFiles} from 'gngt-build-tools';
+import {buildConfig, sequenceTask, watchFiles} from 'gngt-build-tools';
 import {join} from 'path';
-import {copyTask, execNodeTask, ngcBuildTask, serverTask} from '../util/task_helpers';
-
-// There are no type definitions available for these imports.
-const gulpConnect = require('gulp-connect');
+import {
+  copyTask, execNodeTask, getActiveBrowserSyncInstance, ngcBuildTask, serverTask
+} from '../util/task_helpers';
 
 const {outputDir, packagesDir, projectDir} = buildConfig;
 
@@ -39,7 +38,7 @@ task('e2e-mat:watch', sequenceTask(
 /** Watches the e2e app and tests for changes and triggers a test rerun on change. */
 task(':e2e-mat:watch', () => {
   watchFiles([join(appDir, '**/*.+(html|ts|css)'), join(e2eTestDir, '**/*.+(html|ts)')],
-      [':e2e-mat:rerun'], false);
+      [':e2e-mat:rerun']);
 });
 
 /** Updates the e2e app and runs the protractor tests. */
@@ -52,7 +51,7 @@ task(':e2e-mat:rerun', sequenceTask(
 
 /** Triggers a reload of the e2e app. */
 task(':e2e-mat:reload', () => {
-  return triggerLivereload();
+  return getActiveBrowserSyncInstance().reload();
 });
 
 /** Task that builds the e2e-app-mat in AOT mode. */
@@ -73,8 +72,8 @@ task('e2e-app-mat:copy-index-html', copyTask(join(appDir, 'index.html'), outDir)
 task('e2e-app-mat:build-ts', ngcBuildTask(tsconfigPath));
 
 task(':watch:e2eapp-mat', () => {
-  watchFiles(join(appDir, '**/*.ts'), ['e2e-app-mat:build'], false);
-  watchFiles(join(appDir, '**/*.html'), ['e2e-app-mat:copy-assets'], false);
+  watchFiles(join(appDir, '**/*.ts'), ['e2e-app-mat:build']);
+  watchFiles(join(appDir, '**/*.html'), ['e2e-app-mat:copy-assets']);
 });
 
 /** Ensures that protractor and webdriver are set up to run. */
@@ -87,7 +86,7 @@ task(':test:protractor-mat:setup', execNodeTask(
 task(':test:protractor-mat', execNodeTask('protractor', [PROTRACTOR_CONFIG_PATH]));
 
 /** Starts up the e2e app server and rewrites the HTTP requests to properly work with AOT. */
-task(':serve:e2eapp-mat', serverTask(outDir, false, [
+task(':serve:e2eapp-mat', serverTask(outDir, [
   // Rewrite each request for .ngfactory files which are outside of the e2e-app-mat to the
   // **actual** path. This is necessary because NGC cannot generate factory files for the node
   // modules and release output. If we work around it by adding multiple root directories, the
@@ -105,7 +104,7 @@ task(':serve:e2eapp-mat', serverTask(outDir, false, [
 ]));
 
 /** Terminates the e2e app server */
-task(':serve:e2eapp-mat:stop', gulpConnect.serverClose);
+task(':serve:e2eapp-mat:stop', () => getActiveBrowserSyncInstance().exit());
 
 /** Builds and serves the e2e app. */
 task('serve:e2eapp-mat', sequenceTask('e2e-app-mat:build', ':serve:e2eapp-mat'));
