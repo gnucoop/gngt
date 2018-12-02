@@ -9,7 +9,7 @@ ng_module(
   assets = [],
   deps = [
     "@angular//packages/core",
-    "@gngtdeps//@ngx-translate/core"
+    "@ngx_translate_core//:core",
   ],
 )
 
@@ -27,5 +27,9 @@ ng_test_library(
 
 ng_web_test_suite(
   name = "unit_tests",
-  deps = [":translations_test_sources"],
+  deps = [
+    "@gngtdeps//node_modules/@ngx-translate/core:bundles/ngx-translate-core.umd.js",
+    "@gngtdeps//node_modules/@ngx-translate/http-loader:bundles/ngx-translate-http-loader.umd.js",
+    ":translations_test_sources"
+  ],
 )
