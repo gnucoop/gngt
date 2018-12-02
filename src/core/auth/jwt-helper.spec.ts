@@ -33,7 +33,7 @@ describe('JwtHelperService', () => {
     'should extract expiration date from a JWT token',
     inject([JwtHelperService], (service: JwtHelperService) => {
       const exp = addDays(new Date(), 1);
-      const token = createToken(getTime(exp));
+      const token = createToken(Math.floor(getTime(exp) / 1000));
       const exp1 = Math.floor(+service.getTokenExpirationDate(token)!.getTime() / 1000);
       const exp2 = Math.floor(+exp.getTime() / 1000);
       expect(exp1).toEqual(exp2);
@@ -43,8 +43,8 @@ describe('JwtHelperService', () => {
   it(
     'should detect if a token is expired',
     inject([JwtHelperService], (service: JwtHelperService) => {
-      const token1 = createToken(getTime(addDays(new Date(), 1)));
-      const token2 = createToken(getTime(subDays(new Date(), 1)));
+      const token1 = createToken(Math.floor(getTime(addDays(new Date(), 1)) / 1000));
+      const token2 = createToken(Math.floor(getTime(subDays(new Date(), 1)) / 1000));
       expect(service.isTokenExpired(token1)).toBeFalsy();
       expect(service.isTokenExpired(token2)).toBeTruthy();
     })
