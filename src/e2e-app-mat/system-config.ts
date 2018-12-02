@@ -7,9 +7,11 @@ System.config({
     'node:*': 'node_modules/*',
   },
   map: {
+    'plugin-babel': 'node:systemjs-plugin-babel/plugin-babel.js',
+    'systemjs-babel-build': 'node:systemjs-plugin-babel/systemjs-babel-browser.js',
     'rxjs': 'node:rxjs',
     'main': 'main.js',
-    'date-fns': 'node:date-fns/min/index.js',
+    'date-fns': 'node:date-fns/index.js',
     'tslib': 'node:tslib/tslib.js',
     'url-parse': 'node:url-parse/dist/url-parse.min.js',
 
@@ -113,5 +115,6 @@ System.config({
     '.': {
       defaultExtension: 'js'
     }
-  }
+  },
+  transpiler: 'plugin-babel'
 });

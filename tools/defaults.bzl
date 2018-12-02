@@ -4,10 +4,14 @@ load("@angular//:index.bzl", _ng_module = "ng_module")
 load("@build_bazel_rules_nodejs//:defs.bzl", _jasmine_node_test = "jasmine_node_test")
 load("@build_bazel_rules_typescript//:defs.bzl", _ts_library = "ts_library",
   _ts_web_test_suite = "ts_web_test_suite")
+load("//tools/markdown-to-html:index.bzl", _markdown_to_html = "markdown_to_html")
 
 _DEFAULT_TSCONFIG_BUILD = "//src:bazel-tsconfig-build.json"
 _DEFAULT_TSCONFIG_TEST = "//src:bazel-tsconfig-test.json"
 _DEFAULT_TS_TYPINGS = "@gngtdeps//typescript:typescript__typings"
+
+# Re-exports to simplify build file load statements
+markdown_to_html = _markdown_to_html
 
 def _getDefaultTsConfig(testonly):
   if testonly:
@@ -15,13 +19,17 @@ def _getDefaultTsConfig(testonly):
   else:
     return _DEFAULT_TSCONFIG_BUILD
 
-def ts_library(tsconfig = None, testonly = False, **kwargs):
+def ts_library(tsconfig = None, deps = [], testonly = False, **kwargs):
+  # Add tslib because we use import helpers for all public packages.
+  local_deps = ["@gngtdeps//tslib"] + deps
+
   if not tsconfig:
     tsconfig = _getDefaultTsConfig(testonly)
 
   _ts_library(
     tsconfig = tsconfig,
     testonly = testonly,
+    deps = local_deps,
     node_modules = _DEFAULT_TS_TYPINGS,
     **kwargs
   )
@@ -31,8 +39,7 @@ def ng_module(deps = [], tsconfig = None, testonly = False, **kwargs):
     tsconfig = _getDefaultTsConfig(testonly)
 
   local_deps = [
-    # Since we use the TypeScript import helpers (tslib) for each TypeScript configuration,
-    # we declare TSLib as default dependency
+    # Add tslib because we use import helpers for all public packages.
     "@gngtdeps//tslib",
 
     # Depend on the module typings for each `ng_module`. Since all components within the project
@@ -75,7 +82,14 @@ def ng_test_library(deps = [], tsconfig = None, **kwargs):
     **kwargs
   )
 
-def ng_web_test_suite(deps = [], srcs = [], static_css = [], bootstrap = [], **kwargs):
+def ts_web_test_suite(srcs = [], **kwargs):
+  _ts_web_test_suite(
+    # Required for running the compiled ng modules that use TypeScript import helpers.
+    srcs = ["@gngtdeps//node_modules/tslib:tslib.js"] + srcs,
+    **kwargs
+  )
+
+def ng_web_test_suite(deps = [], static_css = [], bootstrap = [], **kwargs):
   # Workaround for https://github.com/bazelbuild/rules_typescript/issues/301
   # Since some of our tests depend on CSS files which are not part of the `ng_module` rule,
   # we need to somehow load static CSS files within Karma (e.g. overlay prebuilt). Those styles
@@ -103,9 +117,7 @@ def ng_web_test_suite(deps = [], srcs = [], static_css = [], bootstrap = [], **k
       """ % css_label
     )
 
-  _ts_web_test_suite(
-    # Required for running the compiled ng modules that use TypeScript import helpers.
-    srcs = ["@gngtdeps//node_modules/tslib:tslib.js"] + srcs,
+  ts_web_test_suite(
     # Depend on our custom test initialization script. This needs to be the first dependency.
     deps = ["//test:angular_test_init"] + deps,
     bootstrap = [

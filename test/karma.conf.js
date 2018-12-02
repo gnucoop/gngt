@@ -13,7 +13,6 @@ module.exports = (config) => {
       require('karma-chrome-launcher'),
       require('karma-firefox-launcher'),
       require('karma-sourcemap-loader'),
-      require('karma-coverage'),
     ],
     files: [
       {pattern: 'node_modules/core-js/client/core.min.js', included: true, watched: false},
@@ -26,12 +25,13 @@ module.exports = (config) => {
       {pattern: 'node_modules/zone.js/dist/async-test.js', included: true, watched: false},
       {pattern: 'node_modules/zone.js/dist/fake-async-test.js', included: true, watched: false},
       {pattern: 'node_modules/hammerjs/hammer.min.js', included: true, watched: false},
-      {pattern: 'node_modules/date-fns/min/index.js', included: true, watched: false},
 
-      // Include all Angular dependencies
+      // Include all Gngt dependencies
       {pattern: 'node_modules/@angular/**/*', included: false, watched: false},
       {pattern: 'node_modules/@ngx-translate/**/*', included: false, watched: false},
       {pattern: 'node_modules/rxjs/**/*', included: false, watched: false},
+      {pattern: 'node_modules/date-fns/**/*.js', included: false, watched: false},
+      {pattern: 'node_modules/systemjs-plugin-babel/**/*.js', included: false, watched: false},
 
       {pattern: 'node_modules/crypto-js/crypto-js.js', included: true, watched: false},
       {pattern: 'node_modules/crypto-js/index.js', included: true, watched: false},
@@ -53,12 +53,6 @@ module.exports = (config) => {
 
     reporters: ['dots'],
     autoWatch: false,
-
-    coverageReporter: {
-      type : 'json-summary',
-      dir : 'dist/coverage/',
-      subdir: '.'
-    },
 
     sauceLabs: {
       testName: 'Gngt Unit Tests',
@@ -83,7 +77,7 @@ module.exports = (config) => {
     browserNoActivityTimeout: 300000,
     captureTimeout: 180000,
 
-    browsers: ['Chrome'],
+    browsers: ['ChromeHeadlessLocal'],
     singleRun: false,
 
     // Try Websocket for a faster transmission first. Fallback to polling if necessary.
@@ -140,42 +134,6 @@ module.exports = (config) => {
     // Configure Karma to launch the browsers that belong to the given test platform and
     // container instance.
     config.browsers = browserInstanceChunks[containerInstanceIndex];
-  }
-
-  if (process.env['TRAVIS']) {
-    const buildId = `TRAVIS #${process.env.TRAVIS_BUILD_NUMBER} (${process.env.TRAVIS_BUILD_ID})`;
-
-    if (process.env['TRAVIS_PULL_REQUEST'] === 'false' &&
-        process.env['MODE'] === "travis_required") {
-
-      config.preprocessors['dist/packages/**/!(*+(.|-)spec).js'] = ['coverage'];
-      config.reporters.push('coverage');
-    }
-
-    // The MODE variable is the indicator of what row in the test matrix we're running.
-    // It will look like <platform>_<target>, where platform is one of 'saucelabs', 'browserstack'
-    // or 'travis'. The target is a reference to different collections of browsers that can run
-    // in the previously specified platform.
-    // TODO(devversion): when moving Saucelabs and Browserstack to Circle, remove the target part.
-    const [platform] = process.env.MODE.split('_');
-
-    if (platform === 'saucelabs') {
-      config.sauceLabs.build = buildId;
-      config.sauceLabs.tunnelIdentifier = process.env.TRAVIS_JOB_ID;
-    } else if (platform === 'browserstack') {
-      config.browserStack.build = buildId;
-      config.browserStack.tunnelIdentifier = process.env.TRAVIS_JOB_ID;
-    } else if (platform !== 'travis') {
-      throw new Error(`Platform "${platform}" unknown, but Travis specified. Exiting.`);
-    }
-
-    if (platform !== 'travis') {
-      // To guarantee a better stability for tests running on external browsers, we disable
-      // concurrency. Stability is compared to speed more important.
-      config.concurrency = 1;
-    }
-
-    config.browsers = platformMap[platform];
   }
 };
 

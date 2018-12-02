@@ -1,0 +1,26 @@
+package(default_visibility = ["//visibility:public"])
+
+load("@build_bazel_rules_nodejs//:defs.bzl", "nodejs_binary")
+load("//tools:defaults.bzl", "ts_library")
+
+ts_library(
+  name = "transform-markdown",
+  srcs = glob(["**/*.ts"]),
+  deps = [
+    "@gngtdeps//@types/node",
+    "@gngtdeps//@types/marked",
+    "//tools/highlight-files:sources",
+  ],
+  tsconfig = ":tsconfig.json",
+)
+
+nodejs_binary(
+  name = "markdown-to-html",
+  entry_point = "gngt/tools/markdown-to-html/transform-markdown.js",
+  data = [
+    "@gngtdeps//highlight.js",
+    "@gngtdeps//marked",
+    "@gngtdeps//source-map-support",
+    ":transform-markdown",
+  ],
+)

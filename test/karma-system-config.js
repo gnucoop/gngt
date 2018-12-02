@@ -5,9 +5,11 @@ System.config({
     'node:*': 'node_modules/*'
   },
   map: {
+    'plugin-babel': 'node:systemjs-plugin-babel/plugin-babel.js',
+    'systemjs-babel-build': 'node:systemjs-plugin-babel/systemjs-babel-browser.js',
     'rxjs': 'node:rxjs',
     'tslib': 'node:tslib/tslib.js',
-    'date-fns': 'node:date-fns/min/index.js',
+    'date-fns': 'node:date-fns/index.js',
 
     // Angular specific mappings.
     '@angular/core': 'node:@angular/core/bundles/core.umd.js',
@@ -66,5 +68,6 @@ System.config({
     '.': {
       defaultExtension: 'js'
     }
-  }
+  },
+  transpiler: 'plugin-babel'
 });
