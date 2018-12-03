@@ -28,7 +28,6 @@ ng_test_library(
   srcs = glob(["**/*.spec.ts"]),
   deps = [
     "@angular//packages/platform-browser",
-    "@gngtdeps//date-fns",
     ":auth"
   ]
 )
@@ -36,4 +35,8 @@ ng_test_library(
 ng_web_test_suite(
   name = "unit_tests",
   deps = [":auth_test_sources"],
+  bootstrap = [
+    "@gngtdeps//node_modules/crypto-js:crypto-js.js",
+    "@gngtdeps//node_modules/crypto-js:index.js",
+  ]
 )
