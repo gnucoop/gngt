@@ -1,5 +1,7 @@
 workspace(name = "gngt")
 
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
 # Add NodeJS rules (explicitly used for sass bundle rules)
 http_archive(
   name = "build_bazel_rules_nodejs",
@@ -45,7 +47,7 @@ http_archive(
   strip_prefix = "platform-7.0.0-beta.0",
 )
 
-new_http_archive(
+http_archive(
   name = "ngx_translate_core",
   url = "https://github.com/ngx-translate/core/archive/v11.0.0.zip",
   strip_prefix = "core-11.0.0/projects/ngx-translate/core/src",
@@ -53,7 +55,7 @@ new_http_archive(
   workspace_file="//tools/build_files/ngx-translate-core:WORKSPACE.ngxtc"
 )
 
-new_http_archive(
+http_archive(
   name = "ionic_angular",
   url = "https://github.com/ionic-team/ionic/archive/v4.0.0-beta.17.zip",
   strip_prefix = "ionic-4.0.0-beta.17/angular/src",
