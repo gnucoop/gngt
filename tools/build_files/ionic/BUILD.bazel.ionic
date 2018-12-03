@@ -7,7 +7,7 @@ ng_module(
   node_modules = "@gngtdeps//typescript:typescript__typings",
   name = "angular",
   module_name = "@ionic/angular",
-  srcs = glob(["**/*.ts"], exclude=["**/*.spec.ts", "test*.ts"]),
+  srcs = glob(["**/*.ts"], exclude=["**/*.spec.ts", "schematics/**/*.ts", "test*.ts"]),
   deps = [
     "@gngt//src:module-typings",
     "@gngtdeps//tslib",
