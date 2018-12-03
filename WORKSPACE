@@ -19,14 +19,14 @@ http_archive(
 # Add Angular source and Bazel rules.
 http_archive(
   name = "angular",
-  url = "https://github.com/angular/angular/archive/7.1.1.zip",
-  strip_prefix = "angular-7.1.1",
+  url = "https://github.com/angular/angular/archive/7.1.0.zip",
+  strip_prefix = "angular-7.1.0",
 )
 
 http_archive(
   name = "angular_material",
-  url = "https://github.com/angular/material2/archive/7.1.0.zip",
-  strip_prefix = "material2-7.1.0",
+  url = "https://github.com/angular/material2/archive/3982e9edfd2346857b5665712508dff0251b1a6a.zip",
+  strip_prefix = "material2-3982e9edfd2346857b5665712508dff0251b1a6a",
 )
 
 # Add RxJS as repository because those are needed in order to build Angular from source.
