@@ -1,0 +1,43 @@
+// TypeScript config file that is used to compile the dev-app-mat. Target environment will be ES5,
+// since the dev-app-mat will be served in the browser.
+{
+  "compilerOptions": {
+    // Needed for Moment.js since it doesn't have a default export.
+    "allowSyntheticDefaultImports": true,
+    "declaration": false,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "noUnusedParameters": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "noImplicitThis": true,
+    "lib": ["es6", "es2015", "dom"],
+    "skipLibCheck": true,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "noEmitOnError": true,
+    "noImplicitAny": true,
+    "outDir": "../../dist/packages/dev-app-mat",
+    "sourceMap": true,
+    "target": "es5",
+    "stripInternal": false,
+    "typeRoots": [
+      "../../node_modules/@types/!(node)"
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "@gngt/material/*": ["../../dist/packages/material/*"],
+      "@gngt/material": ["../../dist/packages/material"],
+      "@gngt/core/*": ["../../dist/packages/core/*"],
+      "@gngt/core": ["../../dist/packages/core"],
+      "@gngt/material-examples": ["../../dist/packages/material-examples"]
+    }
+  },
+  "files": [
+    "./typings.d.ts",
+    "./dev-app-module.ts",
+    "./system-rxjs-operators.ts",
+    "./system-config.ts",
+    "./main.ts"
+  ]
+}

@@ -1,0 +1,35 @@
+package(default_visibility=["//visibility:public"])
+
+load("@io_bazel_rules_sass//:defs.bzl", "sass_binary")
+load("//:packages.bzl", "CORE_TARGETS", "MATERIAL_TARGETS")
+load("//tools:defaults.bzl", "ng_module")
+load("//tools:sass_generate_binaries.bzl", "sass_generate_binaries")
+
+# Generate sass binaries for all nested SCSS files.
+sass_generate_binaries("dev_app_scss", glob(["**/*.scss"]))
+
+ng_module(
+  name = "dev-app",
+  srcs = glob(["**/*.ts"], exclude = ["system-config.ts", "system-rxjs-operators.ts"]),
+  assets = glob(["**/*.html"]) + [":dev_app_scss"],
+  deps = [
+    "@angular//packages/common",
+    "@angular//packages/common/http",
+    "@angular//packages/core",
+    "@angular//packages/elements",
+    "@angular//packages/forms",
+    "@angular//packages/platform-browser",
+    "@angular//packages/platform-browser-dynamic",
+    "@angular//packages/platform-browser/animations",
+    "@angular//packages/router",
+    "@angular_material//src/lib/button",
+    "@angular_material//src/lib/expansion",
+    "@angular_material//src/lib/icon",
+    "@angular_material//src/lib/list",
+    "@angular_material//src/lib/sidenav",
+    "@gngtdeps//@ngx-translate/http-loader",
+    "@rxjs",
+    "@rxjs//operators",
+    "//src/material-examples:examples",
+  ] + CORE_TARGETS + MATERIAL_TARGETS
+)

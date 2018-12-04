@@ -96,7 +96,7 @@ function generateExampleNgModule(extractedMetadata: ExampleMetadata[]): string {
 import {NgModule} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
-import {ExampleIonicModule} from './ionic-module';
+import {ExampleGngtModule} from './gngt-module';
 ${extractedMetadata.map(r => buildImportsTemplate(r)).join('').trim()}
 
 export interface LiveExample {
@@ -118,7 +118,7 @@ export const EXAMPLE_LIST = [
   declarations: EXAMPLE_LIST,
   entryComponents: EXAMPLE_LIST,
   imports: [
-    ExampleIonicModule,
+    ExampleGngtModule,
     FormsModule,
     ReactiveFormsModule,
     CommonModule

@@ -24,10 +24,10 @@ const {outputDir, packagesDir, projectDir} = buildConfig;
 /** Path to the directory where all bundles live. */
 const bundlesDir = join(outputDir, 'bundles');
 
-const appDir = join(packagesDir, 'demo-app-ion');
-const outDir = join(outputDir, 'packages', 'demo-app-ion');
+const appDir = join(packagesDir, 'dev-app-ion');
+const outDir = join(outputDir, 'packages', 'dev-app-ion');
 
-/** Array of vendors that are required to serve the demo-app-ion. */
+/** Array of vendors that are required to serve the dev-app-ion. */
 const appVendors = [
   '@angular',
   '@ionic',
@@ -45,13 +45,13 @@ const appVendors = [
   '@webcomponents',
 ];
 
-/** Glob that matches all required vendors for the demo-app-ion. */
+/** Glob that matches all required vendors for the dev-app-ion. */
 const vendorGlob = `+(${appVendors.join('|')})/**/*.+(html|css|js|map)`;
 
 /** Glob that matches all assets that need to be copied to the output. */
 const assetsGlob = join(appDir, `**/*.+(html|css|svg|ico)`);
 
-/** Path to the demo-app-ion tsconfig file. */
+/** Path to the dev-app-ion tsconfig file. */
 const tsconfigPath = join(appDir, 'tsconfig-build.json');
 
 const firebaseSrcConfig = join(projectDir, 'firebase-ion.json');
@@ -73,7 +73,7 @@ task('build:devapp-ion', sequenceTask(
   'ionic-examples:build-no-bundles',
   [':build:devapp-ion:assets', ':build:devapp-ion:scss', ':build:devapp-ion:ts'],
   // Inline all component resources because otherwise SystemJS tries to load HTML, CSS and
-  // JavaScript files which makes loading the demo-app-ion extremely slow.
+  // JavaScript files which makes loading the dev-app-ion extremely slow.
   ':build:devapp-ion:inline-resources',
 ));
 
@@ -86,7 +86,7 @@ task('serve:devapp-ion', ['build:devapp-ion'],
  */
 
 /**
- * Task that copies all vendors into the demo-app-ion package. Allows hosting the app on firebase.
+ * Task that copies all vendors into the dev-app-ion package. Allows hosting the app on firebase.
  */
 task('stage-deploy:devapp-ion', ['build:devapp-ion'], () => {
   copyFiles(join(projectDir, 'node_modules'), vendorGlob, join(outDir, 'node_modules'));
@@ -101,7 +101,7 @@ task('stage-deploy:devapp-ion', ['build:devapp-ion'], () => {
 });
 
 /**
- * Task that deploys the demo-app-ion to Firebase. Firebase project will be the one that is
+ * Task that deploys the dev-app-ion to Firebase. Firebase project will be the one that is
  * set for project directory using the Firebase CLI.
  */
 task('deploy:devapp-ion', ['stage-deploy:devapp-ion'], () => {
@@ -109,7 +109,7 @@ task('deploy:devapp-ion', ['stage-deploy:devapp-ion'], () => {
     // Firebase tools opens a persistent websocket connection and the process will never exit.
     .then(() => {
       removeSync(firebaseDstConfig);
-      console.log('Successfully deployed the demo-app-ion to firebase');
+      console.log('Successfully deployed the dev-app-ion to firebase');
       process.exit(0);
     })
     .catch((err: any) => {
@@ -130,7 +130,7 @@ task(':watch:devapp-ion', () => {
   watchFilesAndReload(join(appDir, '**/*.scss'), [':watch:devapp-ion:rebuild-scss']);
   watchFilesAndReload(join(appDir, '**/*.html'), [':watch:devapp-ion:rebuild-html']);
 
-  // Custom watchers for all packages that are used inside of the demo-app-ion. This is necessary
+  // Custom watchers for all packages that are used inside of the dev-app-ion. This is necessary
   // because we only want to build the changed package (using the build-no-bundles task).
 
   // Core package watchers.

@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": "dist/packages/demo-app-mat",
+    "public": "dist/packages/dev-app-mat",
     "rewrites": [
       {
         "source": "/**/!(*.@(js|ts|html|css|json|svg|png|jpg|jpeg))",

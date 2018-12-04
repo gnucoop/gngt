@@ -1,18 +1,39 @@
+/**
+ * @license
+ * Copyright (C) 2018 Gnucoop soc. coop.
+ *
+ * This file is part of the Gnucoop Angular Toolkit (gngt).
+ *
+ * Gnucoop Angular Toolkit (gngt) is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Gnucoop Angular Toolkit (gngt) is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Gnucoop Angular Toolkit (gngt).  If not, see http://www.gnu.org/licenses/.
+ *
+ */
+
 /** Type declaration for ambient System. */
 declare const System: any;
 
-// Apply the CLI SystemJS configuration.
+// Configure the base path and map the different node packages.
 System.config({
   paths: {
-    'node:*': 'node_modules/*',
+    'node:*': 'node_modules/*'
   },
   map: {
     'plugin-babel': 'node:systemjs-plugin-babel/plugin-babel.js',
     'systemjs-babel-build': 'node:systemjs-plugin-babel/systemjs-babel-browser.js',
     'rxjs': 'node:rxjs',
     'main': 'main.js',
-    'date-fns': 'node:date-fns/index.js',
     'tslib': 'node:tslib/tslib.js',
+    'date-fns': 'node:date-fns/index.js',
     'url-parse': 'node:url-parse/dist/url-parse.min.js',
 
     // Angular specific mappings.
@@ -21,12 +42,14 @@ System.config({
     '@angular/common/http': 'node:@angular/common/bundles/common-http.umd.js',
     '@angular/compiler': 'node:@angular/compiler/bundles/compiler.umd.js',
     '@angular/forms': 'node:@angular/forms/bundles/forms.umd.js',
-    '@angular/router': 'node:@angular/router/bundles/router.umd.js',
     '@angular/animations': 'node:@angular/animations/bundles/animations.umd.js',
+    '@angular/elements': 'node:@angular/elements/bundles/elements.umd.js',
+    '@angular/router': 'node:@angular/router/bundles/router.umd.js',
     '@angular/animations/browser': 'node:@angular/animations/bundles/animations-browser.umd.js',
-    '@angular/platform-browser': 'node:@angular/platform-browser/bundles/platform-browser.umd.js',
     '@angular/platform-browser/animations':
-      'node:@angular/platform-browser/bundles/platform-browser-animations.umd.js',
+      'node:@angular/platform-browser/bundles/platform-browser-animations.umd',
+    '@angular/platform-browser':
+      'node:@angular/platform-browser/bundles/platform-browser.umd.js',
     '@angular/platform-browser-dynamic':
       'node:@angular/platform-browser-dynamic/bundles/platform-browser-dynamic.umd.js',
 
@@ -44,17 +67,20 @@ System.config({
     '@ngx-translate/http-loader':
       'node:@ngx-translate/http-loader/bundles/ngx-translate-http-loader.umd.js',
 
-    '@gngt/core/admin': 'dist/bundles/core-admin.umd.js',
-    '@gngt/core/auth': 'dist/bundles/core-auth.umd.js',
-    '@gngt/core/common': 'dist/bundles/core-common.umd.js',
-    '@gngt/core/model': 'dist/bundles/core-model.umd.js',
-    '@gngt/core/reducers': 'dist/bundles/core-reducers.umd.js',
+    '@gngt/core': 'dist/packages/core/index.js',
+    '@gngt/ionic': 'dist/packages/ionic/index.js',
+    '@gngt/ionic-examples': 'dist/packages/ionic-examples/index.js',
 
-    '@gngt/ionic/admin': 'dist/bundles/ionic-admin.umd.js',
-    '@gngt/ionic/auth': 'dist/bundles/ionic-auth.umd.js',
-    '@gngt/ionic/common': 'dist/bundles/ionic-common.umd.js',
-    '@gngt/ionic/model': 'dist/bundles/ionic-model.umd.js',
-    '@gngt/ionic-examples': 'dist/bundles/ionic-examples.umd.js',
+    '@gngt/core/admin': 'dist/packages/core/admin/index.js',
+    '@gngt/core/auth': 'dist/packages/core/auth/index.js',
+    '@gngt/core/common': 'dist/packages/core/common/index.js',
+    '@gngt/core/model': 'dist/packages/core/model/index.js',
+    '@gngt/core/reducers': 'dist/packages/core/reducers/index.js',
+    '@gngt/core/translations': 'dist/packages/core/translations/index.js',
+
+    '@gngt/ionic/admin': 'dist/packages/ionic/admin/index.js',
+    '@gngt/ionic/auth': 'dist/packages/ionic/auth/index.js',
+    '@gngt/ionic/common': 'dist/packages/ionic/common/index.js',
   },
   packages: {
     // Thirdparty barrels.
@@ -66,7 +92,7 @@ System.config({
     '@ionic/angular/dist/directives': {main: 'index'},
     '@ionic/angular/dist/providers': {main: 'index'},
 
-    // Set the default extension for the root package, because otherwise the dev-app-mat can't
+    // Set the default extension for the root package, because otherwise the dev-app-map can't
     // be built within the production mode. Due to missing file extensions.
     '.': {
       defaultExtension: 'js'

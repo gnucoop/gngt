@@ -27,21 +27,21 @@
 /src/material-examples/**                          @trik
 /src/ionic-examples/**                             @trik
 
-# Demo app material
-/src/demo-app-mat/*                                @trik
-/src/demo-app-mat/demo-app/**                      @trik
-/src/demo-app-mat/example/**                       @trik
-/src/demo-app-mat/examples-page/**                 @trik
-/src/demo-app-mat/admin-edit/**                    @trik
-/src/demo-app-mat/login/**                         @trik
+# Dev app material
+/src/dev-app-mat/*                                @trik
+/src/dev-app-mat/dev-app/**                      @trik
+/src/dev-app-mat/example/**                       @trik
+/src/dev-app-mat/examples-page/**                 @trik
+/src/dev-app-mat/admin-edit/**                    @trik
+/src/dev-app-mat/login/**                         @trik
 
-# Demo app ionic
-/src/demo-app-ion/*                                @trik
-/src/demo-app-ion/demo-app/**                      @trik
-/src/demo-app-ion/example/**                       @trik
-/src/demo-app-ion/examples-page/**                 @trik
-/src/demo-app-ion/admin-edit/**                    @trik
-/src/demo-app-ion/login/**                         @trik
+# Dev app ionic
+/src/dev-app-ion/*                                @trik
+/src/dev-app-ion/dev-app/**                      @trik
+/src/dev-app-ion/example/**                       @trik
+/src/dev-app-ion/examples-page/**                 @trik
+/src/dev-app-ion/admin-edit/**                    @trik
+/src/dev-app-ion/login/**                         @trik
 
 # E2E app material
 /e2e-mat/*                                         @trik

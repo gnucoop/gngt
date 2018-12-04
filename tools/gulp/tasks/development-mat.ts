@@ -24,10 +24,10 @@ const {outputDir, packagesDir, projectDir} = buildConfig;
 /** Path to the directory where all bundles live. */
 const bundlesDir = join(outputDir, 'bundles');
 
-const appDir = join(packagesDir, 'demo-app-mat');
-const outDir = join(outputDir, 'packages', 'demo-app-mat');
+const appDir = join(packagesDir, 'dev-app-mat');
+const outDir = join(outputDir, 'packages', 'dev-app-mat');
 
-/** Array of vendors that are required to serve the demo-app-mat. */
+/** Array of vendors that are required to serve the dev-app-mat. */
 const appVendors = [
   '@angular',
   '@ngrx',
@@ -44,13 +44,13 @@ const appVendors = [
   '@webcomponents',
 ];
 
-/** Glob that matches all required vendors for the demo-app-mat. */
+/** Glob that matches all required vendors for the dev-app-mat. */
 const vendorGlob = `+(${appVendors.join('|')})/**/*.+(html|css|js|map)`;
 
 /** Glob that matches all assets that need to be copied to the output. */
 const assetsGlob = join(appDir, `**/*.+(html|css|svg|ico)`);
 
-/** Path to the demo-app-mat tsconfig file. */
+/** Path to the dev-app-mat tsconfig file. */
 const tsconfigPath = join(appDir, 'tsconfig-build.json');
 
 const firebaseSrcConfig = join(projectDir, 'firebase-mat.json');
@@ -72,7 +72,7 @@ task('build:devapp-mat', sequenceTask(
   'material-examples:build-no-bundles',
   [':build:devapp-mat:assets', ':build:devapp-mat:scss', ':build:devapp-mat:ts'],
   // Inline all component resources because otherwise SystemJS tries to load HTML, CSS and
-  // JavaScript files which makes loading the demo-app-mat extremely slow.
+  // JavaScript files which makes loading the dev-app-mat extremely slow.
   ':build:devapp-mat:inline-resources',
 ));
 
@@ -85,7 +85,7 @@ task('serve:devapp-mat', ['build:devapp-mat'],
  */
 
 /**
- * Task that copies all vendors into the demo-app-mat package. Allows hosting the app on firebase.
+ * Task that copies all vendors into the dev-app-mat package. Allows hosting the app on firebase.
  */
 task('stage-deploy:devapp-mat', ['build:devapp-mat'], () => {
   copyFiles(join(projectDir, 'node_modules'), vendorGlob, join(outDir, 'node_modules'));
@@ -100,7 +100,7 @@ task('stage-deploy:devapp-mat', ['build:devapp-mat'], () => {
 });
 
 /**
- * Task that deploys the demo-app-mat to Firebase. Firebase project will be the one that is
+ * Task that deploys the dev-app-mat to Firebase. Firebase project will be the one that is
  * set for project directory using the Firebase CLI.
  */
 task('deploy:devapp-mat', ['stage-deploy:devapp-mat'], () => {
@@ -108,7 +108,7 @@ task('deploy:devapp-mat', ['stage-deploy:devapp-mat'], () => {
     // Firebase tools opens a persistent websocket connection and the process will never exit.
     .then(() => {
       removeSync(firebaseDstConfig);
-      console.log('Successfully deployed the demo-app-mat to firebase');
+      console.log('Successfully deployed the dev-app-mat to firebase');
       process.exit(0);
     })
     .catch((err: any) => {
@@ -129,7 +129,7 @@ task(':watch:devapp-mat', () => {
   watchFilesAndReload(join(appDir, '**/*.scss'), [':watch:devapp-mat:rebuild-scss']);
   watchFilesAndReload(join(appDir, '**/*.html'), [':watch:devapp-mat:rebuild-html']);
 
-  // Custom watchers for all packages that are used inside of the demo-app-mat. This is necessary
+  // Custom watchers for all packages that are used inside of the dev-app-mat. This is necessary
   // because we only want to build the changed package (using the build-no-bundles task).
 
   // Core package watchers.

@@ -120,15 +120,15 @@
         "!host": "\\[class\\]"
       },
       "NgModule": "^(?!\\s*$).+"
-    }, "src/+(core|material)/**/!(*.spec).ts"],
+    }, "src/+(core|material|ionic)/**/!(*.spec).ts"],
     "require-license-banner": [
       true,
-      "src/+(core|material|demo-app-mat)/**/!(*.spec).ts"
+      "src/+(core|material|ionic|dev-app-mat|dev-app-ion)/**/!(*.spec).ts"
     ],
     "missing-rollup-globals": [
       true,
       "./tools/package-tools/rollup-globals.ts",
-      "src/+(core|material|material-examples)/!(schematics)**/*.ts"
+      "src/+(core|material|ionic|material-examples|ionic-examples)/!(schematics)**/*.ts"
     ],
     "no-unescaped-html-tag": true
   },
@@ -137,8 +137,10 @@
       // Exclude schematic template files and test cases that can't be linted.
       "src/core/schematics/ng-generate/*/files/**/*",
       "src/material/schematics/ng-generate/*/files/**/*",
+      "src/ionic/schematics/ng-generate/*/files/**/*",
       "src/core/schematics/ng-update/test-cases/**/*",
-      "src/material/schematics/ng-update/test-cases/**/*"
+      "src/material/schematics/ng-update/test-cases/**/*",
+      "src/ionic/schematics/ng-update/test-cases/**/*"
     ]
   }
 }
