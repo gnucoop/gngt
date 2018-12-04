@@ -143,7 +143,7 @@ function addModelProviders(options: ModelOptions, packagePath: string): Rule {
   };
 }
 
-export function buildModel(options: ModelOptions) {
+export function buildModel(options: ModelOptions): Rule {
   return (host: Tree, context: FileSystemSchematicContext) => {
     const workspace = getWorkspace(host);
     const project = getProjectFromWorkspace(workspace, options.project);
