@@ -22,7 +22,7 @@
 import {join} from 'path';
 import {strings} from '@angular-devkit/core';
 import {
-  apply, chain, filter, mergeWith, move, noop, Rule, template, Tree, url, source
+  apply, chain, filter, mergeWith, move, noop, Rule, template, Tree, url
 } from '@angular-devkit/schematics';
 import {FileSystemSchematicContext} from '@angular-devkit/schematics/tools';
 import {getProjectFromWorkspace, getSourceFile} from '@angular/cdk/schematics';
