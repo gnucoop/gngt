@@ -1,0 +1,57 @@
+$gngt-calendar-row-height: 40px;
+$gngt-calendar-height: $gngt-calendar-row-height * 8;
+
+gngt-calendar {
+  display: flex;
+
+  box-sizing: border-box;
+
+  width: 100%;
+  height: $gngt-calendar-height;
+
+  flex-direction: column;
+
+  .gngt-calendar-header, .gngt-calendar-row {
+    display: flex;
+    box-sizing: border-box;
+
+    width: 100%;
+
+    flex-direction: row;
+  }
+
+  .gngt-calendar-header {
+    height: $gngt-calendar-row-height;
+
+    .gngt-calendar-header-title {
+      flex: 1;
+      margin: 0 10px;
+    }
+  }
+
+  .gngt-calendar-row {
+    flex: 1;
+
+    button, div {
+      flex: 1;
+      margin: 3px;
+    }
+
+    div {
+      line-height: $gngt-calendar-row-height;
+      text-align: center;
+    }
+
+    .gngt-calendar-partial-selection {
+      ::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background-color: rgba(255, 255, 255, 0.5);
+      }
+    }
+  }
+}

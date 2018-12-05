@@ -14,6 +14,7 @@ CORE_TARGETS = ["//src/core"] + ["//src/core/%s" % p for p in CORE_PACKAGES]
 MATERIAL_PACKAGES = [
   "admin",
   "auth",
+  "calendar",
   "model",
 ]
 
