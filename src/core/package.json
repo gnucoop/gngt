@@ -26,6 +26,7 @@
     "@ngrx/effects": "0.0.0-NGRX",
     "@ngrx/store": "0.0.0-NGRX",
     "@ngx-translate/core": "0.0.0-NGXT",
+    "date-fns": "^1.29.0",
     "url-parse": "^1.4.4"
   },
   "dependencies": {

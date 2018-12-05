@@ -19,20 +19,4 @@
  *
  */
 
-import {Rule, Tree} from '@angular-devkit/schematics';
-import {FileSystemSchematicContext} from '@angular-devkit/schematics/tools';
-import {getProjectFromWorkspace} from '@angular/cdk/schematics';
-import {getWorkspace} from '@schematics/angular/utility/config';
-import {AdminModelOptions} from './admin-model-options';
-
-function checkAdminModule() {
-}
-
-export function buildAdminModel(options: AdminModelOptions): Rule {
-  return (host: Tree, context: FileSystemSchematicContext) => {
-    const workspace = getWorkspace(host);
-    const project = getProjectFromWorkspace(workspace, options.project);
-
-    checkAdminModule();
-  };
-}
+export * from './public-api';

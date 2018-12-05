@@ -3,6 +3,7 @@
 CORE_PACKAGES = [
   "admin",
   "auth",
+  "calendar",
   "model",
   "reducers",
   "translations",
