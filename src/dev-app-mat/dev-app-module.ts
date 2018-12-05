@@ -20,7 +20,7 @@
  */
 
 import {HttpClient, HttpClientModule} from '@angular/common/http';
-import {ApplicationRef, Injector, NgModule} from '@angular/core';
+import {Injector, NgModule} from '@angular/core';
 import {createCustomElement} from '@angular/elements';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
@@ -39,6 +39,7 @@ import {StoreModule} from '@ngrx/store';
 
 import {EXAMPLE_COMPONENTS, ExampleModule} from '@gngt/material-examples';
 import {AdminEditDemo} from './admin-edit/admin-edit-demo';
+import {CalendarDemo} from './calendar/calendar-demo';
 import {DevAppComponent, DevAppHome} from './dev-app';
 import {ExamplePageModule} from './example/example-module';
 import {ExamplesPage} from './examples-page/examples-page';
@@ -78,6 +79,7 @@ export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
   ],
   declarations: [
     AdminEditDemo,
+    CalendarDemo,
     DevAppComponent,
     DevAppHome,
     ExamplesPage,

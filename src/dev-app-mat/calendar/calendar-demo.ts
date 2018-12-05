@@ -19,20 +19,14 @@
  *
  */
 
-import {NgModule} from '@angular/core';
+import {Component} from '@angular/core';
 
-import {AdminModule} from '@gngt/material/admin';
-import {AuthModule} from '@gngt/material/auth';
-import {CalendarModule} from '@gngt/material/calendar';
 
-/**
- * NgModule that includes all Material modules that are required to serve the demo-app.
- */
-@NgModule({
-  exports: [
-    AdminModule,
-    AuthModule,
-    CalendarModule,
-  ]
+@Component({
+  moduleId: module.id,
+  selector: 'calendar-demo',
+  templateUrl: 'calendar-demo.html',
+  styleUrls: ['calendar-demo.css'],
 })
-export class DevAppGngtModule {}
+export class CalendarDemo {
+}

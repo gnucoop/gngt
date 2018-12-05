@@ -77,6 +77,7 @@ System.config({
     '@angular/material/core': 'node:@angular/material/bundles/material-core.umd.js',
     '@angular/material/dialog': 'node:@angular/material/bundles/material-dialog.umd.js',
     '@angular/material/divider': 'node:@angular/material/bundles/material-divider.umd.js',
+    '@angular/material/expansion': 'node:@angular/material/bundles/material-expansion.umd.js',
     '@angular/material/form-field': 'node:@angular/material/bundles/material-form-field.umd.js',
     '@angular/material/icon': 'node:@angular/material/bundles/material-icon.umd.js',
     '@angular/material/input': 'node:@angular/material/bundles/material-input.umd.js',
@@ -104,6 +105,7 @@ System.config({
 
     '@gngt/core/admin': 'dist/packages/core/admin/index.js',
     '@gngt/core/auth': 'dist/packages/core/auth/index.js',
+    '@gngt/core/calendar': 'dist/packages/core/calendar/index.js',
     '@gngt/core/common': 'dist/packages/core/common/index.js',
     '@gngt/core/model': 'dist/packages/core/model/index.js',
     '@gngt/core/reducers': 'dist/packages/core/reducers/index.js',
@@ -111,6 +113,7 @@ System.config({
 
     '@gngt/material/admin': 'dist/packages/material/admin/index.js',
     '@gngt/material/auth': 'dist/packages/material/auth/index.js',
+    '@gngt/material/calendar': 'dist/packages/material/calendar/index.js',
     '@gngt/material/model': 'dist/packages/material/model/index.js',
   },
   packages: {

@@ -22,6 +22,7 @@
 import {Routes} from '@angular/router';
 
 import {AdminEditDemo} from './admin-edit/admin-edit-demo';
+import {CalendarDemo} from './calendar/calendar-demo';
 import {DevAppHome} from './dev-app';
 import {ExamplesPage} from './examples-page/examples-page';
 import {LoginDemo} from './login/login-demo';
@@ -29,6 +30,7 @@ import {LoginDemo} from './login/login-demo';
 export const DEV_APP_ROUTES: Routes = [
   {path: '', component: DevAppHome},
   {path: 'admin-edit', component: AdminEditDemo},
+  {path: 'calendar', component: CalendarDemo},
   {path: 'login', component: LoginDemo},
   {path: 'examples', component: ExamplesPage},
 ];
