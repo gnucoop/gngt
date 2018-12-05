@@ -73,6 +73,7 @@ System.config({
 
     '@gngt/core/admin': 'dist/packages/core/admin/index.js',
     '@gngt/core/auth': 'dist/packages/core/auth/index.js',
+    '@gngt/core/calendar': 'dist/packages/core/calendar/index.js',
     '@gngt/core/common': 'dist/packages/core/common/index.js',
     '@gngt/core/model': 'dist/packages/core/model/index.js',
     '@gngt/core/reducers': 'dist/packages/core/reducers/index.js',
@@ -80,6 +81,7 @@ System.config({
 
     '@gngt/ionic/admin': 'dist/packages/ionic/admin/index.js',
     '@gngt/ionic/auth': 'dist/packages/ionic/auth/index.js',
+    '@gngt/ionic/calendar': 'dist/packages/ionic/calendar/index.js',
     '@gngt/ionic/common': 'dist/packages/ionic/common/index.js',
   },
   packages: {

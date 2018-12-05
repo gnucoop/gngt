@@ -20,7 +20,7 @@
  */
 
 import {HttpClient, HttpClientModule} from '@angular/common/http';
-import {ApplicationRef, Injector, NgModule} from '@angular/core';
+import {Injector, NgModule} from '@angular/core';
 import {createCustomElement} from '@angular/elements';
 import {BrowserModule} from '@angular/platform-browser';
 import {RouterModule, RouteReuseStrategy} from '@angular/router';
@@ -36,6 +36,7 @@ import {StoreModule} from '@ngrx/store';
 
 import {EXAMPLE_COMPONENTS, ExampleModule} from '@gngt/ionic-examples';
 import {AdminEditDemo} from './admin-edit/admin-edit-demo';
+import {CalendarDemo} from './calendar/calendar-demo';
 import {DevAppComponent, DevAppHome} from './dev-app';
 import {ExamplePageModule} from './example/example-module';
 import {ExamplesPage} from './examples-page/examples-page';
@@ -71,6 +72,7 @@ export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
   ],
   declarations: [
     AdminEditDemo,
+    CalendarDemo,
     DevAppComponent,
     DevAppHome,
     ExamplesPage,

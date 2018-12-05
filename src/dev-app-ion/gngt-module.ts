@@ -23,6 +23,7 @@ import {NgModule} from '@angular/core';
 
 import {AdminModule} from '@gngt/ionic/admin';
 import {AuthModule} from '@gngt/ionic/auth';
+import {CalendarModule} from '@gngt/ionic/calendar';
 
 /**
  * NgModule that includes all Material modules that are required to serve the demo-app.
@@ -30,7 +31,8 @@ import {AuthModule} from '@gngt/ionic/auth';
 @NgModule({
   exports: [
     AdminModule,
-    AuthModule
+    AuthModule,
+    CalendarModule,
   ]
 })
 export class DevAppGngtModule {}
