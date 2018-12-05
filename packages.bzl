@@ -23,6 +23,7 @@ MATERIAL_TARGETS = ["//src/material"] + ["//src/material/%s" % p for p in MATERI
 IONIC_PACKAGES = [
   "admin",
   "auth",
+  "calendar",
   "common",
 ]
 

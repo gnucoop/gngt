@@ -1,0 +1,74 @@
+$gngt-calendar-row-height: 40px;
+$gngt-calendar-height: $gngt-calendar-row-height * 8;
+
+gngt-calendar {
+  display: flex;
+
+  box-sizing: border-box;
+
+  width: 100%;
+  height: $gngt-calendar-height;
+
+  flex-direction: column;
+
+  .gngt-calendar-header, .gngt-calendar-row {
+    display: flex;
+    box-sizing: border-box;
+
+    width: 100%;
+
+    flex-direction: row;
+  }
+
+  .gngt-calendar-header {
+    height: $gngt-calendar-row-height;
+
+    ion-fab-button, ion-button {
+      --margin-top: 0;
+      --margin-bottom: 0;
+      --margin-start: 0;
+      --margin-end: 0;
+    }
+    ion-fab-button {
+      position: relative;
+      left: 0;
+      right: 0;
+    }
+    ion-button {
+      --height: 40px;
+      --width: 100%;
+    }
+    .gngt-calendar-header-title {
+      flex: 1;
+      margin: 0 10px;
+    }
+  }
+
+  .gngt-calendar-row {
+    flex: 1;
+
+    ion-button, div {
+      flex: 1;
+      margin: 3px;
+      height: auto;
+    }
+
+    ion-button {
+      --width: 100%;
+      --height: 100%;
+    }
+
+    div {
+      line-height: $gngt-calendar-row-height;
+      text-align: center;
+    }
+
+    .gngt-calendar-partial-selection {
+      --ion-color-base: rgba(240, 65, 65, 0.5) !important;
+    }
+
+    .gngt-calendar-highlight {
+      --ion-color-base: #fcd739 !important;
+    }
+  }
+}
