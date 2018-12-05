@@ -20,7 +20,6 @@ for p in ${packages[@]}
 do
   bazel build src/${p}:npm_package
 
-  # The output for "lib" should go into a directory named "material"
   out_dir="${p}"
 
   # Copy without preserving the read-only mode from bazel so that we can make final modifications

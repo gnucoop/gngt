@@ -283,10 +283,10 @@
     lodash "^4.17.10"
     to-fast-properties "^2.0.0"
 
-"@bazel/ibazel@^0.7.0":
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/@bazel/ibazel/-/ibazel-0.7.0.tgz#ffa5bbff97ba2508dc3373fd085c2f455d29e1cf"
-  integrity sha512-CtpXqOcGLJz7jsgcZVAopbIhPBp1zdU3X0ZOn//ku11KbkrTLaMugr5U8xlKuYA6VYyrD21VR21ZQ1b7wDrmAw==
+"@bazel/ibazel@^0.8.0":
+  version "0.8.2"
+  resolved "https://registry.yarnpkg.com/@bazel/ibazel/-/ibazel-0.8.2.tgz#a837d93922c0d273361ed4f141c792384c0e10bb"
+  integrity sha512-5lbqeoqv2sIRybV9s4CIRNBR68wdv22wfpNY1qmO3AsPrLx4zICPXyW8YOiLaLvYPzvezPznfhD7Is13jU/jsQ==
 
 "@bazel/karma@0.21.0":
   version "0.21.0"
@@ -737,7 +737,7 @@
   resolved "https://registry.yarnpkg.com/@protobufjs/utf8/-/utf8-1.1.0.tgz#a777360b5b39a1a2e5106f8e858f2fd2d060c570"
   integrity sha1-p3c2C1s5oaLlEG+OhY8v0tBgxXA=
 
-"@schematics/angular@^7.0.4", "@schematics/angular@^7.1.1":
+"@schematics/angular@^7.0.4", "@schematics/angular@^7.1.0":
   version "7.1.1"
   resolved "https://registry.yarnpkg.com/@schematics/angular/-/angular-7.1.1.tgz#4ee17a17d221eaf48009db0b991766d1074d0b4f"
   integrity sha512-jMaj8y3rNTQQXuH38uoWfAOmwYjtzqo1RelNfACnT54mfO/Dat+k7WasBLHWuvzvnN4/Ga3kXL7sJpkeMciiIg==
@@ -6908,7 +6908,7 @@ karma-sourcemap-loader@0.3.7, karma-sourcemap-loader@^0.3.7:
   dependencies:
     graceful-fs "^4.1.2"
 
-karma@^3.0.0:
+karma@^3.1.3:
   version "3.1.3"
   resolved "https://registry.yarnpkg.com/karma/-/karma-3.1.3.tgz#6e251648e3aff900927bc1126dbcbcb92d3edd61"
   integrity sha512-JU4FYUtFEGsLZd6ZJzLrivcPj0TkteBiIRDcXWFsltPMGgZMDtby/MIzNOzgyZv/9dahs9vHpSxerC/ZfeX9Qw==
@@ -9187,7 +9187,7 @@ protochain@^1.0.5:
   resolved "https://registry.yarnpkg.com/protochain/-/protochain-1.0.5.tgz#991c407e99de264aadf8f81504b5e7faf7bfa260"
   integrity sha1-mRxAfpneJkqt+PgVBLXn+ve/omA=
 
-protractor@^5.4.0:
+protractor@^5.4.1:
   version "5.4.1"
   resolved "https://registry.yarnpkg.com/protractor/-/protractor-5.4.1.tgz#011a99e38df7aa45d22455b889ffbb13a6ce0bd9"
   integrity sha512-ORey5ewQMYiXQxcQohsqEiKYOg/r5yJoJbt0tuROmmgajdg/CA3gTOZNIFJncUVMAJIk5YFqBBLUjKVmQO6tfA==
