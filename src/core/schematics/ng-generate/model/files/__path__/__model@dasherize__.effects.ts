@@ -63,6 +63,8 @@ export class <%= classify(model) %>Effects extends ModelEffects<
     this.list$ = this.modelList$;
     this.create$ = this.modelCreate$;
     this.update$ = this.modelUpdate$;
+    this.patch$ = this.modelPatch$;
     this.delete$ = this.modelDelete$;
+    this.deleteAll$ = this.modelDeleteAll$;
   }
 }
