@@ -155,15 +155,19 @@ export class AuthEffects {
       const res: (AuthApiActions.AuthApiActionsUnion | AuthActions.AuthActionsUnion)[] = [];
       const token = this.jwtHelperService.tokenGetter();
       if (token) {
-        if (!this.jwtHelperService.isTokenExpired(token)) {
-          const decoded = this.jwtHelperService.decodeToken(token);
-          const scopes = this._getScopesFromToken(decoded);
-          if (this.config.disableScopes || scopes.indexOf('admin') > -1) {
-            res.push(new AuthActions.InitUser());
-            res.push(this._getRefreshTokenAction());
+        try {
+          if (!this.jwtHelperService.isTokenExpired(token)) {
+            const decoded = this.jwtHelperService.decodeToken(token);
+            const scopes = this._getScopesFromToken(decoded);
+            if (this.config.disableScopes || scopes.indexOf('admin') > -1) {
+              res.push(new AuthActions.InitUser());
+              res.push(this._getRefreshTokenAction());
+            }
+          } else {
+            res.push(new AuthApiActions.RefreshToken({refreshDelay: 0, fromInit: true}));
           }
-        } else {
-          res.push(new AuthApiActions.RefreshToken({refreshDelay: 0, fromInit: true}));
+        } catch (e) {
+          res.push(new AuthActions.InitComplete());
         }
       } else {
         res.push(new AuthActions.InitComplete());
