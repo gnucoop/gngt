@@ -111,9 +111,10 @@ export class AuthEffects {
     delayWhen((action: AuthApiActions.RefreshToken) => timer(action.payload.refreshDelay)),
     exhaustMap((action: AuthApiActions.RefreshToken) =>
       this.authService.refreshToken(this.jwtHelperService.refreshTokenGetter() || '').pipe(
-        switchMap(({access_token}) => {
+        switchMap((payload: any) => {
           const res: (AuthApiActions.AuthApiActionsUnion | AuthActions.AuthActionsUnion)[] = [];
-          this.jwtHelperService.tokenSetter(access_token);
+          const tokenKey = this.config.tokenKey || 'access_token';
+          this.jwtHelperService.tokenSetter(payload[tokenKey]);
           if (action.payload.fromInit) {
             res.push(new AuthActions.InitUser());
           }
