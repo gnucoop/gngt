@@ -23,6 +23,8 @@ import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 
+import {TranslateModule} from '@ngx-translate/core';
+
 import {IonicModule} from '@ionic/angular';
 
 import {CalendarComponent} from './calendar';
@@ -31,6 +33,7 @@ import {CalendarComponent} from './calendar';
   imports: [
     CommonModule,
     FormsModule,
+    TranslateModule,
     IonicModule,
   ],
   declarations: [
