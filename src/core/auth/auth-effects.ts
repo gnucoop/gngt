@@ -189,7 +189,7 @@ export class AuthEffects {
   private _getRefreshTokenAction(fromInit?: boolean): AuthApiActions.RefreshToken {
     const accessToken = this.jwtHelperService.tokenGetter();
     const exp = this.jwtHelperService.getTokenExpirationDate(accessToken) || new Date();
-    const refreshDelay = Math.max(0, exp.getTime() - new Date().getTime() - 300000);
+    const refreshDelay = Math.max(0, Math.round((exp.getTime() - new Date().getTime()) * 0.8));
     return new AuthApiActions.RefreshToken({refreshDelay, fromInit});
   }
 
