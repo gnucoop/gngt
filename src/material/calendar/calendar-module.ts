@@ -24,12 +24,15 @@ import {NgModule} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
 
+import {TranslateModule} from '@ngx-translate/core';
+
 import {CalendarComponent} from './calendar';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
+    TranslateModule,
     MatButtonModule,
   ],
   declarations: [
