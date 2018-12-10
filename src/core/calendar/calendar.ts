@@ -320,6 +320,8 @@ export abstract class Calendar implements AfterContentInit, ControlValueAccessor
   }
 
   private _onChangeCallback: (_: any) => void = (_: any) => { };
+  // tslint:disable-next-line
+  private _onTouchedCallback: (_: any) => void = (_: any) => { };
 
   private _setViewDate(date: Date): void {
     this._viewDate = date;
