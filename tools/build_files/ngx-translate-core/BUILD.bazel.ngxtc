@@ -6,8 +6,11 @@ load("@angular//:index.bzl", ng_module = "ng_module")
 genrule(
   name = "core_index",
   srcs = [],
-  outs = ["index.ts"],
-  cmd = "echo \"export * from './public_api';\" > \"$@\""
+  outs = ["index.d.ts"],
+  cmd = """
+    echo "export * from './public_api';" >> "$@"
+  """,
+  output_to_bindir = 1
 )
 
 ng_module(
@@ -15,7 +18,8 @@ ng_module(
   node_modules = "@gngtdeps//typescript:typescript__typings",
   name = "core",
   module_name = "@ngx-translate/core",
-  srcs = [":core_index"] + glob(["**/*.ts"], exclude=["**/*.spec.ts", "test*.ts"]),
+  srcs = glob(["**/*.ts"]) + [":core_index"],
+  entry_point = "public_api.ts",
   deps = [
     "@gngt//src:module-typings",
     "@gngtdeps//tslib",
