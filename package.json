@@ -29,7 +29,7 @@
     "stage-release": "ts-node --project tools/release/ tools/release/stage-release.ts",
     "preinstall": "node ./tools/npm/check-npm.js"
   },
-  "version": "7.0.0-alpha.2",
+  "version": "7.0.0-alpha.3",
   "requiredAngularVersion": ">=7.0.0",
   "requiredAngularMaterialVersion": ">=7.0.0",
   "requiredNgrxVersion": ">=7.0.0-beta.0",
