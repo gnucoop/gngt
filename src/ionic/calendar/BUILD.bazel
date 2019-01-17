@@ -12,6 +12,7 @@ ng_module(
     "@angular//packages/core",
     "@angular//packages/forms",
     "@ionic_angular//:angular",
+    "@ngx_translate_core//:core",
     "//src/core/calendar",
   ],
 )

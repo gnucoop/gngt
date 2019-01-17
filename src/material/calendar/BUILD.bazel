@@ -12,6 +12,7 @@ ng_module(
     "@angular//packages/core",
     "@angular//packages/forms",
     "@angular_material//src/lib/button",
+    "@ngx_translate_core//:core",
     "//src/core/calendar",
   ],
 )
