@@ -158,7 +158,7 @@ export class AuthEffects {
         try {
           if (!this.jwtHelperService.isTokenExpired(token)) {
             const decoded = this.jwtHelperService.decodeToken(token);
-            const scopes = this._getScopesFromToken(decoded);
+            const scopes = this.config.disableScopes ? [] : this._getScopesFromToken(decoded);
             if (this.config.disableScopes || scopes.indexOf('admin') > -1) {
               res.push(new AuthActions.InitUser());
               res.push(this._getRefreshTokenAction());
