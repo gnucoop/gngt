@@ -25,7 +25,7 @@ import {
 
 import {Subscription} from 'rxjs';
 
-import {Input as IonInput} from '@ionic/angular';
+import {IonInput} from '@ionic/angular';
 
 @Directive({selector: '[gngtInputAriaLabel]'})
 export class InputAriaLabelDirective implements AfterViewInit, OnDestroy {
@@ -35,13 +35,7 @@ export class InputAriaLabelDirective implements AfterViewInit, OnDestroy {
     @Host() @Optional() private _input: IonInput,
     private _el: ElementRef,
     private _renderer: Renderer2
-  ) {
-    if (_input) {
-      _input.ionInputDidLoad.subscribe(() => {
-        this._updateLabel();
-      });
-    }
-  }
+  ) { }
 
   private _gngtInputAriaLabel: string;
   @Input('gngtInputAriaLabel') set gngtInputAriaLabel(gngtInputAriaLabel: string) {

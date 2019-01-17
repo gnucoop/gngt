@@ -77,7 +77,8 @@ function addModelReducers(options: ModelOptions, packagePath: string): Rule {
     const dasherizedModel = strings.dasherize(options.model);
     const importStr = `* as from${classifiedModel}`;
     const fromStr = `./${dasherizedModel}.reducers`;
-    let change = insertImport(content, path, importStr, fromStr, true) as InsertChange;
+    // @TODO (trik) Cast as any due to incompatible typescript versions
+    let change = insertImport(content as any, path, importStr, fromStr, true) as InsertChange;
     if (change && change.pos != null && change.toAdd) {
       recorder.insertLeft(change.pos, change.toAdd);
     }
@@ -111,15 +112,17 @@ function addModelProviders(options: ModelOptions, packagePath: string): Rule {
       const cfService = strings.capitalize(service);
       const serviceName = `${classifiedModel}${cfService}`;
       const servicePath = `./${dasherizedModel}.${service}`;
+      // @TODO (trik) Cast as any due to incompatible typescript versions
       let change: Change = insertImport(
-        content, path, `{${serviceName}}`, servicePath, true) as InsertChange;
+        content as any, path, `{${serviceName}}`, servicePath, true) as InsertChange;
       if (change && change instanceof InsertChange) {
         const recorder = host.beginUpdate(path);
         recorder.insertLeft(change.pos, change.toAdd);
         host.commitUpdate(recorder);
         content = getSourceFile(host, path);
       }
-      let changes = addProviderToModule(content, path, serviceName, servicePath);
+      // @TODO (trik) Cast as any due to incompatible typescript versions
+      let changes = addProviderToModule(content as any, path, serviceName, servicePath);
       if (changes) {
         const recorder = host.beginUpdate(path);
         changes.forEach((c) => {
@@ -144,7 +147,9 @@ function addModelProviders(options: ModelOptions, packagePath: string): Rule {
 }
 
 export function buildModel(options: ModelOptions): Rule {
-  return (host: Tree, context: FileSystemSchematicContext) => {
+  // @TODO (trik) Cast as any due to incompatible typescript versions
+  // return (host: Tree, context: FileSystemSchematicContext) => {
+  return (host: Tree, context: any) => {
     const workspace = getWorkspace(host);
     const project = getProjectFromWorkspace(workspace, options.project);
 
@@ -187,6 +192,6 @@ export function buildModel(options: ModelOptions): Rule {
       generateModule ? noop() : addIndexExports(options, packagePath),
       generateModule ? noop() : addModelReducers(options, packagePath),
       generateModule ? noop() : addModelProviders(options, packagePath)
-    ])(host, context);
+    ])(host, context) as Rule;
   };
 }

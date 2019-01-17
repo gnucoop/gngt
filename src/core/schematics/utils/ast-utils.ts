@@ -26,7 +26,8 @@ import {findNodes, insertAfterLastOccurrence} from '@schematics/angular/utility/
 
 export function insertExport(source: ts.SourceFile, fileToEdit: string, symbolName: string,
   fileName: string, isDefault = false): Change {
-  const rootNode = source;
+  // @TODO (trik) Cast as any due to incompatible typescript versions
+  const rootNode = source as any;
   const allExports = findNodes(rootNode, ts.SyntaxKind.ExportDeclaration);
 
   // get nodes that map to import statements from the file fileName
@@ -34,7 +35,9 @@ export function insertExport(source: ts.SourceFile, fileToEdit: string, symbolNa
     // StringLiteral of the ImportDeclaration is the export file (fileName in this case).
     const exportFiles = node.getChildren()
       .filter(child => child.kind === ts.SyntaxKind.StringLiteral)
-      .map(n => (n as ts.StringLiteral).text);
+      // @TODO (trik) Cast as any due to incompatible typescript versions
+      // .map(n => (n as ts.StringLiteral).text);
+      .map(n => (n as any).text);
 
     return exportFiles.filter(file => file === fileName).length === 1;
   });
@@ -55,7 +58,7 @@ export function insertExport(source: ts.SourceFile, fileToEdit: string, symbolNa
       return new NoopChange();
     }
 
-    const exportTextNodes = exports.filter(n => (n as ts.Identifier).text === symbolName);
+    const exportTextNodes = exports.filter((n: ts.Identifier) => n.text === symbolName);
 
     // insert export if it's not there
     if (exportTextNodes.length === 0) {
@@ -63,7 +66,9 @@ export function insertExport(source: ts.SourceFile, fileToEdit: string, symbolNa
       findNodes(relevantExports[0], ts.SyntaxKind.CloseBraceToken)[0].getStart() ||
       findNodes(relevantExports[0], ts.SyntaxKind.FromKeyword)[0].getStart();
 
-      return insertAfterLastOccurrence(exportNodes, `, ${symbolName}`, fileToEdit, iFallbackPos);
+      // @TODO (trik) Cast as any due to incompatible typescript versions
+      return insertAfterLastOccurrence(exportNodes as any, `, ${symbolName}`,
+          fileToEdit, iFallbackPos);
     }
 
     return new NoopChange();
@@ -71,7 +76,9 @@ export function insertExport(source: ts.SourceFile, fileToEdit: string, symbolNa
 
   // no such import declaration exists
   const useStrict = findNodes(rootNode, ts.SyntaxKind.StringLiteral)
-    .filter((n: ts.StringLiteral) => n.text === 'use strict');
+    // @TODO (trik) Cast as any due to incompatible typescript versions
+    // .filter((n: ts.StringLiteral) => n.text === 'use strict');
+    .filter((n: any) => n.text === 'use strict');
   let fallbackPos = 0;
   if (useStrict.length > 0) {
     fallbackPos = useStrict[0].end;

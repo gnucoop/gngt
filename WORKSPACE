@@ -5,28 +5,28 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 # Add NodeJS rules (explicitly used for sass bundle rules)
 http_archive(
   name = "build_bazel_rules_nodejs",
-  url = "https://github.com/bazelbuild/rules_nodejs/archive/0.16.1.zip",
-  strip_prefix = "rules_nodejs-0.16.1",
+  url = "https://github.com/bazelbuild/rules_nodejs/archive/0.16.5.zip",
+  strip_prefix = "rules_nodejs-0.16.5",
 )
 
 # Add TypeScript rules
 http_archive(
   name = "build_bazel_rules_typescript",
-  url = "https://github.com/bazelbuild/rules_typescript/archive/0.21.0.zip",
-  strip_prefix = "rules_typescript-0.21.0",
+  url = "https://github.com/bazelbuild/rules_typescript/archive/0.22.0.zip",
+  strip_prefix = "rules_typescript-0.22.0",
 )
 
 # Add Angular source and Bazel rules.
 http_archive(
   name = "angular",
-  url = "https://github.com/angular/angular/archive/7.1.1.zip",
-  strip_prefix = "angular-7.1.1",
+  url = "https://github.com/angular/angular/archive/7.1.3.zip",
+  strip_prefix = "angular-7.1.3",
 )
 
 http_archive(
   name = "angular_material",
-  url = "https://github.com/angular/material2/archive/903a884e2dd37fadffce4ef65a2b83282080ab5e.zip",
-  strip_prefix = "material2-903a884e2dd37fadffce4ef65a2b83282080ab5e",
+  url = "https://github.com/angular/material2/archive/7.2.1.zip",
+  strip_prefix = "material2-7.2.1",
 )
 
 # Add RxJS as repository because those are needed in order to build Angular from source.
@@ -43,8 +43,8 @@ http_archive(
 
 http_archive(
   name = "ngrx",
-  url = "https://github.com/ngrx/platform/archive/7.0.0-beta.0.zip",
-  strip_prefix = "platform-7.0.0-beta.0",
+  url = "https://github.com/ngrx/platform/archive/7.0.0.zip",
+  strip_prefix = "platform-7.0.0",
 )
 
 http_archive(
@@ -57,8 +57,8 @@ http_archive(
 
 http_archive(
   name = "ionic_angular",
-  url = "https://github.com/ionic-team/ionic/archive/v4.0.0-beta.17.zip",
-  strip_prefix = "ionic-4.0.0-beta.17/angular/src",
+  url = "https://github.com/ionic-team/ionic/archive/v4.0.0-rc.1.zip",
+  strip_prefix = "ionic-4.0.0-rc.1/angular/src",
   build_file="//tools/build_files/ionic:BUILD.bazel.ionic",
   workspace_file="//tools/build_files/ionic:WORKSPACE.ionic"
 )
@@ -79,8 +79,8 @@ local_repository(
 # Add sass rules
 http_archive(
   name = "io_bazel_rules_sass",
-  url = "https://github.com/bazelbuild/rules_sass/archive/1.15.1.zip",
-  strip_prefix = "rules_sass-1.15.1",
+  url = "https://github.com/bazelbuild/rules_sass/archive/1.16.0.zip",
+  strip_prefix = "rules_sass-1.16.0",
 )
 
 # Since we are explitly fetching @build_bazel_rules_typescript, we should explicitly ask for
@@ -101,7 +101,8 @@ rules_angular_dependencies()
 load("@io_bazel_rules_sass//:package.bzl", "rules_sass_dependencies")
 rules_sass_dependencies()
 
-load("@build_bazel_rules_nodejs//:defs.bzl", "check_bazel_version", "node_repositories")
+load("@build_bazel_rules_nodejs//:defs.bzl", "check_bazel_version", "node_repositories",
+  "yarn_install")
 
 # The minimum bazel version to use with this repo is 0.18.0
 check_bazel_version("0.18.0")
