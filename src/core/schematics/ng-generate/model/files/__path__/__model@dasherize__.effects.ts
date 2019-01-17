@@ -1,6 +1,9 @@
 import {Injectable} from '@angular/core';
 
+import {Observable} from 'rxjs';
+
 import {Actions, Effect} from '@ngrx/effects';
+import {Action} from '@ngrx/store';
 
 import {ModelEffects} from '@gngt/core/model';
 
@@ -23,13 +26,13 @@ export class <%= classify(model) %>Effects extends ModelEffects<
     actions.<%= classify(model) %>PatchAction,
     actions.<%= classify(model) %>DeleteAction,
     actions.<%= classify(model) %>DeleteAllAction> {
-  @Effect() get$;
-  @Effect() list$;
-  @Effect() create$;
-  @Effect() update$;
-  @Effect() patch$;
-  @Effect() delete$;
-  @Effect() deleteAll$;
+  @Effect() get$: Observable<Action>;
+  @Effect() list$: Observable<Action>;
+  @Effect() create$: Observable<Action>;
+  @Effect() update$: Observable<Action>;
+  @Effect() patch$: Observable<Action>;
+  @Effect() delete$: Observable<Action>;
+  @Effect() deleteAll$: Observable<Action>;
 
   constructor(
     _actions: Actions,
