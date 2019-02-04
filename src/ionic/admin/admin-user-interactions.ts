@@ -19,6 +19,8 @@
  *
  */
 
+import {Injectable} from '@angular/core';
+
 import {from, Observable} from 'rxjs';
 import {map, mapTo, switchMap} from 'rxjs/operators';
 
@@ -28,6 +30,7 @@ import {TranslateService} from '@ngx-translate/core';
 
 import {AdminUserInteractionsService as CoreAdminUserInteractionsService} from '@gngt/core/admin';
 
+@Injectable()
 export class AdminUserInteractionsService extends CoreAdminUserInteractionsService {
   constructor(private alert: AlertController, private ts: TranslateService) {
     super();

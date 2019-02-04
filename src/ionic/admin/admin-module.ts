@@ -24,14 +24,11 @@ import {NgModule} from '@angular/core';
 import {ReactiveFormsModule} from '@angular/forms';
 import {RouterModule} from '@angular/router';
 
-import {AlertController, IonicModule} from '@ionic/angular';
+import {IonicModule} from '@ionic/angular';
 
-import {TranslateModule, TranslateService} from '@ngx-translate/core';
+import {TranslateModule} from '@ngx-translate/core';
 
 import {CommonModule as GngtCommonModule} from '@gngt/core/common';
-import {
-  AdminUserInteractionsService as CoreAdminUserInteractionsService
-} from '@gngt/core/admin';
 
 import {AdminUserInteractionsService} from './admin-user-interactions';
 import {AdminEditComponent} from './edit';
@@ -55,11 +52,7 @@ import {AdminListComponent} from './list';
     AdminListComponent
   ],
   providers: [
-    {
-      provide: CoreAdminUserInteractionsService,
-      useClass: AdminUserInteractionsService,
-      deps: [AlertController, TranslateService]
-    }
+    AdminUserInteractionsService,
   ]
 })
 export class AdminModule {}
