@@ -39,7 +39,8 @@
         <ng-template #notSortable>
           <th mat-header-cell *matHeaderCellDef>{{ header.label | translate }}</th>
         </ng-template>
-        <td [routerLink]="baseEditUrl + element.id" mat-cell *matCellDef="let element">{{ element[header.column] }}</td>
+        <td [routerLink]="baseEditUrl + element.id" mat-cell
+            *matCellDef="let element">{{ element|gngtGetObjectProperty:header.column }}</td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
