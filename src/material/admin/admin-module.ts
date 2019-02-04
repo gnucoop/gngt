@@ -40,9 +40,6 @@ import {RouterModule} from '@angular/router';
 import {TranslateModule} from '@ngx-translate/core';
 
 import {CommonModule as GngtCommonModule} from '@gngt/core/common';
-import {
-  AdminUserInteractionsService as CoreAdminUserInteractionsService
-} from '@gngt/core/admin';
 
 import {AdminUserInteractionsService} from './admin-user-interactions';
 import {AdminDeleteConfirmDialogComponent} from './delete-confirm';
@@ -83,11 +80,7 @@ import {AdminListComponent} from './list';
     AdminDeleteConfirmDialogComponent
   ],
   providers: [
-    {
-      provide: CoreAdminUserInteractionsService,
-      useClass: AdminUserInteractionsService,
-      deps: [MatDialog]
-    }
+    AdminUserInteractionsService,
   ]
 })
 export class AdminModule {}
