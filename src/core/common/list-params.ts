@@ -19,6 +19,8 @@
  *
  */
 
+import {ModelJoin} from './model-join';
+
 export interface ModelListParams {
   limit?: number;
   start?: number;
@@ -26,4 +28,5 @@ export interface ModelListParams {
     [propName: string]: 'asc' | 'desc'
   };
   fields?: string[];
+  joins?: ModelJoin[];
 }

@@ -26,3 +26,4 @@ export * from './get-params';
 export * from './list-params';
 export * from './list-result';
 export * from './model';
+export * from './model-join';

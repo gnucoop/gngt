@@ -82,6 +82,18 @@ export abstract class ModelManager<M extends Model> {
         const props = Object.keys(options.sort);
         paramsArray.push(`sort=${props.map(p => `${p}:${options.sort![p]}`).join(',')}`);
       }
+      if (options.fields) {
+        paramsArray.push(`fields=${options.fields.join(',')}`);
+      }
+      if (options.joins) {
+        paramsArray.push(`joins=${options.joins.map(j => {
+          const join = `${j.model}.${j.property}`;
+          if (j.fields) {
+            return `${join}.${j.fields.join(';')}`;
+          }
+          return join;
+        }).join(',')}`);
+      }
       if (paramsArray.length > 0) {
         params = `?${paramsArray.join('&')}`;
       }

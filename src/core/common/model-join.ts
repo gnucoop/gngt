@@ -19,10 +19,8 @@
  *
  */
 
-import {ModelJoin} from './model-join';
-
-export interface ModelGetParams {
-  id: number | null;
+export interface ModelJoin {
+  model: string;
+  property: string;
   fields?: string[];
-  joins?: ModelJoin[];
 }
