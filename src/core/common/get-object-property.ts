@@ -19,19 +19,22 @@
  *
  */
 
-import {NgModule} from '@angular/core';
+import {Pipe, PipeTransform} from '@angular/core';
 
-import {GetObjectProperty} from './get-object-property';
-import {FormDisabledDirective} from './form-disabled';
-
-@NgModule({
-  declarations: [
-    FormDisabledDirective,
-    GetObjectProperty,
-  ],
-  exports: [
-    FormDisabledDirective,
-    GetObjectProperty,
-  ]
-})
-export class CommonModule { }
+@Pipe({name: 'gngtGetObjectProperty'})
+export class GetObjectProperty implements PipeTransform {
+  transform(value: any, prop: string): any {
+    if (prop == null) { return null; }
+    if (!/\./.test(prop)) {
+      return value[prop];
+    }
+    const props = prop.split('.');
+    const propsNum = props.length;
+    let curValue = value;
+    for (let i = 0 ; i < propsNum ; i++) {
+      curValue = curValue[props[i]];
+      if (curValue == null) { return null; }
+    }
+    return curValue;
+  }
+}
