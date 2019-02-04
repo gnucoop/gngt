@@ -43,7 +43,7 @@ export class ModelDataSource<
       A7 extends ModelActions.ModelDeleteAllAction<T>,
       MS extends ModelService<T, S, A1, A2, A3, A4, A5, A6, A7>
     > extends DataSource<T> {
-  constructor(private _service: MS) {
+  constructor(private _service: MS, private _baseParams: ModelListParams = {}) {
     super();
   }
 
@@ -114,7 +114,7 @@ export class ModelDataSource<
     ).subscribe(p => {
       const pagination = p[0];
       const sort = p[1];
-      const params: ModelListParams = {};
+      const params: ModelListParams = {...this._baseParams};
       if (pagination != null) {
         const pag = pagination as PageEvent;
         params.limit = pag.pageSize;
