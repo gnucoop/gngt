@@ -21,10 +21,7 @@
 
 import {Action} from '@ngrx/store';
 
-import {ModelGetParams} from './get-params';
-import {ModelListParams} from './list-params';
-import {ModelListResult} from './list-result';
-import {Model} from './model';
+import {Model, ModelGetParams, ModelListParams, ModelListResult} from '@gngt/core/common';
 import * as ModelActions from './model-actions';
 
 

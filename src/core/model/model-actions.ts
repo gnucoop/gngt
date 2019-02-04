@@ -21,9 +21,7 @@
 
 import {Action} from '@ngrx/store';
 
-import {ModelListParams} from './list-params';
-import {ModelListResult} from './list-result';
-import {Model} from './model';
+import {Model, ModelListParams, ModelListResult} from '@gngt/core/common';
 import {type} from '@gngt/core/reducers';
 
 

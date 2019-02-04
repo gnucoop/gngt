@@ -25,9 +25,8 @@ import {catchError, map, switchMap} from 'rxjs/operators';
 import {Action} from '@ngrx/store';
 import {Actions, ofType} from '@ngrx/effects';
 
+import {Model, ModelListResult} from '@gngt/core/common';
 import * as ModelActions from './model-actions';
-import {ModelListResult} from './list-result';
-import {Model} from './model';
 import {ModelManager} from './model-manager';
 import {ModelService} from './model-service';
 import * as fromModel from './model-reducer';

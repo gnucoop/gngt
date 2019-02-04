@@ -27,11 +27,8 @@ import {Actions, ofType} from '@ngrx/effects';
 
 import * as fromRoot from '@gngt/core/reducers';
 
+import {Model, ModelGetParams, ModelListParams, ModelListResult} from '@gngt/core/common';
 import * as ModelActions from './model-actions';
-import {ModelGetParams} from './get-params';
-import {ModelListParams} from './list-params';
-import {ModelListResult} from './list-result';
-import {Model} from './model';
 import * as fromModel from './reducers';
 
 
