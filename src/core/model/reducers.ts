@@ -19,7 +19,7 @@
  *
  */
 
-import {Model} from './model';
+import {Model} from '@gngt/core/common';
 
 import {State} from './model-reducer';
 

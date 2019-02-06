@@ -12,6 +12,7 @@ ng_module(
     "@angular//packages/core",
     "@ngrx//modules/effects",
     "@ngrx//modules/store",
+    "//src/core/common",
     "//src/core/reducers",
   ],
 )
