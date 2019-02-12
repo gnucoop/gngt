@@ -42,19 +42,20 @@ import {Model, ModelActions, reducers as fromModel} from '@gngt/core/model';
     'saveLabel',
     'service',
     'fields',
+    'processFormData',
     'id'
   ]
 })
 export class AdminEditComponent<
-    T extends Model,
-    S extends fromModel.State<T>,
-    A1 extends ModelActions.ModelGetAction,
-    A2 extends ModelActions.ModelListAction,
-    A3 extends ModelActions.ModelCreateAction<T>,
-    A4 extends ModelActions.ModelUpdateAction<T>,
-    A5 extends ModelActions.ModelPatchAction<T>,
-    A6 extends ModelActions.ModelDeleteAction<T>,
-    A7 extends ModelActions.ModelDeleteAllAction<T>
+  T extends Model,
+  S extends fromModel.State<T>,
+  A1 extends ModelActions.ModelGetAction,
+  A2 extends ModelActions.ModelListAction,
+  A3 extends ModelActions.ModelCreateAction<T>,
+  A4 extends ModelActions.ModelUpdateAction<T>,
+  A5 extends ModelActions.ModelPatchAction<T>,
+  A6 extends ModelActions.ModelDeleteAction<T>,
+  A7 extends ModelActions.ModelDeleteAllAction<T>
   > extends BaseAdminEditComponent<T, S, A1, A2, A3, A4, A5, A6, A7> {
   constructor(cdr: ChangeDetectorRef, fb: FormBuilder, router: Router) {
     super(cdr, fb, router);

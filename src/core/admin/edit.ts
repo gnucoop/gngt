@@ -40,7 +40,7 @@ export abstract class AdminEditComponent<
   A6 extends ModelActions.ModelDeleteAction<T>,
   A7 extends ModelActions.ModelDeleteAllAction<T>> implements OnDestroy {
   private _title = '';
-  get title(): string { return this._title; }
+  get title(): string {return this._title; }
   @Input() set title(title: string) {
     this._title = title;
     this._cdr.markForCheck();
@@ -50,14 +50,14 @@ export abstract class AdminEditComponent<
   @Input() set listUrl(listUrl: string) { this._listUrl = listUrl; }
 
   private _cancelLabel = 'Cancel';
-  get cancelLabel(): string { return this._cancelLabel; }
+  get cancelLabel(): string {return this._cancelLabel; }
   @Input() set cancelLabel(cancelLabel: string) {
     this._cancelLabel = cancelLabel;
     this._cdr.markForCheck();
   }
 
   private _saveLabel = 'Save';
-  get saveLabel(): string { return this._saveLabel; }
+  get saveLabel(): string {return this._saveLabel; }
   @Input() set saveLabel(saveLabel: string) {
     this._saveLabel = saveLabel;
     this._cdr.markForCheck();
@@ -70,7 +70,7 @@ export abstract class AdminEditComponent<
   }
 
   private _fields: AdminEditField[] = [];
-  get fields(): AdminEditField[] { return this._fields; }
+  get fields(): AdminEditField[] {return this._fields; }
   @Input() set fields(fields: AdminEditField[]) {
     this._fields = fields;
     this._updateForm();
@@ -80,6 +80,11 @@ export abstract class AdminEditComponent<
     new BehaviorSubject<number | 'new' | null>(null);
   @Input() set id(id: number | 'new') {
     this._id.next(id);
+  }
+
+  private _processFormData: (value: any) => void;
+  @Input() set processFormData(func: (value: any) => void) {
+    this._processFormData = func;
   }
 
   readonly form: Observable<FormGroup>;
@@ -95,10 +100,12 @@ export abstract class AdminEditComponent<
     private _cdr: ChangeDetectorRef, private _fb: FormBuilder,
     private _router: Router
   ) {
+    this._processFormData = this._defaultProcessData;
+
     const objObs = combineLatest(this._service, this._id).pipe(
-      filter(([s, i]) => s != null && i != null),
-      switchMap(([s, i]) => {
-        if (i === 'new') { return obsOf({}); }
+      filter(([ s, i ]) => s != null && i != null),
+      switchMap(([ s, i ]) => {
+        if (i === 'new') {return obsOf({}); }
         s!.get(i!);
         return s!.getGetObject();
       }),
@@ -108,28 +115,29 @@ export abstract class AdminEditComponent<
 
     this.form = combineLatest(objObs, this._updateFormEvt).pipe(
       map(r => {
-        const model = r[0];
+        const model = r[ 0 ];
         return this._fb.group(
           (this._fields || []).reduce((prev, cur) => {
-            const val = model ? (model as any)[cur.name] : null;
-            (prev as any)[cur.name] = [val, cur.validators];
+            const val = model ? (model as any)[ cur.name ] : null;
+            (prev as any)[ cur.name ] = [ val, cur.validators ];
             return prev;
-        }, {}));
+          }, {}));
       }),
       shareReplay(1)
     );
 
     this._saveSub = this._saveEvt.pipe(
       withLatestFrom(this.form, this._service, this._id),
-      filter(r => r[2] != null)
-    ).subscribe(([_, form, service, id]) => {
-      if (form == null || service == null && !form.valid) { return; }
+      filter(r => r[ 2 ] != null),
+    ).subscribe(([ _, form, service, id ]) => {
+      if (form == null || service == null && !form.valid) {return; }
+      const formValue = {...form.value};
+      this._processFormData(formValue);
       if (id === 'new') {
-        const formValue = {...form.value};
-        delete formValue['id'];
+        delete formValue[ 'id' ];
         service!.create(formValue);
       } else {
-        service!.patch(form.value);
+        service!.patch(formValue);
       }
     });
 
@@ -146,7 +154,7 @@ export abstract class AdminEditComponent<
   }
 
   goBack(): void {
-    this._router.navigate([this._listUrl]);
+    this._router.navigate([ this._listUrl ]);
   }
 
   save(): void {
@@ -156,6 +164,26 @@ export abstract class AdminEditComponent<
   ngOnDestroy(): void {
     this._saveSub.unsubscribe();
     this._savedSub.unsubscribe();
+  }
+
+  private _defaultProcessData(value: any): void {
+    this._fields.forEach((field: AdminEditField) => {
+      if (field.subtype) {
+        switch (field.subtype) {
+          default:
+            break;
+          case 'number':
+            if (value[ field.name ] != null) {
+              if (value[ field.name ].includes('.')) {
+                value[ field.name ] = parseFloat(value[ field.name ]);
+              } else {
+                value[ field.name ] = parseInt(value[ field.name ]);
+              }
+            }
+            break;
+        }
+      }
+    });
   }
 
   private _updateForm(): void {
