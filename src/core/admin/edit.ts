@@ -118,7 +118,9 @@ export abstract class AdminEditComponent<
         const model = r[ 0 ];
         return this._fb.group(
           (this._fields || []).reduce((prev, cur) => {
-            const val = model ? (model as any)[ cur.name ] : null;
+            let val: any = model ? (model as any)[ cur.name ] : null;
+            // if field is an object with id reassign val with id;
+            val = val && val.id ? val.id : val;
             (prev as any)[ cur.name ] = [ val, cur.validators ];
             return prev;
           }, {}));
