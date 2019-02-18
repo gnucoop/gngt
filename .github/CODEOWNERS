@@ -1,23 +1,28 @@
 # Gngt core
 /src/core/*                                        @trik
 /src/core/admin/*                                  @trik
+/src/core/calendar/*                               @trik
 /src/core/common/*                                 @trik
 /src/core/auth/*                                   @trik
 /src/core/model/*                                  @trik
 /src/core/reducers/*                               @trik
+/src/core/schematics/**                            @trik
 /src/core/translations/*                           @trik
 
 # Gngt material
 /src/material/*                                    @trik
 /src/material/admin/*                              @trik
 /src/material/auth/*                               @trik
+/src/material/calendar/*                           @trik
 /src/material/model/*                              @trik
 /src/material/reducers/*                           @trik
+/src/material/schematics/**                        @trik
 
 # Gngt ionic
 /src/ionic/*                                       @trik
 /src/ionic/admin/*                                 @trik
 /src/ionic/auth/*                                  @trik
+/src/ionic/calendar/*                              @trik
 /src/ionic/common/*                                @trik
 /src/ionic/model/*                                 @trik
 /src/ionic/reducers/*                              @trik
@@ -29,19 +34,22 @@
 
 # Dev app material
 /src/dev-app-mat/*                                @trik
-/src/dev-app-mat/dev-app/**                      @trik
+/src/dev-app-mat/dev-app/**                       @trik
 /src/dev-app-mat/example/**                       @trik
 /src/dev-app-mat/examples-page/**                 @trik
-/src/dev-app-mat/admin-edit/**                    @trik
-/src/dev-app-mat/login/**                         @trik
+/src/dev-app-mat/admin-edit/*                     @trik
+/src/dev-app-mat/calendar/*                       @trik
+/src/dev-app-mat/login/*                          @trik
 
 # Dev app ionic
 /src/dev-app-ion/*                                @trik
-/src/dev-app-ion/dev-app/**                      @trik
+/src/dev-app-ion/dev-app/**                       @trik
 /src/dev-app-ion/example/**                       @trik
 /src/dev-app-ion/examples-page/**                 @trik
-/src/dev-app-ion/admin-edit/**                    @trik
-/src/dev-app-ion/login/**                         @trik
+/src/dev-app-ion/admin-edit/*                     @trik
+/src/dev-app-ion/admin-list/*                     @trik
+/src/dev-app-ion/calendar/*                       @trik
+/src/dev-app-ion/login/*                          @trik
 
 # E2E app material
 /e2e-mat/*                                         @trik
