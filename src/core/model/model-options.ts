@@ -21,4 +21,5 @@
 
 export interface ModelOptions {
   baseApiUrl: string;
+  addTrailingSlash?: boolean;
 }

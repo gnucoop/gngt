@@ -39,32 +39,52 @@ export abstract class ModelManager<M extends Model> {
   }
 
   get(id: number): Observable<M> {
-    return this._http.get<M>(`${this._baseUrl}/${id}`);
+    return this._http.get<M>(this._getObjectUrl(id));
   }
 
   list(options?: ModelListParams): Observable<ModelListResult<M>> {
     const params = this._listParamsToQueryParameters(options);
-    return this._http.get<ModelListResult<M>>(`${this._baseUrl}${params}`);
+    return this._http.get<ModelListResult<M>>(`${this._getListUrl()}${params}`);
   }
 
   create(data: M): Observable<M> {
-    return this._http.post<M>(`${this._baseUrl}`, data);
+    return this._http.post<M>(this._getListUrl(), data);
   }
 
   update(id: number, data: M): Observable<M> {
-    return this._http.put<M>(`${this._baseUrl}/${id}`, data);
+    return this._http.put<M>(this._getObjectUrl(id), data);
   }
 
   patch(id: number, data: M): Observable<M> {
-    return this._http.patch<M>(`${this._baseUrl}/${id}`, data);
+    return this._http.patch<M>(this._getObjectUrl(id), data);
   }
 
   delete(id: number): Observable<M> {
-    return this._http.delete<M>(`${this._baseUrl}/${id}`);
+    return this._http.delete<M>(this._getObjectUrl(id));
   }
 
   deleteAll(ids: number[]): Observable<M> {
-    return this._http.post<M>(`${this._baseUrl}/delete_all`, {ids});
+    let url = `${this._baseUrl}/delete_all`;
+    if (this._config.addTrailingSlash) {
+      url = `${url}/`;
+    }
+    return this._http.post<M>(url, {ids});
+  }
+
+  private _getObjectUrl(id: number): string {
+    let url = `${this._baseUrl}/${id}`;
+    if (this._config.addTrailingSlash) {
+      url = `${url}/`;
+    }
+    return url;
+  }
+
+  private _getListUrl(): string {
+    let url = this._baseUrl;
+    if (this._config.addTrailingSlash) {
+      url = `${url}/`;
+    }
+    return url;
   }
 
   private _listParamsToQueryParameters(options?: ModelListParams): string {
