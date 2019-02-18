@@ -24,7 +24,7 @@ import {FormBuilder, FormGroup} from '@angular/forms';
 import {Router} from '@angular/router';
 
 import {BehaviorSubject, combineLatest, Observable, of as obsOf, merge, Subscription} from 'rxjs';
-import {filter, map, shareReplay, switchMap, withLatestFrom} from 'rxjs/operators';
+import {filter, map, shareReplay, switchMap, tap, withLatestFrom} from 'rxjs/operators';
 
 import {AdminEditField} from './edit-field';
 import {Model, ModelActions, ModelService, reducers as fromModel} from '@gngt/core/model';
@@ -82,6 +82,11 @@ export abstract class AdminEditComponent<
     this._id.next(id);
   }
 
+  private _processObject: (value: any) => void;
+  @Input() set processObject(processObject: (value: any) => void) {
+    this._processObject = processObject;
+  }
+
   private _processFormData: (value: any) => void;
   @Input() set processFormData(processFormData: (value: any) => void) {
     this._processFormData = processFormData;
@@ -110,6 +115,7 @@ export abstract class AdminEditComponent<
         return s!.getGetObject();
       }),
       filter(o => o != null),
+      tap(o => this._processObject(o)),
       shareReplay(1)
     );
 
@@ -165,10 +171,10 @@ export abstract class AdminEditComponent<
     this._saveSub.unsubscribe();
     this._savedSub.unsubscribe();
   }
-§
+
   private _applyProcessFormData(value: any): void {
     this._defaultProcessData(value);
-    this.processFormData(value);
+    this._processFormData(value);
   }
 
   private _defaultProcessData(value: any): void {

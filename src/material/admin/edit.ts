@@ -43,6 +43,7 @@ import {Model, ModelActions, reducers as fromModel} from '@gngt/core/model';
     'service',
     'fields',
     'processFormData',
+    'processObject',
     'id'
   ]
 })
