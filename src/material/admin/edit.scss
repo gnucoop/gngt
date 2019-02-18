@@ -13,5 +13,22 @@ gngt-admin-edit {
     > .mat-card-actions {
       text-align: right;
     }
+
+    mat-radio-group {
+      display: block;
+      position: relative;
+      padding: .4375em 0;
+      border-top: .84375em solid transparent;
+
+      > label {
+        display: block;
+        top: -.84375em;
+        transform: scale(.75) perspective(100px) translateZ(.001px);
+      }
+
+      mat-radio-button {
+        margin-right: 1em;
+      }
+    }
   }
 }

@@ -18,10 +18,15 @@
             <div *ngSwitchCase="'checkbox'">
               <mat-checkbox [formControlName]="field.name">{{ field.label | translate }}</mat-checkbox>
             </div>
+            <mat-radio-group *ngSwitchCase="'radio'">
+              <label class="mat-form-field-label">{{ field.label | translate }}</label>
+              <mat-radio-button *ngFor="let choice of field.choices|async"
+                  [value]="choice.value">{{ choice.label | translate }}</mat-radio-button>
+            </mat-radio-group>
             <mat-form-field *ngSwitchCase="'select'">
               <mat-select [placeholder]="field.label | translate" [formControlName]="field.name">
                 <mat-option *ngFor="let choice of field.choices|async"
-                    [value]="choice.value">{{ choice.label }}</mat-option>
+                    [value]="choice.value">{{ choice.label | translate }}</mat-option>
               </mat-select>
             </mat-form-field>
           </ng-container>

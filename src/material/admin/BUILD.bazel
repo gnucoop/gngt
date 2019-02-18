@@ -20,6 +20,8 @@ ng_module(
     "@angular_material//src/lib/icon",
     "@angular_material//src/lib/input",
     "@angular_material//src/lib/progress-bar",
+    "@angular_material//src/lib/radio",
+    "@angular_material//src/lib/select",
     "@angular_material//src/lib/table",
     "@angular_material//src/lib/toolbar",
     "@ngx_translate_core//:core",
