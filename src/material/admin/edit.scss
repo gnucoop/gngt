@@ -17,13 +17,13 @@ gngt-admin-edit {
     mat-radio-group {
       display: block;
       position: relative;
-      padding: .4375em 0;
-      border-top: .84375em solid transparent;
+      padding: 0.4375em 0;
+      border-top: 0.84375em solid transparent;
 
       > label {
         display: block;
-        top: -.84375em;
-        transform: scale(.75) perspective(100px) translateZ(.001px);
+        top: -0.84375em;
+        transform: scale(0.75) perspective(100px) translateZ(0.001px);
       }
 
       mat-radio-button {
