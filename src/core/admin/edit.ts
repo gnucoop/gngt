@@ -82,6 +82,11 @@ export abstract class AdminEditComponent<
     this._id.next(id);
   }
 
+  private _processFormData: (value: any) => void;
+  @Input() set processFormData(processFormData: (value: any) => void) {
+    this._processFormData = processFormData;
+  }
+
   readonly form: Observable<FormGroup>;
   readonly loading: Observable<boolean>;
 
@@ -95,6 +100,8 @@ export abstract class AdminEditComponent<
     private _cdr: ChangeDetectorRef, private _fb: FormBuilder,
     private _router: Router
   ) {
+    this._processFormData = this._defaultProcessData;
+
     const objObs = combineLatest(this._service, this._id).pipe(
       filter(([s, i]) => s != null && i != null),
       switchMap(([s, i]) => {
@@ -121,15 +128,16 @@ export abstract class AdminEditComponent<
 
     this._saveSub = this._saveEvt.pipe(
       withLatestFrom(this.form, this._service, this._id),
-      filter(r => r[2] != null)
+      filter(r => r[2] != null),
     ).subscribe(([_, form, service, id]) => {
-      if (form == null || service == null && !form.valid) { return; }
+      if (form == null || service == null && !form.valid) {return; }
+      const formValue = {...form.value};
+      this._applyProcessFormData(formValue);
       if (id === 'new') {
-        const formValue = {...form.value};
         delete formValue['id'];
         service!.create(formValue);
       } else {
-        service!.patch(form.value);
+        service!.patch(formValue);
       }
     });
 
@@ -156,6 +164,29 @@ export abstract class AdminEditComponent<
   ngOnDestroy(): void {
     this._saveSub.unsubscribe();
     this._savedSub.unsubscribe();
+  }
+§
+  private _applyProcessFormData(value: any): void {
+    this._defaultProcessData(value);
+    this.processFormData(value);
+  }
+
+  private _defaultProcessData(value: any): void {
+    this._fields.forEach((field: AdminEditField) => {
+      if (field.subtype) {
+        switch (field.subtype) {
+          case 'number':
+            if (value[field.name] != null && typeof value[field.name] === 'string') {
+              if (value[field.name].includes('.')) {
+                value[field.name] = parseFloat(value[field.name]);
+              } else {
+                value[field.name] = parseInt(value[field.name]);
+              }
+            }
+            break;
+        }
+      }
+    });
   }
 
   private _updateForm(): void {
