@@ -24,7 +24,7 @@ import {strings} from '@angular-devkit/core';
 import {
   apply, chain, filter, mergeWith, move, noop, Rule, template, Tree, url
 } from '@angular-devkit/schematics';
-import {FileSystemSchematicContext} from '@angular-devkit/schematics/tools';
+// import {FileSystemSchematicContext} from '@angular-devkit/schematics/tools';
 import {getProjectFromWorkspace, getSourceFile} from '@angular/cdk/schematics';
 import {addProviderToModule, insertImport} from '@schematics/angular/utility/ast-utils';
 import {Change, InsertChange} from '@schematics/angular/utility/change';
