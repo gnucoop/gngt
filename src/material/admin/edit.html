@@ -6,20 +6,22 @@
   <mat-card-content>
     <form [formGroup]="editForm" [gngtFormDisabled]="loading|async">
       <div *ngFor="let field of fields">
-        <ng-container [ngSwitch]="field.type">
-          <mat-form-field *ngSwitchCase="'input'">
-            <input matInput [formControlName]="field.name" [type]="field.subtype || 'text'"
-                [placeholder]="field.label | translate" [readonly]="field.readonly">
-          </mat-form-field>
-          <mat-form-field *ngSwitchCase="'textarea'">
-            <textarea matInput [formControlName]="field.name" [placeholder]="field.label | translate"></textarea>
-          </mat-form-field>
-          <mat-form-field *ngSwitchCase="'select'">
-            <mat-select [placeholder]="field.label | translate" [formControlName]="field.name">
-              <mat-option *ngFor="let choice of field.choices|async"
-                  [value]="choice.value">{{ choice.label }}</mat-option>
-            </mat-select>
-          </mat-form-field>
+        <ng-container *ngIf="!field.hidden">
+          <ng-container [ngSwitch]="field.type">
+            <mat-form-field *ngSwitchCase="'input'">
+              <input matInput [formControlName]="field.name" [type]="field.subtype || 'text'"
+              [placeholder]="field.label | translate" [readonly]="field.readonly">
+            </mat-form-field>
+            <mat-form-field *ngSwitchCase="'textarea'">
+              <textarea matInput [formControlName]="field.name" [placeholder]="field.label | translate"></textarea>
+            </mat-form-field>
+            <mat-form-field *ngSwitchCase="'select'">
+              <mat-select [placeholder]="field.label | translate" [formControlName]="field.name">
+                <mat-option *ngFor="let choice of field.choices|async"
+                [value]="choice.value">{{ choice.label }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </ng-container>
         </ng-container>
       </div>
     </form>
