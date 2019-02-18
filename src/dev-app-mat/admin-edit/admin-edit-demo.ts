@@ -40,4 +40,21 @@ export class AdminEditDemo {
     {name: 'bar', label: 'Bar', type: ft.Input, subtype: fst.Text},
     {name: 'baz', label: 'Baz', type: ft.Input, subtype: fst.Number}
   ];
+
+  processFormData(value: any): void {
+    const valueKeys: string[] = Object.keys(value);
+    valueKeys.forEach(element => {
+      if (value[element] !== null) {
+        switch (element) {
+          case 'foo':
+          case 'bar':
+          default:
+          value[element] = String(value[element]);
+          break;
+          case 'baz':
+          value[element] = parseInt(value[element]);
+        }
+      }
+    });
+  }
 }
