@@ -1,7 +1,7 @@
 gngt-admin-edit {
   display: block;
 
-  > .ion-card {
+  > ion-card {
     > ion-card-header {
       margin: -24px -24px 48px;
       padding: 24px;
@@ -10,8 +10,37 @@ gngt-admin-edit {
         0 1px 5px 0 rgba(0, 0, 0, 0.12);
     }
 
-    > ion-card-content > .ion-actions {
-      text-align: right;
+    > ion-card-content {
+      .gngt-radio-label {
+        flex: 0 1 auto;
+        max-width: 200px;
+      }
+
+      .gngt-radio-container {
+        display: inline-block;
+        flex: 1 1 auto;
+
+        ion-radio-group {
+          display: inline-block;
+
+          > div {
+            display: inline-flex !important;
+            align-items: center;
+            position: relative;
+            padding-left: 8px;
+            margin-right: 0.5em;
+
+            > ion-label, > ion-radio {
+              display: inline-block !important;
+              margin-right: 0.5em;
+            }
+          }
+        }
+      }
+
+      > .ion-actions {
+        text-align: right;
+      }
     }
   }
 }

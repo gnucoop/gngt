@@ -19,6 +19,21 @@
               <ion-label>{{ field.label | translate }}</ion-label>
               <ion-textarea [formControlName]="field.name"></ion-textarea>
             </ion-item>
+            <ion-item *ngSwitchCase="'checkbox'">
+              <ion-label>{{ field.label | translate }}</ion-label>
+              <ion-checkbox slot="start" [formControlName]="field.name"></ion-checkbox>
+            </ion-item>
+            <ion-item *ngSwitchCase="'radio'">
+              <ion-label class="gngt-radio-label">{{ field.label | translate }}</ion-label>
+              <div class="gngt-radio-container">
+                <ion-radio-group [formControlName]="field.name">
+                  <div *ngFor="let choice of field.choices|async">
+                    <ion-radio [value]="choice.value"></ion-radio>
+                    <ion-label>{{ choice.label }}</ion-label>
+                  </div>
+                </ion-radio-group>
+              </div>
+            </ion-item>
             <ion-item *ngSwitchCase="'select'">
               <ion-label>{{ field.label | translate }}</ion-label>
               <ion-select [formControlName]="field.name">
