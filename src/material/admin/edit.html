@@ -15,6 +15,9 @@
             <mat-form-field *ngSwitchCase="'textarea'">
               <textarea matInput [formControlName]="field.name" [placeholder]="field.label | translate"></textarea>
             </mat-form-field>
+            <div *ngSwitchCase="'checkbox'">
+              <mat-checkbox [formControlName]="field.name">{{ field.label | translate }}</mat-checkbox>
+            </div>
             <mat-form-field *ngSwitchCase="'select'">
               <mat-select [placeholder]="field.label | translate" [formControlName]="field.name">
                 <mat-option *ngFor="let choice of field.choices|async"
