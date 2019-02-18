@@ -36,7 +36,7 @@ import {AdminModelMockService} from '../admin-mocks';
 export class AdminEditDemo {
   readonly service = new AdminModelMockService();
   readonly fields: AdminEditField[] = [
-    {name: 'foo', label: 'Foo', type: ft.Input, subtype: fst.Text},
+    {name: 'foo', label: 'Foo', type: ft.Input, subtype: fst.Text, hidden: true},
     {name: 'bar', label: 'Bar', type: ft.Input, subtype: fst.Text},
     {name: 'baz', label: 'Baz', type: ft.Input, subtype: fst.Number}
   ];
