@@ -6,6 +6,7 @@ CORE_PACKAGES = [
   "calendar",
   "model",
   "reducers",
+  "sync",
   "translations",
 ]
 
