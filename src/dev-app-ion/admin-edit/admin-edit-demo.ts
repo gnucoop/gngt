@@ -21,11 +21,20 @@
 
 import {Component} from '@angular/core';
 
+import {of as obsOf} from 'rxjs';
+
 import {
   AdminEditField, AdminEditFieldType as ft, AdminEditFieldSubtype as fst
 } from '@gngt/core/admin';
 
 import {AdminModelMockService} from '../admin-mocks';
+
+const choices = obsOf([
+  {label: 'Choice 1', value: 1},
+  {label: 'Choice 2', value: 2},
+  {label: 'Choice 3', value: 3},
+  {label: 'Choice 4', value: 4},
+]);
 
 @Component({
   moduleId: module.id,
@@ -38,6 +47,7 @@ export class AdminEditDemo {
   readonly fields: AdminEditField[] = [
     {name: 'foo', label: 'Foo', type: ft.Input, subtype: fst.Text},
     {name: 'bar', label: 'Bar', type: ft.Input, subtype: fst.Text},
-    {name: 'baz', label: 'Baz', type: ft.Input, subtype: fst.Number}
+    {name: 'baz', label: 'Baz', type: ft.Input, subtype: fst.Number},
+    {name: 'qux', label: 'Qux', type: ft.Radio, choices}
   ];
 }

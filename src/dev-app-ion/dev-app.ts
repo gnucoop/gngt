@@ -36,6 +36,7 @@ export class DevAppComponent {
   navItems = [
     {name: 'Examples', route: '/examples'},
     {name: 'Admin Edit', route: '/admin-edit'},
+    {name: 'Admin List', route: '/admin-list'},
     {name: 'Calendar', route: '/calendar'},
     {name: 'Login', route: '/login'},
   ];
