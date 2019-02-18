@@ -49,3 +49,5 @@ firebase.json
 # schematics
 /src/lib/schematics/**/*.js
 /src/lib/schematics/**/*.map
+
+bundles/
