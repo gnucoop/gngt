@@ -135,6 +135,8 @@ export function serverTask(packagePath: string, rewrites?: {from: string, to: st
   const defaultHttpRewrites = [
     // Rewrite the node_modules/ and dist/ folder to the real paths. This is a trick to
     // avoid that those folders will be rewritten to the specified package path.
+    { from: '^/bundles/(.*)$', to: '/bundles/$1' },
+    { from: '^/svg/(.*)$', to: '/node_modules/ionicons/dist/ionicons/svg/$1' },
     { from: '^/node_modules/(.*)$', to: '/node_modules/$1' },
     { from: '^/dist/(.*)$', to: '/dist/$1' },
     // Rewrite every path that doesn't point to a specific file to the index.html file.

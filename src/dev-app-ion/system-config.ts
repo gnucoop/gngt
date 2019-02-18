@@ -25,11 +25,12 @@ declare const System: any;
 // Configure the base path and map the different node packages.
 System.config({
   paths: {
-    'node:*': 'node_modules/*'
+    'node:*': 'node_modules/*',
+    'bundles:*': 'bundles/*'
   },
   map: {
-    'plugin-babel': 'node:systemjs-plugin-babel/plugin-babel.js',
-    'systemjs-babel-build': 'node:systemjs-plugin-babel/systemjs-babel-browser.js',
+    'traceur': 'node:traceur/bin/traceur.js',
+
     'rxjs': 'node:rxjs',
     'main': 'main.js',
     'tslib': 'node:tslib/tslib.js',
@@ -53,12 +54,7 @@ System.config({
     '@angular/platform-browser-dynamic':
       'node:@angular/platform-browser-dynamic/bundles/platform-browser-dynamic.umd.js',
 
-    '@ionic/core': 'node:@ionic/core',
-    '@ionic/core/dist/ionic/svg': 'empty',
-    '@ionic/core/loader': 'node:@ionic/core/loader',
-    '@ionic/angular': 'node:@ionic/angular',
-    '@ionic/angular/dist/directives': 'node:@ionic/angular/dist/directives',
-    '@ionic/angular/dist/providers': 'node:@ionic/angular/dist/providers',
+      '@ionic/angular': 'bundles:ionic-angular.umd.js',
 
     '@ngrx/store': 'node:@ngrx/store/bundles/store.umd.js',
     '@ngrx/effects': 'node:@ngrx/effects/bundles/effects.umd.js',
@@ -88,17 +84,11 @@ System.config({
     // Thirdparty barrels.
     'rxjs': {main: 'index'},
     'rxjs/operators': {main: 'index'},
-    '@ionic/core': {main: 'dist/esm/es5/index'},
-    '@ionic/core/loader': {main: 'index'},
-    '@ionic/angular': {main: 'dist/index'},
-    '@ionic/angular/dist/directives': {main: 'index'},
-    '@ionic/angular/dist/providers': {main: 'index'},
 
     // Set the default extension for the root package, because otherwise the dev-app-map can't
     // be built within the production mode. Due to missing file extensions.
     '.': {
       defaultExtension: 'js'
     }
-  },
-  transpiler: 'plugin-babel'
+  }
 });

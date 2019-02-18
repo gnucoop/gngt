@@ -27,7 +27,8 @@
     "breaking-changes": "gulp breaking-changes",
     "gulp": "gulp",
     "stage-release": "ts-node --project tools/release/ tools/release/stage-release.ts",
-    "preinstall": "node ./tools/npm/check-npm.js"
+    "preinstall": "node ./tools/npm/check-npm.js",
+    "postinstall": "rm -Rf bundles"
   },
   "version": "7.0.0-alpha.5",
   "requiredAngularVersion": ">=7.0.0",
@@ -71,6 +72,8 @@
     "@angular/platform-browser-dynamic": "^7.2.1",
     "@angular/platform-server": "^7.2.1",
     "@angular/router": "^7.2.1",
+    "@babel/core": "^7.3.3",
+    "@babel/preset-env": "^7.3.1",
     "@bazel/ibazel": "^0.9.0",
     "@bazel/karma": "0.22.1",
     "@bazel/typescript": "0.22.1",
@@ -100,6 +103,9 @@
     "@types/webpack-stream": "^3.2.10",
     "autoprefixer": "^6.7.6",
     "axe-webdriverjs": "^2.1.0",
+    "babel-loader": "^8.0.5",
+    "babel-plugin-dynamic-import-webpack": "^1.1.0",
+    "babel-plugin-remove-webpack": "^1.1.0",
     "browser-sync": "^2.26.3",
     "chalk": "^2.4.1",
     "codelyzer": "^4.5.0",
