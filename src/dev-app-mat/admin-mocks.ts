@@ -57,4 +57,8 @@ export class AdminModelMockService {
   getCreateLoading(): Observable<boolean> {
     return obsOf(false);
   }
+
+  getPatchLoading(): Observable<boolean> {
+    return obsOf(false);
+  }
 }
