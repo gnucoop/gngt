@@ -65,6 +65,7 @@ export const rollupGlobals = {
   '@angular/material/input': 'ng.material.input',
   '@angular/material/paginator': 'ng.material.paginator',
   '@angular/material/progress-bar': 'ng.material.progressBar',
+  '@angular/material/radio': 'ng.material.radio',
   '@angular/material/snack-bar': 'ng.material.snackBar',
   '@angular/material/select': 'ng.material.select',
   '@angular/material/sort': 'ng.material.sort',

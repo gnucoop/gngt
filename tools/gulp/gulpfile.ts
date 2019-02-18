@@ -14,6 +14,7 @@ createPackageBuildTasks(ionicPackage);
 createPackageBuildTasks(ionExamplesPackage, ['build-ion-examples-module']);
 
 import './tasks/all-packages';
+import './tasks/aot';
 import './tasks/aot-ion';
 import './tasks/aot-mat';
 import './tasks/breaking-changes';
