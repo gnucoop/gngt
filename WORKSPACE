@@ -49,10 +49,12 @@ http_archive(
 
 http_archive(
   name = "ngx_translate_core",
-  url = "https://github.com/gnucoop/core/archive/23bf3e5eaa6a2aac24a9e709821f636483e070aa.zip",
-  strip_prefix = "core-23bf3e5eaa6a2aac24a9e709821f636483e070aa/projects/ngx-translate/core/src",
-  build_file="//tools/build_files/ngx-translate-core:BUILD.bazel.ngxtc",
-  workspace_file="//tools/build_files/ngx-translate-core:WORKSPACE.ngxtc"
+  url = "https://github.com/ngx-translate/core/archive/v11.0.1.zip",
+  strip_prefix = "core-11.0.1/projects/ngx-translate/core/src",
+  sha256 = "7137487dec8ba50c66bb67a345cecd3233a620fe04f26a723e234baf7e8d636c",
+  patches = ["@gngt//tools/build_files/ngx-translate-core:ngx-translate-core.patch"],
+  build_file = "//tools/build_files/ngx-translate-core:BUILD.bazel.ngxtc",
+  workspace_file = "//tools/build_files/ngx-translate-core:WORKSPACE.ngxtc",
 )
 
 http_archive(
