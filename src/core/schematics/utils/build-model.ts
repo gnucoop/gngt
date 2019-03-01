@@ -25,15 +25,16 @@ import {
   apply, chain, filter, mergeWith, move, noop, Rule, template, Tree, url
 } from '@angular-devkit/schematics';
 // import {FileSystemSchematicContext} from '@angular-devkit/schematics/tools';
-import {getProjectFromWorkspace, getSourceFile} from '@angular/cdk/schematics';
-import {addProviderToModule, insertImport} from '@schematics/angular/utility/ast-utils';
+import {getProjectFromWorkspace} from '@angular/cdk/schematics';
+import {addProviderToModule} from '@schematics/angular/utility/ast-utils';
 import {Change, InsertChange} from '@schematics/angular/utility/change';
 import {getWorkspace} from '@schematics/angular/utility/config';
 import {parseName} from '@schematics/angular/utility/parse-name';
 import {buildDefaultPath} from '@schematics/angular/utility/project';
 import {validateName} from '@schematics/angular/utility/validation';
 import {
-  addElementToArray, addPropertyToInterface, addPropertyToObject, insertExport
+  addElementToArray, addPropertyToInterface, addPropertyToObject,
+  getSourceFile, insertExport, insertImport
 } from './ast-utils';
 import {ModelOptions} from './model-options';
 

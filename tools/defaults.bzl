@@ -132,11 +132,18 @@ def ng_web_test_suite(deps = [], static_css = [], bootstrap = [], **kwargs):
 
   ts_web_test_suite(
     # Depend on our custom test initialization script. This needs to be the first dependency.
-    deps = ["//test:angular_test_init"] + deps,
+    deps = ["//test:requirejs_init", "//test:angular_test_init"] + deps,
     bootstrap = [
       "@gngtdeps//node_modules/zone.js:dist/zone-testing-bundle.js",
       "@gngtdeps//node_modules/reflect-metadata:Reflect.js",
       "@gngtdeps//node_modules/hammerjs:hammer.js",
+      "@gngtdeps//node_modules/pouchdb:dist/pouchdb.js",
+      "@gngtdeps//node_modules/url-parse:dist/url-parse.min.js",
+      "//test:date_fns_bundle",
+      "//test:ionic_core_bundle",
+      "//test:ionic_core_loader_bundle",
+      "//test:pouchdb_debug_bundle",
+      "//test:pouchdb_find_bundle",
     ] + bootstrap,
     **kwargs
   )

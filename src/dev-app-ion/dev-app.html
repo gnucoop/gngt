@@ -17,7 +17,7 @@
             routerLinkActive
             #routerLinkActiveInstance="routerLinkActive"
             [attr.tabindex]="routerLinkActiveInstance.isActive ? 0 : -1"
-            [routerLink]="[navItem.route]">
+            (click)="navTo(navItem.route)">
           <ion-label>{{navItem.name}}</ion-label>
         </ion-item>
       </ion-list>

@@ -37,6 +37,28 @@ module.exports = (config) => {
       {pattern: 'node_modules/crypto-js/index.js', included: true, watched: false},
       {pattern: 'node_modules/crypto-js/*.js', included: false, watched: false},
 
+      {pattern: 'node_modules/pouchdb/dist/*.js', included: false, watched: false},
+      {pattern: 'node_modules/pouchdb-abstract-mapreduce/lib/*.js', included: false, watched: false},
+      {pattern: 'node_modules/pouchdb-binary-utils/lib/*.js', included: false, watched: false},
+      {pattern: 'node_modules/pouchdb-collate/lib/*.js', included: false, watched: false},
+      {pattern: 'node_modules/pouchdb-collections/lib/*.js', included: false, watched: false},
+      {pattern: 'node_modules/pouchdb-debug/lib/*.js', included: false, watched: false},
+      {pattern: 'node_modules/pouchdb-errors/lib/*.js', included: false, watched: false},
+      {pattern: 'node_modules/pouchdb-fetch/lib/*.js', included: false, watched: false},
+      {pattern: 'node_modules/pouchdb-find/lib/*.js', included: false, watched: false},
+      {pattern: 'node_modules/pouchdb-mapreduce-utils/lib/*.js', included: false, watched: false},
+      {pattern: 'node_modules/pouchdb-md5/lib/*.js', included: false, watched: false},
+      {pattern: 'node_modules/pouchdb-selector-core/lib/*.js', included: false, watched: false},
+      {pattern: 'node_modules/pouchdb-utils/lib/*.js', included: false, watched: false},
+      {pattern: 'node_modules/argsarray/*.js', included: false, watched: false},
+      {pattern: 'node_modules/debug/src/*.js', included: false, watched: false},
+      {pattern: 'node_modules/events/*.js', included: false, watched: false},
+      {pattern: 'node_modules/immediate/dist/*.js', included: false, watched: false},
+      {pattern: 'node_modules/inherits/*.js', included: false, watched: false},
+      {pattern: 'node_modules/ms/*.js', included: false, watched: false},
+      {pattern: 'node_modules/spark-md5/*.js', included: false, watched: false},
+      {pattern: 'node_modules/uuid/lib/*.js', included: false, watched: false},
+
       {pattern: 'test/karma-system-config.js', included: true, watched: false},
       {pattern: 'test/karma-test-shim.js', included: true, watched: false},
 
@@ -77,7 +99,7 @@ module.exports = (config) => {
     browserNoActivityTimeout: 300000,
     captureTimeout: 180000,
 
-    browsers: ['ChromeHeadlessLocal'],
+    browsers: ['Chrome'],
     singleRun: false,
 
     // Try Websocket for a faster transmission first. Fallback to polling if necessary.
@@ -100,7 +122,7 @@ module.exports = (config) => {
     const containerInstanceIndex = Number(process.env['CIRCLE_NODE_INDEX']);
     const maxParallelContainerInstances = Number(process.env['CIRCLE_NODE_TOTAL']);
     const tunnelIdentifier =
-        `angular-material-${process.env['CIRCLE_BUILD_NUM']}-${containerInstanceIndex}`;
+        `gngt-${process.env['CIRCLE_BUILD_NUM']}-${containerInstanceIndex}`;
     const buildIdentifier = `circleci-${tunnelIdentifier}`;
     const testPlatform = process.env['TEST_PLATFORM'];
 

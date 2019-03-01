@@ -18,7 +18,7 @@ ng_module(
     "@angular_material//src/lib/list",
     "@ngx_translate_core//:core",
     "@gngtdeps//@ngx-translate/http-loader",
-    "//src/material/login",
+    "//src/material/admin",
     "//src/material-examples:examples",
   ]
 )

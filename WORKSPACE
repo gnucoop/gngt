@@ -67,7 +67,7 @@ http_archive(
 )
 
 # We need to create a local repository called "npm" because currently Angular Material
-# stores all of it's NPM dependencies in the "@matdeps" repository. This is necessary because
+# stores all of it's NPM dependencies in the "@gngtdeps" repository. This is necessary because
 # we don't want to reserve the "npm" repository that is commonly used by downstream projects.
 # Since we still need the "npm" repository in order to use the Angular or TypeScript Bazel
 # rules, we create a local repository that is just defined in **this** workspace and is not

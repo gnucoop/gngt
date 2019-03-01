@@ -25,6 +25,7 @@
   },
   "include": [
     "./*/index.ts",
+    "./*/typings.d.ts",
     "**/*.spec.ts"
   ],
   "exclude": [

@@ -15,7 +15,7 @@ if [ -z ${GNGT_BUILDS_TOKEN} ]; then
   exit 1
 fi
 
-# Gngt packages that need to published.
+# Ajf packages that need to published.
 PACKAGES=(core ionic material)
 REPOSITORIES=(gngt-core-builds gngt-ionic-builds gngt-material-builds)
 

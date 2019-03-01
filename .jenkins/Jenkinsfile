@@ -1,0 +1,36 @@
+node {
+  stage('Setup') {
+    scmInfo = checkout scm
+    gitBranch = scmInfo.GIT_BRANCH.replace("origin/", "")
+    sh 'yarn install'
+  }
+  stage('Lint') {
+    sh 'yarn gulp ci:lint'
+  }
+  stage('Bazel targets') {
+    sh 'bazel build src/... --build_tag_filters=-docs-package'
+    sh 'bazel test src/... --build_tag_filters=-docs-package'
+    sh 'bazel test tools/public_api_guard/...'
+  }
+  stage('Unit tests') {
+    sh './scripts/circleci/run-local-browser-tests.sh'
+  }
+  stage('Integration tests') {
+    sh 'bazel test e2e-mat/...'
+    sh 'bazel test e2e-ion/...'
+    sh 'yarn gulp ci:prerender'
+  }
+  stage('Release output') {
+    sh 'yarn gulp ci:build-release-packages'
+    sh 'yarn check-release-output'
+    sh 'yarn gulp ci:aot'
+  }
+  stage('Publish snapshots') {
+    if (gitBranch == 'master') {
+      // sh './scripts/circleci/publish-snapshots.sh'
+      sh './scripts/deploy/publish-build-artifacts.sh --no-build'
+    } else {
+      sh 'echo "Skipping..."'
+    }
+  }
+}

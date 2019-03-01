@@ -2,7 +2,8 @@
 System.config({
   baseURL: '/base',
   paths: {
-    'node:*': 'node_modules/*'
+    'node:*': 'node_modules/*',
+    'bundles:*': 'bundles/*'
   },
   map: {
     'plugin-babel': 'node:systemjs-plugin-babel/plugin-babel.js',
@@ -38,6 +39,28 @@ System.config({
     '@ngx-translate/core': 'node:@ngx-translate/core/bundles/ngx-translate-core.umd.js',
     '@ngx-translate/http-loader':
       'node:@ngx-translate/http-loader/bundles/ngx-translate-http-loader.umd.js',
+    
+    'pouchdb': 'node:pouchdb/dist/pouchdb.js',
+    'pouchdb-abstract-mapreduce': 'node:pouchdb-abstract-mapreduce/lib/index.js',
+    'pouchdb-binary-utils': 'node:pouchdb-binary-utils/lib/index-browser.js',
+    'pouchdb-collate': 'node:pouchdb-collate/lib/index.js',
+    'pouchdb-collections': 'node:pouchdb-collections/lib/index.js',
+    'pouchdb-debug': 'node:pouchdb-debug/lib/index-browser.js',
+    'pouchdb-errors': 'node:pouchdb-errors/lib/index.js',
+    'pouchdb-fetch': 'node:pouchdb-fetch/lib/index-browser.js',
+    'pouchdb-find': 'node:pouchdb-find/lib/index-browser.js',
+    'pouchdb-mapreduce-utils': 'node:pouchdb-mapreduce-utils/lib/index.js',
+    'pouchdb-md5': 'node:pouchdb-md5/lib/index-browser.js',
+    'pouchdb-selector-core': 'node:pouchdb-selector-core/lib/index.js',
+    'pouchdb-utils': 'node:pouchdb-utils/lib/index-browser.js',
+    'argsarray': 'node:argsarray/index.js',
+    'debug': 'node:debug/src/browser.js',
+    'events': 'node:events/events.js',
+    'immediate': 'node:immediate/dist/immediate.min.js',
+    'inherits': 'node:inherits/inherits_browser.js',
+    'ms': 'node:ms/index.js',
+    'spark-md5': 'node:spark-md5/spark-md5.min.js',
+    'uuid': 'node:uuid/lib/md5-browser.js',
 
     '@gngt/core': 'dist/packages/core/index.js',
     '@gngt/ionic': 'dist/packages/ionic/index.js',

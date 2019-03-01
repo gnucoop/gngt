@@ -27,6 +27,14 @@ System.config({
   paths: {
     'node:*': 'node_modules/*'
   },
+  meta: {
+    'pouchdb': {
+      format: 'cjs'
+    },
+    'pouchdb-find': {
+      format: 'cjs'
+    },
+  },
   map: {
     'plugin-babel': 'node:systemjs-plugin-babel/plugin-babel.js',
     'systemjs-babel-build': 'node:systemjs-plugin-babel/systemjs-babel-browser.js',
@@ -84,6 +92,7 @@ System.config({
     '@angular/material/list': 'node:@angular/material/bundles/material-list.umd.js',
     '@angular/material/paginator': 'node:@angular/material/bundles/material-paginator.umd.js',
     '@angular/material/progress-bar': 'node:@angular/material/bundles/material-progress-bar.umd.js',
+    '@angular/material/radio': 'node:@angular/material/bundles/material-radio.umd.js',
     '@angular/material/select': 'node:@angular/material/bundles/material-select.umd.js',
     '@angular/material/sidenav': 'node:@angular/material/bundles/material-sidenav.umd.js',
     '@angular/material/snack-bar': 'node:@angular/material/bundles/material-snack-bar.umd.js',
@@ -99,6 +108,28 @@ System.config({
     '@ngx-translate/http-loader':
       'node:@ngx-translate/http-loader/bundles/ngx-translate-http-loader.umd.js',
 
+    'pouchdb': 'node:pouchdb/dist/pouchdb.js',
+    'pouchdb-abstract-mapreduce': 'node:pouchdb-abstract-mapreduce/lib/index.js',
+    'pouchdb-binary-utils': 'node:pouchdb-binary-utils/lib/index-browser.js',
+    'pouchdb-collate': 'node:pouchdb-collate/lib/index.js',
+    'pouchdb-collections': 'node:pouchdb-collections/lib/index.js',
+    'pouchdb-debug': 'node:pouchdb-debug/lib/index-browser.js',
+    'pouchdb-errors': 'node:pouchdb-errors/lib/index.js',
+    'pouchdb-fetch': 'node:pouchdb-fetch/lib/index-browser.js',
+    'pouchdb-find': 'node:pouchdb-find/lib/index-browser.js',
+    'pouchdb-mapreduce-utils': 'node:pouchdb-mapreduce-utils/lib/index.js',
+    'pouchdb-md5': 'node:pouchdb-md5/lib/index-browser.js',
+    'pouchdb-selector-core': 'node:pouchdb-selector-core/lib/index.js',
+    'pouchdb-utils': 'node:pouchdb-utils/lib/index-browser.js',
+    'argsarray': 'node:argsarray/index.js',
+    'debug': 'node:debug/src/browser.js',
+    'events': 'node:events/events.js',
+    'immediate': 'node:immediate/dist/immediate.min.js',
+    'inherits': 'node:inherits/inherits_browser.js',
+    'ms': 'node:ms/index.js',
+    'spark-md5': 'node:spark-md5/spark-md5.min.js',
+    'uuid': 'node:uuid/lib/md5-browser.js',
+
     '@gngt/core': 'dist/packages/core/index.js',
     '@gngt/material': 'dist/packages/material/index.js',
     '@gngt/material-examples': 'dist/packages/material-examples/index.js',
@@ -109,6 +140,7 @@ System.config({
     '@gngt/core/common': 'dist/packages/core/common/index.js',
     '@gngt/core/model': 'dist/packages/core/model/index.js',
     '@gngt/core/reducers': 'dist/packages/core/reducers/index.js',
+    '@gngt/core/sync': 'dist/packages/core/sync/index.js',
     '@gngt/core/translations': 'dist/packages/core/translations/index.js',
 
     '@gngt/material/admin': 'dist/packages/material/admin/index.js',

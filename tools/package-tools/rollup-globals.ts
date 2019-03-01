@@ -86,6 +86,10 @@ export const rollupGlobals = {
   '@ngrx/effects': 'ngrx.effects',
   '@ngrx/store': 'ngrx.store',
 
+  'pouchdb': 'pouchdb',
+  'pouchdb-debug': 'pouchdb.debug',
+  'pouchdb-find': 'pouchdb.find',
+
   // Some packages are not really needed for the UMD bundles, but for the missingRollupGlobals rule.
   '@gngt/core': 'gngt.core',
   '@gngt/material': 'gngt.material',

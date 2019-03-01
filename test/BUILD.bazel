@@ -69,6 +69,30 @@ webpack_bundle(
   ]
 )
 
+webpack_bundle(
+  name = "pouchdb_debug_bundle",
+  library = "pouchdb-debug",
+  library_target = "umd",
+  externals = [],
+  entry_point = "@gngtdeps//node_modules/pouchdb-debug:lib/index.js",
+  output_name = "pouchdb-debug.umd.js",
+  deps = [
+    "@gngtdeps//pouchdb-debug",
+  ]
+)
+
+webpack_bundle(
+  name = "pouchdb_find_bundle",
+  library = "pouchdb-find",
+  library_target = "umd",
+  externals = [],
+  entry_point = "@gngtdeps//node_modules/pouchdb-find:lib/index.js",
+  output_name = "pouchdb-find.umd.js",
+  deps = [
+    "@gngtdeps//pouchdb-find",
+  ]
+)
+
 # Common set-up for all Gngt tests.
 ts_library(
   name = "requirejs_init",

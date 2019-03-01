@@ -11,7 +11,7 @@ describe('login', () => {
         expect(cls).not.toMatch('mat-form-field-disabled');
       }
 
-      element(by.id('disable-toggle')).click();
+      await element(by.id('disable-toggle')).click();
 
       for (let i = 0 ; i < fields.length ; i++) {
         const cls = await fields[i].getWebElement().getAttribute('class');

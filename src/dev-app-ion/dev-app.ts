@@ -20,6 +20,9 @@
  */
 
 import {Component, ElementRef, ViewEncapsulation} from '@angular/core';
+import {Router} from '@angular/router';
+
+import {NavController} from '@ionic/angular';
 
 /**
  * DemoApp with toolbar and sidenav.
@@ -42,6 +45,8 @@ export class DevAppComponent {
   ];
 
   constructor(
+    private _router: Router,
+    private _navCtrl: NavController,
     private _element: ElementRef<HTMLElement>) {}
 
   toggleFullscreen() {
@@ -56,6 +61,11 @@ export class DevAppComponent {
     } else if (elem.msRequestFullScreen) {
       elem.msRequestFullScreen();
     }
+  }
+
+  navTo(route: string) {
+    this._navCtrl.setDirection('forward');
+    this._router.navigateByUrl(route);
   }
 }
 

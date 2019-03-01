@@ -13,7 +13,6 @@ ng_module(
   srcs = glob(["*.ts"], exclude=["**/*.spec.ts"]),
   module_name = "@gngt/core",
   deps = ["//src/core/%s" % p for p in CORE_PACKAGES],
-  tsconfig = ":tsconfig-build.json",
 )
 
 # Creates the @gngt/core package published to npm.

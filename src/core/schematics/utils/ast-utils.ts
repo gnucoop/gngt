@@ -21,8 +21,18 @@
 
 import * as ts from 'typescript';
 
+import {getSourceFile as baseGetSourceFile} from '@angular/cdk/schematics';
+import {Tree} from '@angular-devkit/schematics';
 import {Change, InsertChange, NoopChange} from '@schematics/angular/utility/change';
 import {findNodes, insertAfterLastOccurrence} from '@schematics/angular/utility/ast-utils';
+
+export function getSourceFile(host: Tree, path: string): ts.SourceFile {
+  const sourceFile = baseGetSourceFile(host, path);
+  if ((sourceFile as ts.Node).kind === ts.SyntaxKind.UnparsedSource) {
+    return ts.createSourceFile(sourceFile.fileName, sourceFile.text, ts.ScriptTarget.Latest, true);
+  }
+  return sourceFile as ts.SourceFile;
+}
 
 export function insertExport(source: ts.SourceFile, fileToEdit: string, symbolName: string,
   fileName: string, isDefault = false): Change {
@@ -47,7 +57,7 @@ export function insertExport(source: ts.SourceFile, fileToEdit: string, symbolNa
     // exports from export file
     const exportNodes: ts.Node[] = [];
     relevantExports.forEach(n => {
-      Array.prototype.push.apply(exports, findNodes(n, ts.SyntaxKind.Identifier));
+      Array.prototype.push.apply(exportNodes, findNodes(n, ts.SyntaxKind.Identifier));
       if (findNodes(n, ts.SyntaxKind.AsteriskToken).length > 0) {
         exportsAsterisk = true;
       }
@@ -58,16 +68,96 @@ export function insertExport(source: ts.SourceFile, fileToEdit: string, symbolNa
       return new NoopChange();
     }
 
-    const exportTextNodes = exports.filter((n: ts.Identifier) => n.text === symbolName);
+    const exportTextNodes = exportNodes.filter((n: ts.Identifier) => n.text === symbolName);
 
     // insert export if it's not there
     if (exportTextNodes.length === 0) {
       const iFallbackPos =
-      findNodes(relevantExports[0], ts.SyntaxKind.CloseBraceToken)[0].getStart() ||
-      findNodes(relevantExports[0], ts.SyntaxKind.FromKeyword)[0].getStart();
+        findNodes(relevantExports[0], ts.SyntaxKind.CloseBraceToken)[0].getStart() ||
+        findNodes(relevantExports[0], ts.SyntaxKind.FromKeyword)[0].getStart();
 
       // @TODO (trik) Cast as any due to incompatible typescript versions
       return insertAfterLastOccurrence(exportNodes as any, `, ${symbolName}`,
+          fileToEdit, iFallbackPos);
+    }
+
+    return new NoopChange();
+  }
+
+  // no such export declaration exists
+  const useStrict = findNodes(rootNode, ts.SyntaxKind.StringLiteral)
+    // @TODO (trik) Cast as any due to incompatible typescript versions
+    // .filter((n: ts.StringLiteral) => n.text === 'use strict');
+    .filter((n: any) => n.text === 'use strict');
+  let fallbackPos = 0;
+  if (useStrict.length > 0) {
+    fallbackPos = useStrict[0].end;
+  }
+  const open = isDefault ? '' : '{ ';
+  const close = isDefault ? '' : ' }';
+  // if there are no exports or 'use strict' statement, insert export at beginning of file
+  const insertAtBeginning = allExports.length === 0 && useStrict.length === 0;
+  const separator = insertAtBeginning ? '' : ';\n';
+  const toInsert = `${separator}export ${open}${symbolName}${close}` +
+    ` from '${fileName}'${insertAtBeginning ? ';\n' : ''}`;
+
+  if (allExports.length === 0) {
+    return new InsertChange(fileToEdit, fallbackPos, toInsert);
+  }
+
+  return insertAfterLastOccurrence(
+    allExports,
+    toInsert,
+    fileToEdit,
+    fallbackPos,
+    ts.SyntaxKind.StringLiteral,
+  );
+}
+
+export function insertImport(source: ts.SourceFile, fileToEdit: string, symbolName: string,
+  fileName: string, isDefault = false): Change {
+  // @TODO (trik) Cast as any due to incompatible typescript versions
+  const rootNode = source as any;
+  const allImports = findNodes(rootNode, ts.SyntaxKind.ImportDeclaration);
+
+  // get nodes that map to import statements from the file fileName
+  const relevantImports = allImports.filter(node => {
+    // StringLiteral of the ImportDeclaration is the import file (fileName in this case).
+    const importFiles = node.getChildren()
+      .filter(child => child.kind === ts.SyntaxKind.StringLiteral)
+      // @TODO (trik) Cast as any due to incompatible typescript versions
+      // .map(n => (n as ts.StringLiteral).text);
+      .map(n => (n as any).text);
+
+    return importFiles.filter(file => file === fileName).length === 1;
+  });
+
+  if (relevantImports.length > 0) {
+    let importsAsterisk = false;
+    // imports from import file
+    const importNodes: ts.Node[] = [];
+    relevantImports.forEach(n => {
+      Array.prototype.push.apply(importNodes, findNodes(n, ts.SyntaxKind.Identifier));
+      if (findNodes(n, ts.SyntaxKind.AsteriskToken).length > 0) {
+        importsAsterisk = true;
+      }
+    });
+
+    // if imports * from fileName, don't add symbolName
+    if (importsAsterisk) {
+      return new NoopChange();
+    }
+
+    const importTextNodes = importNodes.filter((n: ts.Identifier) => n.text === symbolName);
+
+    // insert import if it's not there
+    if (importTextNodes.length === 0) {
+      const iFallbackPos =
+        findNodes(relevantImports[0], ts.SyntaxKind.CloseBraceToken)[0].getStart() ||
+        findNodes(relevantImports[0], ts.SyntaxKind.FromKeyword)[0].getStart();
+
+      // @TODO (trik) Cast as any due to incompatible typescript versions
+      return insertAfterLastOccurrence(importNodes as any, `, ${symbolName}`,
           fileToEdit, iFallbackPos);
     }
 
@@ -85,14 +175,18 @@ export function insertExport(source: ts.SourceFile, fileToEdit: string, symbolNa
   }
   const open = isDefault ? '' : '{ ';
   const close = isDefault ? '' : ' }';
-  // if there are no exports or 'use strict' statement, insert export at beginning of file
-  const insertAtBeginning = allExports.length === 0 && useStrict.length === 0;
+  // if there are no imports or 'use strict' statement, insert import at beginning of file
+  const insertAtBeginning = allImports.length === 0 && useStrict.length === 0;
   const separator = insertAtBeginning ? '' : ';\n';
-  const toInsert = `${separator}export ${open}${symbolName}${close}` +
+  const toInsert = `${separator}import ${open}${symbolName}${close}` +
     ` from '${fileName}'${insertAtBeginning ? ';\n' : ''}`;
 
+  if (allImports.length === 0) {
+    return new InsertChange(fileToEdit, fallbackPos, toInsert);
+  }
+
   return insertAfterLastOccurrence(
-    allExports,
+    allImports,
     toInsert,
     fileToEdit,
     fallbackPos,
