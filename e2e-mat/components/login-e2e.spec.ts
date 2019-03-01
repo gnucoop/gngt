@@ -2,7 +2,7 @@ import {browser, by, element, ElementFinder} from 'protractor';
 
 describe('login', () => {
   describe('disabling behavior', () => {
-    beforeEach(() => browser.get('/login'));
+    beforeEach(async () => await browser.get('/login'));
 
     it('should prevent form input when disabled', async () => {
       let fields: ElementFinder[] = await element.all(by.tagName('mat-form-field'));

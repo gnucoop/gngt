@@ -24,8 +24,6 @@ import './tasks/default';
 import './tasks/development-ion';
 import './tasks/development-mat';
 import './tasks/docs';
-import './tasks/e2e-ion';
-import './tasks/e2e-mat';
 import './tasks/example-module-mat';
 import './tasks/example-module-ion';
 import './tasks/lint';

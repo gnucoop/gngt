@@ -43,8 +43,9 @@ http_archive(
 
 http_archive(
   name = "ngrx",
-  url = "https://github.com/ngrx/platform/archive/7.3.0.zip",
-  strip_prefix = "platform-7.3.0",
+  url = "https://github.com/ngrx/platform/archive/1613f503491d98f390ae576bfec81c72fc679c63.zip",
+  strip_prefix = "platform-1613f503491d98f390ae576bfec81c72fc679c63",
+  sha256 = "4f01874397c16b91e6079296acecf415b0f6b9d83d65d6193e01ee17444f4ee0"
 )
 
 http_archive(

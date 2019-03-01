@@ -1,6 +1,7 @@
 package(default_visibility=["//visibility:public"])
 
 load("//tools:defaults.bzl", "ts_library")
+load("//tools:webpack_bundle.bzl", "webpack_bundle")
 
 # Common set-up for all Gngt tests.
 ts_library(
@@ -13,4 +14,68 @@ ts_library(
   ],
   # This file *must* end with "spec" in order for ts_web_test to load it.
   srcs = ["angular-test-init-spec.ts"],
+)
+
+webpack_bundle(
+  name = "date_fns_bundle",
+  library = "date-fns",
+  library_target = "umd",
+  entry_point = "@gngtdeps//node_modules/date-fns:index.js",
+  output_name = "date-fns.umd.js",
+  deps = [
+    "@gngtdeps//date-fns",
+  ],
+)
+
+webpack_bundle(
+  name = "ionic_core_bundle",
+  library = "@ionic/core",
+  library_target = "umd",
+  entry_point = "@gngtdeps//node_modules/@ionic/core:dist/esm/es5/index.js",
+  output_name = "ionic-core.umd.js",
+  deps = [
+    "@gngtdeps//@ionic/core",
+  ]
+)
+
+webpack_bundle(
+  name = "ionic_core_loader_bundle",
+  library = "@ionic/core/loader",
+  library_target = "umd",
+  entry_point = "@gngtdeps//node_modules/@ionic/core:loader/index.js",
+  output_name = "ionic-core-loader.umd.js",
+  deps = [
+    "@gngtdeps//@ionic/core",
+  ]
+)
+
+webpack_bundle(
+  name = "ionic_angular_bundle",
+  library = "@ionic/angular",
+  library_target = "umd",
+  externals = [
+    '@angular/core',
+    '@angular/common',
+    '@angular/forms',
+    '@angular/platform-browser',
+    '@angular/router',
+    'tslib',
+    'rxjs',
+  ],
+  entry_point = "@gngtdeps//node_modules/@ionic/angular:dist/fesm5.js",
+  output_name = "ionic-angular.umd.js",
+  deps = [
+    "@gngtdeps//@ionic/angular",
+  ]
+)
+
+# Common set-up for all Gngt tests.
+ts_library(
+  name = "requirejs_init",
+  testonly = True,
+  deps = [
+    "@gngtdeps//@types/jasmine",
+  ],
+  # This file *must* end with "spec" in order for ts_web_test to load it.
+  srcs = ["requirejs-init.ts"],
 )

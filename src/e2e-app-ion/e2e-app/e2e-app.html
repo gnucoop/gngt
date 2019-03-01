@@ -4,7 +4,7 @@
 <nav role="navigation">
   <ion-button (click)="showLinks = !showLinks">Toggle Navigation Links</ion-button>
   <ion-list *ngIf="showLinks">
-    <ion-item [routerLink]="['login']"><ion-label>Login</ion-label></ion-item>
+    <ion-item (click)="navTo('/calendar')"><ion-label>Calendar</ion-label></ion-item>
   </ion-list>
 </nav>
 <main role="main">

@@ -7,8 +7,6 @@ task('ci:lint', ['lint']);
 // Travis sometimes does not exit the process and times out. This is to prevent that.
 task('ci:test', ['test:single-run'], () => process.exit(0));
 
-task('ci:e2e', sequenceTask('e2e-ion', 'e2e-mat'));
-
 /**
  * Task to verify that all components work with AOT compilation. This task requires the
  * release output to be built already.
