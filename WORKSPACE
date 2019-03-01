@@ -25,8 +25,8 @@ http_archive(
 
 http_archive(
   name = "angular_material",
-  url = "https://github.com/angular/material2/archive/7.3.1.zip",
-  strip_prefix = "material2-7.3.1",
+  url = "https://github.com/angular/material2/archive/7.3.3.zip",
+  strip_prefix = "material2-7.3.3",
 )
 
 # Add RxJS as repository because those are needed in order to build Angular from source.
@@ -43,8 +43,8 @@ http_archive(
 
 http_archive(
   name = "ngrx",
-  url = "https://github.com/ngrx/platform/archive/7.2.0.zip",
-  strip_prefix = "platform-7.2.0",
+  url = "https://github.com/ngrx/platform/archive/7.3.0.zip",
+  strip_prefix = "platform-7.3.0",
 )
 
 http_archive(
