@@ -11,6 +11,7 @@ System.config({
     'rxjs': 'node:rxjs',
     'tslib': 'node:tslib/tslib.js',
     'date-fns': 'node:date-fns/index.js',
+    'url-parse': 'node:url-parse/dist/url-parse.js',
 
     // Angular specific mappings.
     '@angular/core': 'node:@angular/core/bundles/core.umd.js',
@@ -35,10 +36,37 @@ System.config({
       'node:@angular/platform-browser-dynamic/bundles/platform-browser-dynamic.umd.min.js',
     '@angular/platform-browser-dynamic/testing':
       'node:@angular/platform-browser-dynamic/bundles/platform-browser-dynamic-testing.umd.min.js',
+    '@angular/router': 'node:@angular/router/bundles/router.umd.min.js',
+    '@angular/cdk/a11y': 'node:@angular/cdk/bundles/cdk-a11y.umd.js',
+    '@angular/cdk/bidi': 'node:@angular/cdk/bundles/cdk-bidi.umd.js',
+    '@angular/cdk/coercion': 'node:@angular/cdk/bundles/cdk-coercion.umd.js',
+    '@angular/cdk/collections': 'node:@angular/cdk/bundles/cdk-collections.umd.js',
+    '@angular/cdk/keycodes': 'node:@angular/cdk/bundles/cdk-keycodes.umd.js',
+    '@angular/cdk/layout': 'node:@angular/cdk/bundles/cdk-layout.umd.js',
+    '@angular/cdk/observers': 'node:@angular/cdk/bundles/cdk-observers.umd.js',
+    '@angular/cdk/overlay': 'node:@angular/cdk/bundles/cdk-overlay.umd.js',
+    '@angular/cdk/platform': 'node:@angular/cdk/bundles/cdk-platform.umd.js',
+    '@angular/cdk/portal': 'node:@angular/cdk/bundles/cdk-portal.umd.js',
+    '@angular/cdk/scrolling': 'node:@angular/cdk/bundles/cdk-scrolling.umd.js',
+    '@angular/cdk/text-field': 'node:@angular/cdk/bundles/cdk-text-field.umd.js',
+    '@angular/material/button': 'node:@angular/material/bundles/material-button.umd.js',
+    '@angular/material/card': 'node:@angular/material/bundles/material-card.umd.js',
+    '@angular/material/core': 'node:@angular/material/bundles/material-core.umd.js',
+    '@angular/material/dialog': 'node:@angular/material/bundles/material-dialog.umd.js',
+    '@angular/material/form-field': 'node:@angular/material/bundles/material-form-field.umd.js',
+    '@angular/material/input': 'node:@angular/material/bundles/material-input.umd.js',
+    '@angular/material/snack-bar': 'node:@angular/material/bundles/material-snack-bar.umd.js',
     
+    '@ionic/core': 'bundles:ionic-core.umd.js',
+    '@ionic/core/loader': 'bundles:ionic-core-loader.umd.js',
+    '@ionic/angular': 'bundles:ionic-angular.umd.js',
+
     '@ngx-translate/core': 'node:@ngx-translate/core/bundles/ngx-translate-core.umd.js',
     '@ngx-translate/http-loader':
       'node:@ngx-translate/http-loader/bundles/ngx-translate-http-loader.umd.js',
+    
+    '@ngrx/effects': 'node:@ngrx/effects/bundles/effects.umd.js',
+    '@ngrx/store': 'node:@ngrx/store/bundles/store.umd.js',
     
     'pouchdb': 'node:pouchdb/dist/pouchdb.js',
     'pouchdb-abstract-mapreduce': 'node:pouchdb-abstract-mapreduce/lib/index.js',
@@ -68,6 +96,7 @@ System.config({
 
     '@gngt/core/admin': 'dist/packages/core/admin/index.js',
     '@gngt/core/auth': 'dist/packages/core/auth/index.js',
+    '@gngt/core/calendar': 'dist/packages/core/calendar/index.js',
     '@gngt/core/common': 'dist/packages/core/common/index.js',
     '@gngt/core/model': 'dist/packages/core/model/index.js',
     '@gngt/core/reducers': 'dist/packages/core/reducers/index.js',

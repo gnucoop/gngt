@@ -15,8 +15,10 @@ const defaultOptions = {
 /** Builds everything that is necessary for karma. */
 task(':test:build', sequenceTask(
   'clean',
+  ':build:ionic-bundle',
   'core:build-no-bundles',
-  // 'material:build-no-bundles'
+  'material:build-no-bundles',
+  'ionic:build-no-bundles'
 ));
 
 /**
@@ -47,7 +49,7 @@ task('test', [':test:build'], karmaWatchTask());
  * This is identical to `gulp test`, however it won't launch and manage Chrome automatically,
  * which makes it convenient debugging unit tests against multiple different browsers.
  */
-task('test:static', [':test:build'], karmaWatchTask({browsers: ['Chrome']}));
+task('test:static', [':test:build'], karmaWatchTask({browsers: []}));
 
 /**
  * Returns a Gulp task that spawns a Karma server and reloads whenever the files change.

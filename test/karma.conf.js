@@ -29,9 +29,11 @@ module.exports = (config) => {
       // Include all Gngt dependencies
       {pattern: 'node_modules/@angular/**/*', included: false, watched: false},
       {pattern: 'node_modules/@ngx-translate/**/*', included: false, watched: false},
+      {pattern: 'node_modules/@ngrx/**/*', included: false, watched: false},
       {pattern: 'node_modules/rxjs/**/*', included: false, watched: false},
       {pattern: 'node_modules/date-fns/**/*.js', included: false, watched: false},
       {pattern: 'node_modules/systemjs-plugin-babel/**/*.js', included: false, watched: false},
+      {pattern: 'node_modules/url-parse/dist/*.js', included: false, watched: false},
 
       {pattern: 'node_modules/crypto-js/crypto-js.js', included: true, watched: false},
       {pattern: 'node_modules/crypto-js/index.js', included: true, watched: false},
@@ -58,6 +60,7 @@ module.exports = (config) => {
       {pattern: 'node_modules/ms/*.js', included: false, watched: false},
       {pattern: 'node_modules/spark-md5/*.js', included: false, watched: false},
       {pattern: 'node_modules/uuid/lib/*.js', included: false, watched: false},
+      {pattern: 'bundles/*.js', included: false, watched: false},
 
       {pattern: 'test/karma-system-config.js', included: true, watched: false},
       {pattern: 'test/karma-test-shim.js', included: true, watched: false},
@@ -99,7 +102,7 @@ module.exports = (config) => {
     browserNoActivityTimeout: 300000,
     captureTimeout: 180000,
 
-    browsers: ['Chrome'],
+    browsers: ['ChromeHeadless'],
     singleRun: false,
 
     // Try Websocket for a faster transmission first. Fallback to polling if necessary.
