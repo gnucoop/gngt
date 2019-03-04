@@ -9,15 +9,15 @@ node {
   }
   stage('Bazel targets') {
     sh 'bazel build src/... --build_tag_filters=-docs-package'
-    sh 'bazel test src/... --build_tag_filters=-docs-package --job 1'
+    sh 'bazel test src/... --build_tag_filters=-docs-package --jobs 1'
     sh 'bazel test tools/public_api_guard/...'
   }
   stage('Unit tests') {
     sh './scripts/circleci/run-local-browser-tests.sh'
   }
   stage('Integration tests') {
-    sh 'bazel test e2e-mat/... --job 1'
-    sh 'bazel test e2e-ion/... --job 1'
+    sh 'bazel test e2e-mat/... --jobs 1'
+    sh 'bazel test e2e-ion/... --jobs 1'
     sh 'yarn gulp ci:prerender'
   }
   stage('Release output') {
