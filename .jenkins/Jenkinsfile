@@ -1,6 +1,6 @@
 node {
   stage('Setup') {
-    scmInfo = checkout scm
+    scmInfo = checkout scm, noTags: false
     gitBranch = scmInfo.GIT_BRANCH.replace("origin/", "")
     sh 'yarn install'
   }
