@@ -115,7 +115,11 @@ export abstract class AdminEditComponent<
         return s!.getGetObject();
       }),
       filter(o => o != null),
-      tap(o => this._processObject(o)),
+      tap(o => {
+        if (this._processObject) {
+          this._processObject(o);
+        }
+      }),
       shareReplay(1)
     );
 
