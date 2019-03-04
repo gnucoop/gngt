@@ -29,6 +29,12 @@
                     [value]="choice.value">{{ choice.label | translate }}</mat-option>
               </mat-select>
             </mat-form-field>
+            <mat-form-field *ngSwitchCase="'multipleselect'">
+              <mat-select [placeholder]="field.label | translate" [formControlName]="field.name" multiple>
+                <mat-option *ngFor="let choice of field.choices|async"
+                    [value]="choice.value">{{ choice.label }}</mat-option>
+              </mat-select>
+            </mat-form-field>
           </ng-container>
         </div>
       </ng-container>

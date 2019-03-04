@@ -41,6 +41,13 @@
                     [value]="choice.value">{{ choice.label }}</ion-select-option>
               </ion-select>
             </ion-item>
+            <ion-item *ngSwitchCase="'multipleselect'">
+              <ion-label>{{ field.label | translate }}</ion-label>
+              <ion-select [formControlName]="field.name" multiple>
+                <ion-select-option *ngFor="let choice of field.choices|async"
+                    [value]="choice.value">{{ choice.label }}</ion-select-option>
+              </ion-select>
+            </ion-item>
           </ng-container>
         </ng-container>
       </ng-container>
