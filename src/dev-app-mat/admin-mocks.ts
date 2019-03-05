@@ -21,25 +21,40 @@
 
 import {Observable, of as obsOf, Subject} from 'rxjs';
 
+import {ModelListResult} from '@gngt/core/model';
+
 export class AdminModel {
+  id: number;
   foo: string;
   bar: string;
   baz: number;
 }
 
-const demoObj: AdminModel = {
-  foo: 'demo foo',
-  bar: 'demo bar',
-  baz: 2
-};
+const demoObjs: AdminModel[] = [
+  { id: 1, foo: 'demo foo 1', bar: 'demo bar 1', baz: 4 },
+  { id: 2, foo: 'demo foo 2', bar: 'demo bar 2', baz: 5 },
+  { id: 3, foo: 'demo foo 3', bar: 'demo bar 3', baz: 56 }
+];
 
 export class AdminModelMockService {
   private _subject: Subject<AdminModel> = new Subject<AdminModel>();
 
   get(_id: number): void {}
 
+  list(): void { }
+
   getGetObject(): Observable<AdminModel> {
-    return obsOf(demoObj);
+    return obsOf(demoObjs[0]);
+  }
+
+  getListObjects(): Observable<ModelListResult<AdminModel>> {
+    return obsOf({
+      count: demoObjs.length,
+      results: demoObjs,
+      next: null,
+      previous: null,
+      hasNext: false
+    });
   }
 
   getCreateSuccess(): Observable<AdminModel | null> {
@@ -60,5 +75,13 @@ export class AdminModelMockService {
 
   getPatchLoading(): Observable<boolean> {
     return obsOf(false);
+  }
+
+  getDeleteSuccess(): Observable<boolean> {
+    return obsOf(true);
+  }
+
+  getDeleteAllSuccess(): Observable<boolean> {
+    return obsOf(true);
   }
 }
