@@ -33,14 +33,34 @@
       </ng-container>
       <ng-container *ngFor="let header of headers"
           [matColumnDef]="header.column">
-        <ng-container *ngIf="header.sortable; else notSortable">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ header.label | translate }}</th>
-        </ng-container>
-        <ng-template #notSortable>
-          <th mat-header-cell *matHeaderCellDef>{{ header.label | translate }}</th>
-        </ng-template>
-        <td [routerLink]="baseEditUrl + element.id" mat-cell
-            *matCellDef="let element">{{ element|gngtGetObjectProperty:header.column }}</td>
+          <ng-container *ngIf="header.sortable; else notSortable">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              <ng-container *ngTemplateOutlet="cellTemplatesMap[header.label] ?
+                cellTemplatesMap[header.label] : defaultHeaderCellTemplate;
+                context: {$implicit: header.label | translate}">
+              </ng-container>
+            </th>
+          </ng-container>
+          <ng-template #notSortable>
+            <th mat-header-cell *matHeaderCellDef>
+              <ng-container *ngTemplateOutlet="cellTemplatesMap[header.label] ?
+                cellTemplatesMap[header.label] : defaultHeaderCellTemplate;
+                context: {$implicit: header.label | translate}">
+              </ng-container>
+            </th>
+          </ng-template>
+          <ng-template #defaultHeaderCellTemplate>
+            {{ header.label | translate }}
+          </ng-template>
+        <td [routerLink]="baseEditUrl + element.id" mat-cell *matCellDef="let element">
+          <ng-container *ngTemplateOutlet="cellTemplatesMap[header.column] ?
+            cellTemplatesMap[header.column] : defaultCellTemplate;
+            context: {$implicit: element|gngtGetObjectProperty:header.column}">
+          </ng-container>
+          <ng-template #defaultCellTemplate>
+            {{ element|gngtGetObjectProperty:header.column }}
+          </ng-template>
+        </td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
