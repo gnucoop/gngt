@@ -27,7 +27,8 @@
     "publish-release": "ts-node --project tools/release/tsconfig.json tools/release/publish-release.ts",
     "check-release-output": "ts-node --project tools/release/tsconfig.json tools/release/check-release-output.ts",
     "preinstall": "node ./tools/npm/check-npm.js",
-    "format": "git-clang-format"
+    "format": "git-clang-format",
+    "postinstall": "rm -rf bundles"
   },
   "version": "7.0.0-alpha.5",
   "requiredAngularVersion": ">=7.0.0",
