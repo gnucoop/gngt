@@ -19,7 +19,7 @@
  *
  */
 
-import {ChangeDetectorRef, EventEmitter, Input, OnDestroy} from '@angular/core';
+import {ChangeDetectorRef, EventEmitter, Input, OnDestroy, Output} from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {Router} from '@angular/router';
 
@@ -101,6 +101,13 @@ export abstract class AdminEditComponent<
   private _saveSub: Subscription = Subscription.EMPTY;
   private _savedSub: Subscription = Subscription.EMPTY;
 
+  private _valueChanges$: Observable<any>;
+
+  @Output()
+  get valueChanges$(): Observable<any>  {
+  return this._valueChanges$;
+  }
+
   constructor(
     private _cdr: ChangeDetectorRef, private _fb: FormBuilder,
     private _router: Router
@@ -134,6 +141,10 @@ export abstract class AdminEditComponent<
         }, {}));
       }),
       shareReplay(1)
+    );
+
+    this._valueChanges$ = this.form.pipe(
+      switchMap((form) => form.valueChanges)
     );
 
     this._saveSub = this._saveEvt.pipe(

@@ -45,7 +45,8 @@ import {Model, ModelActions, reducers as fromModel} from '@gngt/core/model';
     'processFormData',
     'processObject',
     'id'
-  ]
+  ],
+  outputs: ['valueChanges$']
 })
 export class AdminEditComponent<
     T extends Model,
