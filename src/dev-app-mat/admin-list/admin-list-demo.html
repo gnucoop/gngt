@@ -1,0 +1,9 @@
+<gngt-admin-list title="List Demo"
+    [headers]="headers"
+    [displayedColumns]="displayedColumns"
+    [dataSource]="dataSource"
+    [service]="service">
+  <ng-container *gngtAdminListCell="'foo'; let value">
+    Override foo {{ value }}
+  </ng-container>
+</gngt-admin-list>

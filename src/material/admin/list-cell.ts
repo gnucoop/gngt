@@ -19,20 +19,11 @@
  *
  */
 
-import {Routes} from '@angular/router';
+import {Directive, Input, TemplateRef} from '@angular/core';
 
-import {AdminEditDemo} from './admin-edit/admin-edit-demo';
-import {AdminListDemo} from './admin-list/admin-list-demo';
-import {CalendarDemo} from './calendar/calendar-demo';
-import {DevAppHome} from './dev-app';
-import {ExamplesPage} from './examples-page/examples-page';
-import {LoginDemo} from './login/login-demo';
+@Directive({selector: '[gngtAdminListCell]'})
+export class AdminListCellDirective {
+  @Input('gngtAdminListCell') column: string;
 
-export const DEV_APP_ROUTES: Routes = [
-  {path: '', component: DevAppHome},
-  {path: 'admin-edit', component: AdminEditDemo},
-  {path: 'admin-list', component: AdminListDemo},
-  {path: 'calendar', component: CalendarDemo},
-  {path: 'login', component: LoginDemo},
-  {path: 'examples', component: ExamplesPage},
-];
+  constructor(readonly templateRef: TemplateRef<any>) { }
+}

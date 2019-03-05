@@ -45,6 +45,7 @@ import {CommonModule as GngtCommonModule} from '@gngt/core/common';
 import {AdminUserInteractionsService} from './admin-user-interactions';
 import {AdminDeleteConfirmDialogComponent} from './delete-confirm';
 import {AdminEditComponent} from './edit';
+import {AdminListCellDirective} from './list-cell';
 import {AdminListComponent} from './list';
 
 @NgModule({
@@ -72,11 +73,13 @@ import {AdminListComponent} from './list';
   declarations: [
     AdminDeleteConfirmDialogComponent,
     AdminEditComponent,
-    AdminListComponent
+    AdminListCellDirective,
+    AdminListComponent,
   ],
   exports: [
     AdminEditComponent,
-    AdminListComponent
+    AdminListCellDirective,
+    AdminListComponent,
   ],
   entryComponents: [
     AdminDeleteConfirmDialogComponent

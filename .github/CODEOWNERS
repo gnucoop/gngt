@@ -38,6 +38,7 @@
 /src/dev-app-mat/example/**                       @trik
 /src/dev-app-mat/examples-page/**                 @trik
 /src/dev-app-mat/admin-edit/*                     @trik
+/src/dev-app-mat/admin-list/*                     @trik
 /src/dev-app-mat/calendar/*                       @trik
 /src/dev-app-mat/login/*                          @trik
 

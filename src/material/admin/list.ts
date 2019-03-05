@@ -20,8 +20,9 @@
  */
 
 import {
-  ChangeDetectionStrategy, ChangeDetectorRef, Component, Input,
-  OnDestroy, OnInit, ViewChild, ViewEncapsulation
+  AfterContentInit, ChangeDetectionStrategy, ChangeDetectorRef, Component,
+  ContentChildren, Input, OnDestroy, OnInit, QueryList, TemplateRef,
+  ViewChild, ViewEncapsulation
 } from '@angular/core';
 import {SelectionModel} from '@angular/cdk/collections';
 import {MatPaginator} from '@angular/material/paginator';
@@ -33,6 +34,7 @@ import {Model, ModelActions, ModelService, reducers as fromModel} from '@gngt/co
 import {ModelDataSource} from '@gngt/material/model';
 
 import {AdminUserInteractionsService} from './admin-user-interactions';
+import {AdminListCellDirective} from './list-cell';
 
 @Component({
   moduleId: module.id,
@@ -62,15 +64,26 @@ export class AdminListComponent<
     A7 extends ModelActions.ModelDeleteAllAction<T>,
     MS extends ModelService<T, S, A1, A2, A3, A4, A5, A6, A7>
   > extends BaseAdminListComponent<T, S, A1, A2, A3, A4, A5, A6, A7, MS>
-    implements OnDestroy, OnInit {
+    implements AfterContentInit, OnDestroy, OnInit {
   @Input() dataSource: ModelDataSource<T, S, A1, A2, A3, A4, A5, A6, A7, MS>;
   @ViewChild(MatPaginator) paginatorCmp: MatPaginator;
   @ViewChild(MatSort) sortCmp: MatSort;
   @ViewChild('actionSel', {read: MatSelect}) actionSel: MatSelect;
+  @ContentChildren(AdminListCellDirective) cellTemplates: QueryList<AdminListCellDirective>;
   readonly selection: SelectionModel<T> = new SelectionModel<T>(true, []);
+
+  private _cellTemplatesMap: {[column: string]: TemplateRef<any>} = {};
+  get cellTemplatesMap(): {[column: string]: TemplateRef<any>} { return this._cellTemplatesMap; }
 
   constructor(cdr: ChangeDetectorRef, aui: AdminUserInteractionsService) {
     super(cdr, aui);
+  }
+
+  ngAfterContentInit(): void {
+    this._cellTemplatesMap = this.cellTemplates.reduce((prev, cur) => {
+      prev[cur.column] = cur.templateRef;
+      return prev;
+    }, {} as {[column: string]: TemplateRef<any>});
   }
 
   ngOnInit(): void {

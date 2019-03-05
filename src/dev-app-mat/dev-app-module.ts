@@ -39,6 +39,7 @@ import {StoreModule} from '@ngrx/store';
 
 import {EXAMPLE_COMPONENTS, ExampleModule} from '@gngt/material-examples';
 import {AdminEditDemo} from './admin-edit/admin-edit-demo';
+import {AdminListDemo} from './admin-list/admin-list-demo';
 import {CalendarDemo} from './calendar/calendar-demo';
 import {DevAppComponent, DevAppHome} from './dev-app';
 import {ExamplePageModule} from './example/example-module';
@@ -79,6 +80,7 @@ export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
   ],
   declarations: [
     AdminEditDemo,
+    AdminListDemo,
     CalendarDemo,
     DevAppComponent,
     DevAppHome,
