@@ -46,6 +46,7 @@ import {ExamplePageModule} from './example/example-module';
 import {ExamplesPage} from './examples-page/examples-page';
 import {DevAppGngtModule} from './gngt-module';
 import {LoginDemo} from './login/login-demo';
+import {SyncDemo} from './sync/sync-demo';
 import {DEV_APP_ROUTES} from './routes';
 
 
@@ -86,6 +87,7 @@ export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
     DevAppHome,
     ExamplesPage,
     LoginDemo,
+    SyncDemo,
   ],
   bootstrap: [
     DevAppComponent,

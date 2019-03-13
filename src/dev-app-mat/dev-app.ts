@@ -41,6 +41,7 @@ export class DevAppComponent {
     {name: 'Admin List', route: '/admin-list'},
     {name: 'Calendar', route: '/calendar'},
     {name: 'Login', route: '/login'},
+    {name: 'Sync', route: '/sync'},
   ];
 
   constructor(

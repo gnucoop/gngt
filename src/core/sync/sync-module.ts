@@ -19,29 +19,23 @@
  *
  */
 
-import {NgModule} from '@angular/core';
+import {HTTP_INTERCEPTORS} from '@angular/common/http';
+import {ModuleWithProviders, NgModule} from '@angular/core';
 
-import {SyncModule} from '@gngt/core/sync';
-import {AdminModule} from '@gngt/material/admin';
-import {AuthModule} from '@gngt/material/auth';
-import {CalendarModule} from '@gngt/material/calendar';
+import {OfflineInterceptor} from './offline-interceptor';
+import {SYNC_OPTIONS, SyncOptions} from './sync-options';
+import {SyncService} from './sync-service';
 
-/**
- * NgModule that includes all Material modules that are required to serve the demo-app.
- */
-@NgModule({
-  imports: [
-    SyncModule.forRoot({
-      localDatabaseName: 'gngt_demo',
-      baseUrl: 'http://127.0.0.1:8000/sync',
-      changesPath: 'changes',
-      docsPath: 'docs',
-    })
-  ],
-  exports: [
-    AdminModule,
-    AuthModule,
-    CalendarModule,
-  ]
-})
-export class DevAppGngtModule {}
+@NgModule({})
+export class SyncModule {
+  static forRoot(opts: SyncOptions): ModuleWithProviders {
+    return {
+      ngModule: SyncModule,
+      providers: [
+        SyncService,
+        {provide: HTTP_INTERCEPTORS, useClass: OfflineInterceptor, multi: true},
+        {provide: SYNC_OPTIONS, useValue: opts},
+      ]
+    };
+  }
+}

@@ -36,6 +36,7 @@ import {StoreModule} from '@ngrx/store';
 
 import {EXAMPLE_COMPONENTS, ExampleModule} from '@gngt/ionic-examples';
 import {AdminEditDemo} from './admin-edit/admin-edit-demo';
+import {AdminListDemo} from './admin-list/admin-list-demo';
 import {CalendarDemo} from './calendar/calendar-demo';
 import {DevAppComponent, DevAppHome} from './dev-app';
 import {ExamplePageModule} from './example/example-module';
@@ -48,7 +49,6 @@ import {DEV_APP_ROUTES} from './routes';
 export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
-
 
 @NgModule({
   imports: [
@@ -72,6 +72,7 @@ export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
   ],
   declarations: [
     AdminEditDemo,
+    AdminListDemo,
     CalendarDemo,
     DevAppComponent,
     DevAppHome,

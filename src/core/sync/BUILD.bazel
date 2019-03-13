@@ -3,31 +3,34 @@ package(default_visibility=["//visibility:public"])
 load("//tools:defaults.bzl", "ng_module", "ng_test_library", "ng_web_test_suite")
 
 ng_module(
-  name = "model",
+  name = "sync",
   srcs = glob(["**/*.ts"], exclude=["**/*.spec.ts"]),
-  module_name = "@gngt/core/model",
+  module_name = "@gngt/core/sync",
   assets = [],
   deps = [
     "@angular//packages/common/http",
     "@angular//packages/core",
-    "@ngrx//modules/effects",
-    "@ngrx//modules/store",
+    "@gngtdeps//@types/pouchdb",
+    "@gngtdeps//@types/pouchdb-find",
     "//src/core/common",
-    "//src/core/reducers",
-    "//src/core/sync",
   ],
 )
 
 ng_test_library(
-  name = "model_test_sources",
+  name = "sync_test_sources",
   srcs = glob(["**/*.spec.ts"]),
   deps = [
+    "@angular//packages/common/http",
+    "@angular//packages/common/http/testing",
     "@angular//packages/platform-browser",
-    ":model"
+    "@gngtdeps//@types/pouchdb",
+    "@rxjs",
+    "@rxjs//operators",
+    ":sync"
   ]
 )
 
 ng_web_test_suite(
   name = "unit_tests",
-  deps = [":model_test_sources"],
+  deps = [":sync_test_sources"],
 )

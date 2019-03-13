@@ -1,0 +1,16 @@
+{
+  "extends": "../tsconfig-build",
+  "files": [
+    "public-api.ts",
+    "./typings.d.ts",
+    "../typings.d.ts"
+  ],
+  "angularCompilerOptions": {
+    "annotateForClosureCompiler": true,
+    "strictMetadataEmit": true,
+    "flatModuleOutFile": "index.js",
+    "flatModuleId": "@gngt/core/sync",
+    "skipTemplateCodegen": true,
+    "fullTemplateTypeCheck": true
+  }
+}

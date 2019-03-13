@@ -27,6 +27,7 @@ import {CalendarDemo} from './calendar/calendar-demo';
 import {DevAppHome} from './dev-app';
 import {ExamplesPage} from './examples-page/examples-page';
 import {LoginDemo} from './login/login-demo';
+import {SyncDemo} from './sync/sync-demo';
 
 export const DEV_APP_ROUTES: Routes = [
   {path: '', component: DevAppHome},
@@ -34,5 +35,6 @@ export const DEV_APP_ROUTES: Routes = [
   {path: 'admin-list', component: AdminListDemo},
   {path: 'calendar', component: CalendarDemo},
   {path: 'login', component: LoginDemo},
+  {path: 'sync', component: SyncDemo},
   {path: 'examples', component: ExamplesPage},
 ];

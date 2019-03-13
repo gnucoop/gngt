@@ -19,29 +19,35 @@
  *
  */
 
-import {NgModule} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Component} from '@angular/core';
 
-import {SyncModule} from '@gngt/core/sync';
-import {AdminModule} from '@gngt/material/admin';
-import {AuthModule} from '@gngt/material/auth';
-import {CalendarModule} from '@gngt/material/calendar';
+import {Observable} from 'rxjs';
 
-/**
- * NgModule that includes all Material modules that are required to serve the demo-app.
- */
-@NgModule({
-  imports: [
-    SyncModule.forRoot({
-      localDatabaseName: 'gngt_demo',
-      baseUrl: 'http://127.0.0.1:8000/sync',
-      changesPath: 'changes',
-      docsPath: 'docs',
-    })
-  ],
-  exports: [
-    AdminModule,
-    AuthModule,
-    CalendarModule,
-  ]
+import {SyncService, SyncStatus} from '@gngt/core/sync';
+
+@Component({
+  moduleId: module.id,
+  selector: 'sync-demo',
+  templateUrl: 'sync-demo.html',
+  styleUrls: ['sync-demo.css'],
 })
-export class DevAppGngtModule {}
+export class SyncDemo {
+  readonly status: Observable<SyncStatus>;
+
+  constructor(private _httpClient: HttpClient, private _service: SyncService) {
+    this.status = _service.status;
+
+    _service.registerModel('http://127.0.0.1:8000/category', 'category');
+  }
+
+  start(): void {
+    this._service.start();
+  }
+
+  list(): void {
+    this._httpClient.get('http://127.0.0.1:8000/category/1').subscribe(
+      r => console.log(r)
+    );
+  }
+}

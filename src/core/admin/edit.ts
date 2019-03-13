@@ -82,12 +82,12 @@ export abstract class AdminEditComponent<
     this._id.next(id);
   }
 
-  private _processObject: (value: any) => void;
+  private _processObject: (value: any) => void = (_) => { };
   @Input() set processObject(processObject: (value: any) => void) {
     this._processObject = processObject;
   }
 
-  private _processFormData: (value: any) => void;
+  private _processFormData: (value: any) => void = (_) => { };
   @Input() set processFormData(processFormData: (value: any) => void) {
     this._processFormData = processFormData;
   }
@@ -163,6 +163,7 @@ export abstract class AdminEditComponent<
     });
 
     const serviceObs = this._service.pipe(filter(s => s != null));
+
     this.loading = serviceObs.pipe(
       filter(s => s != null),
       switchMap(s => merge(s!.getGetLoading(), s!.getCreateLoading(), s!.getPatchLoading()))
@@ -183,6 +184,8 @@ export abstract class AdminEditComponent<
   }
 
   ngOnDestroy(): void {
+    this._updateFormEvt.complete();
+    this._saveEvt.complete();
     this._saveSub.unsubscribe();
     this._savedSub.unsubscribe();
   }

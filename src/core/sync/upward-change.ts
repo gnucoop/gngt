@@ -19,29 +19,10 @@
  *
  */
 
-import {NgModule} from '@angular/core';
+import {LocalDoc} from './local-doc';
+import {LocalSyncEntry} from './local-sync-entry';
 
-import {SyncModule} from '@gngt/core/sync';
-import {AdminModule} from '@gngt/material/admin';
-import {AuthModule} from '@gngt/material/auth';
-import {CalendarModule} from '@gngt/material/calendar';
-
-/**
- * NgModule that includes all Material modules that are required to serve the demo-app.
- */
-@NgModule({
-  imports: [
-    SyncModule.forRoot({
-      localDatabaseName: 'gngt_demo',
-      baseUrl: 'http://127.0.0.1:8000/sync',
-      changesPath: 'changes',
-      docsPath: 'docs',
-    })
-  ],
-  exports: [
-    AdminModule,
-    AuthModule,
-    CalendarModule,
-  ]
-})
-export class DevAppGngtModule {}
+export interface UpwardChange {
+  syncEntry: LocalSyncEntry;
+  localDoc: LocalDoc<any>;
+}

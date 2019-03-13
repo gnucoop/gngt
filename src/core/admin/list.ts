@@ -86,7 +86,7 @@ export abstract class AdminListComponent<
 
   private _deletionSub: Subscription = Subscription.EMPTY;
 
-  constructor(private _cdr: ChangeDetectorRef, private _aui: AdminUserInteractionsService) { }
+  constructor(protected _cdr: ChangeDetectorRef, private _aui: AdminUserInteractionsService) { }
 
   abstract getSelection(): T[];
   abstract getItems(): T[];
@@ -136,6 +136,8 @@ export abstract class AdminListComponent<
       }
     });
   }
+
+  protected _getService(): MS { return this._service; }
 
   private _getActionHandler(action: string): string {
     action = action.charAt(0).toUpperCase() + action.substring(1);
