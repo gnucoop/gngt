@@ -24,8 +24,7 @@ import {Action} from '@ngrx/store';
 import {Model, ModelListParams, ModelListResult} from '@gngt/core/common';
 import {type} from '@gngt/core/reducers';
 
-
-export abstract class ModelActionTypes {
+export interface ModelActionTypes {
   GET: string;
   GET_FAILURE: string;
   GET_SUCCESS: string;

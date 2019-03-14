@@ -19,29 +19,24 @@
  *
  */
 
-import {NgModule} from '@angular/core';
+import {Component} from '@angular/core';
 
-import {SyncModule} from '@gngt/core/sync';
-import {AdminModule} from '@gngt/material/admin';
-import {AuthModule} from '@gngt/material/auth';
-import {CalendarModule} from '@gngt/material/calendar';
+import {AdminListHeader} from '@gngt/core/admin';
 
-/**
- * NgModule that includes all Material modules that are required to serve the demo-app.
- */
-@NgModule({
-  imports: [
-    SyncModule.forRoot({
-      localDatabaseName: 'gngt_demo',
-      baseUrl: 'http://127.0.0.1:8000/sync',
-      changesPath: 'changes',
-      docsPath: 'docs',
-    })
-  ],
-  exports: [
-    AdminModule,
-    AuthModule,
-    CalendarModule,
-  ]
+import {AdminModelMockService} from '../admin-mocks';
+
+@Component({
+  moduleId: module.id,
+  selector: 'admin-list-demo',
+  templateUrl: 'admin-list-demo.html',
+  styleUrls: ['admin-list-demo.css'],
 })
-export class DevAppGngtModule {}
+export class AdminListDemo {
+  readonly service = new AdminModelMockService();
+  readonly headers: AdminListHeader[] = [
+    {column: 'foo', label: 'Foo', sortable: true},
+    {column: 'bar', label: 'Bar', sortable: true},
+    {column: 'baz', label: 'Baz', sortable: true},
+  ];
+  readonly displayedColumns = ['foo', 'bar', 'baz'];
+}

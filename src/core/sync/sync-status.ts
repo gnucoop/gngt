@@ -19,29 +19,29 @@
  *
  */
 
-import {NgModule} from '@angular/core';
+interface BaseSyncStatus {
+  status: 'initializing' | 'paused' | 'syncing' | 'error';
+}
 
-import {SyncModule} from '@gngt/core/sync';
-import {AdminModule} from '@gngt/material/admin';
-import {AuthModule} from '@gngt/material/auth';
-import {CalendarModule} from '@gngt/material/calendar';
+export interface SyncStatusInitializing extends BaseSyncStatus {
+  status: 'initializing';
+}
 
-/**
- * NgModule that includes all Material modules that are required to serve the demo-app.
- */
-@NgModule({
-  imports: [
-    SyncModule.forRoot({
-      localDatabaseName: 'gngt_demo',
-      baseUrl: 'http://127.0.0.1:8000/sync',
-      changesPath: 'changes',
-      docsPath: 'docs',
-    })
-  ],
-  exports: [
-    AdminModule,
-    AuthModule,
-    CalendarModule,
-  ]
-})
-export class DevAppGngtModule {}
+export interface SyncStatusPaused extends BaseSyncStatus {
+  status: 'paused';
+}
+
+export interface SyncStatusSyncing extends BaseSyncStatus {
+  status: 'syncing';
+}
+
+export interface SyncStatusError extends BaseSyncStatus {
+  status: 'error';
+  error: string;
+}
+
+export type SyncStatus =
+  | SyncStatusInitializing
+  | SyncStatusPaused
+  | SyncStatusSyncing
+  | SyncStatusError;

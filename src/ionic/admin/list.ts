@@ -21,11 +21,18 @@
 
 import {
   ChangeDetectionStrategy, ChangeDetectorRef, Component,
-  OnDestroy, ViewEncapsulation
+  Input, OnDestroy, OnInit, ViewChild, ViewEncapsulation
 } from '@angular/core';
 
+import {Subscription} from 'rxjs';
+import {filter} from 'rxjs/operators';
+
+import {IonInfiniteScroll} from '@ionic/angular';
+
 import {AdminListComponent as BaseAdminListComponent} from '@gngt/core/admin';
-import {Model, ModelActions, ModelService, reducers as fromModel} from '@gngt/core/model';
+import {
+  Model, ModelActions, ModelListParams, ModelService, reducers as fromModel
+} from '@gngt/core/model';
 
 import {AdminUserInteractionsService} from './admin-user-interactions';
 
@@ -57,9 +64,52 @@ export class AdminListComponent<
     A7 extends ModelActions.ModelDeleteAllAction<T>,
     MS extends ModelService<T, S, A1, A2, A3, A4, A5, A6, A7>
   > extends BaseAdminListComponent<T, S, A1, A2, A3, A4, A5, A6, A7, MS>
-    implements OnDestroy {
+    implements OnDestroy, OnInit {
+  @Input() baseListParams: ModelListParams;
+  @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
+
+  private _items: T[] = [];
+  get items(): T[] { return this._items; }
+
+  private _hasMore: boolean = true;
+  get hasMore(): boolean { return this._hasMore; }
+
+  private _listSub: Subscription = Subscription.EMPTY;
+  private _listParams: ModelListParams = {start: 0, limit: 20, sort: {}};
+
   constructor(cdr: ChangeDetectorRef, aui: AdminUserInteractionsService) {
     super(cdr, aui);
+  }
+
+  ngOnDestroy(): void {
+    super.ngOnDestroy();
+    this._listSub.unsubscribe();
+  }
+
+  ngOnInit(): void {
+    const service = this._getService();
+
+    if (service == null) { return; }
+
+    if (this.baseListParams) {
+      if (this.baseListParams.start != null) {
+        this._listParams.start = this.baseListParams.start;
+      }
+      if (this.baseListParams.limit != null) {
+        this._listParams.limit = this.baseListParams.limit;
+      }
+    }
+
+    this._listSub = service.getListObjects().pipe(
+      filter(r => r != null),
+    ).subscribe(r => {
+      if (this.infiniteScroll) { (this.infiniteScroll as any).complete(); }
+      this._items = [...this._items, ...(r!.results || [])];
+      this._hasMore = r!.next != null;
+      this._cdr.markForCheck();
+    });
+
+    this._loadList();
   }
 
   getSelection(): T[] {
@@ -77,5 +127,19 @@ export class AdminListComponent<
   }
 
   refreshList(): void {
+    this._listParams.start = 0;
+    this._loadList();
+  }
+
+  loadMore(): void {
+    this._listParams.start! += this._listParams.limit!;
+    this._loadList();
+  }
+
+  private _loadList(): void {
+    const service = this._getService();
+    if (service == null || !this._hasMore) { return; }
+    const listParams = {...(this.baseListParams || {}), ...this._listParams};
+    service.list(listParams);
   }
 }

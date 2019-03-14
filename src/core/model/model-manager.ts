@@ -24,6 +24,7 @@ import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 
 import {Model, ModelListParams, ModelListResult} from '@gngt/core/common';
+// import {SyncService} from '@gngt/core/sync';
 import {ModelOptions} from './model-options';
 
 

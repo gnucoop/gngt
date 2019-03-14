@@ -1,3 +1,20 @@
+<div>
+  <ion-card>
+    <ion-card-content>
+      <ion-content>
+        <ion-virtual-scroll [items]="items">
+          <ion-item *virtualItem="let item">
+            {{ item|json }}
+          </ion-item>
+        </ion-virtual-scroll>
+        <ion-infinite-scroll *ngIf="hasMore" threshold="100px" (ionInfinite)="loadMore()">
+          <ion-infinite-scroll-content loadingSpinner="bubbles">
+          </ion-infinite-scroll-content>
+        </ion-infinite-scroll>
+      </ion-content>
+    </ion-card-content>
+  </ion-card>
+</div>
 <!-- <mat-card>
   <h2 mat-card-header>{{ title }}</h2>
   <button [routerLink]="baseEditUrl + newItemPath" mat-mini-fab color="primary">

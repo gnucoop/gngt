@@ -32,7 +32,6 @@ import {filter, map, switchMap, take} from 'rxjs/operators';
 import * as AuthApiActions from './auth-api-actions';
 import * as fromAuth from './reducers';
 
-
 @Injectable({providedIn: 'root'})
 export class AuthGuard implements CanActivate, CanActivateChild {
   constructor(private store: Store<fromAuth.State>) {}

@@ -7,6 +7,7 @@
 /src/core/model/*                                  @trik
 /src/core/reducers/*                               @trik
 /src/core/schematics/**                            @trik
+/src/core/sync/*                                   @trik
 /src/core/translations/*                           @trik
 
 # Gngt material
@@ -41,6 +42,7 @@
 /src/dev-app-mat/admin-list/*                     @trik
 /src/dev-app-mat/calendar/*                       @trik
 /src/dev-app-mat/login/*                          @trik
+/src/dev-app-mat/sync/*                           @trik
 
 # Dev app ionic
 /src/dev-app-ion/*                                @trik
