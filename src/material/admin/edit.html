@@ -18,7 +18,7 @@
             <div *ngSwitchCase="'checkbox'">
               <mat-checkbox [formControlName]="field.name">{{ field.label | translate }}</mat-checkbox>
             </div>
-            <mat-radio-group *ngSwitchCase="'radio'">
+            <mat-radio-group *ngSwitchCase="'radio'" [formControlName]="field.name">
               <label class="mat-form-field-label">{{ field.label | translate }}</label>
               <mat-radio-button *ngFor="let choice of field.choices|async"
                   [value]="choice.value">{{ choice.label | translate }}</mat-radio-button>
@@ -32,8 +32,17 @@
             <mat-form-field *ngSwitchCase="'multipleselect'">
               <mat-select [placeholder]="field.label | translate" [formControlName]="field.name" multiple>
                 <mat-option *ngFor="let choice of field.choices|async"
-                    [value]="choice.value">{{ choice.label }}</mat-option>
+                    [value]="choice.value">{{ choice.label | translate }}</mat-option>
               </mat-select>
+            </mat-form-field>
+            <mat-form-field *ngSwitchCase="'autocomplete'">
+              <input matInput [formControlName]="field.name" type="text"
+                  [placeholder]="field.label | translate" [readonly]="field.readonly"
+                  [matAutocomplete]="auto">
+              <mat-autocomplete #auto="matAutocomplete">
+                <mat-option *ngFor="let option of field.choices|async"
+                    [value]="option.value">{{ option.label | translate }}</mat-option>
+              </mat-autocomplete>
             </mat-form-field>
           </ng-container>
         </div>

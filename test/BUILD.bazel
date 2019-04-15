@@ -28,6 +28,53 @@ webpack_bundle(
 )
 
 webpack_bundle(
+  name = "gic_core_bundle",
+  library = "@gic/core",
+  library_target = "umd",
+  entry_point = "@gngtdeps//node_modules/@gic/core:dist/esm/es5/index.js",
+  output_name = "gic-core.umd.js",
+  externals = [
+    "@ionic/core",
+  ],
+  deps = [
+    "@gngtdeps//@gic/core",
+  ]
+)
+
+webpack_bundle(
+  name = "gic_core_loader_bundle",
+  library = "@gic/core/loader",
+  library_target = "umd",
+  entry_point = "@gngtdeps//node_modules/@gic/core:loader/index.js",
+  output_name = "gic-core-loader.umd.js",
+  deps = [
+    "@gngtdeps//@gic/core",
+  ]
+)
+
+webpack_bundle(
+  name = "gic_angular_bundle",
+  library = "@gic/angular",
+  library_target = "umd",
+  externals = [
+    '@angular/core',
+    '@angular/common',
+    '@angular/forms',
+    '@angular/platform-browser',
+    '@angular/router',
+    '@ionic/core',
+    '@ionic/angular',
+    'tslib',
+    'rxjs',
+  ],
+  entry_point = "@gngtdeps//node_modules/@gic/angular:dist/fesm5.js",
+  output_name = "gic-angular.umd.js",
+  deps = [
+    "@gngtdeps//@gic/angular",
+  ]
+)
+
+webpack_bundle(
   name = "ionic_core_bundle",
   library = "@ionic/core",
   library_target = "umd",

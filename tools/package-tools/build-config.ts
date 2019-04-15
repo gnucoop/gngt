@@ -13,6 +13,8 @@ export interface BuildConfig {
   ngxtVersion: string;
   /** Required Ionic version for the project. */
   ionicVersion: string;
+  /** Required Gic version for the project. */
+  gicVersion: string;
   /** Path to the root of the project. */
   projectDir: string;
   /** Path to the directory where all packages are living. */

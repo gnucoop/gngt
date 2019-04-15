@@ -54,7 +54,8 @@ System.config({
     '@angular/platform-browser-dynamic':
       'node:@angular/platform-browser-dynamic/bundles/platform-browser-dynamic.umd.js',
 
-      '@ionic/angular': 'bundles:ionic-angular.umd.js',
+    '@ionic/angular': 'bundles:ionic-angular.umd.js',
+    '@gic/angular': 'bundles:gic-angular.umd.js',
 
     '@ngrx/store': 'node:@ngrx/store/bundles/store.umd.js',
     '@ngrx/effects': 'node:@ngrx/effects/bundles/effects.umd.js',

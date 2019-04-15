@@ -2,7 +2,10 @@
 // able to resolve AMD imports to such modules.
 require.config({
   paths: {
+    '@gic/angular': 'gic-angular.umd',
     '@ionic/angular': 'ionic-angular.umd',
+    '@gic/core': 'gic-core.umd',
+    '@gic/core/loader': 'gic-core-loader.umd',
     '@ionic/core': 'ionic-core.umd',
     '@ionic/core/loader': 'ionic-core-loader.umd',
     '@ngx-translate/core': '@ngx-translate/core/bundles/ngx-translate-core.umd',

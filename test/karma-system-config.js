@@ -57,6 +57,10 @@ System.config({
     '@angular/material/input': 'node:@angular/material/bundles/material-input.umd.js',
     '@angular/material/snack-bar': 'node:@angular/material/bundles/material-snack-bar.umd.js',
     
+    '@gic/core': 'bundles:gic-core.umd.js',
+    '@gic/core/loader': 'bundles:gic-core-loader.umd.js',
+    '@gic/angular': 'bundles:gic-angular.umd.js',
+    
     '@ionic/core': 'bundles:ionic-core.umd.js',
     '@ionic/core/loader': 'bundles:ionic-core-loader.umd.js',
     '@ionic/angular': 'bundles:ionic-angular.umd.js',

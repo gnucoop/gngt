@@ -56,6 +56,7 @@ export const rollupGlobals = {
   '@angular/core/testing': 'ng.core.testing',
   '@angular/forms': 'ng.forms',
   '@angular/material': 'ng.material',
+  '@angular/material/autocomplete': 'ng.material.autocomplete',
   '@angular/material/button': 'ng.material.button',
   '@angular/material/card': 'ng.material.card',
   '@angular/material/checkbox': 'ng.material.checkbox',
@@ -79,6 +80,7 @@ export const rollupGlobals = {
   '@angular/router': 'ng.router',
 
   '@ionic/angular': 'ionic.angular',
+  '@gic/angular': 'gic.angular',
 
   '@ngx-translate/core': 'ngxt.core',
   '@ngx-translate/http-loader': 'ngxt.httpLoader',

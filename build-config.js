@@ -19,6 +19,7 @@ const angularMaterialVersion = packageJson.requiredAngularMaterialVersion;
 const ngrxVersion = packageJson.requiredNgrxVersion;
 const ngxtVersion = packageJson.requiredNgxtVersion;
 const ionicVersion = packageJson.requiredIonicVersion;
+const gicVersion = packageJson.requiredGicVersion;
 
 /** License that will be placed inside of all created bundles. */
 const buildLicense = `/**
@@ -49,6 +50,7 @@ module.exports = {
   ngrxVersion: ngrxVersion,
   ngxtVersion: ngxtVersion,
   ionicVersion: ionicVersion,
+  gicVersion: gicVersion,
   projectDir: __dirname,
   packagesDir: join(__dirname, 'src'),
   outputDir: join(__dirname, 'dist'),

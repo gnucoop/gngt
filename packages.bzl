@@ -6,6 +6,7 @@ CORE_PACKAGES = [
   "calendar",
   "model",
   "reducers",
+  "sync",
   "translations",
 ]
 
@@ -34,15 +35,17 @@ IONIC_TARGETS = ["//src/ionic"] + ["//src/ionic/%s" % p for p in IONIC_PACKAGES]
 # version for the placeholders.
 ANGULAR_PACKAGE_VERSION = ">=7.0.0"
 ANGULAR_MATERIAL_PACKAGE_VERSION = ">=7.1.0"
-NGRX_PACKAGE_VERSION = ">=7.0.0-beta.0"
+NGRX_PACKAGE_VERSION = ">=7.0.0"
 NGXT_PACKAGE_VERSION = ">=11.0.0"
-IONIC_PACKAGE_VERSION = ">=4.0.0-beta.17"
+IONIC_PACKAGE_VERSION = ">=4.0.0"
+GIC_PACKAGE_VERSION = ">=4.2.4"
 VERSION_PLACEHOLDER_REPLACEMENTS = {
   "0.0.0-NGM": ANGULAR_MATERIAL_PACKAGE_VERSION,
   "0.0.0-NGRX": NGRX_PACKAGE_VERSION,
   "0.0.0-NGXT": NGXT_PACKAGE_VERSION,
   "0.0.0-NG": ANGULAR_PACKAGE_VERSION,
-  "0.0.0-ION": IONIC_PACKAGE_VERSION
+  "0.0.0-ION": IONIC_PACKAGE_VERSION,
+  "0.0.0-GIC": GIC_PACKAGE_VERSION
 }
 
 # Base rollup globals for everything in the repo.

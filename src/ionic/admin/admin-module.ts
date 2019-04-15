@@ -26,6 +26,8 @@ import {RouterModule} from '@angular/router';
 
 import {IonicModule} from '@ionic/angular';
 
+import {GicModule} from '@gic/angular';
+
 import {TranslateModule} from '@ngx-translate/core';
 
 import {CommonModule as GngtCommonModule} from '@gngt/core/common';
@@ -39,6 +41,7 @@ import {AdminListComponent} from './list';
     CommonModule,
     ReactiveFormsModule,
     IonicModule,
+    GicModule,
     RouterModule,
     TranslateModule,
     GngtCommonModule

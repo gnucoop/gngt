@@ -13,6 +13,7 @@ ng_module(
     "@angular//packages/core",
     "@angular//packages/forms",
     "@angular//packages/router",
+    "@angular_material//src/lib/autocomplete",
     "@angular_material//src/lib/button",
     "@angular_material//src/lib/card",
     "@angular_material//src/lib/checkbox",

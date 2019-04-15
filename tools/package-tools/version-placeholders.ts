@@ -21,6 +21,9 @@ const ngxtVersionPlaceholderText = '0.0.0-NGXT';
 /** Placeholder that will be replaced with the required Ionic version. */
 const ionicVersionPlaceholderText = '0.0.0-ION';
 
+/** Placeholder that will be replaced with the required Gic version. */
+const gicVersionPlaceholderText = '0.0.0-ION';
+
 /** RegExp that matches Angular version placeholders inside of a file. */
 const ngVersionPlaceholderRegex = new RegExp(ngVersionPlaceholderText, 'g');
 
@@ -35,6 +38,9 @@ const ngxtVersionPlaceholderRegex = new RegExp(ngxtVersionPlaceholderText, 'g');
 
 /** RegExp that matches Ngrx Platform version placeholders inside of a file. */
 const ionicVersionPlaceholderRegex = new RegExp(ionicVersionPlaceholderText, 'g');
+
+/** RegExp that matches Ngrx Platform version placeholders inside of a file. */
+const gicVersionPlaceholderRegex = new RegExp(gicVersionPlaceholderText, 'g');
 
 /** Expression that matches version placeholders within a file. */
 const versionPlaceholderRegex = new RegExp(versionPlaceholderText, 'g');
@@ -56,6 +62,7 @@ export function replaceVersionPlaceholders(packageDir: string) {
       .replace(ngrxVersionPlaceholderRegex, buildConfig.ngrxVersion)
       .replace(ngmVersionPlaceholderRegex, buildConfig.angularMaterialVersion)
       .replace(ionicVersionPlaceholderRegex, buildConfig.ionicVersion)
+      .replace(gicVersionPlaceholderRegex, buildConfig.gicVersion)
       .replace(ngVersionPlaceholderRegex, buildConfig.angularVersion)
       .replace(versionPlaceholderRegex, buildConfig.projectVersion);
 

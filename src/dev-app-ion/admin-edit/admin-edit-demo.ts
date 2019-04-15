@@ -48,6 +48,7 @@ export class AdminEditDemo {
     {name: 'foo', label: 'Foo', type: ft.Input, subtype: fst.Text},
     {name: 'bar', label: 'Bar', type: ft.Input, subtype: fst.Text},
     {name: 'baz', label: 'Baz', type: ft.Input, subtype: fst.Number},
-    {name: 'qux', label: 'Qux', type: ft.Radio, choices}
+    {name: 'qux', label: 'Qux', type: ft.Radio, choices},
+    {name: 'corge', label: 'Corge', type: ft.Autocomplete, choices},
   ];
 }

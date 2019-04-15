@@ -66,6 +66,49 @@ task(':build:devapp-ion:assets', copyTask(assetsGlob, outDir));
 task(':build:devapp-ion:scss', () => buildScssPipeline(appDir).pipe(dest(outDir)));
 task(':build:devapp-ion:inline-resources', () => inlineResourcesForDirectory(outDir));
 
+task(':build:gic-bundle', () => {
+  const bundlesOutDir = join(projectDir, 'bundles');
+  const gicEntry = join('node_modules', '@gic', 'angular', 'dist', 'fesm5.js');
+  const gicBundleFile = 'gic-angular.umd.js';
+  const gicBundle = join(bundlesOutDir, gicBundleFile);
+  let stream = src(join(projectDir, gicEntry));
+  if (existsSync(gicBundle)) {
+    stream = stream.pipe(noop());
+  } else {
+    const nodeModulesDir = 'node_modules';
+    const externals = [
+      '@angular/core',
+      '@angular/common',
+      '@angular/forms',
+      '@angular/platform-browser',
+      '@angular/router',
+      '@ionic/angular',
+      '@ionic/core',
+      'tslib',
+      'rxjs',
+    ].map(e => `"${e}"`);
+    const configSrc = readFileSync(join(projectDir, 'tools', 'webpack.bundle.config.js'))
+      .toString()
+      .replace('TMPL_entry', `"${gicEntry}"`)
+      .replace('TMPL_library', '"@gic/angular"')
+      .replace('TMPL_library_target', '"umd"')
+      .replace('TMPL_output_path', `"${bundlesOutDir}"`)
+      .replace('TMPL_output_filename', `"${gicBundleFile}"`)
+      .replace('TMPL_externals', `[${externals.join(', ')}]`)
+      .replace('TMPL_node_modules_root', `"${nodeModulesDir}"`);
+    const configDst = join(bundlesOutDir, 'webpack.gic.config.js');
+    if (!existsSync(bundlesOutDir)) {
+      mkdirpSync(bundlesOutDir);
+    }
+    writeFileSync(configDst, configSrc);
+    const config = require(configDst);
+    stream = stream
+      .pipe(webpack(config))
+      .pipe(dest(bundlesOutDir));
+  }
+  return stream;
+});
+
 task(':build:ionic-bundle', () => {
   const bundlesOutDir = join(projectDir, 'bundles');
   const ionicEntry = join('node_modules', '@ionic', 'angular', 'dist', 'fesm5.js');
@@ -118,7 +161,7 @@ task('build:devapp-ion', sequenceTask(
   'ionic-examples:build-no-bundles',
   [
     ':build:devapp-ion:assets', ':build:devapp-ion:scss',
-    ':build:devapp-ion:ts', ':build:ionic-bundle'
+    ':build:devapp-ion:ts', ':build:ionic-bundle', ':build:gic-bundle',
   ],
   // Inline all component resources because otherwise SystemJS tries to load HTML, CSS and
   // JavaScript files which makes loading the dev-app-ion extremely slow.

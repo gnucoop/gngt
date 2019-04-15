@@ -48,6 +48,13 @@
                     [value]="choice.value">{{ choice.label }}</ion-select-option>
               </ion-select>
             </ion-item>
+            <ion-item *ngSwitchCase="'autocomplete'">
+              <ion-label>{{ field.label | translate }}</ion-label>
+              <gic-autocomplete [formControlName]="field.name">
+                <gic-autocomplete-option
+                    *ngFor="let choice of field.choices|async">{{ choice.label }}</gic-autocomplete-option>
+              </gic-autocomplete>
+            </ion-item>
           </ng-container>
         </ng-container>
       </ng-container>

@@ -4,6 +4,9 @@ const bundlesBasePath = '/base/gngt/test/';
 const nodeModulesBasePath = '/base/gngtdeps/node_modules/';
 
 const paths = {
+  '@gic/angular': `${bundlesBasePath}gic-angular.umd`,
+  '@gic/core': `${bundlesBasePath}gic-core.umd`,
+  '@gic/core/loader': `${bundlesBasePath}gic-core-loader.umd`,
   '@ionic/angular': `${bundlesBasePath}ionic-angular.umd`,
   '@ionic/core': `${bundlesBasePath}ionic-core.umd`,
   '@ionic/core/loader': `${bundlesBasePath}ionic-core-loader.umd`,

@@ -27,6 +27,7 @@ import {RouterModule, RouteReuseStrategy} from '@angular/router';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 import {IonicModule, IonicRouteStrategy} from '@ionic/angular';
+import {GicModule} from '@gic/angular';
 
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
@@ -56,6 +57,7 @@ export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
     BrowserAnimationsModule,
     HttpClientModule,
     IonicModule.forRoot(),
+    GicModule.forRoot(),
     RouterModule.forRoot(DEV_APP_ROUTES),
     TranslateModule.forRoot({
       loader: {
