@@ -53,3 +53,5 @@ build --strategy=AngularTemplateCompile=worker
 # Use the legacy AOT compiler strategy. We don't want to compile with Ivy nor with "ngtsc" which
 # does not generate factory files which are needed for AOT.
 build --define=compile=legacy
+
+build --incompatible_disallow_filetype=false
