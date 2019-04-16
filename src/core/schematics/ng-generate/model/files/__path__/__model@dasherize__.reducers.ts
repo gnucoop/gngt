@@ -11,7 +11,7 @@ export interface State extends ModelState<<%= classify(model) %>> {
 const initialState: State = {...generateInitialModelState<<%= classify(model) %>>(), ...{
 }};
 
-export const <%= camelize(model) %>StatePrefix = '<%= camelize(package) %>';
+export const <%= camelize(model) %>StatePrefix = '<%= camelize(model) %>';
 
 
 export function <%= camelize(model) %>Reducer(

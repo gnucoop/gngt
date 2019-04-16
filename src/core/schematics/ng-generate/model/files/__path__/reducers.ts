@@ -3,7 +3,7 @@ import {ActionReducerMap} from '@ngrx/store';
 import * as fromRoot from '@gngt/core/reducers';
 import * as from<%= classify(model) %> from './<%= dasherize(model) %>.reducers';
 
-export const packageStatePrefix = '<%= camelize(model) %>';
+export const packageStatePrefix = '<%= camelize(package) %>';
 
 export interface <%= classify(package) %>State {
   <%= camelize(model) %>: from<%= classify(model) %>.State;
