@@ -19,14 +19,20 @@
  *
  */
 
-export * from './common-module';
-export * from './form-disabled';
-export * from './force-boolean';
-export * from './get-params';
-export * from './list-params';
-export * from './list-result';
-export * from './model';
-export * from './model-join';
-export * from './model-sort';
-export * from './query-params';
-export * from './query-selector';
+export type ModelQuerySelector = {
+  [propName: string]: any | {
+    $lt?: any,
+    $gt?: any,
+    $lte?: any,
+    $gte?: any,
+    $eq?: any,
+    $ne?: any,
+    $exists?: any,
+    $in?: any,
+    $nin?: any,
+    $or?: any,
+    $nor?: any,
+    $not?: any,
+    $regex?: any
+  };
+};

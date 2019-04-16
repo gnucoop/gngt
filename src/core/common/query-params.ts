@@ -19,14 +19,9 @@
  *
  */
 
-export * from './common-module';
-export * from './form-disabled';
-export * from './force-boolean';
-export * from './get-params';
-export * from './list-params';
-export * from './list-result';
-export * from './model';
-export * from './model-join';
-export * from './model-sort';
-export * from './query-params';
-export * from './query-selector';
+import {ModelListParams} from './list-params';
+import {ModelQuerySelector} from './query-selector';
+
+export interface ModelQueryParams extends ModelListParams {
+  selector: ModelQuerySelector;
+}

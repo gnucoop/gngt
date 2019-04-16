@@ -21,7 +21,7 @@
 
 import {Action} from '@ngrx/store';
 
-import {Model, ModelListParams, ModelListResult} from '@gngt/core/common';
+import {Model, ModelListParams, ModelListResult, ModelQueryParams} from '@gngt/core/common';
 import {type} from '@gngt/core/reducers';
 
 export interface ModelActionTypes {
@@ -46,6 +46,9 @@ export interface ModelActionTypes {
   DELETE_ALL: string;
   DELETE_ALL_SUCCESS: string;
   DELETE_ALL_FAILURE: string;
+  QUERY: string;
+  QUERY_SUCCESS: string;
+  QUERY_FAILURE: string;
 }
 
 export function generateModelActionTypes(typeName: string): ModelActionTypes {
@@ -70,7 +73,10 @@ export function generateModelActionTypes(typeName: string): ModelActionTypes {
     DELETE_SUCCESS: type(`[${typeName}] Delete success`),
     DELETE_ALL: type(`[${typeName}] Delete all`),
     DELETE_ALL_FAILURE: type(`[${typeName}] Delete all failure`),
-    DELETE_ALL_SUCCESS: type(`[${typeName}] Delete all success`)
+    DELETE_ALL_SUCCESS: type(`[${typeName}] Delete all success`),
+    QUERY: type(`[${typeName}] Query`),
+    QUERY_FAILURE: type(`[${typeName}] Query failure`),
+    QUERY_SUCCESS: type(`[${typeName}] Query success`),
   };
 }
 
@@ -161,6 +167,20 @@ export abstract class ModelDeleteAllSuccessAction<T extends Model> implements Ac
   constructor(public payload: {items: T[]}) { }
 }
 export abstract class ModelDeleteAllFailureAction implements Action {
+  abstract type: string;
+  constructor(public payload: {error: any}) { }
+}
+
+
+export abstract class ModelQueryAction implements Action {
+  abstract type: string;
+  constructor(public payload: {params: ModelQueryParams}) { }
+}
+export abstract class ModelQuerySuccessAction<T extends Model> implements Action {
+  abstract type: string;
+  constructor(public payload: {result: ModelListResult<T>}) { }
+}
+export abstract class ModelQueryFailureAction implements Action {
   abstract type: string;
   constructor(public payload: {error: any}) { }
 }

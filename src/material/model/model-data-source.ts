@@ -41,7 +41,8 @@ export class ModelDataSource<
       A5 extends ModelActions.ModelPatchAction<T>,
       A6 extends ModelActions.ModelDeleteAction<T>,
       A7 extends ModelActions.ModelDeleteAllAction<T>,
-      MS extends ModelService<T, S, A1, A2, A3, A4, A5, A6, A7>
+      A8 extends ModelActions.ModelQueryAction,
+      MS extends ModelService<T, S, A1, A2, A3, A4, A5, A6, A7, A8>
     > extends DataSource<T> {
   constructor(private _service: MS, private _baseParams: ModelListParams = {}) {
     super();

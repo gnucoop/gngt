@@ -40,7 +40,7 @@ export class AdminListDemo {
     {column: 'baz', label: 'Baz', sortable: true},
   ];
   readonly displayedColumns: string[] = this.headers.map(h => h.column);
-  readonly dataSource: ModelDataSource<any, any, any, any, any, any, any, any, any, any>;
+  readonly dataSource: ModelDataSource<any, any, any, any, any, any, any, any, any, any, any>;
 
   constructor() {
     this.dataSource = new ModelDataSource(this.service as any);

@@ -62,10 +62,11 @@ export class AdminListComponent<
     A5 extends ModelActions.ModelPatchAction<T>,
     A6 extends ModelActions.ModelDeleteAction<T>,
     A7 extends ModelActions.ModelDeleteAllAction<T>,
-    MS extends ModelService<T, S, A1, A2, A3, A4, A5, A6, A7>
-  > extends BaseAdminListComponent<T, S, A1, A2, A3, A4, A5, A6, A7, MS>
+    A8 extends ModelActions.ModelQueryAction,
+    MS extends ModelService<T, S, A1, A2, A3, A4, A5, A6, A7, A8>
+  > extends BaseAdminListComponent<T, S, A1, A2, A3, A4, A5, A6, A7, A8, MS>
     implements AfterContentInit, OnDestroy, OnInit {
-  @Input() dataSource: ModelDataSource<T, S, A1, A2, A3, A4, A5, A6, A7, MS>;
+  @Input() dataSource: ModelDataSource<T, S, A1, A2, A3, A4, A5, A6, A7, A8, MS>;
   @ViewChild(MatPaginator) paginatorCmp: MatPaginator;
   @ViewChild(MatSort) sortCmp: MatSort;
   @ViewChild('actionSel', {read: MatSelect}) actionSel: MatSelect;

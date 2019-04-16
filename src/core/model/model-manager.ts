@@ -23,7 +23,7 @@ import {HttpClient} from '@angular/common/http';
 
 import {Observable} from 'rxjs';
 
-import {Model, ModelListParams, ModelListResult} from '@gngt/core/common';
+import {Model, ModelListParams, ModelListResult, ModelQueryParams} from '@gngt/core/common';
 // import {SyncService} from '@gngt/core/sync';
 import {ModelOptions} from './model-options';
 
@@ -70,6 +70,14 @@ export abstract class ModelManager<M extends Model> {
       url = `${url}/`;
     }
     return this._http.post<M>(url, {ids});
+  }
+
+  query(params: ModelQueryParams): Observable<ModelListResult<M>> {
+    let url = `${this._baseUrl}/query`;
+    if (this._config.addTrailingSlash) {
+      url = `${url}/`;
+    }
+    return this._http.post<ModelListResult<M>>(url, params);
   }
 
   private _getObjectUrl(id: number): string {

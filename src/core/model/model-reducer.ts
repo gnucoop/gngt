@@ -21,7 +21,9 @@
 
 import {Action} from '@ngrx/store';
 
-import {Model, ModelGetParams, ModelListParams, ModelListResult} from '@gngt/core/common';
+import {
+  Model, ModelGetParams, ModelListParams, ModelListResult, ModelQueryParams
+} from '@gngt/core/common';
 import * as ModelActions from './model-actions';
 
 
@@ -66,6 +68,12 @@ export interface State<M extends Model> {
     loading: boolean;
     ids: number[] | null;
     objects: M[] | null;
+    error: any;
+  };
+  query: {
+    loading: boolean;
+    options: ModelQueryParams | null;
+    objects: ModelListResult<M> | null;
     error: any;
   };
 }
@@ -113,7 +121,13 @@ export function generateInitialModelState<M extends Model>(): State<M> {
       ids: null,
       objects: null,
       error: null
-    }
+    },
+    query: {
+      loading: false,
+      options: null,
+      objects: null,
+      error: null
+    },
   };
 }
 
@@ -359,6 +373,40 @@ export function modelReducer<M extends Model>(
         loading: false,
         objects: null,
         error: (<ModelActions.ModelDeleteAllFailureAction>action).payload.error
+      }
+    };
+
+    case actionTypes.QUERY:
+    return {
+      ...state,
+      list: {
+        ...state.list,
+        loading: true,
+        options: (<ModelActions.ModelQueryAction>action).payload.params,
+        objects: null,
+        error: null
+      }
+    };
+
+    case actionTypes.QUERY_SUCCESS:
+    return {
+      ...state,
+      list: {
+        ...state.list,
+        loading: false,
+        objects: (<ModelActions.ModelQuerySuccessAction<M>>action).payload.result,
+        error: null
+      }
+    };
+
+    case actionTypes.QUERY_FAILURE:
+    return {
+      ...state,
+      list: {
+        ...state.list,
+        loading: false,
+        objects: null,
+        error: (<ModelActions.ModelQueryFailureAction>action).payload.error
       }
     };
 

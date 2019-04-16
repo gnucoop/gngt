@@ -39,7 +39,8 @@ export abstract class AdminListComponent<
   A5 extends ModelActions.ModelPatchAction<T>,
   A6 extends ModelActions.ModelDeleteAction<T>,
   A7 extends ModelActions.ModelDeleteAllAction<T>,
-  MS extends ModelService<T, S, A1, A2, A3, A4, A5, A6, A7>> implements OnDestroy {
+  A8 extends ModelActions.ModelQueryAction,
+  MS extends ModelService<T, S, A1, A2, A3, A4, A5, A6, A7, A8>> implements OnDestroy {
   get title(): string { return this._title; }
   set title(title: string) {
     this._title = title;

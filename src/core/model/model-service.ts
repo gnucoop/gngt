@@ -27,7 +27,9 @@ import {Actions, ofType} from '@ngrx/effects';
 
 import * as fromRoot from '@gngt/core/reducers';
 
-import {Model, ModelGetParams, ModelListParams, ModelListResult} from '@gngt/core/common';
+import {
+  Model, ModelGetParams, ModelListParams, ModelListResult, ModelQueryParams
+} from '@gngt/core/common';
 import * as ModelActions from './model-actions';
 import * as fromModel from './reducers';
 
@@ -67,6 +69,11 @@ function createDeleteAllAction<T extends ModelActions.ModelDeleteAllAction<M>, M
 ): T {
   return new type({items});
 }
+function createQueryAction<T extends ModelActions.ModelQueryAction>(
+  type: { new(p: {params: ModelQueryParams}): T }, params: ModelQueryParams
+): T {
+  return new type({params});
+}
 
 
 export abstract class ModelService<
@@ -78,7 +85,8 @@ export abstract class ModelService<
   A4 extends ModelActions.ModelUpdateAction<T>,
   A5 extends ModelActions.ModelPatchAction<T>,
   A6 extends ModelActions.ModelDeleteAction<T>,
-  A7 extends ModelActions.ModelDeleteAllAction<T>> {
+  A7 extends ModelActions.ModelDeleteAllAction<T>,
+  A8 extends ModelActions.ModelQueryAction> {
   protected _modelState: MemoizedSelector<object, S>;
 
   constructor(
@@ -91,6 +99,7 @@ export abstract class ModelService<
     private _patchAction: { new(p: {item: T}): A5 },
     private _deleteAction: { new(p: {item: T}): A6 },
     private _deleteAllAction: { new(p: {items: T[]}): A7 },
+    private _queryAction: { new(p: {params: ModelQueryParams}): A8 },
     statePrefixes: [string, string]
   ) {
     const packageState = createFeatureSelector(statePrefixes[0]);
@@ -282,6 +291,47 @@ export abstract class ModelService<
     );
   }
 
+  getQueryLoading(): Observable<boolean> {
+    return this._store.pipe(
+      select(createSelector(this._modelState, (state) => state.query.loading))
+    );
+  }
+
+  getQueryOptions(): Observable<ModelQueryParams | null> {
+    return this._store.pipe(
+      select(createSelector(this._modelState, (state) => state.query.options))
+    );
+  }
+
+  getQueryObjects(): Observable<ModelListResult<T> | null> {
+    return this._store.pipe(
+      select(createSelector(this._modelState, (state) => state.query.objects))
+    );
+  }
+
+  getQueryError(): Observable<any> {
+    return this._store.pipe(
+      select(createSelector(this._modelState, (state) => state.query.error))
+    );
+  }
+
+  getQueryHasNext(): Observable<any> {
+    return this._store.pipe(select(createSelector(
+      this._modelState, (state) => state.query.objects && state.query.objects.next
+    )));
+  }
+
+  getQueryCurrentStart(): Observable<any> {
+    return this._store.pipe(
+      select(createSelector(this._modelState, (state) => {
+        if (state.query.options && state.query.options.start != null) {
+          return state.query.options.start;
+        }
+        return 1;
+      }))
+    );
+  }
+
   getCreateSuccess(): Observable<ModelActions.ModelCreateSuccessAction<T>> {
     return this._actions.pipe(
       ofType(new this._createAction(<any>null).type)
@@ -338,5 +388,9 @@ export abstract class ModelService<
 
   deleteAll(data: T[]): void {
     this._store.dispatch(createDeleteAllAction<A7, T>(this._deleteAllAction, data));
+  }
+
+  query(options: ModelQueryParams): void {
+    this._store.dispatch(createQueryAction<A8>(this._queryAction, options || {}));
   }
 }

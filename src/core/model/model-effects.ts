@@ -42,7 +42,8 @@ export abstract class ModelEffects<
     A4 extends ModelActions.ModelUpdateAction<M>,
     A5 extends ModelActions.ModelPatchAction<M>,
     A6 extends ModelActions.ModelDeleteAction<M>,
-    A7 extends ModelActions.ModelDeleteAllAction<M>> {
+    A7 extends ModelActions.ModelDeleteAllAction<M>,
+    A8 extends ModelActions.ModelQueryAction> {
 
   protected readonly modelGet$: Observable<A> = this._actions
     .pipe(
@@ -128,9 +129,21 @@ export abstract class ModelEffects<
       )
     );
 
+  protected readonly modelQuery$: Observable<A> = this._actions
+    .pipe(
+      ofType<A8>(this._params.queryActionType),
+      switchMap(action =>
+        this._manager.query(action.payload.params)
+          .pipe(
+            map((result: ModelListResult<M>) => new this._params.querySuccessAction({result})),
+            catchError(error => obsOf(new this._params.queryFailureAction({error})))
+          )
+      )
+    );
+
   constructor(
     protected _actions: Actions,
-    protected _service: ModelService<M, S, A1, A2, A3, A4, A5, A6, A7>,
+    protected _service: ModelService<M, S, A1, A2, A3, A4, A5, A6, A7, A8>,
     protected _manager: ModelManager<M>,
     private _params: {
       getActionType: string,
@@ -153,7 +166,10 @@ export abstract class ModelEffects<
       deleteFailureAction: new (p: {error: any}) => A,
       deleteAllActionType: string,
       deleteAllSuccessAction: new (p: {items: M[]}) => A,
-      deleteAllFailureAction: new (p: {error: any}) => A
+      deleteAllFailureAction: new (p: {error: any}) => A,
+      queryActionType: string,
+      querySuccessAction: new (p: {result: ModelListResult<M>}) => A,
+      queryFailureAction: new (p: {error: any}) => A,
     }
   ) { }
 }
