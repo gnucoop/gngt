@@ -36,6 +36,7 @@
   "requiredNgrxVersion": ">=7.0.0",
   "requiredNgxtVersion": ">=11.0.0",
   "requiredIonicVersion": ">=4.0.0",
+  "requiredGicVersion": ">=4.2.5",
   "dependencies": {
     "@angular/animations": "^7.2.1",
     "@angular/cdk": "^7.3.5",
