@@ -22,7 +22,7 @@ const ngxtVersionPlaceholderText = '0.0.0-NGXT';
 const ionicVersionPlaceholderText = '0.0.0-ION';
 
 /** Placeholder that will be replaced with the required Gic version. */
-const gicVersionPlaceholderText = '0.0.0-ION';
+const gicVersionPlaceholderText = '0.0.0-GIC';
 
 /** RegExp that matches Angular version placeholders inside of a file. */
 const ngVersionPlaceholderRegex = new RegExp(ngVersionPlaceholderText, 'g');
