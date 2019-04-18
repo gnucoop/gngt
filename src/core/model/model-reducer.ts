@@ -379,7 +379,7 @@ export function modelReducer<M extends Model>(
     case actionTypes.QUERY:
     return {
       ...state,
-      list: {
+      query: {
         ...state.list,
         loading: true,
         options: (<ModelActions.ModelQueryAction>action).payload.params,
@@ -391,9 +391,10 @@ export function modelReducer<M extends Model>(
     case actionTypes.QUERY_SUCCESS:
     return {
       ...state,
-      list: {
+      query: {
         ...state.list,
         loading: false,
+        options: {...state.query.options!},
         objects: (<ModelActions.ModelQuerySuccessAction<M>>action).payload.result,
         error: null
       }
@@ -402,9 +403,10 @@ export function modelReducer<M extends Model>(
     case actionTypes.QUERY_FAILURE:
     return {
       ...state,
-      list: {
+      query: {
         ...state.list,
         loading: false,
+        options: {...state.query.options!},
         objects: null,
         error: (<ModelActions.ModelQueryFailureAction>action).payload.error
       }
