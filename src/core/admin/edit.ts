@@ -32,14 +32,7 @@ import {Model, ModelActions, ModelService, reducers as fromModel} from '@gngt/co
 export abstract class AdminEditComponent<
   T extends Model,
   S extends fromModel.State<T>,
-  A1 extends ModelActions.ModelGetAction,
-  A2 extends ModelActions.ModelListAction,
-  A3 extends ModelActions.ModelCreateAction<T>,
-  A4 extends ModelActions.ModelUpdateAction<T>,
-  A5 extends ModelActions.ModelPatchAction<T>,
-  A6 extends ModelActions.ModelDeleteAction<T>,
-  A7 extends ModelActions.ModelDeleteAllAction<T>,
-  A8 extends ModelActions.ModelQueryAction> implements OnDestroy {
+  A extends ModelActions.ModelActionTypes> implements OnDestroy {
   private _title = '';
   get title(): string { return this._title; }
   @Input() set title(title: string) {
@@ -64,9 +57,9 @@ export abstract class AdminEditComponent<
     this._cdr.markForCheck();
   }
 
-  private _service: BehaviorSubject<ModelService<T, S, A1, A2, A3, A4, A5, A6, A7, A8> | null> =
-    new BehaviorSubject<ModelService<T, S, A1, A2, A3, A4, A5, A6, A7, A8> | null>(null);
-  @Input() set service(service: ModelService<T, S, A1, A2, A3, A4, A5, A6, A7, A8>) {
+  private _service: BehaviorSubject<ModelService<T, S, A> | null> =
+    new BehaviorSubject<ModelService<T, S, A> | null>(null);
+  @Input() set service(service: ModelService<T, S, A>) {
     this._service.next(service);
   }
 

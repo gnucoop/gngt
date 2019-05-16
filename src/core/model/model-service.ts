@@ -19,11 +19,10 @@
  *
  */
 
-import {createSelector, createFeatureSelector, MemoizedSelector, select, Store} from '@ngrx/store';
-
 import {Observable} from 'rxjs';
 
 import {Actions, ofType} from '@ngrx/effects';
+import {createSelector, createFeatureSelector, MemoizedSelector, select, Store} from '@ngrx/store';
 
 import * as fromRoot from '@gngt/core/reducers';
 
@@ -32,74 +31,18 @@ import {
 } from '@gngt/core/common';
 import * as ModelActions from './model-actions';
 import * as fromModel from './reducers';
-
-
-function createGetAction<T extends ModelActions.ModelGetAction>(
-  type: { new(p: {id: number}): T }, id: number
-): T {
-  return new type({id});
-}
-function createListAction<T extends ModelActions.ModelListAction>(
-  type: { new(p: {params: ModelListParams}): T }, params: ModelListParams
-): T {
-  return new type({params});
-}
-function createCreateAction<T extends ModelActions.ModelCreateAction<M>, M extends Model>(
-  type: { new(p: {item: M}): T }, item: M
-): T {
-  return new type({item});
-}
-function createUpdateAction<T extends ModelActions.ModelUpdateAction<M>, M extends Model>(
-  type: { new(p: {item: M}): T }, item: M
-): T {
-  return new type({item});
-}
-function createPatchAction<T extends ModelActions.ModelPatchAction<M>, M extends Model>(
-  type: { new(p: {item: M}): T }, item: M
-): T {
-  return new type({item});
-}
-function createDeleteAction<T extends ModelActions.ModelDeleteAction<M>, M extends Model>(
-  type: { new(p: {item: M}): T }, item: M
-): T {
-  return new type({item});
-}
-function createDeleteAllAction<T extends ModelActions.ModelDeleteAllAction<M>, M extends Model>(
-  type: { new(p: {items: M[]}): T }, items: M[]
-): T {
-  return new type({items});
-}
-function createQueryAction<T extends ModelActions.ModelQueryAction>(
-  type: { new(p: {params: ModelQueryParams}): T }, params: ModelQueryParams
-): T {
-  return new type({params});
-}
-
+import {createAction} from './utils';
 
 export abstract class ModelService<
   T extends Model,
   S extends fromModel.State<T>,
-  A1 extends ModelActions.ModelGetAction,
-  A2 extends ModelActions.ModelListAction,
-  A3 extends ModelActions.ModelCreateAction<T>,
-  A4 extends ModelActions.ModelUpdateAction<T>,
-  A5 extends ModelActions.ModelPatchAction<T>,
-  A6 extends ModelActions.ModelDeleteAction<T>,
-  A7 extends ModelActions.ModelDeleteAllAction<T>,
-  A8 extends ModelActions.ModelQueryAction> {
+  A extends ModelActions.ModelActionTypes> {
   protected _modelState: MemoizedSelector<object, S>;
 
   constructor(
     protected _store: Store<fromRoot.State>,
     private _actions: Actions,
-    private _getAction: { new(p: {id: number}): A1 },
-    private _listAction: { new(p: {params: ModelListParams}): A2 },
-    private _createAction: { new(p: {item: T}): A3 },
-    private _updateAction: { new(p: {item: T}): A4 },
-    private _patchAction: { new(p: {item: T}): A5 },
-    private _deleteAction: { new(p: {item: T}): A6 },
-    private _deleteAllAction: { new(p: {items: T[]}): A7 },
-    private _queryAction: { new(p: {params: ModelQueryParams}): A8 },
+    private _actionTypes: A,
     statePrefixes: [string, string]
   ) {
     const packageState = createFeatureSelector(statePrefixes[0]);
@@ -334,63 +277,73 @@ export abstract class ModelService<
 
   getCreateSuccess(): Observable<ModelActions.ModelCreateSuccessAction<T>> {
     return this._actions.pipe(
-      ofType(new this._createAction(<any>null).type)
+      ofType(this._actionTypes.CREATE_SUCCESS),
     );
   }
 
   getUpdateSuccess(): Observable<ModelActions.ModelUpdateSuccessAction<T>> {
     return this._actions.pipe(
-      ofType(new this._updateAction(<any>null).type)
+      ofType(this._actionTypes.UPDATE_SUCCESS),
     );
   }
 
   getPatchSuccess(): Observable<ModelActions.ModelUpdateSuccessAction<T>> {
     return this._actions.pipe(
-      ofType(new this._patchAction(<any>null).type)
+      ofType(this._actionTypes.PATCH_SUCCESS),
     );
   }
 
   getDeleteSuccess(): Observable<ModelActions.ModelDeleteSuccessAction<T>> {
     return this._actions.pipe(
-      ofType(new this._deleteAction(<any>null).type)
+      ofType(this._actionTypes.DELETE_SUCCESS),
     );
   }
 
   getDeleteAllSuccess(): Observable<ModelActions.ModelDeleteAllSuccessAction<T>> {
     return this._actions.pipe(
-      ofType(new this._deleteAllAction(<any>null).type)
+      ofType(this._actionTypes.DELETE_ALL_SUCCESS),
     );
   }
 
   get(id: number): void {
-    this._store.dispatch(createGetAction<A1>(this._getAction, id));
+    this._store.dispatch(
+      createAction<ModelActions.ModelGetAction>(this._actionTypes.GET, {id}));
   }
 
   list(options?: ModelListParams): void {
-    this._store.dispatch(createListAction<A2>(this._listAction, options || {}));
+    this._store.dispatch(
+      createAction<ModelActions.ModelListAction>(this._actionTypes.LIST, {params: options || {}}));
   }
 
   create(data: T): void {
-    this._store.dispatch(createCreateAction<A3, T>(this._createAction, data));
+    this._store.dispatch(
+      createAction<ModelActions.ModelCreateAction<T>>(this._actionTypes.CREATE, {item: data}));
   }
 
   update(data: T): void {
-    this._store.dispatch(createUpdateAction<A4, T>(this._updateAction, data));
+    this._store.dispatch(
+      createAction<ModelActions.ModelUpdateAction<T>>(this._actionTypes.UPDATE, {item: data}));
   }
 
   patch(data: T): void {
-    this._store.dispatch(createPatchAction<A5, T>(this._patchAction, data));
+    this._store.dispatch(
+      createAction<ModelActions.ModelPatchAction<T>>(this._actionTypes.PATCH, {item: data}));
   }
 
   delete(data: T): void {
-    this._store.dispatch(createDeleteAction<A6, T>(this._deleteAction, data));
+    this._store.dispatch(
+      createAction<ModelActions.ModelDeleteAction<T>>(this._actionTypes.DELETE, {item: data}));
   }
 
   deleteAll(data: T[]): void {
-    this._store.dispatch(createDeleteAllAction<A7, T>(this._deleteAllAction, data));
+    this._store.dispatch(
+      createAction<ModelActions.ModelDeleteAllAction<T>>(
+        this._actionTypes.DELETE_ALL, {items: data}));
   }
 
   query(options: ModelQueryParams): void {
-    this._store.dispatch(createQueryAction<A8>(this._queryAction, options || {}));
+    this._store.dispatch(
+      createAction<ModelActions.ModelQueryAction>(
+        this._actionTypes.QUERY, {params: options || {}}));
   }
 }

@@ -30,146 +30,121 @@ import * as ModelActions from './model-actions';
 import {ModelManager} from './model-manager';
 import {ModelService} from './model-service';
 import * as fromModel from './model-reducer';
-
+import {createAction} from './utils';
 
 export abstract class ModelEffects<
     M extends Model,
     S extends fromModel.State<M>,
     A extends Action,
-    A1 extends ModelActions.ModelGetAction,
-    A2 extends ModelActions.ModelListAction,
-    A3 extends ModelActions.ModelCreateAction<M>,
-    A4 extends ModelActions.ModelUpdateAction<M>,
-    A5 extends ModelActions.ModelPatchAction<M>,
-    A6 extends ModelActions.ModelDeleteAction<M>,
-    A7 extends ModelActions.ModelDeleteAllAction<M>,
-    A8 extends ModelActions.ModelQueryAction> {
+    AT extends ModelActions.ModelActionTypes> {
 
   protected readonly modelGet$: Observable<A> = this._actions
     .pipe(
-      ofType<A1>(this._params.getActionType),
+      ofType<ModelActions.ModelGetAction>(this._actionTypes.GET),
       concatMap(action =>
         this._manager.get(action.payload.id)
           .pipe(
-            map((item: M) => new this._params.getSuccessAction({item})),
-            catchError(error => obsOf(new this._params.getFailureAction({error})))
+            map((item: M) => createAction<A>(this._actionTypes.GET_SUCCESS, {item})),
+            catchError(error =>
+              obsOf(createAction<A>(this._actionTypes.GET_FAILURE, {error})))
           )
       )
     );
 
   protected readonly modelList$: Observable<A> = this._actions
     .pipe(
-      ofType<A2>(this._params.listActionType),
+      ofType<ModelActions.ModelListAction>(this._actionTypes.LIST),
       concatMap(action =>
         this._manager.list(action.payload.params)
           .pipe(
-            map((result: ModelListResult<M>) => new this._params.listSuccessAction({result})),
-            catchError(error => obsOf(new this._params.listFailureAction({error})))
+            map((result: ModelListResult<M>) =>
+              createAction<A>(this._actionTypes.LIST_SUCCESS, {result})),
+            catchError(error =>
+              obsOf(createAction<A>(this._actionTypes.LIST_FAILURE, {error})))
           )
       )
     );
 
   protected readonly modelCreate$: Observable<A> = this._actions
     .pipe(
-      ofType<A3>(this._params.createActionType),
+      ofType<ModelActions.ModelCreateAction<M>>(this._actionTypes.CREATE),
       concatMap(action =>
         this._manager.create(action.payload.item)
           .pipe(
-            map((item: M) => new this._params.createSuccessAction({item})),
-            catchError(error => obsOf(new this._params.createFailureAction({error})))
+            map((item: M) => createAction<A>(this._actionTypes.CREATE_SUCCESS, {item})),
+            catchError(error => obsOf(createAction<A>(this._actionTypes.CREATE_FAILURE, {error})))
           )
       )
     );
 
   protected readonly modelUpdate$: Observable<A> = this._actions
     .pipe(
-      ofType<A4>(this._params.updateActionType),
+      ofType<ModelActions.ModelUpdateAction<M>>(this._actionTypes.UPDATE),
       concatMap(action =>
         this._manager.update(action.payload.item.id, action.payload.item)
           .pipe(
-            map((item: M) => new this._params.updateSuccessAction({item})),
-            catchError(error => obsOf(new this._params.updateFailureAction({error})))
+            map((item: M) => createAction<A>(this._actionTypes.UPDATE_SUCCESS, {item})),
+            catchError(error => obsOf(createAction<A>(this._actionTypes.CREATE_FAILURE, {error})))
           )
       )
     );
 
   protected readonly modelPatch$: Observable<A> = this._actions
     .pipe(
-      ofType<A5>(this._params.patchActionType),
+      ofType<ModelActions.ModelPatchAction<M>>(this._actionTypes.PATCH),
       concatMap(action =>
         this._manager.patch(action.payload.item.id, action.payload.item)
           .pipe(
-            map((item: M) => new this._params.patchSuccessAction({item})),
-            catchError(error => obsOf(new this._params.patchFailureAction({error})))
+            map((item: M) => createAction<A>(this._actionTypes.CREATE_SUCCESS, {item})),
+            catchError(error => obsOf(createAction<A>(this._actionTypes.CREATE_FAILURE, {error})))
           )
       )
     );
 
   protected readonly modelDelete$: Observable<A> = this._actions
     .pipe(
-      ofType<A6>(this._params.deleteActionType),
+      ofType<ModelActions.ModelDeleteAction<M>>(this._actionTypes.DELETE),
       concatMap(action =>
         this._manager.delete(action.payload.item.id)
           .pipe(
-            map(() => new this._params.deleteSuccessAction({item: action.payload.item})),
-            catchError(error => obsOf(new this._params.deleteFailureAction({error})))
+            map(() =>
+              createAction<A>(this._actionTypes.DELETE_SUCCESS, {item: action.payload.item})),
+            catchError(error => obsOf(createAction<A>(this._actionTypes.DELETE_FAILURE, {error})))
           )
       )
     );
 
   protected readonly modelDeleteAll$: Observable<A> = this._actions
     .pipe(
-      ofType<A7>(this._params.deleteAllActionType),
+      ofType<ModelActions.ModelDeleteAllAction<M>>(this._actionTypes.DELETE_ALL),
       concatMap(action =>
         this._manager.deleteAll(action.payload.items.map(i => i.id))
           .pipe(
-            map(() => new this._params.deleteAllSuccessAction({items: action.payload.items})),
-            catchError(error => obsOf(new this._params.deleteAllFailureAction({error})))
+            map(() =>
+              createAction<A>(this._actionTypes.DELETE_ALL_SUCCESS, {items: action.payload.items})),
+            catchError(error =>
+              obsOf(createAction<A>(this._actionTypes.DELETE_ALL_FAILURE, {error})))
           )
       )
     );
 
   protected readonly modelQuery$: Observable<A> = this._actions
     .pipe(
-      ofType<A8>(this._params.queryActionType),
+      ofType<ModelActions.ModelQueryAction>(this._actionTypes.QUERY),
       concatMap(action =>
         this._manager.query(action.payload.params)
           .pipe(
-            map((result: ModelListResult<M>) => new this._params.querySuccessAction({result})),
-            catchError(error => obsOf(new this._params.queryFailureAction({error})))
+            map((result: ModelListResult<M>) =>
+              createAction<A>(this._actionTypes.QUERY_SUCCESS, {result})),
+            catchError(error => obsOf(createAction<A>(this._actionTypes.QUERY_FAILURE, {error})))
           )
       )
     );
 
   constructor(
     protected _actions: Actions,
-    protected _service: ModelService<M, S, A1, A2, A3, A4, A5, A6, A7, A8>,
+    protected _service: ModelService<M, S, AT>,
     protected _manager: ModelManager<M>,
-    private _params: {
-      getActionType: string,
-      getSuccessAction: new (p: {item: M}) => A,
-      getFailureAction: new (p: {error: any}) => A,
-      listActionType: string,
-      listSuccessAction: new (p: {result: ModelListResult<M>}) => A,
-      listFailureAction: new (p: {error: any}) => A,
-      createActionType: string,
-      createSuccessAction: new (p: {item: M}) => A,
-      createFailureAction: new (p: {error: any}) => A,
-      updateActionType: string,
-      updateSuccessAction: new (p: {item: M}) => A,
-      updateFailureAction: new (p: {error: any}) => A,
-      patchActionType: string,
-      patchSuccessAction: new (p: {item: M}) => A,
-      patchFailureAction: new (p: {error: any}) => A,
-      deleteActionType: string,
-      deleteSuccessAction: new (p: {item: M}) => A,
-      deleteFailureAction: new (p: {error: any}) => A,
-      deleteAllActionType: string,
-      deleteAllSuccessAction: new (p: {items: M[]}) => A,
-      deleteAllFailureAction: new (p: {error: any}) => A,
-      queryActionType: string,
-      querySuccessAction: new (p: {result: ModelListResult<M>}) => A,
-      queryFailureAction: new (p: {error: any}) => A,
-    }
+    private _actionTypes: AT,
   ) { }
 }

@@ -34,15 +34,8 @@ import {
 export class ModelDataSource<
       T extends Model,
       S extends fromModel.State<T>,
-      A1 extends ModelActions.ModelGetAction,
-      A2 extends ModelActions.ModelListAction,
-      A3 extends ModelActions.ModelCreateAction<T>,
-      A4 extends ModelActions.ModelUpdateAction<T>,
-      A5 extends ModelActions.ModelPatchAction<T>,
-      A6 extends ModelActions.ModelDeleteAction<T>,
-      A7 extends ModelActions.ModelDeleteAllAction<T>,
-      A8 extends ModelActions.ModelQueryAction,
-      MS extends ModelService<T, S, A1, A2, A3, A4, A5, A6, A7, A8>
+      A extends ModelActions.ModelActionTypes,
+      MS extends ModelService<T, S, A>
     > extends DataSource<T> {
   constructor(private _service: MS, private _baseParams: ModelListParams = {}) {
     super();
