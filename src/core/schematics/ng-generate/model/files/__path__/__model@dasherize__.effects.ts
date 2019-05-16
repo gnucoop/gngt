@@ -25,7 +25,8 @@ export class <%= classify(model) %>Effects extends ModelEffects<
     actions.<%= classify(model) %>UpdateAction,
     actions.<%= classify(model) %>PatchAction,
     actions.<%= classify(model) %>DeleteAction,
-    actions.<%= classify(model) %>DeleteAllAction> {
+    actions.<%= classify(model) %>DeleteAllAction,
+    actions.<%= classify(model) %>QueryAction> {
   @Effect() get$: Observable<Action>;
   @Effect() list$: Observable<Action>;
   @Effect() create$: Observable<Action>;
@@ -33,6 +34,7 @@ export class <%= classify(model) %>Effects extends ModelEffects<
   @Effect() patch$: Observable<Action>;
   @Effect() delete$: Observable<Action>;
   @Effect() deleteAll$: Observable<Action>;
+  @Effect() query$: Observable<Action>;
 
   constructor(
     _actions: Actions,
@@ -60,7 +62,10 @@ export class <%= classify(model) %>Effects extends ModelEffects<
       deleteFailureAction: actions.<%= classify(model) %>DeleteFailureAction,
       deleteAllActionType: at.DELETE_ALL,
       deleteAllSuccessAction: actions.<%= classify(model) %>DeleteAllSuccessAction,
-      deleteAllFailureAction: actions.<%= classify(model) %>DeleteAllFailureAction
+      deleteAllFailureAction: actions.<%= classify(model) %>DeleteAllFailureAction,
+      queryActionType: at.QUERY,
+      querySuccessAction: actions.<%= classify(model) %>QuerySuccessAction,
+      queryFailureAction: actions.<%= classify(model) %>QueryFailureAction,
     });
     this.get$ = this.modelGet$;
     this.list$ = this.modelList$;
@@ -69,5 +74,6 @@ export class <%= classify(model) %>Effects extends ModelEffects<
     this.patch$ = this.modelPatch$;
     this.delete$ = this.modelDelete$;
     this.deleteAll$ = this.modelDeleteAll$;
+    this.query$ = this.modelQuery$;
   }
 }

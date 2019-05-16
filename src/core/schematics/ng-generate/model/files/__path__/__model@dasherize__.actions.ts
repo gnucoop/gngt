@@ -95,6 +95,17 @@ export class <%= classify(model) %>DeleteAllSuccessAction
     extends ModelActions.ModelDeleteAllSuccessAction<<%= classify(model) %>> {
   type = <%= classify(model) %>ActionTypes.DELETE_ALL_SUCCESS;
 }
+export class <%= classify(model) %>QueryAction extends ModelActions.ModelQueryAction {
+  type = <%= classify(model) %>ActionTypes.QUERY;
+}
+export class <%= classify(model) %>QueryFailureAction
+    extends ModelActions.ModelQueryFailureAction {
+  type = <%= classify(model) %>ActionTypes.QUERY_FAILURE;
+}
+export class <%= classify(model) %>QuerySuccessAction
+    extends ModelActions.ModelQuerySuccessAction<<%= classify(model) %>> {
+  type = <%= classify(model) %>ActionTypes.QUERY_SUCCESS;
+}
 
 export type <%= classify(model) %>Actions =
   | <%= classify(model) %>GetAction
@@ -118,4 +129,7 @@ export type <%= classify(model) %>Actions =
   | <%= classify(model) %>DeleteAllAction
   | <%= classify(model) %>DeleteAllFailureAction
   | <%= classify(model) %>DeleteAllSuccessAction
+  | <%= classify(model) %>QueryAction
+  | <%= classify(model) %>QueryFailureAction
+  | <%= classify(model) %>QuerySuccessAction
 ;

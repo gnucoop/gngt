@@ -23,7 +23,8 @@ export class <%= classify(model) %>Service
       <%= camelize(model) %>Actions.<%= classify(model) %>UpdateAction,
       <%= camelize(model) %>Actions.<%= classify(model) %>PatchAction,
       <%= camelize(model) %>Actions.<%= classify(model) %>DeleteAction,
-      <%= camelize(model) %>Actions.<%= classify(model) %>DeleteAllAction
+      <%= camelize(model) %>Actions.<%= classify(model) %>DeleteAllAction,
+      <%= camelize(model) %>Actions.<%= classify(model) %>QueryAction
     > {
   constructor(store: Store<State>, actions: Actions) {
     super(
@@ -36,6 +37,7 @@ export class <%= classify(model) %>Service
       <%= camelize(model) %>Actions.<%= classify(model) %>PatchAction,
       <%= camelize(model) %>Actions.<%= classify(model) %>DeleteAction,
       <%= camelize(model) %>Actions.<%= classify(model) %>DeleteAllAction,
+      <%= camelize(model) %>Actions.<%= classify(model) %>QueryAction,
       [fromPackage.packageStatePrefix, from<%= classify(model) %>.<%= camelize(model) %>StatePrefix]
     );
   }
