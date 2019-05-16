@@ -20,7 +20,7 @@
  */
 
 import {of as obsOf, Observable} from 'rxjs';
-import {catchError, map, switchMap} from 'rxjs/operators';
+import {catchError, concatMap, map} from 'rxjs/operators';
 
 import {Action} from '@ngrx/store';
 import {Actions, ofType} from '@ngrx/effects';
@@ -48,7 +48,7 @@ export abstract class ModelEffects<
   protected readonly modelGet$: Observable<A> = this._actions
     .pipe(
       ofType<A1>(this._params.getActionType),
-      switchMap(action =>
+      concatMap(action =>
         this._manager.get(action.payload.id)
           .pipe(
             map((item: M) => new this._params.getSuccessAction({item})),
@@ -60,7 +60,7 @@ export abstract class ModelEffects<
   protected readonly modelList$: Observable<A> = this._actions
     .pipe(
       ofType<A2>(this._params.listActionType),
-      switchMap(action =>
+      concatMap(action =>
         this._manager.list(action.payload.params)
           .pipe(
             map((result: ModelListResult<M>) => new this._params.listSuccessAction({result})),
@@ -72,7 +72,7 @@ export abstract class ModelEffects<
   protected readonly modelCreate$: Observable<A> = this._actions
     .pipe(
       ofType<A3>(this._params.createActionType),
-      switchMap(action =>
+      concatMap(action =>
         this._manager.create(action.payload.item)
           .pipe(
             map((item: M) => new this._params.createSuccessAction({item})),
@@ -84,7 +84,7 @@ export abstract class ModelEffects<
   protected readonly modelUpdate$: Observable<A> = this._actions
     .pipe(
       ofType<A4>(this._params.updateActionType),
-      switchMap(action =>
+      concatMap(action =>
         this._manager.update(action.payload.item.id, action.payload.item)
           .pipe(
             map((item: M) => new this._params.updateSuccessAction({item})),
@@ -96,7 +96,7 @@ export abstract class ModelEffects<
   protected readonly modelPatch$: Observable<A> = this._actions
     .pipe(
       ofType<A5>(this._params.patchActionType),
-      switchMap(action =>
+      concatMap(action =>
         this._manager.patch(action.payload.item.id, action.payload.item)
           .pipe(
             map((item: M) => new this._params.patchSuccessAction({item})),
@@ -108,7 +108,7 @@ export abstract class ModelEffects<
   protected readonly modelDelete$: Observable<A> = this._actions
     .pipe(
       ofType<A6>(this._params.deleteActionType),
-      switchMap(action =>
+      concatMap(action =>
         this._manager.delete(action.payload.item.id)
           .pipe(
             map(() => new this._params.deleteSuccessAction({item: action.payload.item})),
@@ -120,7 +120,7 @@ export abstract class ModelEffects<
   protected readonly modelDeleteAll$: Observable<A> = this._actions
     .pipe(
       ofType<A7>(this._params.deleteAllActionType),
-      switchMap(action =>
+      concatMap(action =>
         this._manager.deleteAll(action.payload.items.map(i => i.id))
           .pipe(
             map(() => new this._params.deleteAllSuccessAction({items: action.payload.items})),
@@ -132,7 +132,7 @@ export abstract class ModelEffects<
   protected readonly modelQuery$: Observable<A> = this._actions
     .pipe(
       ofType<A8>(this._params.queryActionType),
-      switchMap(action =>
+      concatMap(action =>
         this._manager.query(action.payload.params)
           .pipe(
             map((result: ModelListResult<M>) => new this._params.querySuccessAction({result})),
