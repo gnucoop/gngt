@@ -1,4 +1,4 @@
-import {NgModule} from '@angular/core';
+import {ModuleWithProviders, NgModule} from '@angular/core';
 
 import {StoreModule} from '@ngrx/store';
 import {EffectsModule} from '@ngrx/effects';
@@ -17,10 +17,16 @@ const <%= underscore(package).toUpperCase() %>_EFFECTS = [
     StoreModule.forFeature('<%= camelize(package) %>', reducers),
     EffectsModule.forFeature(<%= underscore(package).toUpperCase() %>_EFFECTS)
   ],
-  providers: [
-    <%= classify(model) %>Effects,
-    <%= classify(model) %>Manager,
-    <%= classify(model) %>Service,
-  ]
 })
-export class <%= classify(package) %>Module { }
+export class <%= classify(package) %>Module {
+  static forRoot(): ModuleWithProviders<<%= classify(package) %>Module> {
+    return {
+      ngModule: <%= classify(package) %>Module,
+      providers: [
+        <%= classify(model) %>Effects,
+        <%= classify(model) %>Manager,
+        <%= classify(model) %>Service,
+      ],
+    };
+  }
+}
