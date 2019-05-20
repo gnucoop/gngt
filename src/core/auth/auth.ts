@@ -55,4 +55,10 @@ export class AuthService {
     const url = this._config.meUrl;
     return this._http.get<User>(url);
   }
+
+  getLoggedInUser(): number | null {
+    return this._config.loggedInUserGetter
+      ? this._config.loggedInUserGetter()
+      : null;
+  }
 }

@@ -29,4 +29,6 @@ export interface AuthModuleOptions {
   jwtConfig?: JwtOptions;
   authOptionsProvider?: Provider;
   authConfig?: AuthOptions;
+  loggedInUserGetter?: () => number | null;
+  loggedInUserSetter?: (id: number | null) => void;
 }

@@ -90,6 +90,9 @@ export class AuthEffects {
       const refreshTokenKey = this.config.refreshTokenKey || 'refresh_token';
       this.jwtHelperService.tokenSetter(payload[tokenKey]);
       this.jwtHelperService.refreshTokenSetter(payload[refreshTokenKey]);
+      if (this.config.loggedInUserSetter) {
+        this.config.loggedInUserSetter(payload.user_id);
+      }
       this.router.navigate(['/']);
     }),
     map(() => {
