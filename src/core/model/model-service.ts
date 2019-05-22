@@ -19,7 +19,8 @@
  *
  */
 
-import {Observable} from 'rxjs';
+import {Observable, of as obsOf, throwError} from 'rxjs';
+import {filter, map, mergeMap} from 'rxjs/operators';
 
 import {Actions, ofType} from '@ngrx/effects';
 import {createSelector, createFeatureSelector, MemoizedSelector, select, Store} from '@ngrx/store';
@@ -30,8 +31,27 @@ import {
   Model, ModelGetParams, ModelListParams, ModelListResult, ModelQueryParams
 } from '@gngt/core/common';
 import * as ModelActions from './model-actions';
+import {ModelGenericAction} from './model-generic-action';
 import * as fromModel from './reducers';
 import {createAction} from './utils';
+
+function getActionResult<R>(
+  actions: Actions<ModelGenericAction>,
+  successType: string,
+  failureType: string,
+  uuid: string,
+): Observable<R> {
+  return actions.pipe(
+    ofType(successType, failureType),
+    filter(action => action.uuid === uuid),
+    mergeMap(action => {
+      if (action.type === failureType) {
+        return throwError(action.payload);
+      }
+      return obsOf(action.payload);
+    }),
+  );
+}
 
 export abstract class ModelService<
   T extends Model,
@@ -41,7 +61,7 @@ export abstract class ModelService<
 
   constructor(
     protected _store: Store<fromRoot.State>,
-    private _actions: Actions,
+    private _actions: Actions<ModelGenericAction>,
     private _actionTypes: A,
     statePrefixes: [string, string]
   ) {
@@ -305,45 +325,115 @@ export abstract class ModelService<
     );
   }
 
-  get(id: number): void {
-    this._store.dispatch(
-      createAction<ModelActions.ModelGetAction>(this._actionTypes.GET, {id}));
+  get(id: number): Observable<T> {
+    const action = createAction<ModelActions.ModelGetAction>({
+      type: this._actionTypes.GET,
+      payload: {id}
+    });
+    this._store.dispatch(action);
+    return getActionResult<{item: T}>(
+      this._actions,
+      this._actionTypes.GET_SUCCESS,
+      this._actionTypes.GET_FAILURE,
+      action.uuid
+    ).pipe(map(r => r.item));
   }
 
-  list(options?: ModelListParams): void {
-    this._store.dispatch(
-      createAction<ModelActions.ModelListAction>(this._actionTypes.LIST, {params: options || {}}));
+  list(options?: ModelListParams): Observable<ModelListResult<T>> {
+    const action = createAction<ModelActions.ModelListAction>({
+      type: this._actionTypes.LIST,
+      payload: {params: options || {}}
+    });
+    this._store.dispatch(action);
+    return getActionResult<{result: ModelListResult<T>}>(
+      this._actions,
+      this._actionTypes.LIST_SUCCESS,
+      this._actionTypes.LIST_FAILURE,
+      action.uuid
+    ).pipe(map(r => r.result));
   }
 
-  create(data: T): void {
-    this._store.dispatch(
-      createAction<ModelActions.ModelCreateAction<T>>(this._actionTypes.CREATE, {item: data}));
+  create(data: Partial<T>): Observable<T> {
+    const action = createAction<ModelActions.ModelCreateAction<T>>({
+      type: this._actionTypes.CREATE,
+      payload: {item: data},
+    });
+    this._store.dispatch(action);
+    return getActionResult<{item: T}>(
+      this._actions,
+      this._actionTypes.CREATE_SUCCESS,
+      this._actionTypes.CREATE_FAILURE,
+      action.uuid
+    ).pipe(map(r => r.item));
   }
 
-  update(data: T): void {
-    this._store.dispatch(
-      createAction<ModelActions.ModelUpdateAction<T>>(this._actionTypes.UPDATE, {item: data}));
+  update(data: T): Observable<T> {
+    const action = createAction<ModelActions.ModelUpdateAction<T>>({
+      type: this._actionTypes.UPDATE,
+      payload: {item: data},
+    });
+    this._store.dispatch(action);
+    return getActionResult<{item: T}>(
+      this._actions,
+      this._actionTypes.UPDATE_SUCCESS,
+      this._actionTypes.UPDATE_FAILURE,
+      action.uuid
+    ).pipe(map(r => r.item));
   }
 
-  patch(data: T): void {
-    this._store.dispatch(
-      createAction<ModelActions.ModelPatchAction<T>>(this._actionTypes.PATCH, {item: data}));
+  patch(data: T): Observable<T> {
+    const action = createAction<ModelActions.ModelPatchAction<T>>({
+      type: this._actionTypes.PATCH,
+      payload: {item: data}
+    });
+    this._store.dispatch(action);
+    return getActionResult<{item: T}>(
+      this._actions,
+      this._actionTypes.PATCH_SUCCESS,
+      this._actionTypes.PATCH_FAILURE,
+      action.uuid
+    ).pipe(map(r => r.item));
   }
 
-  delete(data: T): void {
-    this._store.dispatch(
-      createAction<ModelActions.ModelDeleteAction<T>>(this._actionTypes.DELETE, {item: data}));
+  delete(data: T): Observable<T> {
+    const action = createAction<ModelActions.ModelDeleteAction<T>>({
+      type: this._actionTypes.DELETE,
+      payload: {item: data}
+    });
+    this._store.dispatch(action);
+    return getActionResult<{item: T}>(
+      this._actions,
+      this._actionTypes.DELETE_SUCCESS,
+      this._actionTypes.DELETE_FAILURE,
+      action.uuid
+    ).pipe(map(r => r.item));
   }
 
-  deleteAll(data: T[]): void {
-    this._store.dispatch(
-      createAction<ModelActions.ModelDeleteAllAction<T>>(
-        this._actionTypes.DELETE_ALL, {items: data}));
+  deleteAll(data: T[]): Observable<T[]> {
+    const action = createAction<ModelActions.ModelDeleteAllAction<T>>({
+      type: this._actionTypes.DELETE_ALL,
+      payload: {items: data}
+    });
+    this._store.dispatch(action);
+    return getActionResult<{items: T[]}>(
+      this._actions,
+      this._actionTypes.DELETE_ALL_SUCCESS,
+      this._actionTypes.DELETE_ALL_FAILURE,
+      action.uuid
+    ).pipe(map(r => r.items));
   }
 
-  query(options: ModelQueryParams): void {
-    this._store.dispatch(
-      createAction<ModelActions.ModelQueryAction>(
-        this._actionTypes.QUERY, {params: options || {}}));
+  query(options: ModelQueryParams): Observable<ModelListResult<T>> {
+    const action = createAction<ModelActions.ModelQueryAction>({
+      type: this._actionTypes.QUERY,
+      payload: {params: options || {}}
+    });
+    this._store.dispatch(action);
+    return getActionResult<{result: ModelListResult<T>}>(
+      this._actions,
+      this._actionTypes.QUERY_SUCCESS,
+      this._actionTypes.QUERY_FAILURE,
+      action.uuid
+    ).pipe(map(r => r.result));
   }
 }

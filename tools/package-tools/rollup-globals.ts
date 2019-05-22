@@ -39,6 +39,7 @@ export const rollupGlobals = {
   'date-fns': 'date-fns',
   'tslib': 'tslib',
   'url-parse': 'urlParse',
+  'uuid': 'uuid',
 
   '@angular/animations': 'ng.animations',
   '@angular/cdk': 'ng.cdk',

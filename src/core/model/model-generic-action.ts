@@ -23,6 +23,6 @@ import {Action} from '@ngrx/store';
 
 export class ModelGenericAction implements Action {
   type: string;
-  opId: number;
+  uuid: string;
   constructor(public payload: any) { }
 }
