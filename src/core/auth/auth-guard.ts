@@ -27,7 +27,7 @@ import {
 import {Store, select} from '@ngrx/store';
 
 import {Observable} from 'rxjs';
-import {filter, map, switchMap, take} from 'rxjs/operators';
+import {concatMap, filter, map, take} from 'rxjs/operators';
 
 import * as AuthApiActions from './auth-api-actions';
 import * as fromAuth from './reducers';
@@ -48,7 +48,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     return this.store.pipe(
       select(fromAuth.getInit),
       filter(init => init),
-      switchMap(() => this.store.pipe(select(fromAuth.getLoggedIn))),
+      concatMap(() => this.store.pipe(select(fromAuth.getLoggedIn))),
       map(authed => {
         if (!authed) {
           this.store.dispatch(new AuthApiActions.LoginRedirect());
