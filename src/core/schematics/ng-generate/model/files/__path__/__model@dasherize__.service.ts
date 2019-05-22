@@ -3,7 +3,7 @@ import {Injectable} from '@angular/core';
 import {Actions} from '@ngrx/effects';
 import {Store} from '@ngrx/store';
 
-import {ModelService} from '@gngt/core/model';
+import {ModelActions, ModelService} from '@gngt/core/model';
 import {State} from '@gngt/core/reducers';
 
 import * as <%= camelize(model) %>Actions from './<%= dasherize(model) %>.actions';
@@ -19,7 +19,7 @@ export class <%= classify(model) %>Service
       from<%= classify(model) %>.State,
       <%= camelize(model) %>Actions.<%= classify(model) %>ActionTypes
     > {
-  constructor(store: Store<State>, actions: Actions) {
+  constructor(store: Store<State>, actions: Actions<ModelActions.ModelBaseAction>) {
     super(
       store,
       actions,
