@@ -20,7 +20,7 @@
  */
 
 import {Observable, of as obsOf, throwError} from 'rxjs';
-import {filter, map, mergeMap} from 'rxjs/operators';
+import {filter, map, mergeMap, take} from 'rxjs/operators';
 
 import {Actions, ofType} from '@ngrx/effects';
 import {createSelector, createFeatureSelector, MemoizedSelector, select, Store} from '@ngrx/store';
@@ -336,7 +336,7 @@ export abstract class ModelService<
       this._actionTypes.GET_SUCCESS,
       this._actionTypes.GET_FAILURE,
       action.uuid
-    ).pipe(map(r => r.item));
+    ).pipe(map(r => r.item), take(1));
   }
 
   list(options?: ModelListParams): Observable<ModelListResult<T>> {
@@ -350,7 +350,7 @@ export abstract class ModelService<
       this._actionTypes.LIST_SUCCESS,
       this._actionTypes.LIST_FAILURE,
       action.uuid
-    ).pipe(map(r => r.result));
+    ).pipe(map(r => r.result), take(1));
   }
 
   create(data: Partial<T>): Observable<T> {
@@ -364,7 +364,7 @@ export abstract class ModelService<
       this._actionTypes.CREATE_SUCCESS,
       this._actionTypes.CREATE_FAILURE,
       action.uuid
-    ).pipe(map(r => r.item));
+    ).pipe(map(r => r.item), take(1));
   }
 
   update(data: T): Observable<T> {
@@ -378,7 +378,7 @@ export abstract class ModelService<
       this._actionTypes.UPDATE_SUCCESS,
       this._actionTypes.UPDATE_FAILURE,
       action.uuid
-    ).pipe(map(r => r.item));
+    ).pipe(map(r => r.item), take(1));
   }
 
   patch(data: T): Observable<T> {
@@ -392,7 +392,7 @@ export abstract class ModelService<
       this._actionTypes.PATCH_SUCCESS,
       this._actionTypes.PATCH_FAILURE,
       action.uuid
-    ).pipe(map(r => r.item));
+    ).pipe(map(r => r.item), take(1));
   }
 
   delete(data: T): Observable<T> {
@@ -406,7 +406,7 @@ export abstract class ModelService<
       this._actionTypes.DELETE_SUCCESS,
       this._actionTypes.DELETE_FAILURE,
       action.uuid
-    ).pipe(map(r => r.item));
+    ).pipe(map(r => r.item), take(1));
   }
 
   deleteAll(data: T[]): Observable<T[]> {
@@ -420,7 +420,7 @@ export abstract class ModelService<
       this._actionTypes.DELETE_ALL_SUCCESS,
       this._actionTypes.DELETE_ALL_FAILURE,
       action.uuid
-    ).pipe(map(r => r.items));
+    ).pipe(map(r => r.items), take(1));
   }
 
   query(options: ModelQueryParams): Observable<ModelListResult<T>> {
@@ -434,6 +434,6 @@ export abstract class ModelService<
       this._actionTypes.QUERY_SUCCESS,
       this._actionTypes.QUERY_FAILURE,
       action.uuid
-    ).pipe(map(r => r.result));
+    ).pipe(map(r => r.result), take(1));
   }
 }
