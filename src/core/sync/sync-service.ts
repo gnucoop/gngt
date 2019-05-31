@@ -458,7 +458,7 @@ export class SyncService {
     return this._httpClient.post<UpwardChangeResult[]>(this._syncUrl, payload).pipe(
       map(res => res[res.length - 1].sequence),
       catchError((err: HttpErrorResponse) => {
-        if (err.status !== 417) {
+        if (err.status !== 409) {
           return throwError(err);
         }
         p.hasNext = true;

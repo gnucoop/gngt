@@ -98,7 +98,7 @@ class MockUpwardHttpClient {
 
   post(_url: string, _body: any): Observable<any> {
     if (this._postCounter === 0) {
-      return throwError({status: 417, error: this._postRes[this._postCounter++]});
+      return throwError({status: 409, error: this._postRes[this._postCounter++]});
     }
     if (this._postCounter < this._postRes.length) {
       return obsOf(this._postRes[this._postCounter++]);
