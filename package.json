@@ -30,7 +30,7 @@
     "format": "git-clang-format",
     "postinstall": "rm -rf bundles"
   },
-  "version": "7.0.5",
+  "version": "7.0.6",
   "requiredAngularVersion": ">=7.0.0",
   "requiredAngularMaterialVersion": ">=7.0.0",
   "requiredNgrxVersion": ">=7.0.0",
