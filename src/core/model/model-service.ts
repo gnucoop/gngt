@@ -19,8 +19,8 @@
  *
  */
 
-import {Observable, of as obsOf, throwError} from 'rxjs';
-import {filter, map, mergeMap, shareReplay, take} from 'rxjs/operators';
+import {Observable, pipe, throwError, UnaryFunction} from 'rxjs';
+import {filter, map, mergeMap, tap} from 'rxjs/operators';
 
 import {Actions, ofType} from '@ngrx/effects';
 import {createSelector, createFeatureSelector, MemoizedSelector, select, Store} from '@ngrx/store';
@@ -40,6 +40,7 @@ function getActionResult<R>(
   successType: string,
   failureType: string,
   uuid: string,
+  selector: Observable<R>,
 ): Observable<R> {
   return actions.pipe(
     ofType(successType, failureType),
@@ -48,7 +49,7 @@ function getActionResult<R>(
       if (action.type === failureType) {
         return throwError(action.payload);
       }
-      return obsOf(action.payload);
+      return selector;
     }),
   );
 }
@@ -59,6 +60,23 @@ export abstract class ModelService<
   A extends ModelActions.ModelActionTypes> {
   protected _modelState: MemoizedSelector<object, S>;
 
+  private _lastGetEntry: UnaryFunction<
+    Observable<fromRoot.State>, Observable<fromModel.ModelGetState<T>>>;
+  private _lastListEntry: UnaryFunction<
+    Observable<fromRoot.State>, Observable<fromModel.ModelListState<T>>>;
+  private _lastCreateEntry: UnaryFunction<
+    Observable<fromRoot.State>, Observable<fromModel.ModelCreateState<T>>>;
+  private _lastPatchEntry: UnaryFunction<
+    Observable<fromRoot.State>, Observable<fromModel.ModelPatchState<T>>>;
+  private _lastUpdateEntry: UnaryFunction<
+    Observable<fromRoot.State>, Observable<fromModel.ModelUpdateState<T>>>;
+  private _lastDeleteEntry: UnaryFunction<
+    Observable<fromRoot.State>, Observable<fromModel.ModelDeleteState<T>>>;
+  private _lastDeleteAllEntry: UnaryFunction<
+    Observable<fromRoot.State>, Observable<fromModel.ModelDeleteAllState<T>>>;
+  private _lastQueryEntry: UnaryFunction<
+    Observable<fromRoot.State>, Observable<fromModel.ModelQueryState<T>>>;
+
   constructor(
     protected _store: Store<fromRoot.State>,
     private _actions: Actions<ModelGenericAction>,
@@ -67,231 +85,302 @@ export abstract class ModelService<
   ) {
     const packageState = createFeatureSelector(statePrefixes[0]);
     this._modelState = createSelector(packageState, s => <S>(<any>s)[statePrefixes[1]]);
+
+    this._lastGetEntry = pipe(
+      select(createSelector(this._modelState, (state) => state.get)),
+      filter(g => g.length > 0),
+      map(g => g[0]),
+    );
+    this._lastListEntry = pipe(
+      select(createSelector(this._modelState, (state) => state.list)),
+      filter(g => g.length > 0),
+      map(g => g[0]),
+    );
+    this._lastCreateEntry = pipe(
+      select(createSelector(this._modelState, (state) => state.create)),
+      filter(g => g.length > 0),
+      map(g => g[0]),
+    );
+    this._lastPatchEntry = pipe(
+      select(createSelector(this._modelState, (state) => state.patch)),
+      filter(g => g.length > 0),
+      map(g => g[0]),
+    );
+    this._lastUpdateEntry = pipe(
+      select(createSelector(this._modelState, (state) => state.update)),
+      filter(g => g.length > 0),
+      map(g => g[0]),
+    );
+    this._lastDeleteEntry = pipe(
+      select(createSelector(this._modelState, (state) => state.delete)),
+      filter(g => g.length > 0),
+      map(g => g[0]),
+    );
+    this._lastDeleteAllEntry = pipe(
+      select(createSelector(this._modelState, (state) => state.deleteAll)),
+      filter(g => g.length > 0),
+      map(g => g[0]),
+    );
+    this._lastQueryEntry = pipe(
+      select(createSelector(this._modelState, (state) => state.query)),
+      filter(g => g.length > 0),
+      map(g => g[0]),
+    );
   }
 
   getGetLoading(): Observable<boolean> {
     return this._store.pipe(
-      select(createSelector(this._modelState, (state) => state.get.loading))
+      this._lastGetEntry,
+      map(g => g.loading),
     );
   }
 
   getGetOptions(): Observable<ModelGetParams> {
     return this._store.pipe(
-      select(createSelector(this._modelState, (state) => state.get.options))
+      this._lastGetEntry,
+      map(g => g.options),
     );
   }
 
   getGetId(): Observable<number | null> {
     return this._store.pipe(
-      select(createSelector(this._modelState, (state) => state.get.id))
+      this._lastGetEntry,
+      map(g => g.id),
     );
   }
 
   getGetObject(): Observable<T | null> {
     return this._store.pipe(
-      select(createSelector(this._modelState, (state) => state.get.object))
+      this._lastGetEntry,
+      map(g => g.object),
     );
   }
 
   getGetError(): Observable<any> {
     return this._store.pipe(
-      select(createSelector(this._modelState, (state) => state.get.error))
+      this._lastGetEntry,
+      map(g => g.error),
     );
   }
 
   getListLoading(): Observable<boolean> {
     return this._store.pipe(
-      select(createSelector(this._modelState, (state) => state.list.loading))
+      this._lastListEntry,
+      map(g => g.loading),
     );
   }
 
   getListOptions(): Observable<ModelListParams> {
     return this._store.pipe(
-      select(createSelector(this._modelState, (state) => state.list.options))
+      this._lastListEntry,
+      map(g => g.options),
     );
   }
 
   getListObjects(): Observable<ModelListResult<T> | null> {
     return this._store.pipe(
-      select(createSelector(this._modelState, (state) => state.list.objects))
+      this._lastListEntry,
+      map(g => g.objects),
     );
   }
 
   getListError(): Observable<any> {
     return this._store.pipe(
-      select(createSelector(this._modelState, (state) => state.list.error))
+      this._lastListEntry,
+      map(g => g.error),
     );
   }
 
   getListHasNext(): Observable<any> {
-    return this._store.pipe(select(createSelector(
-      this._modelState, (state) => state.list.objects && state.list.objects.next
-    )));
+    return this._store.pipe(
+      this._lastListEntry,
+      filter(g => g.objects != null),
+      map(g => g.objects!.next),
+    );
   }
 
   getListCurrentStart(): Observable<any> {
     return this._store.pipe(
-      select(createSelector(this._modelState, (state) => {
-        if (state.list.options && state.list.options.start != null) {
-          return state.list.options.start;
-        }
-        return 1;
-      }))
+      this._lastListEntry,
+      filter(g => g.options != null),
+      map(g => g.options!.start != null ? g.options!.start : 1),
     );
   }
 
   getCreateLoading(): Observable<boolean> {
     return this._store.pipe(
-      select(createSelector(this._modelState, (state) => state.create.loading))
+      this._lastCreateEntry,
+      map(g => g.loading),
     );
   }
 
   getCreateObject(): Observable<T | null> {
     return this._store.pipe(
-      select(createSelector(this._modelState, (state) => state.create.object))
+      this._lastCreateEntry,
+      map(g => g.object),
     );
   }
 
   getCreateError(): Observable<any> {
     return this._store.pipe(
-      select(createSelector(this._modelState, (state) => state.create.error))
+      this._lastCreateEntry,
+      map(g => g.error),
     );
   }
 
   getUpdateLoading(): Observable<boolean> {
     return this._store.pipe(
-      select(createSelector(this._modelState, (state) => state.update.loading))
+      this._lastUpdateEntry,
+      map(g => g.loading),
     );
   }
 
   getUpdateId(): Observable<number | null> {
     return this._store.pipe(
-      select(createSelector(this._modelState, (state) => state.update.id))
+      this._lastUpdateEntry,
+      map(g => g.id),
     );
   }
 
   getUpdateObject(): Observable<T | null> {
     return this._store.pipe(
-      select(createSelector(this._modelState, (state) => state.update.object))
+      this._lastUpdateEntry,
+      map(g => g.object),
     );
   }
 
   getUpdateError(): Observable<any> {
     return this._store.pipe(
-      select(createSelector(this._modelState, (state) => state.update.error))
+      this._lastUpdateEntry,
+      map(g => g.error),
     );
   }
 
   getPatchLoading(): Observable<boolean> {
     return this._store.pipe(
-      select(createSelector(this._modelState, (state) => state.patch.loading))
+      this._lastPatchEntry,
+      map(g => g.loading),
     );
   }
 
   getPatchId(): Observable<number | null> {
     return this._store.pipe(
-      select(createSelector(this._modelState, (state) => state.patch.id))
+      this._lastPatchEntry,
+      map(g => g.id),
     );
   }
 
   getPatchObject(): Observable<T | null> {
     return this._store.pipe(
-      select(createSelector(this._modelState, (state) => state.patch.object))
+      this._lastPatchEntry,
+      map(g => g.object),
     );
   }
 
   getPatchError(): Observable<any> {
     return this._store.pipe(
-      select(createSelector(this._modelState, (state) => state.patch.error))
+      this._lastPatchEntry,
+      map(g => g.error),
     );
   }
 
   getDeleteLoading(): Observable<boolean> {
     return this._store.pipe(
-      select(createSelector(this._modelState, (state) => state.delete.loading))
+      this._lastDeleteEntry,
+      map(g => g.loading),
     );
   }
 
   getDeleteId(): Observable<number | null> {
     return this._store.pipe(
-      select(createSelector(this._modelState, (state) => state.delete.id))
+      this._lastDeleteEntry,
+      map(g => g.id),
     );
   }
 
   getDeleteObject(): Observable<T | null> {
     return this._store.pipe(
-      select(createSelector(this._modelState, (state) => state.delete.object))
+      this._lastDeleteEntry,
+      map(g => g.object),
     );
   }
 
   getDeleteError(): Observable<any> {
     return this._store.pipe(
-      select(createSelector(this._modelState, (state) => state.delete.error))
+      this._lastDeleteEntry,
+      map(g => g.error),
     );
   }
 
   getDeleteAllLoading(): Observable<boolean> {
     return this._store.pipe(
-      select(createSelector(this._modelState, (state) => state.deleteAll.loading))
+      this._lastDeleteAllEntry,
+      map(g => g.loading),
     );
   }
 
   getDeleteAllIds(): Observable<number[] | null> {
     return this._store.pipe(
-      select(createSelector(this._modelState, (state) => state.deleteAll.ids))
+      this._lastDeleteAllEntry,
+      map(g => g.ids),
     );
   }
 
   getDeleteAllObjects(): Observable<T[] | null> {
     return this._store.pipe(
-      select(createSelector(this._modelState, (state) => state.deleteAll.objects))
+      this._lastDeleteAllEntry,
+      map(g => g.objects),
     );
   }
 
   getDeleteAllError(): Observable<any> {
     return this._store.pipe(
-      select(createSelector(this._modelState, (state) => state.deleteAll.error))
+      this._lastDeleteAllEntry,
+      map(g => g.error),
     );
   }
 
   getQueryLoading(): Observable<boolean> {
     return this._store.pipe(
-      select(createSelector(this._modelState, (state) => state.query.loading))
+      this._lastQueryEntry,
+      map(g => g.loading),
     );
   }
 
   getQueryOptions(): Observable<ModelQueryParams | null> {
     return this._store.pipe(
-      select(createSelector(this._modelState, (state) => state.query.options))
+      this._lastQueryEntry,
+      map(g => g.options),
     );
   }
 
   getQueryObjects(): Observable<ModelListResult<T> | null> {
     return this._store.pipe(
-      select(createSelector(this._modelState, (state) => state.query.objects))
+      this._lastQueryEntry,
+      map(g => g.objects),
     );
   }
 
   getQueryError(): Observable<any> {
     return this._store.pipe(
-      select(createSelector(this._modelState, (state) => state.query.error))
+      this._lastQueryEntry,
+      map(g => g.error),
     );
   }
 
   getQueryHasNext(): Observable<any> {
-    return this._store.pipe(select(createSelector(
-      this._modelState, (state) => state.query.objects && state.query.objects.next
-    )));
+    return this._store.pipe(
+      this._lastQueryEntry,
+      filter(g => g.objects != null),
+      map(g => g.objects!.next),
+    );
   }
 
   getQueryCurrentStart(): Observable<any> {
     return this._store.pipe(
-      select(createSelector(this._modelState, (state) => {
-        if (state.query.options && state.query.options.start != null) {
-          return state.query.options.start;
-        }
-        return 1;
-      }))
+      this._lastQueryEntry,
+      filter(g => g.options != null),
+      map(g => g.options!.start != null ? g.options!.start : 1),
     );
   }
 
@@ -331,12 +420,18 @@ export abstract class ModelService<
       payload: {id}
     });
     this._store.dispatch(action);
-    return getActionResult<{item: T}>(
-      this._actions,
-      this._actionTypes.GET_SUCCESS,
-      this._actionTypes.GET_FAILURE,
-      action.uuid
-    ).pipe(map(r => r.item), take(1), shareReplay(1));
+    return this._store.pipe(
+      select(createSelector(this._modelState, (state) => state.get)),
+      map(gets => gets.find(g => g.uuid === action.uuid)),
+      filter(get => get != null),
+      tap(get => {
+        if (get!.error != null) {
+          throwError(get!.error);
+        }
+      }),
+      filter(get => get!.object != null),
+      map(get => get!.object!),
+    );
   }
 
   list(options?: ModelListParams): Observable<ModelListResult<T>> {
@@ -345,12 +440,18 @@ export abstract class ModelService<
       payload: {params: options || {}}
     });
     this._store.dispatch(action);
-    return getActionResult<{result: ModelListResult<T>}>(
-      this._actions,
-      this._actionTypes.LIST_SUCCESS,
-      this._actionTypes.LIST_FAILURE,
-      action.uuid
-    ).pipe(map(r => r.result), take(1), shareReplay(1));
+    return this._store.pipe(
+      select(createSelector(this._modelState, (state) => state.list)),
+      map(lists => lists.find(l => l.uuid === action.uuid)),
+      filter(list => list != null),
+      tap(list => {
+        if (list!.error != null) {
+          throwError(list!.error);
+        }
+      }),
+      filter(list => list!.objects != null),
+      map(list => list!.objects!),
+    );
   }
 
   create(data: Partial<T>): Observable<T> {
@@ -359,12 +460,18 @@ export abstract class ModelService<
       payload: {item: data},
     });
     this._store.dispatch(action);
-    return getActionResult<{item: T}>(
-      this._actions,
-      this._actionTypes.CREATE_SUCCESS,
-      this._actionTypes.CREATE_FAILURE,
-      action.uuid
-    ).pipe(map(r => r.item), take(1), shareReplay(1));
+    return this._store.pipe(
+      select(createSelector(this._modelState, (state) => state.create)),
+      map(creates => creates.find(c => c.uuid === action.uuid)),
+      filter(creates => creates != null),
+      tap(create => {
+        if (create!.error != null) {
+          throwError(create!.error);
+        }
+      }),
+      filter(create => create!.object != null),
+      map(create => create!.object!),
+    );
   }
 
   update(data: T): Observable<T> {
@@ -373,12 +480,18 @@ export abstract class ModelService<
       payload: {item: data},
     });
     this._store.dispatch(action);
-    return getActionResult<{item: T}>(
-      this._actions,
-      this._actionTypes.UPDATE_SUCCESS,
-      this._actionTypes.UPDATE_FAILURE,
-      action.uuid
-    ).pipe(map(r => r.item), take(1), shareReplay(1));
+    return this._store.pipe(
+      select(createSelector(this._modelState, (state) => state.update)),
+      map(updates => updates.find(u => u.uuid === action.uuid)),
+      filter(updates => updates != null),
+      tap(update => {
+        if (update!.error != null) {
+          throwError(update!.error);
+        }
+      }),
+      filter(update => update!.object != null),
+      map(update => update!.object!),
+    );
   }
 
   patch(data: T): Observable<T> {
@@ -387,12 +500,18 @@ export abstract class ModelService<
       payload: {item: data}
     });
     this._store.dispatch(action);
-    return getActionResult<{item: T}>(
-      this._actions,
-      this._actionTypes.PATCH_SUCCESS,
-      this._actionTypes.PATCH_FAILURE,
-      action.uuid
-    ).pipe(map(r => r.item), take(1), shareReplay(1));
+    return this._store.pipe(
+      select(createSelector(this._modelState, (state) => state.patch)),
+      map(patches => patches.find(p => p.uuid === action.uuid)),
+      filter(patches => patches != null),
+      tap(patch => {
+        if (patch!.error != null) {
+          throwError(patch!.error);
+        }
+      }),
+      filter(patch => patch!.object != null),
+      map(patch => patch!.object!),
+    );
   }
 
   delete(data: T): Observable<T> {
@@ -401,12 +520,18 @@ export abstract class ModelService<
       payload: {item: data}
     });
     this._store.dispatch(action);
-    return getActionResult<{item: T}>(
-      this._actions,
-      this._actionTypes.DELETE_SUCCESS,
-      this._actionTypes.DELETE_FAILURE,
-      action.uuid
-    ).pipe(map(r => r.item), take(1), shareReplay(1));
+    return this._store.pipe(
+      select(createSelector(this._modelState, (state) => state.delete)),
+      map(dels => dels.find(d => d.uuid === action.uuid)),
+      filter(dels => dels != null),
+      tap(del => {
+        if (del!.error != null) {
+          throwError(del!.error);
+        }
+      }),
+      filter(del => del!.object != null),
+      map(del => del!.object!),
+    );
   }
 
   deleteAll(data: T[]): Observable<T[]> {
@@ -415,12 +540,18 @@ export abstract class ModelService<
       payload: {items: data}
     });
     this._store.dispatch(action);
-    return getActionResult<{items: T[]}>(
-      this._actions,
-      this._actionTypes.DELETE_ALL_SUCCESS,
-      this._actionTypes.DELETE_ALL_FAILURE,
-      action.uuid
-    ).pipe(map(r => r.items), take(1), shareReplay(1));
+    return this._store.pipe(
+      select(createSelector(this._modelState, (state) => state.deleteAll)),
+      map(deleteAlls => deleteAlls.find(d => d.uuid === action.uuid)),
+      filter(deleteAlls => deleteAlls != null),
+      tap(deleteAll => {
+        if (deleteAll!.error != null) {
+          throwError(deleteAll!.error);
+        }
+      }),
+      filter(deleteAll => deleteAll!.objects != null),
+      map(deleteAll => deleteAll!.objects!),
+    );
   }
 
   query(options: ModelQueryParams): Observable<ModelListResult<T>> {
@@ -429,11 +560,17 @@ export abstract class ModelService<
       payload: {params: options || {}}
     });
     this._store.dispatch(action);
-    return getActionResult<{result: ModelListResult<T>}>(
-      this._actions,
-      this._actionTypes.QUERY_SUCCESS,
-      this._actionTypes.QUERY_FAILURE,
-      action.uuid
-    ).pipe(map(r => r.result), take(1), shareReplay(1));
+    return this._store.pipe(
+      select(createSelector(this._modelState, (state) => state.query)),
+      map(queries => queries.find(q => q.uuid === action.uuid)),
+      filter(queries => queries != null),
+      tap(query => {
+        if (query!.error != null) {
+          throwError(query!.error);
+        }
+      }),
+      filter(query => query!.objects != null),
+      map(query => query!.objects!),
+    );
   }
 }
