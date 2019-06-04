@@ -47,6 +47,16 @@ export class AdminModelMockService {
     return obsOf(demoObjs[0]);
   }
 
+  query(): Observable<ModelListResult<AdminModel>> {
+    return obsOf({
+      count: demoObjs.length,
+      results: demoObjs,
+      next: null,
+      previous: null,
+      hasNext: false
+    });
+  }
+
   getListObjects(): Observable<ModelListResult<AdminModel>> {
     return obsOf({
       count: demoObjs.length,
