@@ -140,6 +140,18 @@ webpack_bundle(
   ]
 )
 
+webpack_bundle(
+  name = "uuid_bundle",
+  library = "bundle",
+  library_target = "umd",
+  externals = [],
+  entry_point = "@gngtdeps//node_modules/uuid:index.js",
+  output_name = "uuid.umd.js",
+  deps = [
+    "@gngtdeps//uuid",
+  ]
+)
+
 # Common set-up for all Gngt tests.
 ts_library(
   name = "requirejs_init",

@@ -11,7 +11,8 @@ require.config({
     '@ngx-translate/core': '@ngx-translate/core/bundles/ngx-translate-core.umd',
     '@ngx-translate/http-loader': '@ngx-translate/http-loader/bundles/ngx-translate-http-loader.umd',
     'date-fns': 'date-fns.umd',
-    'url-parse': 'url-parse/dist/url-parse.min'
+    'url-parse': 'url-parse/dist/url-parse.min',
+    'uuid': `uuid.umd`,
   }
 });
 

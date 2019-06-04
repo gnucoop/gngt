@@ -12,6 +12,7 @@ ng_module(
     "@angular//packages/core",
     "@ngrx//modules/effects",
     "@ngrx//modules/store",
+    "@gngtdeps//@types/uuid",
     "//src/core/common",
     "//src/core/reducers",
     "//src/core/sync",

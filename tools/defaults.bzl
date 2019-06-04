@@ -144,6 +144,7 @@ def ng_web_test_suite(deps = [], static_css = [], bootstrap = [], **kwargs):
       "//test:ionic_core_loader_bundle",
       "//test:pouchdb_debug_bundle",
       "//test:pouchdb_find_bundle",
+      "//test:uuid_bundle",
     ] + bootstrap,
     **kwargs
   )

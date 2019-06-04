@@ -16,6 +16,7 @@ const paths = {
   'pouchdb-debug': `${bundlesBasePath}pouchdb-debug.umd`,
   'pouchdb-find': `${bundlesBasePath}pouchdb-find.umd`,
   'url-parse': `${nodeModulesBasePath}url-parse/dist/url-parse.min`,
+  'uuid': `${bundlesBasePath}uuid.umd`,
 };
 
 requirejs.config({paths, nodeIdCompat: true});

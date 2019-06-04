@@ -49,6 +49,7 @@ ts_devserver(
       "//test:ionic_angular_bundle",
       "//test:ionic_core_bundle",
       "//test:ionic_core_loader_bundle",
+      "//test:uuid_bundle",
       ":index.html",
     ],
     # Scripts which will be included in the serving_path bundle after "require.js" has been
