@@ -20,7 +20,7 @@
  */
 
 import {Observable, pipe, throwError, UnaryFunction} from 'rxjs';
-import {filter, map, mergeMap, tap} from 'rxjs/operators';
+import {filter, map, tap} from 'rxjs/operators';
 
 import {Actions, ofType} from '@ngrx/effects';
 import {createSelector, createFeatureSelector, MemoizedSelector, select, Store} from '@ngrx/store';
@@ -34,25 +34,6 @@ import * as ModelActions from './model-actions';
 import {ModelGenericAction} from './model-generic-action';
 import * as fromModel from './reducers';
 import {createAction} from './utils';
-
-function getActionResult<R>(
-  actions: Actions<ModelGenericAction>,
-  successType: string,
-  failureType: string,
-  uuid: string,
-  selector: Observable<R>,
-): Observable<R> {
-  return actions.pipe(
-    ofType(successType, failureType),
-    filter(action => action.uuid === uuid),
-    mergeMap(action => {
-      if (action.type === failureType) {
-        return throwError(action.payload);
-      }
-      return selector;
-    }),
-  );
-}
 
 export abstract class ModelService<
   T extends Model,

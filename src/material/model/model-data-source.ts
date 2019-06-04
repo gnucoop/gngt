@@ -25,7 +25,7 @@ import {MatPaginator, PageEvent} from '@angular/material/paginator';
 import {MatSort, Sort} from '@angular/material/sort';
 
 import {BehaviorSubject, combineLatest, Observable, Subscription} from 'rxjs';
-import {debounceTime, map, startWith, switchMap, tap} from 'rxjs/operators';
+import {debounceTime, startWith, switchMap, tap} from 'rxjs/operators';
 
 import {
   Model, ModelActions, ModelListParams, ModelQueryParams, ModelService, reducers as fromModel
