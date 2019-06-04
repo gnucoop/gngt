@@ -30,5 +30,5 @@ export * from './model-reducer';
 export * from './model-service';
 export {ModelActions, reducers};
 export {
-  Model, ModelGetParams, ModelJoin, ModelListParams, ModelListResult
+  Model, ModelGetParams, ModelJoin, ModelListParams, ModelListResult, ModelQueryParams
 } from '@gngt/core/common';

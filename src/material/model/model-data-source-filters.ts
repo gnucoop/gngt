@@ -19,5 +19,4 @@
  *
  */
 
-export * from './model-data-source';
-export * from './model-data-source-filters';
+export type ModelDataSourceFilters = {[key: string]: any};

@@ -25,11 +25,13 @@ import {MatPaginator, PageEvent} from '@angular/material/paginator';
 import {MatSort, Sort} from '@angular/material/sort';
 
 import {BehaviorSubject, combineLatest, Observable, Subscription} from 'rxjs';
-import {debounceTime, map, startWith, tap} from 'rxjs/operators';
+import {debounceTime, map, startWith, switchMap, tap} from 'rxjs/operators';
 
 import {
-  Model, ModelActions, ModelListParams, ModelService, reducers as fromModel
+  Model, ModelActions, ModelListParams, ModelQueryParams, ModelService, reducers as fromModel
 } from '@gngt/core/model';
+
+import {ModelDataSourceFilters} from './model-data-source-filters';
 
 export class ModelDataSource<
       T extends Model,
@@ -54,6 +56,14 @@ export class ModelDataSource<
   }
   private _filter: BehaviorSubject<string> = new BehaviorSubject<string>('');
 
+  get filters(): ModelDataSourceFilters {
+    return this._filters.value; }
+  set filters(filters: ModelDataSourceFilters) {
+    this._filters.next(filters);
+  }
+  private _filters: BehaviorSubject<ModelDataSourceFilters>
+    = new BehaviorSubject<ModelDataSourceFilters>({});
+
   get paginator(): MatPaginator | null { return this._paginator; }
   set paginator(paginator: MatPaginator|null) {
     this._paginator = paginator;
@@ -61,37 +71,29 @@ export class ModelDataSource<
   }
   private _paginator: MatPaginator | null = null;
 
-  private _data: T[] = [];
-  get data(): T[] { return this._data; }
+  private _data: BehaviorSubject<T[]> = new BehaviorSubject<T[]>([]);
+  get data(): T[] { return this._data.value; }
 
-  private _dataSubscription: Subscription = Subscription.EMPTY;
   private _sortParams: BehaviorSubject<Sort | null> = new BehaviorSubject<Sort | null>(null);
   private _sortSubscription: Subscription = Subscription.EMPTY;
   private _paginatorParams: BehaviorSubject<PageEvent | null> =
     new BehaviorSubject<PageEvent | null>(null);
   private _paginatorSubscription: Subscription = Subscription.EMPTY;
+  private _dataSubscription: Subscription = Subscription.EMPTY;
   private _refreshEvent: EventEmitter<void> = new EventEmitter<void>();
 
   connect(_: CollectionViewer): Observable<T[]> {
     this._initData();
-    return this._service.getListObjects().pipe(
-      tap(o => {
-        const paginator = this.paginator;
-        if (paginator != null) {
-          paginator.length = o && o.count ? o.count : 0;
-        }
-      }),
-      map(o => {
-        this._data = o && o.results ? o.results : [];
-        return this._data;
-      }),
-    );
+    return this._data.asObservable();
   }
 
   disconnect(_: CollectionViewer): void {
     this._dataSubscription.unsubscribe();
     this._sortSubscription.unsubscribe();
     this._paginatorSubscription.unsubscribe();
+    this._sortParams.complete();
+    this._paginatorParams.complete();
+    this._filters.complete();
   }
 
   refresh(): void {
@@ -99,28 +101,39 @@ export class ModelDataSource<
   }
 
   private _initData(): void {
-    this._dataSubscription.unsubscribe();
     this._dataSubscription = combineLatest(
-      this._paginatorParams, this._sortParams, this._filter, this._refreshEvent
+      this._paginatorParams, this._sortParams, this._filter,
+      this._filters, this._refreshEvent
     ).pipe(
       startWith([null, null, null, null]),
-      debounceTime(10)
-    ).subscribe(p => {
-      const pagination = p[0];
-      const sort = p[1];
-      const params: ModelListParams = {...this._baseParams};
-      if (pagination != null) {
-        const pag = pagination as PageEvent;
-        params.limit = pag.pageSize;
-        params.start = pag.pageIndex * pag.pageSize;
-      }
-      if (sort != null) {
-        const so = sort as Sort;
-        const direction: 'asc' | 'desc' = so.direction === '' ? 'asc' : so.direction;
-        params.sort = {[so.active]: direction};
-      }
-      this._service.list(params);
+      debounceTime(10),
+      switchMap(p => {
+        const pagination = p[0];
+        const sort = p[1];
+        const filters = p[3];
+        const params: ModelQueryParams = {...this._baseParams, selector: {...filters}};
+        if (pagination != null) {
+          const pag = pagination as PageEvent;
+          params.limit = pag.pageSize;
+          params.start = pag.pageIndex * pag.pageSize;
+        }
+        if (sort != null) {
+          const so = sort as Sort;
+          const direction: 'asc' | 'desc' = so.direction === '' ? 'asc' : so.direction;
+          params.sort = {[so.active]: direction};
+        }
+        return this._service.query(params);
+      }),
+      tap(o => {
+        const paginator = this.paginator;
+        if (paginator != null) {
+          paginator.length = o && o.count ? o.count : 0;
+        }
+      }),
+    ).subscribe(o => {
+      this._data.next(o && o.results ? o.results : []);
     });
+
     this._refreshEvent.next();
   }
 
