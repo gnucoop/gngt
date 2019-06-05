@@ -24,8 +24,8 @@ import {CollectionViewer, DataSource} from '@angular/cdk/collections';
 import {MatPaginator, PageEvent} from '@angular/material/paginator';
 import {MatSort, Sort} from '@angular/material/sort';
 
-import {BehaviorSubject, combineLatest, Observable, Subscription} from 'rxjs';
-import {debounceTime, startWith, switchMap, tap} from 'rxjs/operators';
+import {BehaviorSubject, combineLatest, Observable, of as obsOf, Subscription} from 'rxjs';
+import {debounceTime, map, startWith, switchMap, tap} from 'rxjs/operators';
 
 import {
   Model, ModelActions, ModelListParams, ModelQueryParams, ModelService, reducers as fromModel
@@ -73,6 +73,11 @@ export class ModelDataSource<
 
   private _data: BehaviorSubject<T[]> = new BehaviorSubject<T[]>([]);
   get data(): T[] { return this._data.value; }
+
+  private _dataModifier: (data: T[]) => Observable<T[]>;
+  set dataModifier(dataModifier: (data: T[]) => Observable<T[]>) {
+    this._dataModifier = dataModifier;
+  }
 
   private _sortParams: BehaviorSubject<Sort | null> = new BehaviorSubject<Sort | null>(null);
   private _sortSubscription: Subscription = Subscription.EMPTY;
@@ -130,8 +135,15 @@ export class ModelDataSource<
           paginator.length = o && o.count ? o.count : 0;
         }
       }),
-    ).subscribe(o => {
-      this._data.next(o && o.results ? o.results : []);
+      map(o => o && o.results ? o.results : []),
+      switchMap(data => {
+        if (this._dataModifier != null) {
+          return this._dataModifier(data);
+        }
+        return obsOf(data);
+      })
+    ).subscribe(data => {
+      this._data.next(data);
     });
 
     this._refreshEvent.next();
