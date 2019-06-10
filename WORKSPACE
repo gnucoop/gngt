@@ -67,7 +67,8 @@ http_archive(
   url = "https://github.com/ionic-team/ionic/archive/v4.2.0.zip",
   strip_prefix = "ionic-4.2.0/angular/src",
   build_file="//tools/build_files/ionic:BUILD.bazel.ionic",
-  workspace_file="//tools/build_files/ionic:WORKSPACE.ionic"
+  workspace_file="//tools/build_files/ionic:WORKSPACE.ionic",
+  sha256 = "69ad8d3c0cb88f8e024e79e4052f48680b49d1562b8b260ca1b3e9c46fffda12",
 )
 
 http_archive(
@@ -75,7 +76,8 @@ http_archive(
   url = "https://github.com/gnucoop/gic/archive/v4.2.5.zip",
   strip_prefix = "gic-4.2.5/angular/src",
   build_file="//tools/build_files/gic:BUILD.bazel.gic",
-  workspace_file="//tools/build_files/gic:WORKSPACE.gic"
+  workspace_file="//tools/build_files/gic:WORKSPACE.gic",
+  sha256 = "6b0699873150c9d6fdd2d73083b027a5657a259a9a1ee43f4b0e0a596631a3b4",
 )
 
 # We need to create a local repository called "npm" because currently Angular Material
