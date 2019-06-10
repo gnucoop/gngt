@@ -23,19 +23,21 @@ import {HttpClient} from '@angular/common/http';
 
 import {Observable} from 'rxjs';
 
-import {Model, ModelListParams, ModelListResult, ModelQueryParams} from '@gngt/core/common';
-// import {SyncService} from '@gngt/core/sync';
+import {
+  Model, ModelListParams, ModelListResult, ModelManager as BaseModelManager, ModelQueryParams
+} from '@gngt/core/common';
 import {ModelOptions} from './model-options';
 
 
-export abstract class ModelManager<M extends Model> {
-  protected get endPoint(): string { return this._endPoint; }
+export abstract class ModelManager<M extends Model> extends BaseModelManager {
+  get endPoint(): string { return this._endPoint; }
 
   private _baseUrl: string;
 
   constructor(
     private _config: ModelOptions, private _endPoint: string, protected _http: HttpClient
   ) {
+    super();
     this._baseUrl = `${this._config.baseApiUrl}${this._endPoint}`;
   }
 

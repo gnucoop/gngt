@@ -59,7 +59,14 @@ export class AdminListComponent<
     MS extends ModelService<T, S, A>
   > extends BaseAdminListComponent<T, S, A, MS>
     implements AfterContentInit, OnDestroy, OnInit {
-  @Input() dataSource: ModelDataSource<T, S, A, MS>;
+  private _dataSource: ModelDataSource<T, S, A, MS>;
+  get dataSource(): ModelDataSource<T, S, A, MS> { return this._dataSource; }
+  @Input() set dataSource(dataSource: ModelDataSource<T, S, A, MS>) {
+    if (dataSource !== this.dataSource) {
+      this._dataSource = dataSource;
+      this._fillDataSource();
+    }
+  }
   @ViewChild(MatPaginator) paginatorCmp: MatPaginator;
   @ViewChild(MatSort) sortCmp: MatSort;
   @ViewChild('actionSel', {read: MatSelect}) actionSel: MatSelect;
@@ -81,27 +88,35 @@ export class AdminListComponent<
   }
 
   ngOnInit(): void {
-    this.dataSource.paginator = this.paginatorCmp;
-    this.dataSource.sort = this.sortCmp;
+    this._fillDataSource();
   }
 
   getSelection(): T[] {
-    return this.selection.selected;
+    return this.selection ? this.selection.selected : [];
   }
 
   getItems(): T[] {
-    return this.dataSource.data;
+    return this.dataSource ? this.dataSource.data : [];
   }
 
   clearSelection(): void {
+    if (this.selection == null) { return; }
     this.selection.clear();
   }
 
   selectAll(): void {
+    if (this.dataSource == null) { return; }
     this.dataSource.data.forEach(row => this.selection.select(row));
   }
 
   refreshList(): void {
+    if (this.dataSource == null) { return; }
     this.dataSource.refresh();
+  }
+
+  private _fillDataSource(): void {
+    if (this.dataSource == null) { return; }
+    this.dataSource.paginator = this.paginatorCmp;
+    this.dataSource.sort = this.sortCmp;
   }
 }

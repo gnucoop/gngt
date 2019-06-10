@@ -4,7 +4,7 @@ import {TestBed} from '@angular/core/testing';
 
 import {LocalDoc} from './local-doc';
 import {SyncModule} from './sync-module';
-import {SyncService} from './sync-service';
+import {registerSyncModel} from './sync-utils';
 
 const dbName = 'testdb';
 
@@ -42,8 +42,7 @@ describe('OfflineInterceptor', () => {
     httpClient = TestBed.get(HttpClient);
     httpMock = TestBed.get(HttpTestingController);
 
-    const syncService: SyncService = TestBed.get(SyncService);
-    syncService.registerModel('http://remote/table', 'table');
+    registerSyncModel('http://remote/table', 'table');
 
     const db = new PouchDB<LocalDoc<DbEntry>>(dbName);
     dbEntries.forEach(dbe => {

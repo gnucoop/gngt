@@ -19,12 +19,27 @@
  *
  */
 
-export * from './local-doc';
-export * from './offline-interceptor';
-export * from './sync-entry';
-export * from './sync-entry-type';
-export * from './sync-model-decorator';
-export * from './sync-module';
-export * from './sync-options';
-export * from './sync-service';
-export * from './sync-status';
+import {ModelManager} from '@gngt/core/common';
+import {registerSyncModel} from './sync-utils';
+
+const ANNOTATIONS = '__gngt_annotations__';
+
+export interface SyncModel {
+  tableName: string;
+}
+
+export function SyncModel<T extends ModelManager>(opts: SyncModel) {
+  return function SyncModelFactory(cls: {new(...args: any[]): any}): any {
+    const annotations: {[key: string]: any} = cls.hasOwnProperty(ANNOTATIONS)
+      ? (cls as any)[ANNOTATIONS]
+      : Object.defineProperty(cls, ANNOTATIONS, {value: []})[ANNOTATIONS];
+    annotations.push({sync_model: true});
+
+    return class extends cls {
+      constructor(...args: any[]) {
+        super(...args);
+        registerSyncModel((this as any).endPoint, opts.tableName);
+      }
+    } as any;
+  };
+}

@@ -28,17 +28,12 @@ import {Observable, throwError} from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
 
 import {RegisteredModel} from './registered-model';
+import {SYNC_REGISTERED_MODELS} from './registered-models';
 import {SyncService} from './sync-service';
 
 @Injectable()
 export class OfflineInterceptor implements HttpInterceptor {
-  private _models: RegisteredModel[] = [];
-
-  constructor(private _syncService: SyncService) {
-    this._models = [..._syncService.registeredModels];
-    _syncService.modelRegister.subscribe(_ =>
-      this._models = [..._syncService.registeredModels]);
-  }
+  constructor(private _syncService: SyncService) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(req).pipe(
@@ -109,6 +104,6 @@ export class OfflineInterceptor implements HttpInterceptor {
   }
 
   private _checkOfflineRequest(req: HttpRequest<any>): RegisteredModel[] {
-    return this._models.filter(m => new RegExp(`^${m.endpoint}`).test(req.url));
+    return SYNC_REGISTERED_MODELS.filter(m => new RegExp(`^${m.endpoint}`).test(req.url));
   }
 }

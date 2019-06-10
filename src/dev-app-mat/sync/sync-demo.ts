@@ -24,7 +24,15 @@ import {Component} from '@angular/core';
 
 import {Observable} from 'rxjs';
 
-import {SyncService, SyncStatus} from '@gngt/core/sync';
+import {SyncModel, SyncService, SyncStatus} from '@gngt/core/sync';
+
+@SyncModel({tableName: 'category'})
+class ModelServiceMock {
+  endPoint = 'http://127.0.0.1:8000/category';
+  constructor() { }
+}
+
+const service = new ModelServiceMock();
 
 @Component({
   moduleId: module.id,
@@ -34,11 +42,10 @@ import {SyncService, SyncStatus} from '@gngt/core/sync';
 })
 export class SyncDemo {
   readonly status: Observable<SyncStatus>;
+  readonly service = service;
 
   constructor(private _httpClient: HttpClient, private _service: SyncService) {
     this.status = _service.status;
-
-    _service.registerModel('http://127.0.0.1:8000/category', 'category');
   }
 
   start(): void {

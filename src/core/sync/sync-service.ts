@@ -20,7 +20,7 @@
  */
 
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
-import {EventEmitter, Inject, Injectable} from '@angular/core';
+import {Inject, Injectable} from '@angular/core';
 
 import {
   BehaviorSubject, from, Observable, of as obsOf, Subscription, throwError, timer, zip
@@ -37,7 +37,6 @@ import {ModelGetParams, ModelListParams, ModelSort} from '@gngt/core/common';
 import {LocalDoc} from './local-doc';
 import {LocalSyncEntry} from './local-sync-entry';
 import {LocalSyncNumber} from './local-sync-number';
-import {RegisteredModel} from './registered-model';
 import {SyncCheckpoint} from './sync-checkpoint';
 import {SyncEntry} from './sync-entry';
 import {SYNC_OPTIONS, SyncOptions} from './sync-options';
@@ -52,10 +51,6 @@ export class SyncService {
   private _status: BehaviorSubject<SyncStatus>
     = new BehaviorSubject<SyncStatus>({status: 'initializing'});
   readonly status: Observable<SyncStatus> = this._status.asObservable();
-  readonly registeredModels: RegisteredModel[] = [];
-
-  private _modelRegister: EventEmitter<RegisteredModel> = new EventEmitter<RegisteredModel>();
-  readonly modelRegister: Observable<RegisteredModel>;
 
   private _timerSub: Subscription = Subscription.EMPTY;
   private _syncing = false;
@@ -73,8 +68,6 @@ export class SyncService {
   private readonly _databaseIsInit: Observable<boolean>;
 
   constructor(@Inject(SYNC_OPTIONS) private _opts: SyncOptions, private _httpClient: HttpClient) {
-    this.modelRegister = this._modelRegister.asObservable();
-
     if (this._opts.syncInterval == null) { this._opts.syncInterval = 300000; }
     if (this._opts.changesBatchSize == null) { this._opts.changesBatchSize = 50; }
 
@@ -82,14 +75,6 @@ export class SyncService {
     this._changesUrl = `${this._opts.baseUrl}/${this._opts.docsPath || 'docs'}`;
     this._initLocalDatabase();
     this._databaseIsInit = this._databaseInit.pipe(filter(i => i));
-  }
-
-  registerModel(endpoint: string, tableName: string): void {
-    if (this.registeredModels.find(r => r.tableName === tableName) == null) {
-      const registeredModel = {tableName, endpoint};
-      this.registeredModels.push(registeredModel);
-      this._modelRegister.emit(registeredModel);
-    }
   }
 
   start(immediate = true): void {
