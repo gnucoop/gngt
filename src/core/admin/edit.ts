@@ -24,10 +24,11 @@ import {FormBuilder, FormGroup} from '@angular/forms';
 import {Router} from '@angular/router';
 
 import {BehaviorSubject, combineLatest, Observable, of as obsOf, merge, Subscription} from 'rxjs';
-import {filter, map, shareReplay, switchMap, tap, withLatestFrom} from 'rxjs/operators';
+import {filter, map, mapTo, shareReplay, switchMap, tap, withLatestFrom} from 'rxjs/operators';
 
-import {AdminEditField} from './edit-field';
 import {Model, ModelActions, ModelService, reducers as fromModel} from '@gngt/core/model';
+import {AdminEditField} from './edit-field';
+import {ProcessDataFn} from './process-data-fn';
 
 export abstract class AdminEditComponent<
   T extends Model,
@@ -76,13 +77,16 @@ export abstract class AdminEditComponent<
     this._id.next(id);
   }
 
-  private _processObject: (value: any) => void = (_) => { };
-  @Input() set processObject(processObject: (value: any) => void) {
+  private _processObject: ProcessDataFn | Observable<ProcessDataFn>;
+  @Input()
+  set processObject(processObject: ProcessDataFn | Observable<ProcessDataFn>) {
     this._processObject = processObject;
   }
 
-  private _processFormData: (value: any) => void = (_) => { };
-  @Input() set processFormData(processFormData: (value: any) => void) {
+  private _processFormData: ProcessDataFn | Observable<ProcessDataFn>;
+  @Input()
+  set processFormData(
+    processFormData: ProcessDataFn | Observable<ProcessDataFn>) {
     this._processFormData = processFormData;
   }
 
@@ -116,10 +120,18 @@ export abstract class AdminEditComponent<
         return s!.getGetObject();
       }),
       filter(o => o != null),
-      tap(o => {
+      switchMap(o => {
         if (this._processObject) {
-          this._processObject(o);
+          if (this._processObject instanceof Observable) {
+            return this._processObject.pipe(
+              tap(po => po(o)),
+              mapTo(o),
+            );
+          } else {
+            this._processObject(o);
+          }
         }
+        return obsOf(o);
       }),
       shareReplay(1)
     );
@@ -143,11 +155,23 @@ export abstract class AdminEditComponent<
 
     this._saveSub = this._saveEvt.pipe(
       withLatestFrom(this.form, this._service, this._id),
-      filter(r => r[2] != null),
-    ).subscribe(([_, form, service, id]) => {
-      if (form == null || service == null && !form.valid) {return; }
-      const formValue = {...form.value};
-      this._applyProcessFormData(formValue);
+      filter(([_, form, service, __]) => form != null && service != null && form.valid),
+      switchMap(([_, form, service, id]) => {
+        const formValue = {...form.value};
+        this._defaultProcessData(formValue);
+        if (this._processFormData) {
+          if (this._processFormData instanceof Observable) {
+            return this._processFormData.pipe(
+              tap(pd => pd(formValue)),
+              mapTo([formValue, service, id]),
+            );
+          } else {
+            this._processFormData(formValue);
+          }
+        }
+        return obsOf([formValue, service, id]);
+      })
+    ).subscribe(([formValue, service, id]) => {
       if (id === 'new') {
         delete formValue['id'];
         service!.create(formValue);
@@ -182,11 +206,6 @@ export abstract class AdminEditComponent<
     this._saveEvt.complete();
     this._saveSub.unsubscribe();
     this._savedSub.unsubscribe();
-  }
-
-  private _applyProcessFormData(value: any): void {
-    this._defaultProcessData(value);
-    this._processFormData(value);
   }
 
   private _defaultProcessData(value: any): void {
