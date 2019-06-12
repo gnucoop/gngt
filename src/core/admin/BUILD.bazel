@@ -11,6 +11,7 @@ ng_module(
     "@angular//packages/core",
     "@angular//packages/forms",
     "@angular//packages/router",
+    "@angular_material//src/cdk/coercion",
     "//src/core/model",
   ],
 )

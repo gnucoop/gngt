@@ -44,7 +44,10 @@ import {Model, ModelActions, reducers as fromModel} from '@gngt/core/model';
     'fields',
     'processFormData',
     'processObject',
-    'id'
+    'id',
+    'readonly',
+    'hideSaveButton',
+    'canSave',
   ],
   outputs: ['valueChanges$']
 })

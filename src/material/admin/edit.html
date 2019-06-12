@@ -50,7 +50,7 @@
     </form>
   </mat-card-content>
   <mat-card-actions>
-    <button (click)="save()" [disabled]="!editForm.valid"
+    <button *ngIf="!hideSaveButton" (click)="save()" [disabled]="!editForm.valid || (canSave === false)"
         mat-raised-button color="primary">{{ saveLabel | translate }}</button>
     <button (click)="goBack()" mat-raised-button color="warn">{{ cancelLabel | translate }}</button>
   </mat-card-actions>

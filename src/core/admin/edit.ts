@@ -19,6 +19,7 @@
  *
  */
 
+import {coerceBooleanProperty} from '@angular/cdk/coercion';
 import {ChangeDetectorRef, EventEmitter, Input, OnDestroy, Output} from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {Router} from '@angular/router';
@@ -88,6 +89,39 @@ export abstract class AdminEditComponent<
   set processFormData(
     processFormData: ProcessDataFn | Observable<ProcessDataFn>) {
     this._processFormData = processFormData;
+  }
+
+  private _readonly: boolean;
+  get readonly(): boolean { return this._readonly; }
+  @Input()
+  set readonly(readonly: boolean) {
+    readonly = coerceBooleanProperty(readonly);
+    if (readonly !== this._readonly) {
+      this._readonly = readonly;
+      this._cdr.markForCheck();
+    }
+  }
+
+  private _hideSaveButton: boolean;
+  get hideSaveButton(): boolean { return this._hideSaveButton; }
+  @Input()
+  set hideSaveButton(hideSaveButton: boolean) {
+    hideSaveButton = coerceBooleanProperty(hideSaveButton);
+    if (hideSaveButton !== this._hideSaveButton) {
+      this._hideSaveButton = hideSaveButton;
+      this._cdr.markForCheck();
+    }
+  }
+
+  private _canSave: boolean;
+  get canSave(): boolean { return this._canSave; }
+  @Input()
+  set canSave(canSave: boolean) {
+    canSave = coerceBooleanProperty(canSave);
+    if (canSave !== this._canSave) {
+      this._canSave = canSave;
+      this._cdr.markForCheck();
+    }
   }
 
   readonly form: Observable<FormGroup>;

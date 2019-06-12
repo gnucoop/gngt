@@ -44,6 +44,7 @@ export const rollupGlobals = {
   '@angular/animations': 'ng.animations',
   '@angular/cdk': 'ng.cdk',
   '@angular/cdk/a11y': 'ng.cdk.a11y',
+  '@angular/cdk/coercion': 'ng.cdk.coercion',
   '@angular/cdk/collections': 'ng.cdk.collections',
   '@angular/cdk/drag-drop': 'ng.cdk.drapDrop',
   '@angular/cdk/scrolling': 'ng.cdk.scrolling',
