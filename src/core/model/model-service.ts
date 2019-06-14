@@ -20,7 +20,7 @@
  */
 
 import {Observable, pipe, throwError, UnaryFunction} from 'rxjs';
-import {filter, map, tap} from 'rxjs/operators';
+import {delayWhen, filter, map, tap, switchMap} from 'rxjs/operators';
 
 import {Actions, ofType} from '@ngrx/effects';
 import {createSelector, createFeatureSelector, MemoizedSelector, select, Store} from '@ngrx/store';
@@ -401,7 +401,12 @@ export abstract class ModelService<
       payload: {id}
     });
     this._store.dispatch(action);
-    return this._store.pipe(
+    const actResult = this._actions.pipe(
+      ofType(this._actionTypes.GET_SUCCESS, this._actionTypes.GET_FAILURE),
+      filter(a => a.uuid === action.uuid),
+    );
+    return actResult.pipe(
+      switchMap(() => this._store),
       select(createSelector(this._modelState, (state) => state.get)),
       map(gets => gets.find(g => g.uuid === action.uuid)),
       filter(get => get != null),
@@ -421,7 +426,12 @@ export abstract class ModelService<
       payload: {params: options || {}}
     });
     this._store.dispatch(action);
-    return this._store.pipe(
+    const actResult = this._actions.pipe(
+      ofType(this._actionTypes.LIST_SUCCESS, this._actionTypes.LIST_FAILURE),
+      filter(a => a.uuid === action.uuid),
+    );
+    return actResult.pipe(
+      switchMap(() => this._store),
       select(createSelector(this._modelState, (state) => state.list)),
       map(lists => lists.find(l => l.uuid === action.uuid)),
       filter(list => list != null),
@@ -441,7 +451,12 @@ export abstract class ModelService<
       payload: {item: data},
     });
     this._store.dispatch(action);
-    return this._store.pipe(
+    const actResult = this._actions.pipe(
+      ofType(this._actionTypes.CREATE_SUCCESS, this._actionTypes.CREATE_FAILURE),
+      filter(a => a.uuid === action.uuid),
+    );
+    return actResult.pipe(
+      switchMap(() => this._store),
       select(createSelector(this._modelState, (state) => state.create)),
       map(creates => creates.find(c => c.uuid === action.uuid)),
       filter(creates => creates != null),
@@ -461,7 +476,12 @@ export abstract class ModelService<
       payload: {item: data},
     });
     this._store.dispatch(action);
-    return this._store.pipe(
+    const actResult = this._actions.pipe(
+      ofType(this._actionTypes.UPDATE_SUCCESS, this._actionTypes.UPDATE_FAILURE),
+      filter(a => a.uuid === action.uuid),
+    );
+    return actResult.pipe(
+      switchMap(() => this._store),
       select(createSelector(this._modelState, (state) => state.update)),
       map(updates => updates.find(u => u.uuid === action.uuid)),
       filter(updates => updates != null),
@@ -481,7 +501,12 @@ export abstract class ModelService<
       payload: {item: data}
     });
     this._store.dispatch(action);
-    return this._store.pipe(
+    const actResult = this._actions.pipe(
+      ofType(this._actionTypes.PATCH_SUCCESS, this._actionTypes.PATCH_FAILURE),
+      filter(a => a.uuid === action.uuid),
+    );
+    return actResult.pipe(
+      switchMap(() => this._store),
       select(createSelector(this._modelState, (state) => state.patch)),
       map(patches => patches.find(p => p.uuid === action.uuid)),
       filter(patches => patches != null),
@@ -501,7 +526,12 @@ export abstract class ModelService<
       payload: {item: data}
     });
     this._store.dispatch(action);
-    return this._store.pipe(
+    const actResult = this._actions.pipe(
+      ofType(this._actionTypes.DELETE_SUCCESS, this._actionTypes.DELETE_FAILURE),
+      filter(a => a.uuid === action.uuid),
+    );
+    return actResult.pipe(
+      switchMap(() => this._store),
       select(createSelector(this._modelState, (state) => state.delete)),
       map(dels => dels.find(d => d.uuid === action.uuid)),
       filter(dels => dels != null),
@@ -521,7 +551,12 @@ export abstract class ModelService<
       payload: {items: data}
     });
     this._store.dispatch(action);
-    return this._store.pipe(
+    const actResult = this._actions.pipe(
+      ofType(this._actionTypes.DELETE_ALL_SUCCESS, this._actionTypes.DELETE_ALL_FAILURE),
+      filter(a => a.uuid === action.uuid),
+    );
+    return actResult.pipe(
+      switchMap(() => this._store),
       select(createSelector(this._modelState, (state) => state.deleteAll)),
       map(deleteAlls => deleteAlls.find(d => d.uuid === action.uuid)),
       filter(deleteAlls => deleteAlls != null),
@@ -541,7 +576,12 @@ export abstract class ModelService<
       payload: {params: options || {}}
     });
     this._store.dispatch(action);
-    return this._store.pipe(
+    const actResult = this._actions.pipe(
+      ofType(this._actionTypes.QUERY_SUCCESS, this._actionTypes.QUERY_FAILURE),
+      filter(a => a.uuid === action.uuid),
+    );
+    return actResult.pipe(
+      switchMap(() => this._store),
       select(createSelector(this._modelState, (state) => state.query)),
       map(queries => queries.find(q => q.uuid === action.uuid)),
       filter(queries => queries != null),
