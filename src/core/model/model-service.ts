@@ -20,7 +20,7 @@
  */
 
 import {Observable, pipe, throwError, UnaryFunction} from 'rxjs';
-import {delayWhen, filter, map, tap, switchMap} from 'rxjs/operators';
+import {filter, map, tap, switchMap} from 'rxjs/operators';
 
 import {Actions, ofType} from '@ngrx/effects';
 import {createSelector, createFeatureSelector, MemoizedSelector, select, Store} from '@ngrx/store';
