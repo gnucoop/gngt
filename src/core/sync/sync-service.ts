@@ -26,14 +26,14 @@ import {
   BehaviorSubject, from, Observable, of as obsOf, Subscription, throwError, timer, zip
 } from 'rxjs';
 import {
-  catchError, concatMap, delayWhen, exhaustMap, filter, map, mapTo, switchMap, take, tap
+  catchError, concatMap, delayWhen, exhaustMap, filter, map, mapTo, switchMap, take, tap, toArray
 } from 'rxjs/operators';
 
 import * as PouchDB from 'pouchdb';
 import * as PouchDBDebug from 'pouchdb-debug';
 import * as PouchDBFind from 'pouchdb-find';
 
-import {ModelGetParams, ModelListParams, ModelSort} from '@gngt/core/common';
+import {ModelGetParams, ModelListParams, ModelQueryParams, ModelSort} from '@gngt/core/common';
 import {LocalDoc} from './local-doc';
 import {LocalSyncEntry} from './local-sync-entry';
 import {LocalSyncNumber} from './local-sync-number';
@@ -41,6 +41,7 @@ import {SyncCheckpoint} from './sync-checkpoint';
 import {SyncEntry} from './sync-entry';
 import {SYNC_OPTIONS, SyncOptions} from './sync-options';
 import {SyncStatus} from './sync-status';
+import {registerSyncModel} from './sync-utils';
 import {UpwardChange} from './upward-change';
 import {UpwardChangeResult} from './upward-change-result';
 
@@ -80,6 +81,10 @@ export class SyncService {
     this._databaseIsInit = this._databaseInit.pipe(filter(i => i));
   }
 
+  registerSyncModel(endPoint: string, tableName: string): void {
+    registerSyncModel(endPoint, tableName);
+  }
+
   start(immediate = true): void {
     if (this._syncing) { return; }
     this._syncing = true;
@@ -98,8 +103,8 @@ export class SyncService {
     const db = this._getLocalDocsDb();
     return this._databaseIsInit.pipe(
       exhaustMap(_ => this._relationalModelIdxObs()),
-      exhaustMap(_ => from(db.find(
-        this._modelGetFindRequest(tableName, params))).pipe(take(1))),
+      exhaustMap(_ => from(db.find(this._modelGetFindRequest(tableName, params)))),
+      take(1),
       switchMap(res => {
         if (res.docs.length === 1) {
           let obj = this._subObject(res.docs[0].object, params.fields);
@@ -125,6 +130,7 @@ export class SyncService {
         }
         return throwError('not_found');
       }),
+      take(1),
     );
   }
 
@@ -132,9 +138,8 @@ export class SyncService {
     const db = this._getLocalDocsDb();
     return this._databaseIsInit.pipe(
       exhaustMap(_ => this._relationalModelIdxObs({tableName, sort: params.sort})),
-      exhaustMap(idx => from(db.find(
-        this._modelListFindRequest(tableName, params, idx)
-      )).pipe(take(1))),
+      exhaustMap(idx => from(db.find(this._modelListFindRequest(tableName, params, idx)))),
+      take(1),
       switchMap(res => {
         if (params.joins != null) {
           const joinTables: {[table: string]: number[]} = params.joins.reduce((prev, cur) => {
@@ -164,73 +169,158 @@ export class SyncService {
         }
         return obsOf(res.docs.map(d => this._subObject(d.object, params.fields)));
       }),
+      take(1),
     );
   }
 
-  create(tableName: string, object: any): Observable<number> {
+  create(tableName: string, object: any): Observable<any> {
     return this._databaseIsInit.pipe(
       exhaustMap(_ => this._nextObjectId(tableName)),
+      take(1),
       exhaustMap(id => {
         object = {id, ...object};
         const localDoc = {table_name: tableName, object_id: id};
         return from(this._database.post({...localDoc, object})).pipe(
           exhaustMap(doc => this._createLocalSyncEntry(
             {doc_id: doc.id, entry_type: 'insert', ...localDoc}
+          ).pipe(
+            map(() => object),
           )),
-          map(_ => id),
         );
       }),
       take(1),
     );
   }
 
-  update(tableName: string, id: number, object: any): Observable<number> {
+  update(tableName: string, id: number, object: any): Observable<any> {
     const db = this._getLocalDocsDb();
     return this._databaseIsInit.pipe(
-      exhaustMap(_ => from(db.find(this._modelGetFindRequest(tableName, {id}))).pipe(take(1))),
+      exhaustMap(_ => from(db.find(this._modelGetFindRequest(tableName, {id})))),
+      take(1),
       exhaustMap(res => {
         if (res.docs.length !== 1) {
           return throwError('not_found');
         }
         const localDoc = {...res.docs[0], object};
-        return from(db.post(localDoc)).pipe(take(1));
+        return from(db.post(localDoc)).pipe(
+          map(r => ({res: r, localDoc})),
+        );
       }),
-      exhaustMap(res => {
+      take(1),
+      exhaustMap(({res, localDoc}) => {
         const syncEntry: Partial<LocalSyncEntry> = {
           doc_id: res.id,
           table_name: tableName,
-          object_id: id,
+          object_id: localDoc.object_id,
           entry_type: 'update'
         };
-        return this._createLocalSyncEntry(syncEntry);
+        return this._createLocalSyncEntry(syncEntry).pipe(
+          map(() => localDoc.object),
+        );
       }),
       take(1),
-      map(_ => id),
     );
   }
 
-  delete(tableName: string, id: number): Observable<number> {
+  delete(tableName: string, id: number): Observable<any> {
     const db = this._getLocalDocsDb();
     return this._databaseIsInit.pipe(
-      exhaustMap(_ => from(db.find(this._modelGetFindRequest(tableName, {id}))).pipe(take(1))),
+      exhaustMap(_ => from(db.find(this._modelGetFindRequest(tableName, {id})))),
+      take(1),
       exhaustMap(res => {
         if (res.docs.length !== 1) {
           return throwError('not_found');
         }
         const localDoc = res.docs[0];
-        return from(db.remove(localDoc)).pipe(take(1));
+        return from(db.remove(localDoc)).pipe(
+          map(r => ({res: r, localDoc})),
+        );
       }),
-      exhaustMap(res => {
+      take(1),
+      exhaustMap(({res, localDoc}) => {
         const syncEntry: Partial<LocalSyncEntry> = {
           doc_id: res.id,
           table_name: tableName,
-          object_id: id,
+          object_id: localDoc.object_id,
           entry_type: 'delete'
         };
-        return this._createLocalSyncEntry(syncEntry);
+        return this._createLocalSyncEntry(syncEntry).pipe(
+          map(() => localDoc.object),
+        );
       }),
       take(1),
-      map(_ => id),
+    );
+  }
+
+  deleteAll(tableName: string, ids: number[]): Observable<any[]> {
+    const db = this._getLocalDocsDb();
+    return this._databaseIsInit.pipe(
+      exhaustMap(_ => from(db.find(this._modelBulkIdsFindRequest(tableName, ids)))),
+      take(1),
+      concatMap(res => {
+        if (res.docs.length !== 1) {
+          return throwError('not_found');
+        }
+        return from(res.docs);
+      }),
+      concatMap(localDoc => {
+        return from(db.remove(localDoc)).pipe(
+          map(res => ({res, localDoc})),
+        );
+      }),
+      concatMap(({res, localDoc}) => {
+        const syncEntry: Partial<LocalSyncEntry> = {
+          doc_id: res.id,
+          table_name: tableName,
+          object_id: localDoc.object_id,
+          entry_type: 'delete'
+        };
+        return this._createLocalSyncEntry(syncEntry).pipe(
+          map(() => localDoc.object),
+        );
+      }),
+      take(ids.length),
+      toArray(),
+    );
+  }
+
+  query(tableName: string, params: ModelQueryParams): Observable<any[]> {
+    const db = this._getLocalDocsDb();
+    return this._databaseIsInit.pipe(
+      exhaustMap(_ => this._relationalModelIdxObs({tableName, sort: params.sort})),
+      take(1),
+      exhaustMap(idx => from(db.find(this._modelQueryFindRequest(tableName, params, idx)))),
+      take(1),
+      switchMap(res => {
+        if (params.joins != null) {
+          const joinTables: {[table: string]: number[]} = params.joins.reduce((prev, cur) => {
+            prev[cur.model] = res.docs.map(d => d.object[cur.property]);
+            return prev;
+          }, {} as {[table: string]: number[]});
+          return zip(...params.joins.map(join => {
+              const req = this._modelListFindRequest(join.model, {fields: join.fields});
+              req.selector['object_id'] = {'$in': joinTables[join.model]};
+              return from(db.find(req)).pipe(
+                take(1),
+                map(related => ({join, related: related.docs})),
+              );
+          })).pipe(
+            map(joins => {
+              return res.docs.map(doc => {
+                const obj = doc.object;
+                joins.forEach(joinEntry => {
+                  const prop = joinEntry.join.property;
+                  const rel = joinEntry.related.find(r => r.object_id === obj[prop]);
+                  obj[prop] = rel != null ? rel.object : null;
+                });
+                return this._subObject(obj, params.fields);
+              });
+            }),
+          );
+        }
+        return obsOf(res.docs.map(d => this._subObject(d.object, params.fields)));
+      }),
+      take(1),
     );
   }
 
@@ -581,6 +671,27 @@ export class SyncService {
     };
   }
 
+  private _modelBulkIdsFindRequest(
+    tableName: string, ids: number[],
+  ): PouchDB.Find.FindRequest<LocalDoc<any>> {
+    return {
+      selector: {
+        table_name: tableName,
+        object_id: {$in: ids}
+      }
+    };
+  }
+
+  private _modelQueryFindRequest(
+    tableName: string, params: ModelQueryParams,
+    index?: PouchDB.Find.CreateIndexResponse<LocalDoc<any>>
+  ): PouchDB.Find.FindRequest<LocalDoc<any>> {
+    const req: PouchDB.Find.FindRequest<LocalDoc<any>> = this._modelListFindRequest(
+      tableName, params, index
+    );
+    return {...req, selector: {...req.selector, ...this._normalizeSelector(params.selector)}};
+  }
+
   private _modelListFindRequest(
     tableName: string, params: ModelListParams,
     index?: PouchDB.Find.CreateIndexResponse<LocalDoc<any>>
@@ -607,6 +718,14 @@ export class SyncService {
       }
     }
     return req;
+  }
+
+  private _normalizeSelector(selector: PouchDB.Find.Selector): PouchDB.Find.Selector {
+    const normSelector: PouchDB.Find.Selector = {};
+    Object.keys(selector).forEach(key => {
+      normSelector[`object.${key}`] = selector[key];
+    });
+    return normSelector;
   }
 
   private _normalizeSortParam(

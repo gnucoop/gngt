@@ -56,8 +56,8 @@ export class OfflineInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
     const method = req.method.toLowerCase();
     const {exactMatch, relativeUrl} = this._analyzeRequestUrl(req, model);
-    if (method === 'get') {
-      if (exactMatch) {
+    if (exactMatch) {
+      if (method === 'get') {
         const limit = <any>req.params.get('limit');
         const start = <any>req.params.get('start');
         const sort = <any>req.params.get('sort');
@@ -72,19 +72,70 @@ export class OfflineInterceptor implements HttpInterceptor {
             body: res
           })),
         );
-      } else {
-        if (relativeUrl.length === 1) {
-          const id = parseInt(relativeUrl[0], 10);
-          if (!isNaN(id) && id > 0) {
-            return this._syncService.get(model.tableName, {id}).pipe(
+      } else if (method === 'post') {
+        const obj = req.body;
+        return this._syncService.create(model.tableName, obj).pipe(
+          catchError(_ => throwError(reqError)),
+          map(res => new HttpResponse({
+            status: 201,
+            statusText: 'OK',
+            url: req.url,
+            body: res
+          }))
+        );
+      }
+    } else {
+      if (relativeUrl.length === 1) {
+        const lastUrlPart = relativeUrl[0];
+        if (lastUrlPart === 'delete_all') {
+          const ids = req.body.ids;
+          if (ids != null && ids instanceof Array && ids.length > 0) {
+            return this._syncService.deleteAll(model.tableName, ids).pipe(
               catchError(_ => throwError(reqError)),
               map(res => new HttpResponse({
                 status: 200,
                 statusText: 'OK',
                 url: req.url,
                 body: res
-              })),
+              }))
             );
+          }
+        } else if (lastUrlPart === 'query') {
+          const params = req.body;
+          return this._syncService.query(model.tableName, params).pipe(
+            catchError(_ => throwError(reqError)),
+            map(res => new HttpResponse({
+              status: 200,
+              statusText: 'OK',
+              url: req.url,
+              body: res
+            }))
+          );
+        } else {
+          const id = parseInt(lastUrlPart, 10);
+          if (!isNaN(id) && id > 0) {
+            let op: Observable<any> | null = null;
+            let successStatus: number = 200;
+            const obj = req.body;
+            if (method === 'get') {
+              op = this._syncService.get(model.tableName, {id});
+              successStatus = 201;
+            } else if (method === 'patch' || method === 'put') {
+              op = this._syncService.update(model.tableName, id, obj);
+            } else if (method === 'delete') {
+              op = this._syncService.delete(model.tableName, id);
+            }
+            if (op != null) {
+              return op.pipe(
+                catchError(_ => throwError(reqError)),
+                map(res => new HttpResponse({
+                  status: successStatus,
+                  statusText: 'OK',
+                  url: req.url,
+                  body: res
+                })),
+              );
+            }
           }
         }
       }

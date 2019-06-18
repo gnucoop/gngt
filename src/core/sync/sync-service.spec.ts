@@ -404,10 +404,11 @@ describe('SyncService', () => {
       const newObj = {foo: '', counter: 0, related: 1};
       const expectedId = dbEntries.filter(e => e.table_name === 'table1')
         .sort((a, b) => b.object_id - a.object_id)[0].object_id + 1;
-      syncService.create('table1', newObj).subscribe(newId => {
-        expect(newId).toEqual(expectedId);
-        syncService.get('table1', {id: newId}).subscribe(obj => {
-          expect(obj).toEqual({id: newId, ...newObj});
+      syncService.create('table1', newObj).subscribe(res => {
+        const newObjWithId = {id: expectedId, ...newObj};
+        expect(res).toEqual(newObjWithId);
+        syncService.get('table1', {id: expectedId}).subscribe(obj => {
+          expect(obj).toEqual(newObjWithId);
           done();
         });
       });
@@ -417,8 +418,8 @@ describe('SyncService', () => {
       const entry = dbEntries[0];
       const updated = {...entry.object, counter: 666};
       const id = entry.object_id;
-      syncService.update('table1', id, updated).subscribe(uid => {
-        expect(uid).toEqual(id);
+      syncService.update('table1', id, updated).subscribe(res => {
+        expect(res).toEqual(updated);
         syncService.get('table1', {id}).subscribe(obj => {
           expect(obj).toEqual(updated);
           done();
@@ -438,8 +439,8 @@ describe('SyncService', () => {
     it('should delete an existing object in the local database', done => {
       const entry = dbEntries[0];
       const id = entry.object_id;
-      syncService.delete('table1', id).subscribe(did => {
-        expect(did).toEqual(id);
+      syncService.delete('table1', id).subscribe(deleted => {
+        expect(deleted).toEqual(entry.object);
         syncService.get('table1', {id}).subscribe(
           _ => {},
           err => {
