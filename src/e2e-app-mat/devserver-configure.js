@@ -5,6 +5,9 @@ require.config({
     '@ngx-translate/core': '@ngx-translate/core/bundles/ngx-translate-core.umd',
     '@ngx-translate/http-loader': '@ngx-translate/http-loader/bundles/ngx-translate-http-loader.umd',
     'date-fns': 'date-fns.umd',
+    'pouchdb': 'pouchdb/dist/pouchdb',
+    'pouchdb-debug': 'pouchdb-debug.umd',
+    'pouchdb-find': 'pouchdb-find.umd',
   }
 });
 

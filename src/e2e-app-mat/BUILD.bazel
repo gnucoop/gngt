@@ -42,8 +42,11 @@ ts_devserver(
       "@gngtdeps//zone.js",
       "@gngtdeps//core-js",
       "@gngtdeps//hammerjs",
+      "@gngtdeps//node_modules/pouchdb:dist/pouchdb.js",
       "@gngtdeps//@ngx-translate/core",
       "//test:date_fns_bundle",
+      "//test:pouchdb_debug_bundle",
+      "//test:pouchdb_find_bundle",
       ":index.html",
     ],
     # Scripts which will be included in the serving_path bundle after "require.js" has been

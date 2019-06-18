@@ -104,6 +104,7 @@ System.config({
     '@gngt/core/common': 'dist/packages/core/common/index.js',
     '@gngt/core/model': 'dist/packages/core/model/index.js',
     '@gngt/core/reducers': 'dist/packages/core/reducers/index.js',
+    '@gngt/core/sync': 'dist/packages/core/sync/index.js',
     '@gngt/core/translations': 'dist/packages/core/translations/index.js',
 
     '@gngt/ionic/admin': 'dist/packages/ionic/admin/index.js',
