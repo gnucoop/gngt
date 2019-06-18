@@ -23,11 +23,13 @@ import * as ModelActions from './model-actions';
 import * as reducers from './reducers';
 
 export * from './model-effects';
+export * from './model-generic-action';
 export * from './model-manager';
 export * from './model-options';
 export * from './model-options-token';
 export * from './model-reducer';
 export * from './model-service';
+export * from './utils';
 export {ModelActions, reducers};
 export {
   Model, ModelGetParams, ModelJoin, ModelListParams, ModelListResult, ModelQueryParams
