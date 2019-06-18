@@ -46,6 +46,9 @@ import {UpwardChangeResult} from './upward-change-result';
 
 type DatabaseContent = LocalDoc<any> | LocalSyncEntry | LocalSyncNumber | SyncCheckpoint;
 
+const pouchDBStatic: PouchDB.Static = (<any>PouchDB).default || PouchDB;
+const pouchDBFindPlugin: PouchDB.Plugin = (<any>PouchDBFind).default || PouchDBFind;
+
 @Injectable()
 export class SyncService {
   private _status: BehaviorSubject<SyncStatus>
@@ -631,9 +634,9 @@ export class SyncService {
   }
 
   private _initLocalDatabase(): void {
-    PouchDB.plugin(PouchDBFind);
-    PouchDB.plugin(PouchDBDebug);
-    this._database = new PouchDB(this._opts.localDatabaseName, {revs_limit: 1});
+    pouchDBStatic.plugin(pouchDBFindPlugin);
+    pouchDBStatic.plugin(PouchDBDebug);
+    this._database = new pouchDBStatic(this._opts.localDatabaseName, {revs_limit: 1});
 
     this._database.createIndex(this._relationalModelIdx)
       .then(_ => {
