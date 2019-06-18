@@ -24,8 +24,10 @@ import {ChangeDetectorRef, EventEmitter, Input, OnDestroy, Output} from '@angula
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {Router} from '@angular/router';
 
-import {BehaviorSubject, combineLatest, Observable, of as obsOf, merge, Subscription} from 'rxjs';
-import {filter, map, mapTo, shareReplay, switchMap, tap, withLatestFrom} from 'rxjs/operators';
+import {BehaviorSubject, combineLatest, Observable, of as obsOf, Subscription} from 'rxjs';
+import {
+  filter, map, mapTo, shareReplay, switchMap, take, tap, withLatestFrom
+} from 'rxjs/operators';
 
 import {Model, ModelActions, ModelService, reducers as fromModel} from '@gngt/core/model';
 import {AdminEditField} from './edit-field';
@@ -125,13 +127,14 @@ export abstract class AdminEditComponent<
   }
 
   readonly form: Observable<FormGroup>;
-  readonly loading: Observable<boolean>;
+
+  private _loading: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  readonly loading: Observable<boolean> = this._loading.asObservable();
 
   private _updateFormEvt: EventEmitter<void> = new EventEmitter<void>();
   private _saveEvt: EventEmitter<void> = new EventEmitter<void>();
 
   private _saveSub: Subscription = Subscription.EMPTY;
-  private _savedSub: Subscription = Subscription.EMPTY;
 
   private _valueChanges$: Observable<any>;
 
@@ -187,8 +190,10 @@ export abstract class AdminEditComponent<
       switchMap((form) => form.valueChanges)
     );
 
+    const serviceObs = this._service.pipe(filter(s => s != null));
+
     this._saveSub = this._saveEvt.pipe(
-      withLatestFrom(this.form, this._service, this._id),
+      withLatestFrom(this.form, serviceObs, this._id),
       filter(([_, form, service, __]) => form != null && service != null && form.valid),
       switchMap(([_, form, service, id]) => {
         const formValue = {...form.value};
@@ -204,27 +209,23 @@ export abstract class AdminEditComponent<
           }
         }
         return obsOf([formValue, service, id]);
-      })
-    ).subscribe(([formValue, service, id]) => {
-      if (id === 'new') {
-        delete formValue['id'];
-        service!.create(formValue);
-      } else {
-        service!.patch(formValue);
-      }
-    });
-
-    const serviceObs = this._service.pipe(filter(s => s != null));
-
-    this.loading = serviceObs.pipe(
-      filter(s => s != null),
-      switchMap(s => merge(s!.getGetLoading(), s!.getCreateLoading(), s!.getPatchLoading()))
+      }),
+      tap(() => this._loading.next(true)),
+      switchMap(([formValue, service, id]) => {
+        if (id === 'new') {
+          delete formValue['id'];
+          return service!.create(formValue);
+        }
+        return service!.patch(formValue);
+      }),
+      take(1),
+    ).subscribe(
+      () => {
+        this._loading.next(false);
+        this.goBack();
+      },
+      () => this._loading.next(false),
     );
-
-    this._savedSub = serviceObs.pipe(
-      filter(s => s != null),
-      switchMap(s => merge(s!.getCreateSuccess(), s!.getPatchSuccess()))
-    ).subscribe(() => this.goBack());
   }
 
   goBack(): void {
@@ -239,7 +240,6 @@ export abstract class AdminEditComponent<
     this._updateFormEvt.complete();
     this._saveEvt.complete();
     this._saveSub.unsubscribe();
-    this._savedSub.unsubscribe();
   }
 
   private _defaultProcessData(value: any): void {

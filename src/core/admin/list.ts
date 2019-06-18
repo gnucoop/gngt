@@ -21,7 +21,8 @@
 
 import {ChangeDetectorRef, EventEmitter, OnDestroy} from '@angular/core';
 
-import {merge, Observable, Subscription} from 'rxjs';
+import {Observable, of as obsOf, Subscription} from 'rxjs';
+import {filter, map, switchMap, take} from 'rxjs/operators';
 
 import {Model, ModelActions, ModelService, reducers as fromModel} from '@gngt/core/model';
 
@@ -78,6 +79,7 @@ export abstract class AdminListComponent<
   private _actionProcessed: EventEmitter<string> = new EventEmitter<string>();
   readonly actionProcessed: Observable<string> = this._actionProcessed.asObservable();
 
+  private _deletionEvt: EventEmitter<T[]> = new EventEmitter<T[]>();
   private _deletionSub: Subscription = Subscription.EMPTY;
 
   constructor(protected _cdr: ChangeDetectorRef, private _aui: AdminUserInteractionsService) { }
@@ -100,6 +102,7 @@ export abstract class AdminListComponent<
 
   ngOnDestroy(): void {
     this._deletionSub.unsubscribe();
+    this._deletionEvt.complete();
   }
 
   processAction(action: string): void {
@@ -139,8 +142,26 @@ export abstract class AdminListComponent<
   }
 
   private _initService(): void {
-    this._deletionSub = merge(
-      this._service.getDeleteSuccess(), this._service.getDeleteAllSuccess()
-    ).subscribe(() => this.refreshList());
+    this._deletionSub.unsubscribe();
+    this._deletionSub = this._deletionEvt.pipe(
+      switchMap(selected => this._aui.askDeleteConfirm().pipe(
+        map(res => ({res, selected})),
+      )),
+      switchMap(({res, selected}): Observable<T | T[] | null> => {
+        if (res) {
+          if (selected.length === 1) {
+            return this._service.delete(selected[0]);
+          }
+          return this._service.deleteAll(selected);
+        }
+        return obsOf(null);
+      }),
+      filter(r => r != null),
+      take(1),
+    ).subscribe(() => {
+      this._actionProcessed.emit('delete');
+      this.clearSelection();
+      this.refreshList();
+    });
   }
 }
