@@ -116,7 +116,7 @@ describe('SyncService', () => {
       TestBed.configureTestingModule({
         imports: [
           SyncModule.forRoot({
-            baseUrl: 'http://remote',
+            baseUrl: 'http://remote/',
             localDatabaseName: dbName
           })
         ],

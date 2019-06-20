@@ -75,8 +75,8 @@ export class SyncService {
     if (this._opts.syncInterval == null) { this._opts.syncInterval = 300000; }
     if (this._opts.changesBatchSize == null) { this._opts.changesBatchSize = 50; }
 
-    this._syncUrl = `${this._opts.baseUrl}/${this._opts.changesPath || 'changes'}`;
-    this._changesUrl = `${this._opts.baseUrl}/${this._opts.docsPath || 'docs'}`;
+    this._syncUrl = `${this._opts.baseUrl}${this._opts.changesPath || 'changes'}`;
+    this._changesUrl = `${this._opts.baseUrl}${this._opts.docsPath || 'docs'}`;
     this._initLocalDatabase();
     this._databaseIsInit = this._databaseInit.pipe(filter(i => i));
   }
