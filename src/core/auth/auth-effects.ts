@@ -24,7 +24,7 @@ import {Inject, Injectable} from '@angular/core';
 import {Router} from '@angular/router';
 
 import {defer, Observable, of as obsOf, timer, zip} from 'rxjs';
-import {catchError, delayWhen, exhaustMap, map, switchMap, tap} from 'rxjs/operators';
+import {catchError, delayWhen, exhaustMap, map, mergeMap, switchMap, tap} from 'rxjs/operators';
 
 import {Actions, Effect, ofType} from '@ngrx/effects';
 
@@ -95,9 +95,10 @@ export class AuthEffects {
       }
       this.router.navigate(['/']);
     }),
-    map(() => {
-      return this._getRefreshTokenAction();
-    })
+    mergeMap((action) => [
+      this._getRefreshTokenAction(),
+      new AuthActions.InitUserComplete({user: action.payload.user}),
+    ]),
   );
 
   @Effect({dispatch: false})
@@ -105,7 +106,7 @@ export class AuthEffects {
     ofType<AuthApiActions.LoginFailure>(AuthApiActions.AuthApiActionTypes.LoginFailure),
     tap((action) => {
       this.userInteractionsService.showLoginError(action.payload.error.join('\n'));
-    })
+    }),
   );
 
   @Effect()
