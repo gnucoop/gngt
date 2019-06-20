@@ -23,7 +23,6 @@ export * from './local-doc';
 export * from './offline-interceptor';
 export * from './sync-entry';
 export * from './sync-entry-type';
-export * from './sync-model-decorator';
 export * from './sync-module';
 export * from './sync-options';
 export * from './sync-service';

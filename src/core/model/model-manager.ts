@@ -20,12 +20,14 @@
  */
 
 import {HttpClient} from '@angular/common/http';
+import {Optional} from '@angular/core';
 
 import {Observable} from 'rxjs';
 
 import {
   Model, ModelListParams, ModelListResult, ModelManager as BaseModelManager, ModelQueryParams
 } from '@gngt/core/common';
+import {SyncService} from '@gngt/core/sync';
 import {ModelOptions} from './model-options';
 
 
@@ -33,12 +35,25 @@ export abstract class ModelManager<M extends Model> extends BaseModelManager {
   get endPoint(): string { return this._endPoint; }
 
   private _baseUrl: string;
+  get baseUrl(): string { return this._baseUrl; }
+
+  private _useTrailingSlash = false;
 
   constructor(
-    private _config: ModelOptions, private _endPoint: string, protected _http: HttpClient
+    config: ModelOptions, private _endPoint: string,
+    protected _http: HttpClient, @Optional() syncService: SyncService,
   ) {
     super();
-    this._baseUrl = `${this._config.baseApiUrl}${this._endPoint}`;
+    this._baseUrl = `${config.baseApiUrl}${this._endPoint}`;
+    this._useTrailingSlash = config.addTrailingSlash != null
+      ? config.addTrailingSlash
+      : false;
+    if (syncService != null && config.syncModel) {
+      if (config.tableName == null) {
+        throw new Error(`Table name must be set for model ${this._endPoint}`);
+      }
+      syncService.registerSyncModel(this._baseUrl, config.tableName);
+    }
   }
 
   get(id: number): Observable<M> {
@@ -68,7 +83,7 @@ export abstract class ModelManager<M extends Model> extends BaseModelManager {
 
   deleteAll(ids: number[]): Observable<M> {
     let url = `${this._baseUrl}/delete_all`;
-    if (this._config.addTrailingSlash) {
+    if (this._useTrailingSlash) {
       url = `${url}/`;
     }
     return this._http.post<M>(url, {ids});
@@ -76,7 +91,7 @@ export abstract class ModelManager<M extends Model> extends BaseModelManager {
 
   query(params: ModelQueryParams): Observable<ModelListResult<M>> {
     let url = `${this._baseUrl}/query`;
-    if (this._config.addTrailingSlash) {
+    if (this._useTrailingSlash) {
       url = `${url}/`;
     }
     return this._http.post<ModelListResult<M>>(url, params);
@@ -84,7 +99,7 @@ export abstract class ModelManager<M extends Model> extends BaseModelManager {
 
   private _getObjectUrl(id: number): string {
     let url = `${this._baseUrl}/${id}`;
-    if (this._config.addTrailingSlash) {
+    if (this._useTrailingSlash) {
       url = `${url}/`;
     }
     return url;
@@ -92,7 +107,7 @@ export abstract class ModelManager<M extends Model> extends BaseModelManager {
 
   private _getListUrl(): string {
     let url = this._baseUrl;
-    if (this._config.addTrailingSlash) {
+    if (this._useTrailingSlash) {
       url = `${url}/`;
     }
     return url;

@@ -1,7 +1,9 @@
 import {HttpClient} from '@angular/common/http';
-import {Inject, Injectable} from '@angular/core';
+import {Inject, Injectable, Optional} from '@angular/core';
 
 import {MODEL_OPTIONS, ModelManager, ModelOptions} from '@gngt/core/model';
+import {SyncService} from '@gngt/core/sync';
+
 import {<%= classify(model) %>} from './<%= dasherize(model) %>';
 
 import {environment} from '@envs/environment';
@@ -10,8 +12,8 @@ import {environment} from '@envs/environment';
 export class <%= classify(model) %>Manager extends ModelManager<<%= classify(model) %>> {
   constructor(
       @Inject(MODEL_OPTIONS) opts: ModelOptions,
-      http: HttpClient,
+      http: HttpClient, @Optional() syncService: SyncService
   ) {
-    super(opts, environment.apiConfig.<%= camelize(model) %>.base, http);
+    super(opts, environment.apiConfig.<%= camelize(model) %>.base, http, syncService);
   }
 }
