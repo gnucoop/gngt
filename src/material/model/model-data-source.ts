@@ -56,6 +56,12 @@ export class ModelDataSource<
   }
   private _filter: BehaviorSubject<string> = new BehaviorSubject<string>('');
 
+  private _freeTextSearchFields: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
+  get freeTextSearchFields(): string[] { return this._freeTextSearchFields.value; }
+  set freeTextSearchFields(freeTextSearchFields: string[]) {
+    this._freeTextSearchFields.next([...freeTextSearchFields]);
+  }
+
   get filters(): ModelDataSourceFilters {
     return this._filters.value; }
   set filters(filters: ModelDataSourceFilters) {
@@ -107,16 +113,33 @@ export class ModelDataSource<
 
   private _initData(): void {
     this._dataSubscription = combineLatest(
-      this._paginatorParams, this._sortParams, this._filter,
+      this._paginatorParams, this._sortParams, this._filter, this._freeTextSearchFields,
       this._filters, this._refreshEvent
     ).pipe(
-      startWith([null, null, null, null]),
+      startWith([null, null, null, null, null]),
       debounceTime(10),
       switchMap(p => {
         const pagination = p[0];
         const sort = p[1];
-        const filters = p[3];
-        const params: ModelQueryParams = {...this._baseParams, selector: {...filters}};
+        const filter = p[2];
+        const freeTextSearchFields = p[3];
+        const filters = p[4];
+        const freeTextSel: {[key: string]: any} = {};
+        const filterWord = (filter || '').trim();
+        if (
+          filter != null && freeTextSearchFields != null
+          && filterWord.length > 0 && freeTextSearchFields.length > 0
+        ) {
+          freeTextSel['$or'] = freeTextSearchFields.map(key => {
+            const keySel: {[key: string]: {'$regex': string}} = {};
+            keySel[key] = {'$regex': filterWord};
+            return keySel;
+          });
+        }
+        const params: ModelQueryParams = {...this._baseParams, selector: {
+          ...filters,
+          ...freeTextSel,
+        }};
         if (pagination != null) {
           const pag = pagination as PageEvent;
           params.limit = pag.pageSize;
