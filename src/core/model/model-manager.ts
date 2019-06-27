@@ -41,7 +41,7 @@ export abstract class ModelManager<M extends Model> extends BaseModelManager {
 
   constructor(
     config: ModelOptions, private _endPoint: string,
-    protected _http: HttpClient, @Optional() syncService: SyncService,
+    protected _http: HttpClient, @Optional() syncService?: SyncService,
   ) {
     super();
     this._baseUrl = `${config.baseApiUrl}${this._endPoint}`;

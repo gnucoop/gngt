@@ -12,7 +12,7 @@ import {environment} from '@envs/environment';
 export class <%= classify(model) %>Manager extends ModelManager<<%= classify(model) %>> {
   constructor(
       @Inject(MODEL_OPTIONS) opts: ModelOptions,
-      http: HttpClient, @Optional() syncService: SyncService
+      http: HttpClient, @Optional() syncService?: SyncService
   ) {
     super(opts, environment.apiConfig.<%= camelize(model) %>.base, http, syncService);
   }
