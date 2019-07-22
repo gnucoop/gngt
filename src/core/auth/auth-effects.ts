@@ -47,9 +47,16 @@ export class AuthEffects {
   initUser$ = this.actions$.pipe(
     ofType<AuthActions.InitUser>(AuthActions.AuthActionTypes.InitUser),
     exhaustMap(() =>
-      this.authService.getCurrentUser().pipe(catchError(_ => obsOf(null)))
+      this.authService.getCurrentUser().pipe(catchError(_ => {
+        return obsOf(this.config.meGetter != null ? this.config.meGetter() : null);
+      }))
     ),
-    map((user) => new AuthActions.InitUserComplete({user}))
+    map((user) => {
+      if (this.config.meSetter != null) {
+        this.config.meSetter(user);
+      }
+      return new AuthActions.InitUserComplete({user});
+    })
   );
 
   @Effect()

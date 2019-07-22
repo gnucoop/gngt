@@ -19,6 +19,8 @@
  *
  */
 
+import {User} from './user';
+
 export interface AuthOptions {
   loginUrl: string;
   logoutUrl: string;
@@ -30,4 +32,6 @@ export interface AuthOptions {
   refreshTokenKey?: string;
   loggedInUserGetter?: () => number | null;
   loggedInUserSetter?: (id: number | null) => void;
+  meGetter?: () => User | null;
+  meSetter?: (user: User | null) => void;
 }
