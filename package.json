@@ -42,7 +42,7 @@
   "requiredNgrxVersion": ">=8.0.0 <9.0.0",
   "requiredNgxtVersion": ">=11.0.0 <12.0.0",
   "requiredIonicVersion": ">=4.7.0 <4.8.0",
-  "requiredGicVersion": ">=4.7.0 <4.8.0",
+  "requiredGicVersion": ">=4.7.1 <4.8.0",
   "dependencies": {
     "@angular/animations": "^8.1.0",
     "@angular/cdk": "^8.1.1",
@@ -53,7 +53,7 @@
     "@angular/forms": "^8.1.0",
     "@angular/material": "^8.1.1",
     "@angular/platform-browser": "^8.1.0",
-    "@gic/angular": "^4.7.0",
+    "@gic/angular": "^4.7.1",
     "@ionic/angular": "^4.7.0",
     "@ngrx/effects": "^8.1.0",
     "@ngrx/store": "^8.1.0",
