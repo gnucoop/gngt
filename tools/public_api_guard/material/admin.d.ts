@@ -29,6 +29,6 @@ export declare class AdminModule {
 }
 
 export declare class AdminUserInteractionsService extends CoreAdminUserInteractionsService {
-    constructor(dialog: MatDialog);
+    constructor(_dialog: MatDialog);
     askDeleteConfirm(): Observable<boolean>;
 }

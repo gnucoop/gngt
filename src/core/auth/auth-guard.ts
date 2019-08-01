@@ -34,7 +34,7 @@ import * as fromAuth from './reducers';
 
 @Injectable({providedIn: 'root'})
 export class AuthGuard implements CanActivate, CanActivateChild {
-  constructor(private store: Store<fromAuth.State>) {}
+  constructor(private _store: Store<fromAuth.State>) {}
 
   canActivate(): Observable<boolean> {
     return this._guard();
@@ -45,13 +45,13 @@ export class AuthGuard implements CanActivate, CanActivateChild {
   }
 
   private _guard(): Observable<boolean> {
-    return this.store.pipe(
+    return this._store.pipe(
       select(fromAuth.getInit),
       filter(init => init),
-      concatMap(() => this.store.pipe(select(fromAuth.getLoggedIn))),
+      concatMap(() => this._store.pipe(select(fromAuth.getLoggedIn))),
       map(authed => {
         if (!authed) {
-          this.store.dispatch(new AuthApiActions.LoginRedirect());
+          this._store.dispatch(new AuthApiActions.LoginRedirect());
           return false;
         }
 

@@ -2,13 +2,15 @@ import {HttpClient, HttpClientModule} from '@angular/common/http';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 import {TestBed} from '@angular/core/testing';
 
+import * as PouchDB from 'pouchdb';
+
 import {LocalDoc} from './local-doc';
 import {SyncModule} from './sync-module';
 import {registerSyncModel} from './sync-utils';
 
-const dbName = 'testdb';
+const pouchDBStatic: PouchDB.Static = (<any>PouchDB).default || PouchDB;
 
-import * as PouchDB from 'pouchdb';
+const dbName = 'testdb';
 
 interface DbEntry {
   id: number;
@@ -44,7 +46,7 @@ describe('OfflineInterceptor', () => {
 
     registerSyncModel('http://remote/table', 'table');
 
-    const db = new PouchDB<LocalDoc<DbEntry>>(dbName);
+    const db = new pouchDBStatic<LocalDoc<DbEntry>>(dbName);
     dbEntries.forEach(dbe => {
       db.post(dbe).then(() => {});
     });
@@ -52,7 +54,7 @@ describe('OfflineInterceptor', () => {
 
   afterEach(() => {
     httpMock.verify();
-    return new PouchDB(dbName).destroy();
+    return new pouchDBStatic(dbName).destroy();
   });
 
   it('should not intercept the request doesn\'t match a model endpoint', done => {

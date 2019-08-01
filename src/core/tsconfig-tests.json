@@ -25,10 +25,11 @@
   },
   "include": [
     "./*/index.ts",
-    "./*/typings.d.ts",
-    "**/*.spec.ts"
+    "**/*.spec.ts",
+    "./*/typings.d.ts"
   ],
   "exclude": [
-    "**/schematics/**/*.ts"
+    "**/schematics/**/*.ts",
+    "**/*.e2e.spec.ts"
   ]
 }

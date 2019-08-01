@@ -9,7 +9,7 @@ const versionPlaceholderText = '0.0.0-PLACEHOLDER';
 /** Placeholder that will be replaced with the required Angular version. */
 const ngVersionPlaceholderText = '0.0.0-NG';
 
-/** Placeholder that will be replaced with the required Angular Material version. */
+/** Placeholder that will be replaced with the required Gnucoop Angular Toolkit version. */
 const ngmVersionPlaceholderText = '0.0.0-NGM';
 
 /** Placeholder that will be replaced with the required Ngrx Platform version. */
@@ -27,7 +27,7 @@ const gicVersionPlaceholderText = '0.0.0-GIC';
 /** RegExp that matches Angular version placeholders inside of a file. */
 const ngVersionPlaceholderRegex = new RegExp(ngVersionPlaceholderText, 'g');
 
-/** RegExp that matches Angular Material version placeholders inside of a file. */
+/** RegExp that matches Gnucoop Angular Toolkit version placeholders inside of a file. */
 const ngmVersionPlaceholderRegex = new RegExp(ngmVersionPlaceholderText, 'g');
 
 /** RegExp that matches Ngrx Platform version placeholders inside of a file. */
@@ -84,12 +84,24 @@ function buildPlaceholderFindCommand(packageDir: string) {
   if (platform() === 'win32') {
     return {
       binary: 'findstr',
-      args: ['/msi', `${ngVersionPlaceholderText} ${versionPlaceholderText}`, `${packageDir}\\*`]
+      args: [
+        '/msi',
+        `${ngVersionPlaceholderText} ${versionPlaceholderText} ${ngmVersionPlaceholderText}`
+        + ` ${ngrxVersionPlaceholderRegex} ${ngxtVersionPlaceholderText}`
+        + ` ${gicVersionPlaceholderText} ${ionicVersionPlaceholderText}`,
+        `${packageDir}\\*`
+      ]
     };
   } else {
     return {
       binary: 'grep',
-      args: ['-ril', `${ngVersionPlaceholderText}\\|${versionPlaceholderText}`, packageDir]
+      args: [
+        '-ril',
+        `${ngVersionPlaceholderText}\\|${versionPlaceholderText}\\|${ngmVersionPlaceholderText}`
+        + `|${ngrxVersionPlaceholderRegex}|${ngxtVersionPlaceholderText}`
+        + `|${gicVersionPlaceholderText}|${ionicVersionPlaceholderText}`,
+        packageDir
+      ]
     };
   }
 }

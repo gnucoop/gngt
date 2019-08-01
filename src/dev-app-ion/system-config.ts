@@ -24,62 +24,83 @@ declare const System: any;
 
 // Configure the base path and map the different node packages.
 System.config({
-  paths: {
-    'node:*': 'node_modules/*',
-    'bundles:*': 'bundles/*'
-  },
+  paths: {'node:*': 'node_modules/*', 'bundles:*': 'bundles/*'},
   map: {
     'traceur': 'node:traceur/bin/traceur.js',
 
-    'rxjs': 'node:rxjs',
     'main': 'main.js',
+
+    'date-fns': 'node:date-fns/date-fns.umd.js',
+    'debug': 'node:debug/debug.umd.js',
+    'pouchdb': 'node:pouchdb/pouchdb.umd.js',
+    'pouchdb-debug': 'node:pouchdb-debug/pouchdb-debug.umd.js',
+    'pouchdb-find': 'node:pouchdb-find/pouchdb-find.umd.js',
+    'rxjs': 'node_modules/rxjs/bundles/rxjs.umd.min.js',
+    'rxjs/operators': 'system-rxjs-operators.js',
     'tslib': 'node:tslib/tslib.js',
-    'date-fns': 'node:date-fns/index.js',
-    'url-parse': 'node:url-parse/dist/url-parse.min.js',
+    'url-parse': 'node:url-parse/url-parse.umd.js',
+    'uuid': 'node:uuid/uuid.umd.js',
+    'tslib': 'node:tslib/tslib.js',
 
     // Angular specific mappings.
+    '@angular/animations': 'node:@angular/animations/bundles/animations.umd.js',
+    '@angular/cdk/bidi': 'node:@angular/cdk/bundles/cdk-bidi.umd.js',
+    '@angular/cdk/coercion': 'node:@angular/cdk/bundles/cdk-coercion.umd.js',
+    '@angular/cdk/collections': 'node:@angular/cdk/bundles/cdk-collections.umd.js',
+    '@angular/cdk/keycodes': 'node:@angular/cdk/bundles/cdk-keycodes.umd.js',
+    '@angular/cdk/overlay': 'node:@angular/cdk/bundles/cdk-overlay.umd.js',
+    '@angular/cdk/platform': 'node:@angular/cdk/bundles/cdk-platform.umd.js',
+    '@angular/cdk/portal': 'node:@angular/cdk/bundles/cdk-portal.umd.js',
+    '@angular/cdk/scrolling': 'node:@angular/cdk/bundles/cdk-scrolling.umd.js',
     '@angular/core': 'node:@angular/core/bundles/core.umd.js',
     '@angular/common': 'node:@angular/common/bundles/common.umd.js',
     '@angular/common/http': 'node:@angular/common/bundles/common-http.umd.js',
     '@angular/compiler': 'node:@angular/compiler/bundles/compiler.umd.js',
-    '@angular/forms': 'node:@angular/forms/bundles/forms.umd.js',
-    '@angular/animations': 'node:@angular/animations/bundles/animations.umd.js',
     '@angular/elements': 'node:@angular/elements/bundles/elements.umd.js',
+    '@angular/forms': 'node:@angular/forms/bundles/forms.umd.js',
     '@angular/router': 'node:@angular/router/bundles/router.umd.js',
     '@angular/animations/browser': 'node:@angular/animations/bundles/animations-browser.umd.js',
     '@angular/platform-browser/animations':
-      'node:@angular/platform-browser/bundles/platform-browser-animations.umd',
-    '@angular/platform-browser':
-      'node:@angular/platform-browser/bundles/platform-browser.umd.js',
+        'node:@angular/platform-browser/bundles/platform-browser-animations.umd',
+    '@angular/platform-browser': 'node:@angular/platform-browser/bundles/platform-browser.umd.js',
     '@angular/platform-browser-dynamic':
-      'node:@angular/platform-browser-dynamic/bundles/platform-browser-dynamic.umd.js',
+        'node:@angular/platform-browser-dynamic/bundles/platform-browser-dynamic.umd.js',
 
-    '@ionic/angular': 'bundles:ionic-angular.umd.js',
-    '@gic/angular': 'bundles:gic-angular.umd.js',
-
-    '@ngrx/store': 'node:@ngrx/store/bundles/store.umd.js',
-    '@ngrx/effects': 'node:@ngrx/effects/bundles/effects.umd.js',
+    '@ionic/core': 'node:@ionic/core/core.umd.js',
+    '@ionic/core/loader': 'node:@ionic/core/core-loader.umd.js',
+    '@ionic/angular': 'node:@ionic/angular/angular.umd.js',
+    'ionic-selectable': 'node:ionic-selectable/bundles/ionic-selectable.umd.min.js',
 
     '@ngx-translate/core': 'node:@ngx-translate/core/bundles/ngx-translate-core.umd.js',
     '@ngx-translate/http-loader':
-      'node:@ngx-translate/http-loader/bundles/ngx-translate-http-loader.umd.js',
+        'node:@ngx-translate/http-loader/bundles/ngx-translate-http-loader.umd.js',
 
     '@gngt/core': 'dist/packages/core/index.js',
     '@gngt/ionic': 'dist/packages/ionic/index.js',
     '@gngt/ionic-examples': 'dist/packages/ionic-examples/index.js',
 
-    '@gngt/core/admin': 'dist/packages/core/admin/index.js',
-    '@gngt/core/auth': 'dist/packages/core/auth/index.js',
     '@gngt/core/calendar': 'dist/packages/core/calendar/index.js',
+    '@gngt/core/chart': 'dist/packages/core/chart/index.js',
+    '@gngt/core/checkbox-group': 'dist/packages/core/checkbox-group/index.js',
     '@gngt/core/common': 'dist/packages/core/common/index.js',
-    '@gngt/core/model': 'dist/packages/core/model/index.js',
-    '@gngt/core/reducers': 'dist/packages/core/reducers/index.js',
-    '@gngt/core/translations': 'dist/packages/core/translations/index.js',
-
-    '@gngt/ionic/admin': 'dist/packages/ionic/admin/index.js',
-    '@gngt/ionic/auth': 'dist/packages/ionic/auth/index.js',
+    '@gngt/core/forms': 'dist/packages/core/forms/index.js',
+    '@gngt/core/image': 'dist/packages/core/image/index.js',
+    '@gngt/core/map': 'dist/packages/core/map/index.js',
+    '@gngt/core/models': 'dist/packages/core/models/index.js',
+    '@gngt/core/node-icon': 'dist/packages/core/node-icon/index.js',
+    '@gngt/core/page-break': 'dist/packages/core/page-break/index.js',
+    '@gngt/core/page-slider': 'dist/packages/core/page-slider/index.js',
+    '@gngt/core/reports': 'dist/packages/core/reports/index.js',
+    '@gngt/core/table': 'dist/packages/core/table/index.js',
+    '@gngt/core/text': 'dist/packages/core/text/index.js',
+    '@gngt/core/utils': 'dist/packages/core/utils/index.js',
     '@gngt/ionic/calendar': 'dist/packages/ionic/calendar/index.js',
-    '@gngt/ionic/common': 'dist/packages/ionic/common/index.js',
+    '@gngt/ionic/checkbox-group': 'dist/packages/ionic/checkbox-group/index.js',
+    '@gngt/ionic/forms': 'dist/packages/ionic/forms/index.js',
+    '@gngt/ionic/image': 'dist/packages/ionic/image/index.js',
+    '@gngt/ionic/node-icon': 'dist/packages/ionic/node-icon/index.js',
+    '@gngt/ionic/page-slider': 'dist/packages/ionic/page-slider/index.js',
+    '@gngt/ionic/reports': 'dist/packages/ionic/reports/index.js',
   },
   packages: {
     // Thirdparty barrels.
@@ -88,8 +109,6 @@ System.config({
 
     // Set the default extension for the root package, because otherwise the dev-app-map can't
     // be built within the production mode. Due to missing file extensions.
-    '.': {
-      defaultExtension: 'js'
-    }
+    '.': {defaultExtension: 'js'}
   }
 });

@@ -1,4 +1,9 @@
 /*global jasmine, __karma__, window*/
+
+var newScript = document.createElement('script');
+newScript.setAttribute('data-resources-url', '/base/node_modules/ionicons/');
+document.body.appendChild(newScript);
+
 Error.stackTraceLimit = Infinity;
 
 // The default time that jasmine waits for an asynchronous test to finish is five seconds.

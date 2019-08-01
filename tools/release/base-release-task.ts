@@ -1,10 +1,8 @@
-import {default as chalk} from 'chalk';
+import {green, italic, red, yellow} from 'chalk';
 import {prompt} from 'inquirer';
 import {GitClient} from './git/git-client';
 import {Version} from './version-name/parse-version';
 import {getAllowedPublishBranches} from './version-name/publish-branches';
-
-const {green, italic, red, yellow} = chalk;
 
 /**
  * Base release task class that contains shared methods that are commonly used across
@@ -48,6 +46,7 @@ export class BaseReleaseTask {
     }
 
     console.log(green(`  ✓   Switched to the "${italic(defaultPublishBranch)}" branch.`));
+    return defaultPublishBranch;
   }
 
   /** Verifies that the local branch is up to date with the given publish branch. */

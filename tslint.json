@@ -30,7 +30,6 @@
     "no-var-keyword": true,
     "member-access": [true, "no-public"],
     "no-debugger": true,
-    "no-unused-variable": true,
     "one-line": [
       true,
       "check-catch",
@@ -87,26 +86,32 @@
     "no-duplicate-imports": true,
 
     // Codelyzer
-    "banana-in-box": true,
-    "contextual-life-cycle": true,
-    "decorator-not-allowed": true,
+    "template-banana-in-box": true,
+    "contextual-lifecycle": true,
+    "contextual-decorator": true,
     "no-output-on-prefix": true,
-    "templates-no-negated-async": true,
-    "use-life-cycle-interface": true,
+    "template-no-negated-async": true,
+    "use-lifecycle-interface": true,
 
     // Custom Rules
     "ts-loader": true,
     "no-exposed-todo": true,
     "no-import-spacing": true,
     "no-private-getters": true,
+    "no-undecorated-base-class-di": true,
     "setters-after-getters": true,
+    "ng-on-changes-property-access": true,
     "rxjs-imports": true,
     "require-breaking-change-version": true,
+    "static-query": true,
     "no-host-decorator-in-concrete": [
       true,
       "HostBinding",
       "HostListener"
     ],
+    "member-naming": [true, {
+      "private": "^_"
+    }],
     "validate-decorators": [true, {
       "Component": {
         "!host": "\\[class\\]",
@@ -130,10 +135,18 @@
       "./tools/package-tools/rollup-globals.ts",
       "src/+(core|material|ionic|material-examples|ionic-examples)/!(schematics)**/*.ts"
     ],
+    "file-name-casing": [true, {
+      // Exclude custom lint rule files since they have to always be camel-cased and end
+      // with "Rule".
+      "\\w+Rule.ts": "camel-case",
+      ".*": "kebab-case"
+    }],
     "no-unescaped-html-tag": true
   },
   "linterOptions": {
     "exclude": [
+      // Exclude the API golden files
+      "tools/public_api_guard/**/*.d.ts",
       // Exclude schematic template files and test cases that can't be linted.
       "src/core/schematics/ng-generate/*/files/**/*",
       "src/material/schematics/ng-generate/*/files/**/*",

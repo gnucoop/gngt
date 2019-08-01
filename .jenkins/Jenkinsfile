@@ -1,6 +1,6 @@
 pipeline {
   agent {
-    label 'bazel-build'
+    label 'bazel-build-28'
   }
   environment {
     scmInfo = checkout scm
@@ -20,7 +20,7 @@ pipeline {
     stage('Bazel targets') {
       steps {
         sh 'bazel build src/... --build_tag_filters=-docs-package'
-        sh 'bazel test src/... --build_tag_filters=-docs-package'
+        sh 'bazel test src/... --build_tag_filters=-e2e --test_tag_filters=-e2e'
         sh 'bazel test tools/public_api_guard/...'
       }
     }
@@ -31,8 +31,7 @@ pipeline {
     }
     stage('Integration tests') {
       steps {
-        sh 'bazel test e2e-mat/...'
-        sh 'bazel test e2e-ion/...'
+        sh 'bazel test src/... --build_tag_filters=e2e --test_tag_filters=e2e'
         sh 'yarn gulp ci:prerender'
       }
     }

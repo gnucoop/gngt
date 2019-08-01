@@ -1,34 +1,56 @@
-package(default_visibility=["//visibility:public"])
+package(default_visibility = ["//visibility:public"])
 
-load("//tools:defaults.bzl", "ng_module", "ng_test_library", "ng_web_test_suite")
+load(
+    "//tools:defaults.bzl",
+    "markdown_to_html",
+    "ng_module",
+    "ng_test_library",
+    "ng_web_test_suite",
+)
 
 ng_module(
-  name = "model",
-  srcs = glob(["**/*.ts"], exclude=["**/*.spec.ts"]),
-  module_name = "@gngt/core/model",
-  assets = [],
-  deps = [
-    "@angular//packages/common/http",
-    "@angular//packages/core",
-    "@ngrx//modules/effects",
-    "@ngrx//modules/store",
-    "@gngtdeps//@types/uuid",
-    "//src/core/common",
-    "//src/core/reducers",
-    "//src/core/sync",
-  ],
+    name = "model",
+    srcs = glob(
+        ["**/*.ts"],
+        exclude = ["**/*.spec.ts"],
+    ),
+    assets = [],
+    module_name = "@gngt/core/model",
+    deps = [
+        "//src/core/common",
+        "//src/core/reducers",
+        "//src/core/sync",
+        "@npm//@angular/common",
+        "@npm//@angular/core",
+        "@npm//@ngrx/effects",
+        "@npm//@ngrx/store",
+        "@npm//@types/uuid",
+    ],
 )
 
 ng_test_library(
-  name = "model_test_sources",
-  srcs = glob(["**/*.spec.ts"]),
-  deps = [
-    "@angular//packages/platform-browser",
-    ":model"
-  ]
+    name = "unit_test_sources",
+    srcs = glob(
+        ["**/*.spec.ts"],
+        exclude = ["**/*.e2e.spec.ts"],
+    ),
+    deps = [
+        ":model",
+        "@npm//@angular/platform-browser",
+    ],
 )
 
 ng_web_test_suite(
-  name = "unit_tests",
-  deps = [":model_test_sources"],
+    name = "unit_tests",
+    deps = [":unit_test_sources"],
+)
+
+markdown_to_html(
+    name = "overview",
+    srcs = ["model.md"],
+)
+
+filegroup(
+    name = "source-files",
+    srcs = glob(["**/*.ts"]),
 )

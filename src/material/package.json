@@ -12,7 +12,7 @@
   },
   "keywords": [
   ],
-  "license": "MIT",
+  "license": "AGPL-3.0-or-later",
   "bugs": {
     "url": "https://github.com/gnucoop/gngt/issues"
   },
@@ -23,10 +23,11 @@
     "@angular/core": "0.0.0-NG",
     "@angular/common": "0.0.0-NG",
     "@angular/router": "0.0.0-NG",
-    "@angular/material": "0.0.0-NGM"
+    "@angular/material": "0.0.0-NGM",
+    "@gngt/core": "0.0.0-PLACEHOLDER"
   },
   "dependencies": {
-    "tslib": "^1.7.1"
+    "tslib": "^1.9.3"
   },
   "schematics": "./schematics/collection.json",
   "ng-update": {

@@ -4,7 +4,18 @@ import {FunctionExportDoc} from 'dgeni-packages/typescript/api-doc-types/Functio
 import {InterfaceExportDoc} from 'dgeni-packages/typescript/api-doc-types/InterfaceExportDoc';
 import {TypeAliasExportDoc} from 'dgeni-packages/typescript/api-doc-types/TypeAliasExportDoc';
 import * as path from 'path';
+import {computeApiDocumentUrl} from '../common/compute-api-url';
+import {isDeprecatedDoc, isPrimaryModuleDoc} from '../common/decorators';
 import {CategorizedClassDoc} from '../common/dgeni-definitions';
+
+export interface ModuleInfo {
+  /** Name of the module (e.g. toolbar, drag-drop, ripple) */
+  name: string;
+  /** Name of the package that contains this entry point. */
+  packageName: string;
+  /** Name of the entry-point that contains this module. */
+  entryPointName: string;
+}
 
 /** Document type for an entry-point. */
 export class EntryPointDoc {
@@ -21,7 +32,7 @@ export class EntryPointDoc {
   /** Module import path for the entry-point. */
   moduleImportPath: string;
 
-  /** Name of the package, either material or core */
+  /** Name of the package, either material or cdk */
   packageName: string;
 
   /** Display name of the package. */
@@ -54,8 +65,11 @@ export class EntryPointDoc {
   /** Constants that belong to the entry-point. */
   constants: ConstExportDoc[] = [];
 
-  /** NgModule that defines the current entry-point. */
-  ngModule: CategorizedClassDoc | null = null;
+  /** List of NgModules which are exported in the current entry-point. */
+  exportedNgModules: CategorizedClassDoc[] = [];
+
+  /** NgModule that defines the current entry-point. Null if no module could be found. */
+  ngModule: CategorizedClassDoc|null = null;
 
   constructor(name: string) {
     this.name = name;
@@ -75,13 +89,19 @@ export class EntryPointGrouper implements Processor {
     const entryPoints = new Map<string, EntryPointDoc>();
 
     docs.forEach(doc => {
-      const documentInfo = getDocumentPackageInfo(doc);
+      const moduleInfo = getModulePackageInfo(doc);
 
-      const packageName = documentInfo.packageName;
-      const packageDisplayName = documentInfo.packageName;
+      const packageName = moduleInfo.packageName;
+      const packageDisplayName = packageName === 'core' ? 'Core' : (
+        packageName === 'material' ? 'Material' : 'Ionic'
+      );
 
-      const moduleImportPath = `@gngt/${packageName}/${documentInfo.entryPointName}`;
-      const entryPointName = packageName + '-' + documentInfo.name;
+      const moduleImportPath = `@gngt/${packageName}/${moduleInfo.entryPointName}`;
+      const entryPointName = packageName + '-' + moduleInfo.name;
+
+      // Compute a public URL that refers to the document. This is helpful if we want to
+      // make references to other API documents. e.g. showing the extended class.
+      doc.publicUrl = computeApiDocumentUrl(doc, moduleInfo);
 
       // Get the entry-point for this doc, or, if one does not exist, create it.
       let entryPoint;
@@ -92,7 +112,7 @@ export class EntryPointGrouper implements Processor {
         entryPoints.set(entryPointName, entryPoint);
       }
 
-      entryPoint.displayName = documentInfo.name;
+      entryPoint.displayName = moduleInfo.name;
       entryPoint.moduleImportPath = moduleImportPath;
       entryPoint.packageName = packageName;
       entryPoint.packageDisplayName = packageDisplayName;
@@ -103,7 +123,12 @@ export class EntryPointGrouper implements Processor {
       } else if (doc.isService) {
         entryPoint.services.push(doc);
       } else if (doc.isNgModule) {
-        entryPoint.ngModule = doc;
+        entryPoint.exportedNgModules.push(doc);
+        // If the module is explicitly marked as primary module using the "@docs-primary-module"
+        // annotation, we set is as primary entry-point module.
+        if (isPrimaryModuleDoc(doc)) {
+          entryPoint.ngModule = doc;
+        }
       } else if (doc.docType === 'class') {
         entryPoint.classes.push(doc);
       } else if (doc.docType === 'interface') {
@@ -117,23 +142,52 @@ export class EntryPointGrouper implements Processor {
       }
     });
 
+    // For each entry-point we determine a primary NgModule that defines the entry-point
+    // if no primary module has been explicitly declared (using "@docs-primary-module").
+    entryPoints.forEach(entryPoint => {
+      if (entryPoint.ngModule !== null) {
+        return;
+      }
+
+      // Usually the first module that is not deprecated is used, but in case there are
+      // only deprecated modules, the last deprecated module is used. We don't want to
+      // always skip deprecated modules as they could be still needed for documentation
+      // of a deprecated entry-point.
+      for (let ngModule of entryPoint.exportedNgModules) {
+        entryPoint.ngModule = ngModule;
+        if (!isDeprecatedDoc(ngModule)) {
+          break;
+        }
+      }
+    });
+
     return Array.from(entryPoints.values());
   }
 }
 
-/** Resolves package information for the given Dgeni document. */
-function getDocumentPackageInfo(doc: Document) {
+/** Resolves module package information of the given Dgeni document. */
+function getModulePackageInfo(doc: Document): ModuleInfo {
   // Full path to the file for this doc.
   const basePath = doc.fileInfo.basePath;
   const filePath = doc.fileInfo.filePath;
 
-  // All of the component documentation is under either `src/material` or `src/core`.
+  // All of the component documentation is under either `src/material` or `src/cdk`.
   // We group the docs up by the directory immediately under that root.
   const pathSegments = path.relative(basePath, filePath).split(path.sep);
-  let groupName = pathSegments[1];
+
+  // The module name is usually the entry-point (e.g. slide-toggle, toolbar), but this is not
+  // guaranteed because we can also export a module from material/core. e.g. the ripple module.
+  let moduleName = pathSegments[1];
+
+  // The ripples are technically part of the `@angular/material/core` entry-point, but we
+  // want to show the ripple API separately in the docs. In order to archive this, we treat
+  // the ripple folder as its own module.
+  if (pathSegments[1] === 'core' && pathSegments[2] === 'ripple') {
+    moduleName = 'ripple';
+  }
 
   return {
-    name: groupName,
+    name: moduleName,
     packageName: pathSegments[0],
     entryPointName: pathSegments[1],
   };

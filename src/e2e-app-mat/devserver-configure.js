@@ -1,13 +1,17 @@
 // We need to configure AMD modules which are not named because otherwise "require.js" is not
 // able to resolve AMD imports to such modules.
+
+const nodeModulesBasePath = '/base/npm/node_modules/';
+
 require.config({
   paths: {
-    '@ngx-translate/core': '@ngx-translate/core/bundles/ngx-translate-core.umd',
-    '@ngx-translate/http-loader': '@ngx-translate/http-loader/bundles/ngx-translate-http-loader.umd',
-    'date-fns': 'date-fns.umd',
-    'pouchdb': 'pouchdb/dist/pouchdb',
-    'pouchdb-debug': 'pouchdb-debug.umd',
-    'pouchdb-find': 'pouchdb-find.umd',
+    'date-fns': `${nodeModulesBasePath}date-fns/date-fns.umd`,
+    'debug': `${nodeModulesBasePath}debug/debug.umd`,
+    'pouchdb': `${nodeModulesBasePath}pouchdb/pouchdb.umd`,
+    'pouchdb-debug': `${nodeModulesBasePath}pouchdb-debug/pouchdb-debug.umd`,
+    'pouchdb-find': `${nodeModulesBasePath}pouchdb-find/pouchdb-find.umd`,
+    'url-parse': `${nodeModulesBasePath}url-parse/url-parse.umd`,
+    'uuid': `${nodeModulesBasePath}uuid/uuid.umd`,
   }
 });
 

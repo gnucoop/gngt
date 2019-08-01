@@ -6,17 +6,17 @@ import {ExportDoc} from 'dgeni-packages/typescript/api-doc-types/ExportDoc';
  * to avoid that API entries are showing up multiple times in the docs.
  *
  * ```ts
- *   // Some file in @gngt/core/auth
- *   export {Model} from './model';
+ *   // Some file in @angular/cdk/scrolling
+ *   export {ScrollDispatcher} from './scroll-dispatcher';
  *
- *   // Other file in @gngt/core/model
- *   export {Model} from '@gngt/core/model';
+ *   // Other file in @angular/cdk/overlay
+ *   export {ScrollDispatcher} from '@angular/cdk/scrolling';
  *
  *   // Re-export of the same export with a different name (alias).
- *   export {Model as XModel} from './model';
+ *   export {ScrollDispatcher as X} from './scroll-dispatcher';
  * ```
  *
- * This issue occurs sometimes in the Gngt repository, because some imports are
+ * This issue occurs sometimes in the Gnucoop Angular Toolkit repository, because some imports are
  * re-exported with a different name (for deprecation), or from a different secondary entry-point.
  */
 export class FilterDuplicateExports implements Processor {

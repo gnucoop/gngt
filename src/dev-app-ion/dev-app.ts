@@ -19,64 +19,14 @@
  *
  */
 
-import {Component, ElementRef, ViewEncapsulation} from '@angular/core';
-import {Router} from '@angular/router';
+import {Component, ViewEncapsulation} from '@angular/core';
 
-import {NavController} from '@ionic/angular';
-
-/**
- * DemoApp with toolbar and sidenav.
- */
+/** Root component for the dev-app demos. */
 @Component({
   moduleId: module.id,
   selector: 'dev-app',
-  templateUrl: 'dev-app.html',
-  styleUrls: ['dev-app.css'],
+  template: '<dev-app-layout><router-outlet></router-outlet></dev-app-layout>',
   encapsulation: ViewEncapsulation.None,
 })
 export class DevAppComponent {
-  dark = false;
-  navItems = [
-    {name: 'Examples', route: '/examples'},
-    {name: 'Admin Edit', route: '/admin-edit'},
-    {name: 'Admin List', route: '/admin-list'},
-    {name: 'Calendar', route: '/calendar'},
-    {name: 'Login', route: '/login'},
-  ];
-
-  constructor(
-    private _router: Router,
-    private _navCtrl: NavController,
-    private _element: ElementRef<HTMLElement>) {}
-
-  toggleFullscreen() {
-    // Cast to `any`, because the typings don't include the browser-prefixed methods.
-    const elem = this._element.nativeElement.querySelector('.demo-content') as any;
-    if (elem.requestFullscreen) {
-      elem.requestFullscreen();
-    } else if (elem.webkitRequestFullScreen) {
-      elem.webkitRequestFullScreen();
-    } else if (elem.mozRequestFullScreen) {
-      elem.mozRequestFullScreen();
-    } else if (elem.msRequestFullScreen) {
-      elem.msRequestFullScreen();
-    }
-  }
-
-  navTo(route: string) {
-    this._navCtrl.setDirection('forward');
-    this._router.navigateByUrl(route);
-  }
 }
-
-/**
- * Home component for welcome message in DemoApp.
- */
-@Component({
-  selector: 'home',
-  template: `
-    <p>Welcome to the development demos for Gngt!</p>
-    <p>Open the sidenav to select a demo.</p>
-  `,
-})
-export class DevAppHome {}

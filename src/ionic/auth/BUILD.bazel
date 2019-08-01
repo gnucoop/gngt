@@ -1,41 +1,63 @@
-package(default_visibility=["//visibility:public"])
+package(default_visibility = ["//visibility:public"])
 
-load("@io_bazel_rules_sass//sass:sass.bzl", "sass_library", "sass_binary")
-load("//tools:defaults.bzl", "ng_module", "ng_test_library", "ng_web_test_suite")
+load("@io_bazel_rules_sass//sass:sass.bzl", "sass_binary")
+load(
+    "//tools:defaults.bzl",
+    "markdown_to_html",
+    "ng_module",
+    "ng_test_library",
+    "ng_web_test_suite",
+)
 
 ng_module(
-  name = "auth",
-  srcs = glob(["**/*.ts"], exclude=["**/*.spec.ts"]),
-  module_name = "@gngt/ionic/auth",
-  assets = [":login.css"] + glob(["**/*.html"]),
-  deps = [
-    "@angular//packages/common",
-    "@angular//packages/core",
-    "@angular//packages/platform-browser/animations",
-    "@ngx_translate_core//:core",
-    "@gngtdeps//@ionic/angular",
-    "//src/core/auth",
-    "//src/core/common",
-    "//src/ionic/common",
-  ],
+    name = "auth",
+    srcs = glob(
+        ["**/*.ts"],
+        exclude = ["**/*.spec.ts"],
+    ),
+    assets = [":login.css"] + glob(["**/*.html"]),
+    module_name = "@gngt/ionic/auth",
+    deps = [
+        "//src/core/auth",
+        "//src/core/common",
+        "//src/ionic/common",
+        "@npm//@angular/common",
+        "@npm//@angular/core",
+        "@npm//@angular/platform-browser",
+        "@npm//@ionic/angular",
+        "@npm//@ngx-translate/core",
+    ],
 )
 
 sass_binary(
-  name = "login_scss",
-  src = "login.scss",
-  deps = [],
+    name = "login_scss",
+    src = "login.scss",
+    deps = [],
 )
 
 ng_test_library(
-  name = "auth_test_sources",
-  srcs = glob(["**/*.spec.ts"]),
-  deps = [
-    "@angular//packages/platform-browser",
-    ":auth"
-  ]
+    name = "unit_test_sources",
+    srcs = glob(
+        ["**/*.spec.ts"],
+        exclude = ["**/*.e2e.spec.ts"],
+    ),
+    deps = [
+        ":auth",
+        "@npm//@angular/platform-browser",
+    ],
 )
 
 ng_web_test_suite(
-  name = "unit_tests",
-  deps = [":auth_test_sources"],
+    name = "unit_tests",
+    deps = [":unit_test_sources"],
+)
+
+markdown_to_html(
+    name = "overview",
+    srcs = ["auth.md"],
+)
+
+filegroup(
+    name = "source-files",
+    srcs = glob(["**/*.ts"]),
 )

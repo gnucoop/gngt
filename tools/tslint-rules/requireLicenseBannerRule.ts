@@ -10,7 +10,7 @@ const licenseBanner = buildConfig.licenseBanner;
 
 /** Failure message that will be shown if a license banner is missing. */
 const ERROR_MESSAGE = 'Missing license header in this TypeScript file. ' +
-  'Every TypeScript file of the library needs to have the Gngt license banner at the top.';
+    'Every TypeScript file of the library needs to have the Gngt license banner at the top.';
 
 /** TSLint fix that can be used to add the license banner easily. */
 const tslintFix = Lint.Replacement.appendText(0, licenseBanner + '\n\n');

@@ -19,12 +19,13 @@ describe('gngt-model-schematic', () => {
     model: 'baz',
   };
 
-  beforeEach(() => {
+  beforeEach(async () => {
     runner = new SchematicTestRunner('schematics', require.resolve('../../collection.json'));
   });
 
-  it('should create package and model files', () => {
-    const tree = runner.runSchematic('model', baseOptions, createTestApp(runner));
+  it('should create package and model files', async () => {
+    const app = await createTestApp(runner);
+    const tree = await runner.runSchematicAsync('model', baseOptions, app).toPromise();
     const files = tree.files;
 
     expect(files).toContain('/projects/gngt/src/app/foo/bar.actions.ts');
@@ -38,10 +39,10 @@ describe('gngt-model-schematic', () => {
     expect(files).toContain('/projects/gngt/src/app/foo/reducers.ts');
   });
 
-  it('should create model files when package already exists', () => {
-    const app = createTestApp(runner);
-    runner.runSchematic('model', baseOptions, app);
-    const tree = runner.runSchematic('model', newModelOptions, app);
+  it('should create model files when package already exists', async () => {
+    const app = await createTestApp(runner);
+    await runner.runSchematicAsync('model', baseOptions, app).toPromise();
+    const tree = await runner.runSchematicAsync('model', newModelOptions, app).toPromise();
     const files = tree.files;
 
     expect(files).toContain('/projects/gngt/src/app/foo/baz.actions.ts');

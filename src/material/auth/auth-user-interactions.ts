@@ -29,15 +29,15 @@ import {AuthUserInteractionsService as CoreAuthUserInteractionsService} from '@g
 import {LogoutConfirmDialogComponent} from './logout-confirm-dialog';
 
 export class AuthUserInteractionsService extends CoreAuthUserInteractionsService {
-  constructor(private dialog: MatDialog, private snackBar: MatSnackBar) {
+  constructor(private _dialog: MatDialog, private _snackBar: MatSnackBar) {
     super();
   }
 
   askLogoutConfirm(): Observable<boolean> {
-    return this.dialog.open(LogoutConfirmDialogComponent).afterClosed();
+    return this._dialog.open(LogoutConfirmDialogComponent).afterClosed();
   }
 
   showLoginError(error: string): void {
-    this.snackBar.open(error, undefined, {duration: 3000});
+    this._snackBar.open(error, undefined, {duration: 3000});
   }
 }

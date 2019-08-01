@@ -67,9 +67,9 @@ export class AdminListComponent<
       this._fillDataSource();
     }
   }
-  @ViewChild(MatPaginator) paginatorCmp: MatPaginator;
-  @ViewChild(MatSort) sortCmp: MatSort;
-  @ViewChild('actionSel', {read: MatSelect}) actionSel: MatSelect;
+  @ViewChild(MatPaginator, {static: true}) paginatorCmp: MatPaginator;
+  @ViewChild(MatSort, {static: true}) sortCmp: MatSort;
+  @ViewChild('actionSel', {static: true, read: MatSelect}) actionSel: MatSelect;
   @ContentChildren(AdminListCellDirective) cellTemplates: QueryList<AdminListCellDirective>;
   readonly selection: SelectionModel<T> = new SelectionModel<T>(true, []);
 

@@ -5,6 +5,6 @@ package(default_visibility = ["//visibility:public"])
 # rules expect the "tsc-wrapped" code to be available in the "npm" workspace.
 # See: https://github.com/bazelbuild/rules_typescript/blob/master/BUILD.bazel#L66
 alias(
-  name = "typescript",
-  actual = "@gngtdeps//@bazel/typescript",
+    name = "typescript",
+    actual = "@npm//@bazel/typescript",
 )

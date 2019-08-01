@@ -1,36 +1,24 @@
-package(default_visibility=["//visibility:public"])
+package(default_visibility = ["//visibility:public"])
+
 load("@build_bazel_rules_typescript//:defs.bzl", "ts_library")
 load("@build_bazel_rules_nodejs//:defs.bzl", "nodejs_binary")
 
-exports_files(["webpack.bundle.config.js"])
-
 ts_library(
-  name = "sass_bundle_lib",
-  srcs = ["sass_bundle.ts"],
-  deps = [
-    "@gngtdeps//@types/node",
-    "@gngtdeps//scss-bundle",
-  ],
-  tsconfig = "bazel-tools-tsconfig.json",
+    name = "sass_bundle_lib",
+    srcs = ["sass_bundle.ts"],
+    tsconfig = "bazel-tools-tsconfig.json",
+    deps = [
+        "@npm//@types/node",
+        "@npm//scss-bundle",
+    ],
 )
 
 # Executable for the custom sass_bundle rule (see sass_bundle.bzl).
 nodejs_binary(
-  name = "sass_bundle",
-  data = [
-   "@gngtdeps//scss-bundle",
-    ":sass_bundle_lib",
-  ],
-  entry_point = "gngt/tools/sass_bundle.js",
-)
-
-nodejs_binary(
-  name = "webpack",
-  data = [
-    "@gngtdeps//babel-loader",
-    "@gngtdeps//webpack",
-    "@gngtdeps//webpack-cli",
-  ],
-  entry_point = "gngtdeps/node_modules/webpack/bin/webpack.js",
-  install_source_map_support = False,
+    name = "sass_bundle",
+    data = [
+        ":sass_bundle_lib",
+        "@npm//scss-bundle",
+    ],
+    entry_point = "gngt/tools/sass_bundle.js",
 )

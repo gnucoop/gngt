@@ -6,7 +6,8 @@
     // Needed for Moment.js since it doesn't have a default export.
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
-    "noUnusedParameters": true,
+    "noUnusedParameters": false,
+    "noUnusedLocals": false,
     "strictNullChecks": true,
     "strictFunctionTypes": true,
     "noImplicitAny": true,
@@ -26,10 +27,10 @@
       "@gngt/material-examples": ["../../dist/releases/material-examples"]
     }
   },
-  "files": [
+  "include": [
     "./typings.d.ts",
-    "./dev-app-module.ts",
-    "./main-aot.ts"
+    "./main-aot.ts",
+    "**/*-module.ts"
   ],
   "angularCompilerOptions": {
     "skipTemplateCodegen": false,

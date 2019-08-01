@@ -13,14 +13,8 @@ task('ci:test', ['test:single-run'], () => process.exit(0));
  */
 task('ci:aot', sequenceTask('build-aot-mat:no-release-build', 'build-aot-ion:no-release-build'));
 
-/** Task which reports the size of the library and stores it in a database. */
-task('ci:payload', ['payload']);
-
-/** Task that uploads the coverage results to a firebase database. */
-task('ci:coverage', ['coverage:upload']);
-
 /** Task that verifies if all Gngt components are working with platform-server. */
-task('ci:prerender', ['prerender-mat', 'prerender-ion']);
+task('ci:prerender', sequenceTask('prerender-mat', 'prerender-ion'));
 
 /** Task that builds all release packages. */
 task('ci:build-release-packages', sequenceTask(

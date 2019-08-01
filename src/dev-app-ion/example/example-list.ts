@@ -19,6 +19,7 @@
  *
  */
 
+import {coerceBooleanProperty} from '@angular/cdk/coercion';
 import {Component, Input} from '@angular/core';
 import {EXAMPLE_COMPONENTS} from '@gngt/ionic-examples';
 
@@ -26,20 +27,42 @@ import {EXAMPLE_COMPONENTS} from '@gngt/ionic-examples';
 @Component({
   selector: 'ionic-example-list',
   template: `
-    <ion-list>
-      <ion-item *ngFor="let id of ids">
-        <ion-label>
+    <mat-accordion multi>
+      <mat-expansion-panel *ngFor="let id of ids" [expanded]="expandAll">
+        <mat-expansion-panel-header>
           <div class="header">
             <div class="title"> {{exampleComponents[id]?.title}} </div>
             <div class="id"> <{{id}}> </div>
           </div>
-        </ion-label>
+        </mat-expansion-panel-header>
 
-        <ionic-example [id]="id"></ionic-example>
-      </ion-item>
-    </ion-list>
+        <ng-template matExpansionPanelContent>
+          <ionic-example [id]="id"></ionic-example>
+        </ng-template>
+      </mat-expansion-panel>
+    </mat-accordion>
   `,
   styles: [`
+    mat-expansion-panel {
+      box-shadow: none !important;
+      border-radius: 0 !important;
+      background: transparent;
+      border-top: 1px solid #CCC;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      padding-right: 24px;
+      align-items: center;
+    }
+
+    .id {
+      font-family: monospace;
+      color: #666;
+      font-size: 12px;
+    }
   `]
 })
 export class ExampleList {
@@ -51,7 +74,9 @@ export class ExampleList {
 
   @Input()
   get expandAll(): boolean { return this._expandAll; }
-  set expandAll(v: boolean) { this._expandAll = v != null && `${v}` !== 'false'; }
+  set expandAll(v: boolean) {
+    this._expandAll = coerceBooleanProperty(v);
+  }
   _expandAll: boolean;
 
   exampleComponents = EXAMPLE_COMPONENTS;

@@ -6,6 +6,6 @@ package(default_visibility = ["//visibility:public"])
 # completely from NPM.
 
 alias(
-  name = "karma",
-  actual = "@gngtdeps//@bazel/karma/bin:karma",
+    name = "karma",
+    actual = "@npm//@bazel/karma/bin:karma",
 )

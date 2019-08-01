@@ -7,7 +7,8 @@
     "declaration": false,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "noUnusedParameters": true,
+    "noUnusedParameters": false,
+    "noUnusedLocals": false,
     "strictNullChecks": true,
     "strictFunctionTypes": true,
     "noImplicitThis": true,
@@ -33,11 +34,11 @@
       "@gngt/material-examples": ["../../dist/packages/material-examples"]
     }
   },
-  "files": [
+  "include": [
     "./typings.d.ts",
-    "./dev-app-module.ts",
     "./system-rxjs-operators.ts",
     "./system-config.ts",
-    "./main.ts"
+    "./main.ts",
+    "**/*-module.ts"
   ]
 }

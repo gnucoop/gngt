@@ -1,6 +1,6 @@
 import {task, dest} from 'gulp';
 import {copyFileSync, removeSync} from 'fs-extra';
-import {tsBuildTask, copyTask, serverTask} from '../util/task_helpers';
+import {tsBuildTask, copyTask, serverTask} from '../util/task-helpers';
 import {join} from 'path';
 import {
   buildConfig,
@@ -30,6 +30,7 @@ const outDir = join(outputDir, 'packages', 'dev-app-mat');
 /** Array of vendors that are required to serve the dev-app-mat. */
 const appVendors = [
   '@angular',
+  '@gic',
   '@ngrx',
   '@ngx-translate',
   'systemjs',
@@ -39,8 +40,13 @@ const appVendors = [
   'hammerjs',
   'core-js',
   'date-fns',
+  'debug',
+  'pouchdb',
+  'pouchdb-debug',
+  'pouchdb-find',
   'tslib',
   'url-parse',
+  'uuid',
   '@webcomponents',
 ];
 

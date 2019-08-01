@@ -6,16 +6,16 @@ package(default_visibility = ["//visibility:public"])
 # completely from NPM.
 
 alias(
-  name = "xi18n",
-  actual = "@gngtdeps//@angular/bazel/bin:xi18n",
+    name = "xi18n",
+    actual = "@npm//@angular/bazel/bin:xi18n",
 )
 
 alias(
-  name = "packager",
-  actual = "@gngtdeps//@angular/bazel/bin:packager",
+    name = "packager",
+    actual = "@npm//@angular/bazel/bin:packager",
 )
 
 alias(
-  name = "ngc-wrapped",
-  actual = "@gngtdeps//@angular/bazel/bin:ngc-wrapped",
+    name = "ngc-wrapped",
+    actual = "@npm//@angular/bazel/bin:ngc-wrapped",
 )

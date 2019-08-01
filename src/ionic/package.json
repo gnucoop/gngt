@@ -12,21 +12,22 @@
   },
   "keywords": [
   ],
-  "license": "MIT",
+  "license": "AGPL-3.0-or-later",
   "bugs": {
     "url": "https://github.com/gnucoop/gngt/issues"
   },
   "homepage": "https://github.com/gnucoop/gngt#readme",
   "peerDependencies": {
-    "@angular/animations": "0.0.0-NG",
     "@angular/core": "0.0.0-NG",
     "@angular/common": "0.0.0-NG",
     "@angular/router": "0.0.0-NG",
-    "@gic/angular": "0.0.0-GIC",
-    "@ionic/angular": "0.0.0-ION"
+    "@ionic/angular": "0.0.0-ION",
+    "@gngt/core": "0.0.0-PLACEHOLDER",
+    "flag-icon-css": "^3.3.0",
+    "ionic-selectable": "^4.4.1"
   },
   "dependencies": {
-    "tslib": "^1.7.1"
+    "tslib": "^1.9.3"
   },
   "schematics": "./schematics/collection.json",
   "ng-update": {

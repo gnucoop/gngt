@@ -62,11 +62,11 @@ export class JwtHelperService {
         throw new Error('Illegal base64url string!');
       }
     }
-    return this.b64DecodeUnicode(output);
+    return this._b64DecodeUnicode(output);
   }
 
   // credits for decoder goes to https://github.com/atk
-  private b64decode(str: string): string {
+  private _b64decode(str: string): string {
     const chars =
       'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
     let output = '';
@@ -103,10 +103,10 @@ export class JwtHelperService {
     return output;
   }
 
-  private b64DecodeUnicode(str: any) {
+  private _b64DecodeUnicode(str: any) {
     return decodeURIComponent(
       Array.prototype.map
-        .call(this.b64decode(str), (c: any) => {
+        .call(this._b64decode(str), (c: any) => {
           return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
         })
         .join('')

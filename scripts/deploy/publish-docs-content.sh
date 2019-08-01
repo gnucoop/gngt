@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Publish ajf docs assets to the gngt-docs-content repo
-# ajf.io will pull from this assets repo to get the latest docs
+# Publish gngt docs assets to the gngt-docs-content repo
+# gngt.io will pull from this assets repo to get the latest docs
 
 # The script should immediately exit if any command in the script fails.
 set -e
@@ -23,13 +23,13 @@ docsDistPath="${projectPath}/dist/docs"
 # Path to the cloned docs-content repository.
 docsContentPath="${projectPath}/tmp/gngt-docs-content"
 
-# Path to the release output of the Bazel "@ajf/material-examples" NPM package.
+# Path to the release output of the Bazel "@gngt/material-examples" NPM package.
 examplesPackagePath="$(bazel info bazel-bin)/src/material-examples/npm_package"
 
 # Git clone URL for the gngt-docs-content repository.
 docsContentRepoUrl="https://github.com/gnucoop/gngt-docs-content"
 
-# Current version of Angular Material from the package.json file
+# Current version of Gnucoop Angular Toolkit from the package.json file
 buildVersion=$(node -pe "require('./package.json').version")
 
 # Name of the branch that is currently being deployed.

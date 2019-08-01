@@ -32,7 +32,7 @@ import {AdminUserInteractionsService as CoreAdminUserInteractionsService} from '
 
 @Injectable()
 export class AdminUserInteractionsService extends CoreAdminUserInteractionsService {
-  constructor(private alert: AlertController, private ts: TranslateService) {
+  constructor(private _alert: AlertController, private _ts: TranslateService) {
     super();
   }
 
@@ -42,8 +42,8 @@ export class AdminUserInteractionsService extends CoreAdminUserInteractionsServi
       'Cancel',
       'Ok'
     ];
-    return this.ts.get(strings).pipe(
-      switchMap(ts => from(this.alert.create({
+    return this._ts.get(strings).pipe(
+      switchMap(ts => from(this._alert.create({
         message: ts[0],
         buttons: [{text: ts[1], role: 'cancel'}, {text: ts[2], role: 'confirm'}]
       }))),

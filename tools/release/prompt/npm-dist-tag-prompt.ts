@@ -37,3 +37,4 @@ export function getDistTagChoicesForVersion(version: Version) {
 
   return [NEXT_TAG_CHOICE];
 }
+

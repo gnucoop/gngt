@@ -60,7 +60,7 @@ export class AdminListComponent<
   > extends BaseAdminListComponent<T, S, A, MS>
     implements OnDestroy, OnInit {
   @Input() baseListParams: ModelListParams;
-  @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
+  @ViewChild(IonInfiniteScroll, {static: true}) infiniteScroll: IonInfiniteScroll;
 
   private _items: T[] = [];
   get items(): T[] { return this._items; }

@@ -43,26 +43,21 @@ export const reducers: ActionReducerMap<AuthState, AuthApiActionsUnion> = {
   loginPage: fromLoginPage.reducer,
 };
 
-export const selectAuthState = createFeatureSelector<State, AuthState>('auth');
+export const selectAuthState: MemoizedSelector<State, AuthState> =
+    createFeatureSelector<State, AuthState>('auth');
 
-export const selectAuthStatusState = createSelector(
-  selectAuthState,
-  (state: AuthState) => state.status
-);
-export const getInit = createSelector(selectAuthStatusState, fromAuth.getInit);
+export const selectAuthStatusState: MemoizedSelector<State, fromAuth.State> =
+    createSelector(selectAuthState, (state: AuthState) => state.status);
+export const getInit: MemoizedSelector<State, boolean> =
+    createSelector(selectAuthStatusState, fromAuth.getInit);
 export const getUser: MemoizedSelector<State, User | null> =
   createSelector(selectAuthStatusState, fromAuth.getUser);
-export const getLoggedIn = createSelector(getUser, user => user != null);
+export const getLoggedIn: MemoizedSelector<State, boolean> =
+    createSelector(getUser, user => user != null);
 
-export const selectLoginPageState = createSelector(
-  selectAuthState,
-  (state: AuthState) => state.loginPage
-);
-export const getLoginPageError = createSelector(
-  selectLoginPageState,
-  fromLoginPage.getError
-);
-export const getLoginPagePending = createSelector(
-  selectLoginPageState,
-  fromLoginPage.getPending
-);
+export const selectLoginPageState: MemoizedSelector<State, fromLoginPage.State> =
+    createSelector(selectAuthState, (state: AuthState) => state.loginPage);
+export const getLoginPageError: MemoizedSelector<State, string|null> =
+    createSelector(selectLoginPageState, fromLoginPage.getError);
+export const getLoginPagePending: MemoizedSelector<State, boolean> =
+    createSelector(selectLoginPageState, fromLoginPage.getPending);

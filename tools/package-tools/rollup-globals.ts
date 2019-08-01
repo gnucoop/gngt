@@ -36,7 +36,12 @@ const rollupMatEntryPoints = generateRollupEntryPoints('material', matSecondaryE
 
 /** Map of globals that are used inside of the different packages. */
 export const rollupGlobals = {
-  'date-fns': 'date-fns',
+  'date-fns': 'dateFns',
+  'debug': 'debug',
+  'pouchdb': 'pouchdb',
+  'pouchdb-debug': 'pouchdb.debug',
+  'pouchdb-find': 'pouchdb.find',
+  'protractor': 'protractor',
   'tslib': 'tslib',
   'url-parse': 'urlParse',
   'uuid': 'uuid',
@@ -46,7 +51,7 @@ export const rollupGlobals = {
   '@angular/cdk/a11y': 'ng.cdk.a11y',
   '@angular/cdk/coercion': 'ng.cdk.coercion',
   '@angular/cdk/collections': 'ng.cdk.collections',
-  '@angular/cdk/drag-drop': 'ng.cdk.drapDrop',
+  '@angular/cdk/drag-drop': 'ng.cdk.dragDrop',
   '@angular/cdk/scrolling': 'ng.cdk.scrolling',
   '@angular/cdk/table': 'ng.cdk.table',
   '@angular/cdk/tree': 'ng.cdk.tree',
@@ -69,30 +74,25 @@ export const rollupGlobals = {
   '@angular/material/paginator': 'ng.material.paginator',
   '@angular/material/progress-bar': 'ng.material.progressBar',
   '@angular/material/radio': 'ng.material.radio',
-  '@angular/material/snack-bar': 'ng.material.snackBar',
   '@angular/material/select': 'ng.material.select',
+  '@angular/material/snack-bar': 'ng.material.snackBar',
   '@angular/material/sort': 'ng.material.sort',
   '@angular/material/table': 'ng.material.table',
   '@angular/material/toolbar': 'ng.material.toolbar',
-  '@angular/platform-browser': 'ng.platformBrowser',
   '@angular/platform-browser-dynamic': 'ng.platformBrowserDynamic',
   '@angular/platform-browser-dynamic/testing': 'ng.platformBrowserDynamic.testing',
+  '@angular/platform-browser': 'ng.platformBrowser',
   '@angular/platform-browser/animations': 'ng.platformBrowser.animations',
-  '@angular/platform-server': 'ng.platformServer',
   '@angular/router': 'ng.router',
 
-  '@ionic/angular': 'ionic.angular',
   '@gic/angular': 'gic.angular',
+  '@ionic/angular': 'ionic.angular',
 
   '@ngx-translate/core': 'ngxt.core',
   '@ngx-translate/http-loader': 'ngxt.httpLoader',
 
   '@ngrx/effects': 'ngrx.effects',
   '@ngrx/store': 'ngrx.store',
-
-  'pouchdb': 'pouchdb',
-  'pouchdb-debug': 'pouchdb.debug',
-  'pouchdb-find': 'pouchdb.find',
 
   // Some packages are not really needed for the UMD bundles, but for the missingRollupGlobals rule.
   '@gngt/core': 'gngt.core',

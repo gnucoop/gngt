@@ -9,7 +9,7 @@ const exampleCommentRegex = /<!--\W*example\(([^)]+)\)\W*-->/g;
 
 /**
  * Custom renderer for marked that will be used to transform markdown files to HTML
- * files that can be used in the Angular Material docs.
+ * files that can be used in the Gnucoop Angular Toolkit docs.
  */
 export class DocsMarkdownRenderer extends Renderer {
 
@@ -38,7 +38,7 @@ export class DocsMarkdownRenderer extends Renderer {
     // We only want to fix up markdown links that are relative and do not refer to guides already.
     // Otherwise we always map the link to the "guide/" path.
     // TODO(devversion): remove this logic and just disallow relative paths.
-    if (!href.startsWith('http') && !href.includes('guide/')) {
+    if (!href.startsWith('http') && !href.startsWith('#') && !href.includes('guide/')) {
       return super.link(`guide/${basename(href, extname(href))}`, title, text);
     }
 

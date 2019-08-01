@@ -2,7 +2,6 @@ const path = require('path');
 const {customLaunchers, platformMap} = require('./browser-providers');
 
 module.exports = (config) => {
-
   config.set({
     basePath: path.join(__dirname, '..'),
     frameworks: ['jasmine'],
@@ -28,39 +27,26 @@ module.exports = (config) => {
 
       // Include all Gngt dependencies
       {pattern: 'node_modules/@angular/**/*', included: false, watched: false},
-      {pattern: 'node_modules/@ngx-translate/**/*', included: false, watched: false},
+      {pattern: 'node_modules/@gic/angular/angular.umd.js', included: false, watched: false},
+      {pattern: 'node_modules/@gic/core/core.umd.js', included: false, watched: false},
+      {pattern: 'node_modules/@gic/core/core-loader.umd.js', included: false, watched: false},
+      {pattern: 'node_modules/@ionic/angular/angular.umd.js', included: false, watched: false},
+      {pattern: 'node_modules/@ionic/core/core.umd.js', included: false, watched: false},
+      {pattern: 'node_modules/@ionic/core/core-loader.umd.js', included: false, watched: false},
       {pattern: 'node_modules/@ngrx/**/*', included: false, watched: false},
+      {pattern: 'node_modules/@ngx-translate/**/*', included: false, watched: false},
+      {pattern: 'node_modules/date-fns/date-fns.umd.js', included: false, watched: false},
+      {pattern: 'node_modules/debug/debug.umd.js', included: false, watched: false},
+      {pattern: 'node_modules/pouchdb/pouchdb.umd.js', included: false, watched: false},
+      {pattern: 'node_modules/pouchdb-debug/pouchdb-debug.umd.js', included: false, watched: false},
+      {pattern: 'node_modules/pouchdb-find/pouchdb-find.umd.js', included: false, watched: false},
       {pattern: 'node_modules/rxjs/**/*', included: false, watched: false},
-      {pattern: 'node_modules/date-fns/**/*.js', included: false, watched: false},
-      {pattern: 'node_modules/systemjs-plugin-babel/**/*.js', included: false, watched: false},
-      {pattern: 'node_modules/url-parse/dist/*.js', included: false, watched: false},
+      {pattern: 'node_modules/url-parse/url-parse.umd.js', included: false, watched: false},
+      {pattern: 'node_modules/uuid/uuid.umd.js', included: false, watched: false},
 
       {pattern: 'node_modules/crypto-js/crypto-js.js', included: true, watched: false},
       {pattern: 'node_modules/crypto-js/index.js', included: true, watched: false},
       {pattern: 'node_modules/crypto-js/*.js', included: false, watched: false},
-
-      {pattern: 'node_modules/pouchdb/dist/*.js', included: false, watched: false},
-      {pattern: 'node_modules/pouchdb-abstract-mapreduce/lib/*.js', included: false, watched: false},
-      {pattern: 'node_modules/pouchdb-binary-utils/lib/*.js', included: false, watched: false},
-      {pattern: 'node_modules/pouchdb-collate/lib/*.js', included: false, watched: false},
-      {pattern: 'node_modules/pouchdb-collections/lib/*.js', included: false, watched: false},
-      {pattern: 'node_modules/pouchdb-debug/lib/*.js', included: false, watched: false},
-      {pattern: 'node_modules/pouchdb-errors/lib/*.js', included: false, watched: false},
-      {pattern: 'node_modules/pouchdb-fetch/lib/*.js', included: false, watched: false},
-      {pattern: 'node_modules/pouchdb-find/lib/*.js', included: false, watched: false},
-      {pattern: 'node_modules/pouchdb-mapreduce-utils/lib/*.js', included: false, watched: false},
-      {pattern: 'node_modules/pouchdb-md5/lib/*.js', included: false, watched: false},
-      {pattern: 'node_modules/pouchdb-selector-core/lib/*.js', included: false, watched: false},
-      {pattern: 'node_modules/pouchdb-utils/lib/*.js', included: false, watched: false},
-      {pattern: 'node_modules/argsarray/*.js', included: false, watched: false},
-      {pattern: 'node_modules/debug/src/*.js', included: false, watched: false},
-      {pattern: 'node_modules/events/*.js', included: false, watched: false},
-      {pattern: 'node_modules/immediate/dist/*.js', included: false, watched: false},
-      {pattern: 'node_modules/inherits/*.js', included: false, watched: false},
-      {pattern: 'node_modules/ms/*.js', included: false, watched: false},
-      {pattern: 'node_modules/spark-md5/*.js', included: false, watched: false},
-      {pattern: 'node_modules/uuid/lib/*.js', included: false, watched: false},
-      {pattern: 'bundles/*.js', included: false, watched: false},
 
       {pattern: 'test/karma-system-config.js', included: true, watched: false},
       {pattern: 'test/karma-test-shim.js', included: true, watched: false},
@@ -72,9 +58,7 @@ module.exports = (config) => {
 
     customLaunchers: customLaunchers,
 
-    preprocessors: {
-      'dist/packages/**/*.js': ['sourcemap']
-    },
+    preprocessors: {'dist/packages/**/*.js': ['sourcemap']},
 
     reporters: ['dots'],
     autoWatch: false,
@@ -102,16 +86,13 @@ module.exports = (config) => {
     browserNoActivityTimeout: 300000,
     captureTimeout: 180000,
 
-    browsers: ['ChromeHeadless'],
+    browsers: ['ChromeHeadlessLocal'],
     singleRun: false,
 
     // Try Websocket for a faster transmission first. Fallback to polling if necessary.
     transports: ['websocket', 'polling'],
 
-    browserConsoleLogOptions: {
-      terminal: true,
-      level: 'log'
-    },
+    browserConsoleLogOptions: {terminal: true, level: 'log'},
 
     client: {
       jasmine: {

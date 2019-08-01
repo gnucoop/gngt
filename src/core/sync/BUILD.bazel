@@ -1,36 +1,54 @@
-package(default_visibility=["//visibility:public"])
+package(default_visibility = ["//visibility:public"])
 
-load("//tools:defaults.bzl", "ng_module", "ng_test_library", "ng_web_test_suite")
+load(
+    "//tools:defaults.bzl",
+    "markdown_to_html",
+    "ng_module",
+    "ng_test_library",
+    "ng_web_test_suite",
+)
 
 ng_module(
-  name = "sync",
-  srcs = glob(["**/*.ts"], exclude=["**/*.spec.ts"]),
-  module_name = "@gngt/core/sync",
-  assets = [],
-  deps = [
-    "@angular//packages/common/http",
-    "@angular//packages/core",
-    "@gngtdeps//@types/pouchdb",
-    "@gngtdeps//@types/pouchdb-find",
-    "//src/core/common",
-  ],
+    name = "sync",
+    srcs = glob(
+        ["**/*.ts"],
+        exclude = ["**/*.spec.ts"],
+    ),
+    assets = [],
+    module_name = "@gngt/core/sync",
+    deps = [
+        "//src/core/common",
+        "@npm//@angular/core",
+        "@npm//@types/pouchdb",
+    ],
 )
 
 ng_test_library(
-  name = "sync_test_sources",
-  srcs = glob(["**/*.spec.ts"]),
-  deps = [
-    "@angular//packages/common/http",
-    "@angular//packages/common/http/testing",
-    "@angular//packages/platform-browser",
-    "@gngtdeps//@types/pouchdb",
-    "@rxjs",
-    "@rxjs//operators",
-    ":sync"
-  ]
+    name = "unit_test_sources",
+    srcs = glob(
+        ["**/*.spec.ts"],
+        exclude = ["**/*.e2e.spec.ts"],
+    ),
+    deps = [
+        ":sync",
+        "@npm//@angular/common",
+        "@npm//@angular/platform-browser",
+        "@npm//@types/pouchdb",
+        "@npm//rxjs",
+    ],
 )
 
 ng_web_test_suite(
-  name = "unit_tests",
-  deps = [":sync_test_sources"],
+    name = "unit_tests",
+    deps = [":unit_test_sources"],
+)
+
+markdown_to_html(
+    name = "overview",
+    srcs = ["sync.md"],
+)
+
+filegroup(
+    name = "source-files",
+    srcs = glob(["**/*.ts"]),
 )

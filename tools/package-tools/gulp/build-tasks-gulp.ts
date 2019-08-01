@@ -50,7 +50,7 @@ export function createPackageBuildTasks(buildPackage: BuildPackage, preBuildTask
 
   // Pattern matching schematics files to be copied into the output directory.
   const schematicsGlobs = [
-    join(schematicsDir, '**/+(data|files)/**/*'),
+    join(schematicsDir, '**/files/**/*'),
     join(schematicsDir, '**/+(schema|collection|migration).json'),
   ];
 
@@ -65,18 +65,6 @@ export function createPackageBuildTasks(buildPackage: BuildPackage, preBuildTask
     ...preBuildTasks,
     // Build all required packages before building.
     ...dependencyNames.map(pkgName => `${pkgName}:build`),
-    // Build ESM and assets output.
-    `${taskName}:assets`,
-    `${taskName}:build:esm`,
-    // Inline assets into ESM output.
-    `${taskName}:assets:inline`,
-    // Build bundles on top of inlined ESM output.
-    `${taskName}:build:bundles`,
-  ));
-
-  task(`${taskName}:build-no-deps`, sequenceTask(
-    // Run the pre build gulp tasks.
-    ...preBuildTasks,
     // Build ESM and assets output.
     `${taskName}:assets`,
     `${taskName}:build:esm`,
@@ -130,7 +118,7 @@ export function createPackageBuildTasks(buildPackage: BuildPackage, preBuildTask
   task(`${taskName}:assets`, assetTasks);
 
   task(`${taskName}:assets:scss`, () => {
-    buildScssPipeline(buildPackage.sourceDir, true)
+    return buildScssPipeline(buildPackage.sourceDir, true)
       .pipe(dest(buildPackage.outputDir))
       .pipe(dest(buildPackage.esm5OutputDir));
     }
@@ -148,7 +136,9 @@ export function createPackageBuildTasks(buildPackage: BuildPackage, preBuildTask
         .pipe(dest(buildPackage.esm5OutputDir));
   });
 
-  task(`${taskName}:assets:inline`, () => inlineResourcesForDirectory(buildPackage.outputDir));
+  task(`${taskName}:assets:inline`, () => {
+    return inlineResourcesForDirectory(buildPackage.outputDir);
+  });
 
   task(`${taskName}:assets:schematics-ts`, () => {
     return tsCompile('tsc', ['-p', join(schematicsDir, 'tsconfig.json')]);

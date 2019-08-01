@@ -5,7 +5,7 @@ export interface BuildConfig {
   projectVersion: string;
   /** Required Angular version for the project. */
   angularVersion: string;
-  /** Required Angular Material version for the project. */
+  /** Required Gnucoop Angular Toolkit version for the project. */
   angularMaterialVersion: string;
   /** Required Ngrx Platform version for the project. */
   ngrxVersion: string;

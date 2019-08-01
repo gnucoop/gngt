@@ -1,65 +1,80 @@
-package(default_visibility=["//visibility:public"])
+package(default_visibility = ["//visibility:public"])
 
-load("@io_bazel_rules_sass//sass:sass.bzl", "sass_library", "sass_binary")
-load("//tools:defaults.bzl", "ng_module", "ng_test_library", "ng_web_test_suite")
+load("@io_bazel_rules_sass//sass:sass.bzl", "sass_binary")
+load(
+    "//tools:defaults.bzl",
+    "markdown_to_html",
+    "ng_module",
+    "ng_test_library",
+    "ng_web_test_suite",
+)
 
 ng_module(
-  name = "admin",
-  srcs = glob(["**/*.ts"], exclude=["**/*.spec.ts"]),
-  module_name = "@gngt/material/admin",
-  assets = [":delete-confirm.css", ":edit.css", ":list.css"] + glob(["**/*.html"]),
-  deps = [
-    "@angular//packages/common",
-    "@angular//packages/core",
-    "@angular//packages/forms",
-    "@angular//packages/router",
-    "@angular_material//src/lib/autocomplete",
-    "@angular_material//src/lib/button",
-    "@angular_material//src/lib/card",
-    "@angular_material//src/lib/checkbox",
-    "@angular_material//src/lib/dialog",
-    "@angular_material//src/lib/icon",
-    "@angular_material//src/lib/input",
-    "@angular_material//src/lib/progress-bar",
-    "@angular_material//src/lib/radio",
-    "@angular_material//src/lib/select",
-    "@angular_material//src/lib/table",
-    "@angular_material//src/lib/toolbar",
-    "@ngx_translate_core//:core",
-    "//src/core/admin",
-    "//src/core/common",
-    "//src/material/model",
-  ],
+    name = "admin",
+    srcs = glob(
+        ["**/*.ts"],
+        exclude = ["**/*.spec.ts"],
+    ),
+    assets = [
+        ":delete-confirm.css",
+        ":edit.css",
+        ":list.css",
+    ] + glob(["**/*.html"]),
+    module_name = "@gngt/material/admin",
+    deps = [
+        "//src/core/admin",
+        "//src/core/common",
+        "//src/material/model",
+        "@npm//@angular/common",
+        "@npm//@angular/core",
+        "@npm//@angular/forms",
+        "@npm//@angular/material",
+        "@npm//@angular/router",
+        "@npm//@ngx-translate/core",
+    ],
 )
 
 sass_binary(
-  name = "delete_confirm_scss",
-  src = "delete-confirm.scss",
-  deps = [],
+    name = "delete_confirm_scss",
+    src = "delete-confirm.scss",
+    deps = [],
 )
 
 sass_binary(
-  name = "edit_scss",
-  src = "edit.scss",
-  deps = [],
+    name = "edit_scss",
+    src = "edit.scss",
+    deps = [],
 )
 
 sass_binary(
-  name = "list_scss",
-  src = "list.scss",
-  deps = [],
+    name = "list_scss",
+    src = "list.scss",
+    deps = [],
 )
 
 ng_test_library(
-  name = "admin_test_sources",
-  srcs = glob(["**/*.spec.ts"]),
-  deps = [
-    "@angular//packages/platform-browser",
-    ":admin"
-  ]
+    name = "unit_test_sources",
+    srcs = glob(
+        ["**/*.spec.ts"],
+        exclude = ["**/*.e2e.spec.ts"],
+    ),
+    deps = [
+        ":admin",
+        "@npm//@angular/platform-browser",
+    ],
 )
 
 ng_web_test_suite(
-  name = "unit_tests",
-  deps = [":admin_test_sources"],
+    name = "unit_tests",
+    deps = [":unit_test_sources"],
+)
+
+markdown_to_html(
+    name = "overview",
+    srcs = ["admin.md"],
+)
+
+filegroup(
+    name = "source-files",
+    srcs = glob(["**/*.ts"]),
 )

@@ -29,6 +29,7 @@
     "**/*.spec.ts"
   ],
   "exclude": [
-    "**/schematics/**/*.ts"
+    "**/schematics/**/*.ts",
+    "**/*.e2e.spec.ts"
   ]
 }

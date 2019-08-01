@@ -1,10 +1,8 @@
 import {Routes} from '@angular/router';
-import {Home} from './e2e-app';
-import {LoginE2E} from '../login/login-e2e';
-// import {
-// } from '@gngt/material-examples';
+import {CalendarE2E} from '../calendar/calendar-e2e';
+import {Home} from './e2e-app-layout';
 
 export const E2E_APP_ROUTES: Routes = [
   {path: '', component: Home},
-  {path: 'login', component: LoginE2E},
+  {path: 'calendar', component: CalendarE2E},
 ];

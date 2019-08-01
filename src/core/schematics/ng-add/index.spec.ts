@@ -7,13 +7,13 @@ describe('ng-add schematic', () => {
   let runner: SchematicTestRunner;
   let appTree: Tree;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     runner = new SchematicTestRunner('schematics', require.resolve('../collection.json'));
-    appTree = createTestApp(runner);
+    appTree = await createTestApp(runner);
   });
 
-  it('should update package.json', () => {
-    const tree = runner.runSchematic('ng-add', {}, appTree);
+  it('should update package.json', async () => {
+    const tree = await runner.runSchematicAsync('ng-add', {}, appTree).toPromise();
     const packageJson = JSON.parse(getFileContent(tree, '/package.json'));
     const dependencies = packageJson.dependencies;
 
@@ -31,8 +31,8 @@ describe('ng-add schematic', () => {
   });
 
   describe('translations enabled', () => {
-    it('should add the TranslationsModule to the project module', () => {
-      const tree = runner.runSchematic('ng-add-setup-project', {}, appTree);
+    it('should add the TranslationsModule to the project module', async () => {
+      const tree = await runner.runSchematicAsync('ng-add-setup-project', {}, appTree).toPromise();
       const fileContent = getFileContent(tree, '/projects/gngt/src/app/app.module.ts');
 
       expect(fileContent).toContain('TranslationsModule',

@@ -67,13 +67,13 @@ export class Example implements OnInit {
 
   title: string;
 
-  constructor(private elementRef: ElementRef, private injector: Injector) { }
+  constructor(private _elementRef: ElementRef, private _injector: Injector) {}
 
   ngOnInit() {
     // Should be created with this component's injector to capture the whole injector which may
     // include provided things like Directionality.
     const exampleElementCtor = customElements.get(this.id);
-    this.elementRef.nativeElement.appendChild(new exampleElementCtor(this.injector));
+    this._elementRef.nativeElement.appendChild(new exampleElementCtor(this._injector));
 
     this.title = EXAMPLE_COMPONENTS[this.id] ? EXAMPLE_COMPONENTS[this.id].title : '';
   }

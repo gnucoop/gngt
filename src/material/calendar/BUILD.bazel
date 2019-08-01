@@ -1,38 +1,75 @@
-package(default_visibility=["//visibility:public"])
+package(default_visibility = ["//visibility:public"])
 
-load("@io_bazel_rules_sass//sass:sass.bzl", "sass_library", "sass_binary")
-load("//tools:defaults.bzl", "ng_module", "ng_test_library", "ng_web_test_suite")
+load("@io_bazel_rules_sass//sass:sass.bzl", "sass_binary")
+load(
+    "//tools:defaults.bzl",
+    "markdown_to_html",
+    "ng_e2e_test_library",
+    "ng_module",
+    "ng_test_library",
+    "ng_web_test_suite",
+)
+load("//src/e2e-app-mat:test_suite.bzl", "e2e_test_suite")
 
 ng_module(
-  name = "calendar",
-  srcs = glob(["**/*.ts"], exclude=["**/*.spec.ts"]),
-  module_name = "@gngt/material/calendar",
-  assets = [":calendar.css"] + glob(["**/*.html"]),
-  deps = [
-    "@angular//packages/core",
-    "@angular//packages/forms",
-    "@angular_material//src/lib/button",
-    "@ngx_translate_core//:core",
-    "//src/core/calendar",
-  ],
+    name = "calendar",
+    srcs = glob(
+        ["**/*.ts"],
+        exclude = ["**/*.spec.ts"],
+    ),
+    assets = [":calendar.css"] + glob(["**/*.html"]),
+    module_name = "@gngt/material/calendar",
+    deps = [
+        "//src/core/calendar",
+        "@npm//@angular/common",
+        "@npm//@angular/core",
+        "@npm//@angular/forms",
+        "@npm//@angular/material",
+        "@npm//@ngx-translate/core",
+    ],
 )
 
 sass_binary(
-  name = "calendar_scss",
-  src = "calendar.scss",
-  deps = [],
+    name = "calendar_scss",
+    src = "calendar.scss",
+    deps = [],
 )
 
 ng_test_library(
-  name = "calendar_test_sources",
-  srcs = glob(["**/*.spec.ts"]),
-  deps = [
-    "@angular//packages/platform-browser",
-    ":calendar"
-  ]
+    name = "unit_test_sources",
+    srcs = glob(
+        ["**/*.spec.ts"],
+        exclude = ["**/*.e2e.spec.ts"],
+    ),
+    deps = [
+        ":calendar",
+        "@npm//@angular/platform-browser",
+    ],
 )
 
 ng_web_test_suite(
-  name = "unit_tests",
-  deps = [":calendar_test_sources"],
+    name = "unit_tests",
+    deps = [":unit_test_sources"],
+)
+
+ng_e2e_test_library(
+    name = "e2e_test_sources",
+    srcs = glob(["**/*.e2e.spec.ts"]),
+)
+
+e2e_test_suite(
+    name = "e2e_tests",
+    deps = [
+        ":e2e_test_sources",
+    ],
+)
+
+markdown_to_html(
+    name = "overview",
+    srcs = ["calendar.md"],
+)
+
+filegroup(
+    name = "source-files",
+    srcs = glob(["**/*.ts"]),
 )

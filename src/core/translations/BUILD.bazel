@@ -1,35 +1,55 @@
-package(default_visibility=["//visibility:public"])
+package(default_visibility = ["//visibility:public"])
 
-load("//tools:defaults.bzl", "ng_module", "ng_test_library", "ng_web_test_suite")
+load(
+    "//tools:defaults.bzl",
+    "markdown_to_html",
+    "ng_module",
+    "ng_test_library",
+    "ng_web_test_suite",
+)
 
 ng_module(
-  name = "translations",
-  srcs = glob(["**/*.ts"], exclude=["**/*.spec.ts"]),
-  module_name = "@gngt/core/translations",
-  assets = [],
-  deps = [
-    "@angular//packages/core",
-    "@ngx_translate_core//:core",
-  ],
+    name = "translations",
+    srcs = glob(
+        ["**/*.ts"],
+        exclude = ["**/*.spec.ts"],
+    ),
+    assets = [],
+    module_name = "@gngt/core/translations",
+    deps = [
+        "@npm//@angular/core",
+        "@npm//@ngx-translate/core",
+    ],
 )
 
 ng_test_library(
-  name = "translations_test_sources",
-  srcs = glob(["**/*.spec.ts"]),
-  deps = [
-    "@angular//packages/common/http",
-    "@angular//packages/platform-browser",
-    "@ngx_translate_core//:core",
-    "@gngtdeps//@ngx-translate/http-loader",
-    ":translations"
-  ]
+    name = "unit_test_sources",
+    srcs = glob(
+        ["**/*.spec.ts"],
+        exclude = ["**/*.e2e.spec.ts"],
+    ),
+    deps = [
+        ":translations",
+        "@npm//@angular/common",
+        "@npm//@angular/platform-browser",
+        "@npm//@ngx-translate/core",
+        "@npm//@ngx-translate/http-loader",
+    ],
 )
 
 ng_web_test_suite(
-  name = "unit_tests",
-  deps = [
-    "@gngtdeps//node_modules/@ngx-translate/core:bundles/ngx-translate-core.umd.js",
-    "@gngtdeps//node_modules/@ngx-translate/http-loader:bundles/ngx-translate-http-loader.umd.js",
-    ":translations_test_sources"
-  ],
+    name = "unit_tests",
+    deps = [
+        ":unit_test_sources",
+    ],
+)
+
+markdown_to_html(
+    name = "overview",
+    srcs = ["translations.md"],
+)
+
+filegroup(
+    name = "source-files",
+    srcs = glob(["**/*.ts"]),
 )

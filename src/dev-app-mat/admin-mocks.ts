@@ -19,9 +19,11 @@
  *
  */
 
+import {EventEmitter} from '@angular/core';
+import {ModelListParams, ModelListResult} from '@gngt/core/model';
+import {Action} from '@ngrx/store';
 import {Observable, of as obsOf, Subject} from 'rxjs';
-
-import {ModelListResult} from '@gngt/core/model';
+import {map} from 'rxjs/operators';
 
 export class AdminModel {
   id: number;
@@ -30,41 +32,41 @@ export class AdminModel {
   baz: number;
 }
 
-const demoObjs: AdminModel[] = [
-  { id: 1, foo: 'demo foo 1', bar: 'demo bar 1', baz: 4 },
-  { id: 2, foo: 'demo foo 2', bar: 'demo bar 2', baz: 5 },
-  { id: 3, foo: 'demo foo 3', bar: 'demo bar 3', baz: 56 }
-];
-
 export class AdminModelMockService {
   private _subject: Subject<AdminModel> = new Subject<AdminModel>();
+  private _actionSubject: Subject<Action> = new Subject<Action>();
+  private _listEvt: EventEmitter<void> = new EventEmitter<void>();
+  private _currentStart = 0;
+  private _currentLimit = 20;
 
   get(_id: number): void {}
 
-  list(): void { }
-
-  getGetObject(): Observable<AdminModel> {
-    return obsOf(demoObjs[0]);
+  list(params: ModelListParams): void {
+    this._currentStart = params.start != null ? params.start : 0;
+    this._currentLimit = params.limit != null ? params.limit : 20;
+    this._listEvt.emit();
   }
 
-  query(): Observable<ModelListResult<AdminModel>> {
-    return obsOf({
-      count: demoObjs.length,
-      results: demoObjs,
-      next: null,
-      previous: null,
-      hasNext: false
-    });
+  getGetObject(): Observable<AdminModel> {
+    return obsOf({id: 1, foo: 'foo', bar: 'bar', baz: 1});
   }
 
   getListObjects(): Observable<ModelListResult<AdminModel>> {
-    return obsOf({
-      count: demoObjs.length,
-      results: demoObjs,
-      next: null,
-      previous: null,
-      hasNext: false
-    });
+    return this._listEvt.pipe(map(_ => {
+      const objs: AdminModel[] = [];
+      for (let i = 0; i < this._currentLimit; i++) {
+        const id = this._currentStart + i + 1;
+        objs.push({id, foo: `foo ${id}`, bar: `bar ${id}`, baz: id});
+      }
+      const res = {
+        count: 200,
+        results: objs,
+        next: this._currentStart + this._currentLimit < 200 ? '' : null,
+        previous: this._currentStart === 0 ? null : ''
+      };
+      console.log(res);
+      return res;
+    }));
   }
 
   getCreateSuccess(): Observable<AdminModel | null> {
@@ -73,6 +75,14 @@ export class AdminModelMockService {
 
   getPatchSuccess(): Observable<AdminModel | null> {
     return this._subject.asObservable();
+  }
+
+  getDeleteSuccess(): Observable<Action> {
+    return this._actionSubject.asObservable();
+  }
+
+  getDeleteAllSuccess(): Observable<Action> {
+    return this._actionSubject.asObservable();
   }
 
   getGetLoading(): Observable<boolean> {
@@ -85,13 +95,5 @@ export class AdminModelMockService {
 
   getPatchLoading(): Observable<boolean> {
     return obsOf(false);
-  }
-
-  getDeleteSuccess(): Observable<boolean> {
-    return obsOf(true);
-  }
-
-  getDeleteAllSuccess(): Observable<boolean> {
-    return obsOf(true);
   }
 }

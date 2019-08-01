@@ -22,7 +22,7 @@
 import {Component} from '@angular/core';
 import {EXAMPLE_COMPONENTS} from '@gngt/ionic-examples';
 
-/** Renders all material examples listed in the generated EXAMPLE_COMPONENTS. */
+/** Renders all ionic examples listed in the generated EXAMPLE_COMPONENTS. */
 @Component({
   template: `<ionic-example-list [ids]="examples"></ionic-example-list>`
 })

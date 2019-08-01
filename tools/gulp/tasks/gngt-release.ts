@@ -39,6 +39,14 @@ task('gngt:build-release', ['gngt:prepare-release'], () => {
   composeRelease(ionicPackage);
   composeRelease(materialPackage);
 });
+task('gngt:build-release-ionic', ['gngt:prepare-release-ionic'], () => {
+  composeRelease(corePackage);
+  composeRelease(ionicPackage);
+});
+task('gngt:build-release-material', ['gngt:prepare-release-material'], () => {
+  composeRelease(corePackage);
+  composeRelease(materialPackage);
+});
 
 /**
  * Task that will build the material package. Special treatment for this package includes:
@@ -46,10 +54,21 @@ task('gngt:build-release', ['gngt:prepare-release'], () => {
  * - Bundling theming scss into a single theming file
  */
 task('gngt:prepare-release', sequenceTask(
+  ['clean'],
   ['core:build-no-deps'],
   ['ionic:build-no-deps'],
   ['material:build-no-deps'],
   // ['material:copy-prebuilt-themes', 'material:bundle-theming-scss'],
+));
+task('gngt:prepare-release-ionic', sequenceTask(
+  ['clean'],
+  ['core:build-no-deps'],
+  ['ionic:build-no-deps'],
+));
+task('gngt:prepare-release-material', sequenceTask(
+  ['clean'],
+  ['core:build-no-deps'],
+  ['material:build-no-deps'],
 ));
 
 /** Copies all prebuilt themes into the release package under `prebuilt-themes/` */

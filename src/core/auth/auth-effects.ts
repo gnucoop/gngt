@@ -44,33 +44,33 @@ import {Credentials} from './credentials';
 @Injectable()
 export class AuthEffects {
   @Effect()
-  initUser$ = this.actions$.pipe(
+  initUser$ = this._actions$.pipe(
     ofType<AuthActions.InitUser>(AuthActions.AuthActionTypes.InitUser),
     exhaustMap(() =>
-      this.authService.getCurrentUser().pipe(catchError(_ => {
-        return obsOf(this.config.meGetter != null ? this.config.meGetter() : null);
+      this._authService.getCurrentUser().pipe(catchError(_ => {
+        return obsOf(this._config.meGetter != null ? this._config.meGetter() : null);
       }))
     ),
     map((user) => {
-      if (this.config.meSetter != null) {
-        this.config.meSetter(user);
+      if (this._config.meSetter != null) {
+        this._config.meSetter(user);
       }
       return new AuthActions.InitUserComplete({user});
     })
   );
 
   @Effect()
-  initUserComplete$ = this.actions$.pipe(
+  initUserComplete$ = this._actions$.pipe(
     ofType<AuthActions.InitUserComplete>(AuthActions.AuthActionTypes.InitUserComplete),
     map(() => new AuthActions.InitComplete())
   );
 
   @Effect()
-  login$ = this.actions$.pipe(
+  login$ = this._actions$.pipe(
     ofType<LoginPageActions.Login>(LoginPageActions.LoginPageActionTypes.Login),
     map(action => action.payload.credentials),
     exhaustMap((auth: Credentials) =>
-      this.authService.login(auth).pipe(
+      this._authService.login(auth).pipe(
         map((res) => new AuthApiActions.LoginSuccess(res)),
         catchError((err: HttpErrorResponse) => {
           const errors: string[] = [];
@@ -79,7 +79,7 @@ export class AuthEffects {
           } else {
             errors.push(err.error.message);
           }
-          return zip(...errors.map(e => <Observable<string>>this.ts.get(e)))
+          return zip(...errors.map(e => <Observable<string>>this._ts.get(e)))
             .pipe(
               map(error => new AuthApiActions.LoginFailure({error}))
             );
@@ -89,18 +89,18 @@ export class AuthEffects {
   );
 
   @Effect()
-  loginSuccess$ = this.actions$.pipe(
+  loginSuccess$ = this._actions$.pipe(
     ofType<AuthApiActions.LoginSuccess>(AuthApiActions.AuthApiActionTypes.LoginSuccess),
     tap((action) => {
       const payload = <any>action.payload;
-      const tokenKey = this.config.tokenKey || 'access_token';
-      const refreshTokenKey = this.config.refreshTokenKey || 'refresh_token';
-      this.jwtHelperService.tokenSetter(payload[tokenKey]);
-      this.jwtHelperService.refreshTokenSetter(payload[refreshTokenKey]);
-      if (this.config.loggedInUserSetter) {
-        this.config.loggedInUserSetter(payload.user_id);
+      const tokenKey = this._config.tokenKey || 'access_token';
+      const refreshTokenKey = this._config.refreshTokenKey || 'refresh_token';
+      this._jwtHelperService.tokenSetter(payload[tokenKey]);
+      this._jwtHelperService.refreshTokenSetter(payload[refreshTokenKey]);
+      if (this._config.loggedInUserSetter) {
+        this._config.loggedInUserSetter(payload.user_id);
       }
-      this.router.navigate(['/']);
+      this._router.navigate(['/']);
     }),
     mergeMap((action) => [
       this._getRefreshTokenAction(),
@@ -109,23 +109,23 @@ export class AuthEffects {
   );
 
   @Effect({dispatch: false})
-  loginFailure$ = this.actions$.pipe(
+  loginFailure$ = this._actions$.pipe(
     ofType<AuthApiActions.LoginFailure>(AuthApiActions.AuthApiActionTypes.LoginFailure),
     tap((action) => {
-      this.userInteractionsService.showLoginError(action.payload.error.join('\n'));
+      this._userInteractionsService.showLoginError(action.payload.error.join('\n'));
     }),
   );
 
   @Effect()
-  refreshToken$ = this.actions$.pipe(
+  refreshToken$ = this._actions$.pipe(
     ofType<AuthApiActions.RefreshToken>(AuthApiActions.AuthApiActionTypes.RefreshToken),
     delayWhen((action: AuthApiActions.RefreshToken) => timer(action.payload.refreshDelay)),
     exhaustMap((action: AuthApiActions.RefreshToken) =>
-      this.authService.refreshToken(this.jwtHelperService.refreshTokenGetter() || '').pipe(
+      this._authService.refreshToken(this._jwtHelperService.refreshTokenGetter() || '').pipe(
         switchMap((payload: any) => {
           const res: (AuthApiActions.AuthApiActionsUnion | AuthActions.AuthActionsUnion)[] = [];
-          const tokenKey = this.config.tokenKey || 'access_token';
-          this.jwtHelperService.tokenSetter(payload[tokenKey]);
+          const tokenKey = this._config.tokenKey || 'access_token';
+          this._jwtHelperService.tokenSetter(payload[tokenKey]);
           if (action.payload.fromInit) {
             res.push(new AuthActions.InitUser());
           }
@@ -138,20 +138,20 @@ export class AuthEffects {
   );
 
   @Effect({ dispatch: false })
-  loginRedirect$ = this.actions$.pipe(
+  loginRedirect$ = this._actions$.pipe(
     ofType(
       AuthApiActions.AuthApiActionTypes.LoginRedirect,
       AuthActions.AuthActionTypes.Logout
     ),
     tap(_authed => {
-      this.router.navigate(['/login']);
+      this._router.navigate(['/login']);
     })
   );
 
   @Effect()
-  logoutConfirmation$ = this.actions$.pipe(
+  logoutConfirmation$ = this._actions$.pipe(
     ofType(AuthActions.AuthActionTypes.LogoutConfirmation),
-    exhaustMap(() => this.userInteractionsService.askLogoutConfirm()),
+    exhaustMap(() => this._userInteractionsService.askLogoutConfirm()),
     map(
       result =>
         result
@@ -164,13 +164,13 @@ export class AuthEffects {
   init$ = defer(() => obsOf(null)).pipe(
     switchMap(() => {
       const res: (AuthApiActions.AuthApiActionsUnion | AuthActions.AuthActionsUnion)[] = [];
-      const token = this.jwtHelperService.tokenGetter();
+      const token = this._jwtHelperService.tokenGetter();
       if (token) {
         try {
-          if (!this.jwtHelperService.isTokenExpired(token)) {
-            const decoded = this.jwtHelperService.decodeToken(token);
-            const scopes = this.config.disableScopes ? [] : this._getScopesFromToken(decoded);
-            if (this.config.disableScopes || scopes.indexOf('admin') > -1) {
+          if (!this._jwtHelperService.isTokenExpired(token)) {
+            const decoded = this._jwtHelperService.decodeToken(token);
+            const scopes = this._config.disableScopes ? [] : this._getScopesFromToken(decoded);
+            if (this._config.disableScopes || scopes.indexOf('admin') > -1) {
               res.push(new AuthActions.InitUser());
               res.push(this._getRefreshTokenAction());
             }
@@ -188,24 +188,24 @@ export class AuthEffects {
   );
 
   constructor(
-    private actions$: Actions,
-    private authService: AuthService,
-    private jwtHelperService: JwtHelperService,
-    private userInteractionsService: AuthUserInteractionsService,
-    private router: Router,
-    private ts: TranslateService,
-    @Inject(AUTH_OPTIONS) private config: AuthOptions
+    private _actions$: Actions,
+    private _authService: AuthService,
+    private _jwtHelperService: JwtHelperService,
+    private _userInteractionsService: AuthUserInteractionsService,
+    private _router: Router,
+    private _ts: TranslateService,
+    @Inject(AUTH_OPTIONS) private _config: AuthOptions
   ) {}
 
   private _getRefreshTokenAction(fromInit?: boolean): AuthApiActions.RefreshToken {
-    const accessToken = this.jwtHelperService.tokenGetter();
-    const exp = this.jwtHelperService.getTokenExpirationDate(accessToken) || new Date();
+    const accessToken = this._jwtHelperService.tokenGetter();
+    const exp = this._jwtHelperService.getTokenExpirationDate(accessToken) || new Date();
     const refreshDelay = Math.max(0, Math.round((exp.getTime() - new Date().getTime()) * 0.8));
     return new AuthApiActions.RefreshToken({refreshDelay, fromInit});
   }
 
   private _getScopesFromToken(token: any): string[] {
-    const scopesPath = this.config.scopesPath || ['scopes'];
+    const scopesPath = this._config.scopesPath || ['scopes'];
     scopesPath.forEach(p => token = token[p]);
     return token;
   }

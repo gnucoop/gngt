@@ -30,7 +30,7 @@ import {AuthUserInteractionsService as CoreAuthUserInteractionsService} from '@g
 
 export class AuthUserInteractionsService extends CoreAuthUserInteractionsService {
   constructor(
-    private ts: TranslateService, private alert: AlertController, private toast: ToastController
+    private _ts: TranslateService, private _alert: AlertController, private _toast: ToastController
   ) {
     super();
   }
@@ -41,8 +41,8 @@ export class AuthUserInteractionsService extends CoreAuthUserInteractionsService
       'Cancel',
       'Ok'
     ];
-    return this.ts.get(strings).pipe(
-      switchMap(ts => from(this.alert.create({
+    return this._ts.get(strings).pipe(
+      switchMap(ts => from(this._alert.create({
         message: ts[0],
         buttons: [{text: ts[1], role: 'cancel'}, {text: ts[2], role: 'confirm'}]
       }))),
@@ -53,7 +53,7 @@ export class AuthUserInteractionsService extends CoreAuthUserInteractionsService
   }
 
   showLoginError(error: string): void {
-    this.toast.create({
+    this._toast.create({
       message: error,
       showCloseButton: false,
       duration: 3000

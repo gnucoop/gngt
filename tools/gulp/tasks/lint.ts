@@ -3,15 +3,12 @@ import {readdirSync, readFileSync, statSync} from 'fs';
 import {task} from 'gulp';
 import {IMinimatch, Minimatch} from 'minimatch';
 import {join} from 'path';
-import {execNodeTask} from '../util/task_helpers';
+import {execNodeTask} from '../util/task-helpers';
 
 const {red} = chalk;
 
-/** Globs that matchall SCSS or CSS files that should be linted. */
-const styleGlobs = [
-  'src/**/*.+(css|scss)',
-  'tools/dashboard/src/*.+(css|scss)',
-];
+/** Glob that matches all SCSS or CSS files that should be linted. */
+const styleGlob = 'src/**/*.+(css|scss)';
 
 /** List of flags that will passed to the different TSLint tasks. */
 const tsLintBaseFlags = ['-c', 'tslint.json', '--project', './tsconfig.json'];
@@ -24,9 +21,9 @@ const gitIgnorePath = '.gitignore';
 
 task('lint', ['tslint', 'stylelint', 'ownerslint']);
 
-/** Task to lint Angular Material's scss stylesheets. */
+/** Task to lint Gnucoop Angular Toolkit's scss stylesheets. */
 task('stylelint', execNodeTask(
-  'stylelint', [...styleGlobs, '--config', 'stylelint-config.json', '--syntax', 'scss']
+  'stylelint', [styleGlob, '--config', 'stylelint-config.json', '--syntax', 'scss']
 ));
 
 /** Task to run TSLint against the e2e/ and src/ directories. */

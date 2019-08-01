@@ -1,0 +1,34 @@
+<ion-app>
+  <ion-header>
+    <ion-toolbar color="primary">
+      <ion-menu-toggle slot="start">
+        <ion-icon size="large" name="menu"></ion-icon>
+      </ion-menu-toggle>
+      <ion-title>Gngt Demos</ion-title>
+      <ion-buttons slot="end">
+        <ion-button (click)="toggleFullscreen()" title="Toggle fullscreen">
+          <ion-icon>fullscreen</ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+  <ion-menu #start>
+    <ion-content>
+      <div class="demo-main-cont">
+        <ion-list>
+          <ion-item *ngFor="let navItem of navItems"
+              routerLinkActive
+              #routerLinkActiveInstance="routerLinkActive"
+              (click)="start.close()"
+              [attr.tabindex]="routerLinkActiveInstance.isActive ? 0 : -1"
+              [routerLink]="[navItem.route]">
+            <ion-label>{{navItem.name}}</ion-label>
+          </ion-item>
+        </ion-list>
+      </div>
+    </ion-content>
+  </ion-menu>
+  <ion-content padding>
+    <div class="demo-cont-wrapper"><ion-router-outlet main></ion-router-outlet></div>
+  </ion-content>
+</ion-app>

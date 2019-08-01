@@ -30,11 +30,11 @@ import {AdminDeleteConfirmDialogComponent} from './delete-confirm';
 
 @Injectable()
 export class AdminUserInteractionsService extends CoreAdminUserInteractionsService {
-  constructor(private dialog: MatDialog) {
+  constructor(private _dialog: MatDialog) {
     super();
   }
 
   askDeleteConfirm(): Observable<boolean> {
-    return this.dialog.open(AdminDeleteConfirmDialogComponent).afterClosed();
+    return this._dialog.open(AdminDeleteConfirmDialogComponent).afterClosed();
   }
 }

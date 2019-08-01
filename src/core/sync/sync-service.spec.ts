@@ -13,6 +13,8 @@ import {SyncService} from './sync-service';
 import {SyncStatusError} from './sync-status';
 import {UpwardChangeResult} from './upward-change-result';
 
+const pouchDBStatic: PouchDB.Static = (<any>PouchDB).default || PouchDB;
+
 const dbName = 'testdb';
 
 const changes: SyncEntry[] = [
@@ -130,7 +132,7 @@ describe('SyncService', () => {
     });
 
     afterEach(() => {
-      return new PouchDB(dbName).destroy();
+      return new pouchDBStatic(dbName).destroy();
     });
 
     it('should sync data from remote server', done => {
@@ -143,7 +145,7 @@ describe('SyncService', () => {
       ).subscribe(_ => {
         syncService.stop();
 
-        const db = new PouchDB<LocalDoc<any>>(dbName);
+        const db = new pouchDBStatic<LocalDoc<any>>(dbName);
 
         db.allDocs({include_docs: true}).then(docs => {
           const localDocs = docs.rows.filter(r => r.doc != null && r.doc!.object_id != null)
@@ -247,7 +249,7 @@ describe('SyncService', () => {
     });
 
     afterEach(() => {
-      return new PouchDB(dbName).destroy();
+      return new pouchDBStatic(dbName).destroy();
     });
 
     it('should sync data from local database', done => {
@@ -290,14 +292,14 @@ describe('SyncService', () => {
 
       syncService = TestBed.get(SyncService);
 
-      const db = new PouchDB<LocalDoc<DbEntry | DbRelatedEntry>>(dbName);
+      const db = new pouchDBStatic<LocalDoc<DbEntry | DbRelatedEntry>>(dbName);
       dbEntries.forEach(dbe => {
         db.post(dbe).then(() => {});
       });
     });
 
     afterEach(() => {
-      return new PouchDB(dbName).destroy();
+      return new pouchDBStatic(dbName).destroy();
     });
 
     it('should get an object from local database', done => {

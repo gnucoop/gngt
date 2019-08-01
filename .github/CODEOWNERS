@@ -55,20 +55,18 @@
 /src/dev-app-ion/login/*                          @trik
 
 # E2E app material
-/e2e-mat/*                                         @trik
-/e2e-mat/components/login-e2e.spec.ts              @trik
-/e2e-mat/util/**                                   @trik
 /src/e2e-app-mat/*                                 @trik
+/src/e2e-app-mat/calendar/**                       @trik
 /src/e2e-app-mat/e2e-app/**                        @trik
 /src/e2e-app-mat/login/**                          @trik
+/src/e2e-app-mat/example-viewer/**                 @trik
 
 # E2E app ionic
-/e2e-ion/*                                         @trik
-/e2e-ion/components/login-e2e.spec.ts              @trik
-/e2e-ion/util/**                                   @trik
 /src/e2e-app-ion/*                                 @trik
+/src/e2e-app-ion/calendar/**                       @trik
 /src/e2e-app-ion/e2e-app/**                        @trik
 /src/e2e-app-ion/login/**                          @trik
+/src/e2e-app-ion/example-viewer/**                 @trik
 
 # Universal app material
 /src/universal-app-mat/**                          @trik

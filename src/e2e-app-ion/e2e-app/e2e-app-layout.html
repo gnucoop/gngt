@@ -1,0 +1,9 @@
+<button (click)="showLinks = !showLinks">Toggle Navigation Links</button>
+
+<ion-list *ngIf="showLinks">
+  <ion-item [routerLink]="['calendar']">Calendar</ion-item>
+</ion-list>
+
+<main>
+  <ng-content></ng-content>
+</main>
