@@ -113,6 +113,7 @@ describe('SyncService', () => {
   describe('Downward sync', () => {
     let syncService: SyncService;
     let httpClient: MockDownwardHttpClient;
+    let originalTimeout: number;
 
     beforeEach(() => {
       TestBed.configureTestingModule({
@@ -129,9 +130,12 @@ describe('SyncService', () => {
 
       syncService = TestBed.get(SyncService);
       httpClient = TestBed.get(HttpClient);
+      originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
+      jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
     });
 
     afterEach(() => {
+      jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
       return new pouchDBStatic(dbName).destroy();
     });
 
