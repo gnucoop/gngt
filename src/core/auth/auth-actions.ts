@@ -25,12 +25,17 @@ import {User} from './user';
 
 
 export enum AuthActionTypes {
+  Init = '[Auth] Init',
   InitUser = '[Auth] Init user',
   InitUserComplete = '[Auth] Init user complete',
   InitComplete = '[Auth] Init complete',
   Logout = '[Auth] Logout',
   LogoutConfirmation = '[Auth] Logout Confirmation',
   LogoutConfirmationDismiss = '[Auth] Logout Confirmation Dismiss',
+}
+
+export class Init implements Action {
+  readonly type = AuthActionTypes.Init;
 }
 
 export class InitUser implements Action {
@@ -60,6 +65,7 @@ export class LogoutConfirmationDismiss implements Action {
 }
 
 export type AuthActionsUnion =
+  | Init
   | InitUser
   | InitUserComplete
   | InitComplete

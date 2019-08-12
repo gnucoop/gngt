@@ -1,9 +1,6 @@
 import {Injectable} from '@angular/core';
 
-import {Observable} from 'rxjs';
-
-import {Actions, Effect} from '@ngrx/effects';
-import {Action} from '@ngrx/store';
+import {Actions} from '@ngrx/effects';
 
 import {ModelEffects} from '@gngt/core/model';
 
@@ -19,14 +16,6 @@ export class <%= classify(model) %>Effects extends ModelEffects<
     State,
     actions.<%= classify(model) %>Actions,
     actions.<%= classify(model) %>ActionTypes> {
-  @Effect() get$: Observable<Action>;
-  @Effect() list$: Observable<Action>;
-  @Effect() create$: Observable<Action>;
-  @Effect() update$: Observable<Action>;
-  @Effect() patch$: Observable<Action>;
-  @Effect() delete$: Observable<Action>;
-  @Effect() deleteAll$: Observable<Action>;
-  @Effect() query$: Observable<Action>;
 
   constructor(
     _actions: Actions,
@@ -34,13 +23,5 @@ export class <%= classify(model) %>Effects extends ModelEffects<
     _manager: <%= classify(model) %>Manager
   ) {
     super(_actions, _service, _manager, actions.<%= camelize(model) %>ActionTypes);
-    this.get$ = this.modelGet$;
-    this.list$ = this.modelList$;
-    this.create$ = this.modelCreate$;
-    this.update$ = this.modelUpdate$;
-    this.patch$ = this.modelPatch$;
-    this.delete$ = this.modelDelete$;
-    this.deleteAll$ = this.modelDeleteAll$;
-    this.query$ = this.modelQuery$;
   }
 }

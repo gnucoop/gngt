@@ -23,7 +23,7 @@ import {of as obsOf, Observable} from 'rxjs';
 import {catchError, map, mergeMap} from 'rxjs/operators';
 
 import {Action} from '@ngrx/store';
-import {Actions, ofType} from '@ngrx/effects';
+import {Actions, createEffect, ofType} from '@ngrx/effects';
 
 import {Model, ModelListResult} from '@gngt/core/common';
 import * as ModelActions from './model-actions';
@@ -38,7 +38,7 @@ export abstract class ModelEffects<
     A extends Action,
     AT extends ModelActions.ModelActionTypes> {
 
-  protected readonly modelGet$: Observable<A> = this._actions.pipe(
+  protected readonly modelGet$: Observable<A> = createEffect(() => this._actions.pipe(
     ofType<ModelActions.ModelGetAction>(this._actionTypes.GET),
     mergeMap(action => this._manager.get(action.payload.id).pipe(
       map((item: M) => createAction<A>({
@@ -52,9 +52,9 @@ export abstract class ModelEffects<
         uuid: action.uuid
       }))),
     ))
-  );
+  ));
 
-  protected readonly modelList$: Observable<A> = this._actions.pipe(
+  protected readonly modelList$: Observable<A> = createEffect(() => this._actions.pipe(
     ofType<ModelActions.ModelListAction>(this._actionTypes.LIST),
     mergeMap(action => this._manager.list(action.payload.params).pipe(
       map((result: ModelListResult<M>) => createAction<A>({
@@ -68,9 +68,9 @@ export abstract class ModelEffects<
         uuid: action.uuid
       }))),
     ))
-  );
+  ));
 
-  protected readonly modelCreate$: Observable<A> = this._actions.pipe(
+  protected readonly modelCreate$: Observable<A> = createEffect(() => this._actions.pipe(
     ofType<ModelActions.ModelCreateAction<M>>(this._actionTypes.CREATE),
     mergeMap(action => this._manager.create(action.payload.item).pipe(
       map((item: M) => createAction<A>({
@@ -84,26 +84,25 @@ export abstract class ModelEffects<
         uuid: action.uuid
       }))),
     ))
-  );
+  ));
 
-  protected readonly modelUpdate$: Observable<A> = this._actions
-    .pipe(
-      ofType<ModelActions.ModelUpdateAction<M>>(this._actionTypes.UPDATE),
-      mergeMap(action => this._manager.update(action.payload.item.id, action.payload.item).pipe(
-        map((item: M) => createAction<A>({
-          type: this._actionTypes.UPDATE_SUCCESS,
-          payload: {item},
-          uuid: action.uuid
-        })),
-        catchError(error => obsOf(createAction<A>({
-          type: this._actionTypes.CREATE_FAILURE,
-          payload: {error},
-          uuid: action.uuid
-        }))),
-      ))
-    );
+  protected readonly modelUpdate$: Observable<A> = createEffect(() => this._actions.pipe(
+    ofType<ModelActions.ModelUpdateAction<M>>(this._actionTypes.UPDATE),
+    mergeMap(action => this._manager.update(action.payload.item.id, action.payload.item).pipe(
+      map((item: M) => createAction<A>({
+        type: this._actionTypes.UPDATE_SUCCESS,
+        payload: {item},
+        uuid: action.uuid
+      })),
+      catchError(error => obsOf(createAction<A>({
+        type: this._actionTypes.CREATE_FAILURE,
+        payload: {error},
+        uuid: action.uuid
+      }))),
+    ))
+  ));
 
-  protected readonly modelPatch$: Observable<A> = this._actions.pipe(
+  protected readonly modelPatch$: Observable<A> = createEffect(() => this._actions.pipe(
     ofType<ModelActions.ModelPatchAction<M>>(this._actionTypes.PATCH),
     mergeMap(action => this._manager.patch(action.payload.item.id, action.payload.item).pipe(
       map((item: M) => createAction<A>({
@@ -117,9 +116,9 @@ export abstract class ModelEffects<
         uuid: action.uuid
       }))),
     ))
-  );
+  ));
 
-  protected readonly modelDelete$: Observable<A> = this._actions.pipe(
+  protected readonly modelDelete$: Observable<A> = createEffect(() => this._actions.pipe(
     ofType<ModelActions.ModelDeleteAction<M>>(this._actionTypes.DELETE),
     mergeMap(action => this._manager.delete(action.payload.item.id).pipe(
       map(() => createAction<A>({
@@ -133,9 +132,9 @@ export abstract class ModelEffects<
         uuid: action.uuid
       }))),
     ))
-  );
+  ));
 
-  protected readonly modelDeleteAll$: Observable<A> = this._actions.pipe(
+  protected readonly modelDeleteAll$: Observable<A> = createEffect(() => this._actions.pipe(
     ofType<ModelActions.ModelDeleteAllAction<M>>(this._actionTypes.DELETE_ALL),
     mergeMap(action => this._manager.deleteAll(action.payload.items.map(i => i.id)).pipe(
       map(() => createAction<A>({
@@ -149,9 +148,9 @@ export abstract class ModelEffects<
         uuid: action.uuid
       }))),
     ))
-  );
+  ));
 
-  protected readonly modelQuery$: Observable<A> = this._actions.pipe(
+  protected readonly modelQuery$: Observable<A> = createEffect(() => this._actions.pipe(
     ofType<ModelActions.ModelQueryAction>(this._actionTypes.QUERY),
     mergeMap(action => this._manager.query(action.payload.params).pipe(
       map((result: ModelListResult<M>) => createAction<A>({
@@ -165,7 +164,7 @@ export abstract class ModelEffects<
         uuid: action.uuid
       }))),
     ))
-  );
+  ));
 
   constructor(
     protected _actions: Actions,

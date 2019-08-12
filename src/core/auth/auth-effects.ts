@@ -23,10 +23,10 @@ import {HttpErrorResponse} from '@angular/common/http';
 import {Inject, Injectable} from '@angular/core';
 import {Router} from '@angular/router';
 
-import {defer, Observable, of as obsOf, timer, zip} from 'rxjs';
+import {Observable, of as obsOf, timer, zip} from 'rxjs';
 import {catchError, delayWhen, exhaustMap, map, mergeMap, switchMap, tap} from 'rxjs/operators';
 
-import {Actions, Effect, ofType} from '@ngrx/effects';
+import {Actions, createEffect, ofType, OnInitEffects} from '@ngrx/effects';
 
 import {TranslateService} from '@ngx-translate/core';
 
@@ -42,9 +42,8 @@ import {Credentials} from './credentials';
 
 
 @Injectable()
-export class AuthEffects {
-  @Effect()
-  initUser$ = this._actions$.pipe(
+export class AuthEffects implements OnInitEffects {
+  initUser$ = createEffect(() => this._actions$.pipe(
     ofType<AuthActions.InitUser>(AuthActions.AuthActionTypes.InitUser),
     exhaustMap(() =>
       this._authService.getCurrentUser().pipe(catchError(_ => {
@@ -57,16 +56,14 @@ export class AuthEffects {
       }
       return new AuthActions.InitUserComplete({user});
     })
-  );
+  ));
 
-  @Effect()
-  initUserComplete$ = this._actions$.pipe(
+  initUserComplete$ = createEffect(() => this._actions$.pipe(
     ofType<AuthActions.InitUserComplete>(AuthActions.AuthActionTypes.InitUserComplete),
     map(() => new AuthActions.InitComplete())
-  );
+  ));
 
-  @Effect()
-  login$ = this._actions$.pipe(
+  login$ = createEffect(() => this._actions$.pipe(
     ofType<LoginPageActions.Login>(LoginPageActions.LoginPageActionTypes.Login),
     map(action => action.payload.credentials),
     exhaustMap((auth: Credentials) =>
@@ -86,10 +83,9 @@ export class AuthEffects {
         })
       )
     )
-  );
+  ));
 
-  @Effect()
-  loginSuccess$ = this._actions$.pipe(
+  loginSuccess$ = createEffect(() => this._actions$.pipe(
     ofType<AuthApiActions.LoginSuccess>(AuthApiActions.AuthApiActionTypes.LoginSuccess),
     tap((action) => {
       const payload = <any>action.payload;
@@ -106,18 +102,16 @@ export class AuthEffects {
       this._getRefreshTokenAction(),
       new AuthActions.InitUserComplete({user: action.payload.user}),
     ]),
-  );
+  ));
 
-  @Effect({dispatch: false})
-  loginFailure$ = this._actions$.pipe(
+  loginFailure$ = createEffect(() => this._actions$.pipe(
     ofType<AuthApiActions.LoginFailure>(AuthApiActions.AuthApiActionTypes.LoginFailure),
     tap((action) => {
       this._userInteractionsService.showLoginError(action.payload.error.join('\n'));
     }),
-  );
+  ), {dispatch: false});
 
-  @Effect()
-  refreshToken$ = this._actions$.pipe(
+  refreshToken$ = createEffect(() => this._actions$.pipe(
     ofType<AuthApiActions.RefreshToken>(AuthApiActions.AuthApiActionTypes.RefreshToken),
     delayWhen((action: AuthApiActions.RefreshToken) => timer(action.payload.refreshDelay)),
     exhaustMap((action: AuthApiActions.RefreshToken) =>
@@ -135,10 +129,9 @@ export class AuthEffects {
         catchError(() => obsOf(new AuthActions.InitComplete()))
       )
     )
-  );
+  ));
 
-  @Effect({ dispatch: false })
-  loginRedirect$ = this._actions$.pipe(
+  loginRedirect$ = createEffect(() => this._actions$.pipe(
     ofType(
       AuthApiActions.AuthApiActionTypes.LoginRedirect,
       AuthActions.AuthActionTypes.Logout
@@ -146,10 +139,9 @@ export class AuthEffects {
     tap(_authed => {
       this._router.navigate(['/login']);
     })
-  );
+  ), {dispatch: false});
 
-  @Effect()
-  logoutConfirmation$ = this._actions$.pipe(
+  logoutConfirmation$ = createEffect(() => this._actions$.pipe(
     ofType(AuthActions.AuthActionTypes.LogoutConfirmation),
     exhaustMap(() => this._userInteractionsService.askLogoutConfirm()),
     map(
@@ -158,10 +150,10 @@ export class AuthEffects {
           ? new AuthActions.Logout()
           : new AuthActions.LogoutConfirmationDismiss()
     )
-  );
+  ));
 
-  @Effect()
-  init$ = defer(() => obsOf(null)).pipe(
+  init$ = createEffect(() => this._actions$.pipe(
+    ofType(AuthActions.AuthActionTypes.Init),
     switchMap(() => {
       const res: (AuthApiActions.AuthApiActionsUnion | AuthActions.AuthActionsUnion)[] = [];
       const token = this._jwtHelperService.tokenGetter();
@@ -185,7 +177,7 @@ export class AuthEffects {
       }
       return res;
     })
-  );
+  ));
 
   constructor(
     private _actions$: Actions,
@@ -196,6 +188,10 @@ export class AuthEffects {
     private _ts: TranslateService,
     @Inject(AUTH_OPTIONS) private _config: AuthOptions
   ) {}
+
+  ngrxOnInitEffects(): AuthActions.Init {
+    return new AuthActions.Init();
+  }
 
   private _getRefreshTokenAction(fromInit?: boolean): AuthApiActions.RefreshToken {
     const accessToken = this._jwtHelperService.tokenGetter();
