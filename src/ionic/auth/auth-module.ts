@@ -53,7 +53,8 @@ import {LoginComponent} from './login';
     LoginComponent,
   ],
   exports: [
-    LoginComponent
+    LoginComponent,
+    CoreAuthModule,
   ],
   providers: [
     {

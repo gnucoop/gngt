@@ -1,23 +1,39 @@
-<ion-card>
-  <ion-card-header>
-    <ion-card-title translate>Login</ion-card-title>
-  </ion-card-header>
-  <ion-card-content>
-    <ion-list [formGroup]="loginForm" [gngtFormDisabled]="disabled" class="login-form" (keyup.enter)="login()">
-      <ion-item>
-        <ion-label translate>Username</ion-label>
-        <ion-input [gngtInputAriaLabel]="'Username' | translate"
-            autocomplete="username" formControlName="username"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label translate>Password</ion-label>
-        <ion-input [gngtInputAriaLabel]="'Password' | translate"
-            type="password" autocomplete="current-password" formControlName="password"></ion-input>
-      </ion-item>
-    </ion-list>
-    <div class="ion-actions">
-      <ion-button translate [disabled]="(valid|async) === false"
-          (click)="login()">Login</ion-button>
-    </div>
-  </ion-card-content>
-</ion-card>
+<ion-list
+    [formGroup]="loginForm"
+    [gngtFormDisabled]="disabled"
+    class="login-form"
+    (keyup.enter)="login()"
+>
+  <ion-item>
+    <ion-label *ngIf="showLabels">
+      <ng-content select="[gngtLoginUsername]"></ng-content>
+    </ion-label>
+    <ion-input
+        [gngtInputAriaLabel]="usernamePlaceholder"
+        [placeholder]="usernamePlaceholder"
+        autocomplete="username"
+        formControlName="username"
+    ></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label *ngIf="showLabels">
+      <ng-content select="[gngtLoginPassword]"></ng-content>
+    </ion-label>
+    <ion-input
+        [gngtInputAriaLabel]="passwordPlaceholder"
+        [placeholder]="passwordPlaceholder"
+        type="password"
+        autocomplete="current-password"
+        formControlName="password"
+    ></ion-input>
+  </ion-item>
+  <ng-content></ng-content>
+</ion-list>
+<div class="ion-actions">
+  <ion-button
+      [disabled]="(valid|async) === false"
+      (click)="login()"
+  >
+    <ng-content select="[gngtLoginAction]"></ng-content>
+  </ion-button>
+</div>

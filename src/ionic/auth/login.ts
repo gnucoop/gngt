@@ -19,14 +19,12 @@
  *
  */
 
-import {
-  ChangeDetectorRef, ChangeDetectionStrategy, Component, ViewEncapsulation
-} from '@angular/core';
+import {coerceBooleanProperty} from '@angular/cdk/coercion';
+import {ChangeDetectorRef, ChangeDetectionStrategy, Component, Input,
+  ViewEncapsulation} from '@angular/core';
 import {FormBuilder} from '@angular/forms';
-
-import {Store} from '@ngrx/store';
-
 import {LoginComponent as CoreLoginComponent, reducers as fromAuth} from '@gngt/core/auth';
+import {Store} from '@ngrx/store';
 
 @Component({
   moduleId: module.id,
@@ -35,9 +33,16 @@ import {LoginComponent as CoreLoginComponent, reducers as fromAuth} from '@gngt/
   styleUrls: ['login.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  inputs: ['disabled']
+  inputs: ['disabled', 'usernamePlaceholder', 'passwordPlaceholder']
 })
 export class LoginComponent extends CoreLoginComponent {
+  private _showLabels = true;
+  get showLabels(): boolean { return this._showLabels; }
+  @Input() set showLabels(showLabels: boolean) {
+    this._showLabels = coerceBooleanProperty(showLabels);
+    this._cdr.markForCheck();
+  }
+
   constructor(fb: FormBuilder, store: Store<fromAuth.State>, cdr: ChangeDetectorRef) {
     super(fb, store, cdr);
   }

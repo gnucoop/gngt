@@ -69,7 +69,6 @@ System.config({
     '@ionic/core': 'node:@ionic/core/core.umd.js',
     '@ionic/core/loader': 'node:@ionic/core/core-loader.umd.js',
     '@ionic/angular': 'node:@ionic/angular/angular.umd.js',
-    'ionic-selectable': 'node:ionic-selectable/bundles/ionic-selectable.umd.min.js',
 
     '@ngx-translate/core': 'node:@ngx-translate/core/bundles/ngx-translate-core.umd.js',
     '@ngx-translate/http-loader':

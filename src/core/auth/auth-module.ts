@@ -29,12 +29,23 @@ import {AuthEffects} from './auth-effects';
 import {AuthGuard} from './auth-guard';
 import {JwtHelperService} from './jwt-helper';
 import {JwtInterceptor} from './jwt-interceptor';
+import {LoginActionDirective, LoginPasswordDirective, LoginUsernameDirective} from './login';
 import {reducers} from './reducers';
 
 @NgModule({
   imports: [
     StoreModule.forFeature('auth', reducers),
     EffectsModule.forFeature([AuthEffects]),
+  ],
+  declarations: [
+    LoginActionDirective,
+    LoginPasswordDirective,
+    LoginUsernameDirective,
+  ],
+  exports: [
+    LoginActionDirective,
+    LoginPasswordDirective,
+    LoginUsernameDirective,
   ],
   providers: [
     AuthEffects,

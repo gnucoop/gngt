@@ -19,18 +19,26 @@
  *
  */
 
-import {ChangeDetectorRef, EventEmitter, OnDestroy} from '@angular/core';
+import {ChangeDetectorRef, Directive, EventEmitter, OnDestroy} from '@angular/core';
+import {Store} from '@ngrx/store';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-
 import {Observable, Subscription} from 'rxjs';
 import {map} from 'rxjs/operators';
 
-import {Store} from '@ngrx/store';
 
 import {forceBooleanProp} from '@gngt/core/common';
 
 import * as LoginPageActions from './login-page-actions';
 import * as fromAuth from './reducers';
+
+@Directive({selector: '[gngtLoginUsername]'})
+export class LoginUsernameDirective { }
+
+@Directive({selector: '[gngtLoginPassword]'})
+export class LoginPasswordDirective { }
+
+@Directive({selector: '[gngtLoginAction]'})
+export class LoginActionDirective { }
 
 export abstract class LoginComponent implements OnDestroy {
   readonly loginForm: FormGroup;
@@ -43,10 +51,28 @@ export abstract class LoginComponent implements OnDestroy {
     this._cdr.markForCheck();
   }
 
+  private _usernamePlaceholder: string;
+  get usernamePlaceholder(): string {
+    return this._usernamePlaceholder;
+  }
+  set usernamePlaceholder(usernamePlaceholder: string) {
+    this._usernamePlaceholder = usernamePlaceholder;
+    this._cdr.markForCheck();
+  }
+
+  private _passwordPlaceholder: string;
+  get passwordPlaceholder(): string {
+    return this._passwordPlaceholder;
+  }
+  set passwordPlaceholder(passwordPlaceholder: string) {
+    this._passwordPlaceholder = passwordPlaceholder;
+    this._cdr.markForCheck();
+  }
+
   private _loginEvt: EventEmitter<void> = new EventEmitter<void>();
   private _loginSub: Subscription = Subscription.EMPTY;
 
-  constructor(fb: FormBuilder, store: Store<fromAuth.State>, private _cdr: ChangeDetectorRef) {
+  constructor(fb: FormBuilder, store: Store<fromAuth.State>, protected _cdr: ChangeDetectorRef) {
     this.loginForm = fb.group({
       username: [null, [Validators.required]],
       password: [null, [Validators.required]]
