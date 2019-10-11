@@ -225,8 +225,12 @@ describe('SyncService', () => {
 
   describe('Upward sync', () => {
     let syncService: SyncService;
+    let originalTimeout: number;
 
     beforeEach(done => {
+      originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
+      jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
+
       TestBed.configureTestingModule({
         imports: [
           SyncModule.forRoot({
@@ -253,6 +257,7 @@ describe('SyncService', () => {
     });
 
     afterEach(() => {
+      jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
       return new pouchDBStatic(dbName).destroy();
     });
 

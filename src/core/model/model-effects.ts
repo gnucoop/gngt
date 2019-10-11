@@ -48,7 +48,7 @@ export abstract class ModelEffects<
       })),
       catchError(error => obsOf(createAction<A>({
         type: this._actionTypes.GET_FAILURE,
-        payload: {error},
+        payload: {message: error.message, stack: error.stack},
         uuid: action.uuid
       }))),
     ))
@@ -64,7 +64,7 @@ export abstract class ModelEffects<
       })),
       catchError(error => obsOf(createAction<A>({
         type: this._actionTypes.LIST_FAILURE,
-        payload: {error},
+        payload: {message: error.message, stack: error.stack},
         uuid: action.uuid
       }))),
     ))
@@ -80,7 +80,7 @@ export abstract class ModelEffects<
       })),
       catchError(error => obsOf(createAction<A>({
         type: this._actionTypes.CREATE_FAILURE,
-        payload: {error},
+        payload: {message: error.message, stack: error.stack},
         uuid: action.uuid
       }))),
     ))
@@ -96,7 +96,7 @@ export abstract class ModelEffects<
       })),
       catchError(error => obsOf(createAction<A>({
         type: this._actionTypes.CREATE_FAILURE,
-        payload: {error},
+        payload: {message: error.message, stack: error.stack},
         uuid: action.uuid
       }))),
     ))
@@ -112,7 +112,7 @@ export abstract class ModelEffects<
       })),
       catchError(error => obsOf(createAction<A>({
         type: this._actionTypes.CREATE_FAILURE,
-        payload: {error},
+        payload: {message: error.message, stack: error.stack},
         uuid: action.uuid
       }))),
     ))
@@ -128,7 +128,7 @@ export abstract class ModelEffects<
       })),
       catchError(error => obsOf(createAction<A>({
         type: this._actionTypes.DELETE_FAILURE,
-        payload: {error},
+        payload: {message: error.message, stack: error.stack},
         uuid: action.uuid
       }))),
     ))
@@ -144,7 +144,7 @@ export abstract class ModelEffects<
       })),
       catchError(error => obsOf(createAction<A>({
         type: this._actionTypes.DELETE_ALL_FAILURE,
-        payload: {error},
+        payload: {message: error.message, stack: error.stack},
         uuid: action.uuid
       }))),
     ))
@@ -160,7 +160,7 @@ export abstract class ModelEffects<
       })),
       catchError(error => obsOf(createAction<A>({
         type: this._actionTypes.QUERY_FAILURE,
-        payload: {error},
+        payload: {message: error.message, stack: error.stack},
         uuid: action.uuid
       }))),
     ))

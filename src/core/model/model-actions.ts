@@ -22,6 +22,7 @@
 import {Model, ModelListParams, ModelListResult, ModelQueryParams} from '@gngt/core/common';
 import {type} from '@gngt/core/reducers';
 
+import {ModelError} from './model-error';
 import {ModelGenericAction} from './model-generic-action';
 
 export interface ModelActionTypes {
@@ -94,7 +95,7 @@ export abstract class ModelGetSuccessAction<T extends Model> extends ModelBaseAc
 }
 export abstract class ModelGetFailureAction extends ModelBaseAction {
   abstract type: string;
-  constructor(public payload: {error: any}) { super(payload); }
+  constructor(public payload: {error: ModelError}) { super(payload); }
 }
 
 export abstract class ModelListAction extends ModelBaseAction {
@@ -107,7 +108,7 @@ export abstract class ModelListSuccessAction<T extends Model> extends ModelBaseA
 }
 export abstract class ModelListFailureAction extends ModelBaseAction {
   abstract type: string;
-  constructor(public payload: {error: any}) { super(payload); }
+  constructor(public payload: {error: ModelError}) { super(payload); }
 }
 
 export abstract class ModelCreateAction<T extends Model> extends ModelBaseAction {
@@ -120,7 +121,7 @@ export abstract class ModelCreateSuccessAction<T extends Model> extends ModelBas
 }
 export abstract class ModelCreateFailureAction extends ModelBaseAction {
   abstract type: string;
-  constructor(public payload: {error: any}) { super(payload); }
+  constructor(public payload: {error: ModelError}) { super(payload); }
 }
 
 export abstract class ModelUpdateAction<T extends Model> extends ModelBaseAction {
@@ -133,7 +134,7 @@ export abstract class ModelUpdateSuccessAction<T extends Model> extends ModelBas
 }
 export abstract class ModelUpdateFailureAction extends ModelBaseAction {
   abstract type: string;
-  constructor(public payload: {error: any}) { super(payload); }
+  constructor(public payload: {error: ModelError}) { super(payload); }
 }
 
 export abstract class ModelPatchAction<T extends Model> extends ModelBaseAction {
@@ -146,7 +147,7 @@ export abstract class ModelPatchSuccessAction<T extends Model> extends ModelBase
 }
 export abstract class ModelPatchFailureAction extends ModelBaseAction {
   abstract type: string;
-  constructor(public payload: {error: any}) { super(payload); }
+  constructor(public payload: {error: ModelError}) { super(payload); }
 }
 
 export abstract class ModelDeleteAction<T extends Model> extends ModelBaseAction {
@@ -159,7 +160,7 @@ export abstract class ModelDeleteSuccessAction<T extends Model> extends ModelBas
 }
 export abstract class ModelDeleteFailureAction extends ModelBaseAction {
   abstract type: string;
-  constructor(public payload: {error: any}) { super(payload); }
+  constructor(public payload: {error: ModelError}) { super(payload); }
 }
 
 export abstract class ModelDeleteAllAction<T extends Model> extends ModelBaseAction {
@@ -172,7 +173,7 @@ export abstract class ModelDeleteAllSuccessAction<T extends Model> extends Model
 }
 export abstract class ModelDeleteAllFailureAction extends ModelBaseAction {
   abstract type: string;
-  constructor(public payload: {error: any}) { super(payload); }
+  constructor(public payload: {error: ModelError}) { super(payload); }
 }
 
 export abstract class ModelQueryAction extends ModelBaseAction {
@@ -185,5 +186,5 @@ export abstract class ModelQuerySuccessAction<T extends Model> extends ModelBase
 }
 export abstract class ModelQueryFailureAction extends ModelBaseAction {
   abstract type: string;
-  constructor(public payload: {error: any}) { super(payload); }
+  constructor(public payload: {error: ModelError}) { super(payload); }
 }

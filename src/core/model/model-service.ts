@@ -31,6 +31,7 @@ import {
   Model, ModelGetParams, ModelListParams, ModelListResult, ModelQueryParams
 } from '@gngt/core/common';
 import * as ModelActions from './model-actions';
+import {ModelError} from './model-error';
 import {ModelGenericAction} from './model-generic-action';
 import * as fromModel from './reducers';
 import {createAction} from './utils';
@@ -137,7 +138,7 @@ export abstract class ModelService<
     );
   }
 
-  getGetError(): Observable<any> {
+  getGetError(): Observable<ModelError | null> {
     return this._store.pipe(
       this._lastGetEntry,
       map(g => g.error),
@@ -165,22 +166,21 @@ export abstract class ModelService<
     );
   }
 
-  getListError(): Observable<any> {
+  getListError(): Observable<ModelError | null> {
     return this._store.pipe(
       this._lastListEntry,
       map(g => g.error),
     );
   }
 
-  getListHasNext(): Observable<any> {
+  getListHasNext(): Observable<boolean> {
     return this._store.pipe(
       this._lastListEntry,
-      filter(g => g.objects != null),
-      map(g => g.objects!.next),
+      map(g => g.objects != null && g.objects!.next != null),
     );
   }
 
-  getListCurrentStart(): Observable<any> {
+  getListCurrentStart(): Observable<number> {
     return this._store.pipe(
       this._lastListEntry,
       filter(g => g.options != null),
@@ -202,7 +202,7 @@ export abstract class ModelService<
     );
   }
 
-  getCreateError(): Observable<any> {
+  getCreateError(): Observable<ModelError | null> {
     return this._store.pipe(
       this._lastCreateEntry,
       map(g => g.error),
@@ -230,7 +230,7 @@ export abstract class ModelService<
     );
   }
 
-  getUpdateError(): Observable<any> {
+  getUpdateError(): Observable<ModelError | null> {
     return this._store.pipe(
       this._lastUpdateEntry,
       map(g => g.error),
@@ -258,7 +258,7 @@ export abstract class ModelService<
     );
   }
 
-  getPatchError(): Observable<any> {
+  getPatchError(): Observable<ModelError | null> {
     return this._store.pipe(
       this._lastPatchEntry,
       map(g => g.error),
@@ -286,7 +286,7 @@ export abstract class ModelService<
     );
   }
 
-  getDeleteError(): Observable<any> {
+  getDeleteError(): Observable<ModelError | null> {
     return this._store.pipe(
       this._lastDeleteEntry,
       map(g => g.error),
@@ -314,7 +314,7 @@ export abstract class ModelService<
     );
   }
 
-  getDeleteAllError(): Observable<any> {
+  getDeleteAllError(): Observable<ModelError | null> {
     return this._store.pipe(
       this._lastDeleteAllEntry,
       map(g => g.error),
@@ -342,22 +342,21 @@ export abstract class ModelService<
     );
   }
 
-  getQueryError(): Observable<any> {
+  getQueryError(): Observable<ModelError | null> {
     return this._store.pipe(
       this._lastQueryEntry,
       map(g => g.error),
     );
   }
 
-  getQueryHasNext(): Observable<any> {
+  getQueryHasNext(): Observable<boolean> {
     return this._store.pipe(
       this._lastQueryEntry,
-      filter(g => g.objects != null),
-      map(g => g.objects!.next),
+      map(g => g.objects != null && g.objects!.next != null),
     );
   }
 
-  getQueryCurrentStart(): Observable<any> {
+  getQueryCurrentStart(): Observable<number> {
     return this._store.pipe(
       this._lastQueryEntry,
       filter(g => g.options != null),

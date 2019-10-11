@@ -22,6 +22,8 @@
 import {
   Model, ModelGetParams, ModelListParams, ModelListResult, ModelQueryParams
 } from '@gngt/core/common';
+
+import {ModelError} from './model-error';
 import * as ModelActions from './model-actions';
 
 const stateQueueLimit = 20;
@@ -32,7 +34,7 @@ export interface ModelGetState<M extends Model> {
   options: ModelGetParams;
   id: number | null;
   object: M | null;
-  error: any;
+  error: ModelError | null;
 }
 
 export interface ModelListState<M extends Model> {
@@ -40,14 +42,14 @@ export interface ModelListState<M extends Model> {
   loading: boolean;
   options: ModelListParams;
   objects: ModelListResult<M> | null;
-  error: any;
+  error: ModelError | null;
 }
 
 export interface ModelCreateState<M extends Model> {
   uuid: string;
   loading: boolean;
   object: M | null;
-  error: any;
+  error: ModelError | null;
 }
 
 export interface ModelUpdateState<M extends Model> {
@@ -55,7 +57,7 @@ export interface ModelUpdateState<M extends Model> {
   loading: boolean;
   id: number | null;
   object: M | null;
-  error: any;
+  error: ModelError | null;
 }
 
 export interface ModelPatchState<M extends Model> {
@@ -63,7 +65,7 @@ export interface ModelPatchState<M extends Model> {
   loading: boolean;
   id: number | null;
   object: M | null;
-  error: any;
+  error: ModelError | null;
 }
 
 export interface ModelDeleteState<M extends Model> {
@@ -71,7 +73,7 @@ export interface ModelDeleteState<M extends Model> {
   loading: boolean;
   id: number | null;
   object: M | null;
-  error: any;
+  error: ModelError | null;
 }
 
 export interface ModelDeleteAllState<M extends Model> {
@@ -79,7 +81,7 @@ export interface ModelDeleteAllState<M extends Model> {
   loading: boolean;
   ids: number[] | null;
   objects: M[] | null;
-  error: any;
+  error: ModelError | null;
 }
 
 export interface ModelQueryState<M extends Model> {
@@ -87,7 +89,7 @@ export interface ModelQueryState<M extends Model> {
   loading: boolean;
   options: ModelQueryParams | null;
   objects: ModelListResult<M> | null;
-  error: any;
+  error: ModelError | null;
 }
 
 export interface State<M extends Model> {
