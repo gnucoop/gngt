@@ -170,7 +170,7 @@
 
 "@angular/upgrade@^8.1.0":
   version "8.1.0"
-  resolved "https://registry.yarnpkg.com/@angular/upgrade/-/upgrade-8.1.0.tgz#10af15b6b988042a66f2e88cd7e8e52dc0bf4a7d"
+  resolved "https://registry.yarnpkg.com/@angular/upgrade/-/upgrade-8.1.0.tgz#c27fd7feabc4ec2212927a685251dd1066bf1ab4"
   integrity sha512-JEdJQDq0kw/5cfewxywW3Yj4P9bkxrjNmKh1uLDtZzrlIjW+r6LRNitdxFJENJN27R35Po2BAVoRlUntNHuQ+Q==
   dependencies:
     tslib "^1.9.0"
