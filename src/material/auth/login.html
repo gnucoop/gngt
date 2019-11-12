@@ -4,7 +4,7 @@
     class="login-form"
     (keyup.enter)="login()"
 >
-  <mat-form-field>
+  <mat-form-field [appearance]="fieldsAppearance">
     <mat-label *ngIf="showLabels">
       <ng-content select="[gngtLoginUsername]"></ng-content>
     </mat-label>
@@ -15,7 +15,7 @@
         formControlName="username"
     >
   </mat-form-field>
-  <mat-form-field>
+  <mat-form-field [appearance]="fieldsAppearance">
     <mat-label *ngIf="showLabels">
       <ng-content select="[gngtLoginPassword]"></ng-content>
     </mat-label>

@@ -19,9 +19,9 @@
  *
  */
 
-import {
-  ChangeDetectionStrategy, ChangeDetectorRef, Component, ViewEncapsulation
-} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input,
+  ViewEncapsulation} from '@angular/core';
+import {MatFormFieldAppearance} from '@angular/material/form-field';
 import {FormBuilder} from '@angular/forms';
 
 import {Store} from '@ngrx/store';
@@ -38,6 +38,13 @@ import {LoginComponent as CoreLoginComponent, reducers as fromAuth} from '@gngt/
   inputs: ['disabled', 'usernamePlaceholder', 'passwordPlaceholder', 'showLabels'],
 })
 export class LoginComponent extends CoreLoginComponent {
+  private _fieldsAppearance: MatFormFieldAppearance = 'legacy';
+  get fieldsAppearance(): MatFormFieldAppearance { return this._fieldsAppearance; }
+  @Input() set fieldsAppearance(fieldsAppearance: MatFormFieldAppearance) {
+    this._fieldsAppearance = fieldsAppearance;
+    this._cdr.markForCheck();
+  }
+
   constructor(fb: FormBuilder, store: Store<fromAuth.State>, cdr: ChangeDetectorRef) {
     super(fb, store, cdr);
   }
