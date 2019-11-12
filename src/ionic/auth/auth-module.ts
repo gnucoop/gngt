@@ -26,7 +26,7 @@ import {ReactiveFormsModule} from '@angular/forms';
 
 import {AlertController, IonicModule, ToastController} from '@ionic/angular';
 
-import {TranslateModule, TranslateService} from '@ngx-translate/core';
+import {TranslateService} from '@ngx-translate/core';
 
 import {CommonModule as CoreCommonModule} from '@gngt/core/common';
 import {
@@ -44,7 +44,6 @@ import {LoginComponent} from './login';
     CommonModule,
     ReactiveFormsModule,
     IonicModule,
-    TranslateModule,
     CoreCommonModule,
     IonicCommonModule,
     CoreAuthModule
