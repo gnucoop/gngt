@@ -21,7 +21,6 @@ ng_module(
         "//src/core/auth",
         "//src/core/common",
         "//src/ionic/common",
-        "@npm//@angular/cdk",
         "@npm//@angular/common",
         "@npm//@angular/core",
         "@npm//@angular/platform-browser",

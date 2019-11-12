@@ -19,6 +19,7 @@
  *
  */
 
+import {coerceBooleanProperty} from '@angular/cdk/coercion';
 import {ChangeDetectorRef, Directive, EventEmitter, OnDestroy} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
@@ -66,6 +67,13 @@ export abstract class LoginComponent implements OnDestroy {
   }
   set passwordPlaceholder(passwordPlaceholder: string) {
     this._passwordPlaceholder = passwordPlaceholder;
+    this._cdr.markForCheck();
+  }
+
+  private _showLabels = true;
+  get showLabels(): boolean { return this._showLabels; }
+  set showLabels(showLabels: boolean) {
+    this._showLabels = coerceBooleanProperty(showLabels);
     this._cdr.markForCheck();
   }
 

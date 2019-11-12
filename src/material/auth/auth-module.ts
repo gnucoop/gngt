@@ -24,13 +24,10 @@ import {HTTP_INTERCEPTORS} from '@angular/common/http';
 import {NgModule, ModuleWithProviders} from '@angular/core';
 import {ReactiveFormsModule} from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
-import {MatCardModule} from '@angular/material/card';
 import {MatDialog, MatDialogModule} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
-
-import {TranslateModule} from '@ngx-translate/core';
 
 import {
   AUTH_OPTIONS, AuthModule as CoreAuthModule, AuthModuleOptions,
@@ -48,12 +45,10 @@ import {LogoutConfirmDialogComponent} from './logout-confirm-dialog';
     CommonModule,
     ReactiveFormsModule,
     MatButtonModule,
-    MatCardModule,
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
     MatSnackBarModule,
-    TranslateModule,
     CoreAuthModule,
     GngtCommonModule
   ],

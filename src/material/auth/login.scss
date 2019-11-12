@@ -1,18 +1,11 @@
 gngt-login {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
 
-  .mat-form-field {
-    width: 100%;
-  }
-
-  .mat-card-actions {
+  .gngt-login-actions {
+    padding-top: 1em;
     text-align: right;
   }
 }

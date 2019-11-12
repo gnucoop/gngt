@@ -19,6 +19,7 @@ ng_module(
     deps = [
         "//src/core/common",
         "//src/core/reducers",
+        "@npm//@angular/cdk",
         "@npm//@angular/common",
         "@npm//@angular/core",
         "@npm//@angular/forms",

@@ -35,9 +35,7 @@ import {LoginComponent as CoreLoginComponent, reducers as fromAuth} from '@gngt/
   styleUrls: ['login.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  inputs: [
-    'disabled'
-  ]
+  inputs: ['disabled', 'usernamePlaceholder', 'passwordPlaceholder', 'showLabels'],
 })
 export class LoginComponent extends CoreLoginComponent {
   constructor(fb: FormBuilder, store: Store<fromAuth.State>, cdr: ChangeDetectorRef) {
