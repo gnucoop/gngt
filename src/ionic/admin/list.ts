@@ -23,16 +23,13 @@ import {
   ChangeDetectionStrategy, ChangeDetectorRef, Component,
   Input, OnDestroy, OnInit, ViewChild, ViewEncapsulation
 } from '@angular/core';
+import {AdminListComponent as BaseAdminListComponent, mergeQueryParams} from '@gngt/core/admin';
+import {Model, ModelActions, ModelQueryParams, ModelService,
+  reducers as fromModel} from '@gngt/core/model';
+import {IonInfiniteScroll} from '@ionic/angular';
 
 import {Subscription} from 'rxjs';
 import {filter} from 'rxjs/operators';
-
-import {IonInfiniteScroll} from '@ionic/angular';
-
-import {AdminListComponent as BaseAdminListComponent} from '@gngt/core/admin';
-import {
-  Model, ModelActions, ModelListParams, ModelService, reducers as fromModel
-} from '@gngt/core/model';
 
 import {AdminUserInteractionsService} from './admin-user-interactions';
 
@@ -44,12 +41,12 @@ import {AdminUserInteractionsService} from './admin-user-interactions';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   inputs: [
-    'title',
-    'headers',
-    'displayedColumns',
     'baseEditUrl',
+    'displayedColumns',
+    'headers',
     'newItemPath',
-    'service'
+    'service',
+    'title',
   ]
 })
 export class AdminListComponent<
@@ -59,7 +56,7 @@ export class AdminListComponent<
     MS extends ModelService<T, S, A>
   > extends BaseAdminListComponent<T, S, A, MS>
     implements OnDestroy, OnInit {
-  @Input() baseListParams: ModelListParams;
+  @Input() baseQueryParams: Partial<ModelQueryParams>;
   @ViewChild(IonInfiniteScroll, {static: true}) infiniteScroll: IonInfiniteScroll;
 
   private _items: T[] = [];
@@ -68,8 +65,8 @@ export class AdminListComponent<
   private _hasMore: boolean = true;
   get hasMore(): boolean { return this._hasMore; }
 
-  private _listSub: Subscription = Subscription.EMPTY;
-  private _listParams: ModelListParams = {start: 0, limit: 20, sort: {}};
+  private _querySub: Subscription = Subscription.EMPTY;
+  private _queryParams: Partial<ModelQueryParams> = {start: 0, limit: 20, sort: {}};
 
   constructor(cdr: ChangeDetectorRef, aui: AdminUserInteractionsService) {
     super(cdr, aui);
@@ -77,7 +74,7 @@ export class AdminListComponent<
 
   ngOnDestroy(): void {
     super.ngOnDestroy();
-    this._listSub.unsubscribe();
+    this._querySub.unsubscribe();
   }
 
   ngOnInit(): void {
@@ -85,16 +82,7 @@ export class AdminListComponent<
 
     if (service == null) { return; }
 
-    if (this.baseListParams) {
-      if (this.baseListParams.start != null) {
-        this._listParams.start = this.baseListParams.start;
-      }
-      if (this.baseListParams.limit != null) {
-        this._listParams.limit = this.baseListParams.limit;
-      }
-    }
-
-    this._listSub = service.getListObjects().pipe(
+    this._querySub = service.getListObjects().pipe(
       filter(r => r != null),
     ).subscribe(r => {
       if (this.infiniteScroll) { (this.infiniteScroll as any).complete(); }
@@ -121,19 +109,19 @@ export class AdminListComponent<
   }
 
   refreshList(): void {
-    this._listParams.start = 0;
+    this._queryParams.start = 0;
     this._loadList();
   }
 
   loadMore(): void {
-    this._listParams.start! += this._listParams.limit!;
+    this._queryParams.start! += this._queryParams.limit!;
     this._loadList();
   }
 
   private _loadList(): void {
     const service = this._getService();
     if (service == null || !this._hasMore) { return; }
-    const listParams = {...(this.baseListParams || {}), ...this._listParams};
-    service.list(listParams);
+    const queryParams = mergeQueryParams(this._queryParams, this.baseQueryParams);
+    service.query(queryParams);
   }
 }
