@@ -1,8 +1,8 @@
 <mat-card *ngIf="form|async as editForm">
-  <h2 *ngIf="title" mat-card-header>
-    {{ title }}
+  <div *ngIf="title" mat-card-title>
+    <h2>{{ title }}</h2>
     <span *ngIf="editForm.value['id']">#{{ editForm.value['id'] }}</span>
-  </h2>
+  </div>
   <mat-card-content>
     <form [formGroup]="editForm" [gngtFormDisabled]="loading|async">
       <ng-container *ngFor="let field of fields">

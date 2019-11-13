@@ -23,21 +23,24 @@ import {EventEmitter} from '@angular/core';
 import {CollectionViewer, DataSource} from '@angular/cdk/collections';
 import {MatPaginator, PageEvent} from '@angular/material/paginator';
 import {MatSort, Sort} from '@angular/material/sort';
-
+import {mergeQueryParams} from '@gngt/core/admin';
+import {Model, ModelActions, ModelListParams, ModelQueryParams, ModelService,
+  reducers as fromModel} from '@gngt/core/model';
 import {BehaviorSubject, combineLatest, Observable, of as obsOf, Subscription} from 'rxjs';
 import {debounceTime, map, startWith, switchMap, tap} from 'rxjs/operators';
 
-import {
-  Model, ModelActions, ModelListParams, ModelQueryParams, ModelService, reducers as fromModel
-} from '@gngt/core/model';
-
 import {ModelDataSourceFilters} from './model-data-source-filters';
+
+type DataStreamType = [
+  PageEvent|null, Sort|null, string, string[], ModelDataSourceFilters,
+  void, Partial<ModelQueryParams>|null
+];
 
 export class ModelDataSource<
       T extends Model,
-      S extends fromModel.State<T>,
-      A extends ModelActions.ModelActionTypes,
-      MS extends ModelService<T, S, A>
+      S extends fromModel.State<T> = fromModel.State<T>,
+      A extends ModelActions.ModelActionTypes = ModelActions.ModelActionTypes,
+      MS extends ModelService<T, S, A> = ModelService<T, S, A>
     > extends DataSource<T> {
   constructor(private _service: MS, private _baseParams: ModelListParams = {}) {
     super();
@@ -55,6 +58,12 @@ export class ModelDataSource<
     this._filter.next(filter);
   }
   private _filter: BehaviorSubject<string> = new BehaviorSubject<string>('');
+
+  get baseQueryParams(): Partial<ModelQueryParams> | null { return this._baseQueryParams.value; }
+  set baseQueryParams(params: Partial<ModelQueryParams | null>) {
+    this._baseQueryParams.next(params);
+  }
+  private _baseQueryParams = new BehaviorSubject<Partial<ModelQueryParams> | null>(null);
 
   private _freeTextSearchFields: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
   get freeTextSearchFields(): string[] { return this._freeTextSearchFields.value; }
@@ -112,11 +121,13 @@ export class ModelDataSource<
   }
 
   private _initData(): void {
-    this._dataSubscription = combineLatest(
+    const baseStream = combineLatest<DataStreamType>(
       this._paginatorParams, this._sortParams, this._filter, this._freeTextSearchFields,
-      this._filters, this._refreshEvent
-    ).pipe(
-      startWith([null, null, null, null, null]),
+      this._filters, this._refreshEvent, this._baseQueryParams
+    );
+    const startValue = [null, null, '', [], {}, undefined, null] as DataStreamType;
+    this._dataSubscription = baseStream.pipe(
+      startWith(startValue),
       debounceTime(10),
       switchMap(p => {
         const pagination = p[0];
@@ -126,6 +137,7 @@ export class ModelDataSource<
         const filters = p[4];
         const freeTextSel: {[key: string]: any} = {};
         const filterWord = (filter || '').trim();
+        const baseParams = p[6];
         if (
           filter != null && freeTextSearchFields != null
           && filterWord.length > 0 && freeTextSearchFields.length > 0
@@ -150,7 +162,7 @@ export class ModelDataSource<
           const direction: 'asc' | 'desc' = so.direction === '' ? 'asc' : so.direction;
           params.sort = {[so.active]: direction};
         }
-        return this._service.query(params);
+        return this._service.query(mergeQueryParams(params, baseParams || {}));
       }),
       tap(o => {
         const paginator = this.paginator;

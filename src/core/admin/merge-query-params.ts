@@ -19,14 +19,39 @@
  *
  */
 
-export * from './admin-user-interactions';
-export * from './edit';
-export * from './edit-field';
-export * from './edit-field-choice';
-export * from './edit-field-subtype';
-export * from './edit-field-type';
-export * from './edit-model';
-export * from './list';
-export * from './list-header';
-export * from './merge-query-params';
-export * from './process-data-fn';
+import {ModelQueryParams} from '@gngt/core/common';
+
+export function mergeQueryParams(
+  win: Partial<ModelQueryParams>,
+  loose: Partial<ModelQueryParams>,
+): ModelQueryParams {
+  const fields = loose.fields || win.fields
+    ? [
+      ...(loose.fields || []),
+      ...(win.fields || [])
+    ] : null;
+  const joins = loose.joins || win.joins
+    ? [
+      ...(loose.joins || []),
+      ...(win.joins || []),
+    ] : null;
+  const merged = {
+    ...loose,
+    ...win,
+    selector: {
+      ...loose.selector,
+      ...win.selector,
+    },
+    sort: {
+      ...loose.sort,
+      ...win.sort,
+    },
+  };
+  if (fields != null) {
+    merged.fields = fields;
+  }
+  if (joins != null) {
+    merged.joins = joins;
+  }
+  return merged;
+}

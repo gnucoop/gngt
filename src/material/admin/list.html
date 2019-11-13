@@ -1,8 +1,10 @@
 <mat-card>
-  <h2 mat-card-header>{{ title }}</h2>
-  <button [routerLink]="baseEditUrl + newItemPath" mat-mini-fab color="primary">
-    <mat-icon>add</mat-icon>
-  </button>
+  <div mat-card-title>
+    <h2>{{ title }}</h2>
+    <button [routerLink]="baseEditUrl + newItemPath" mat-mini-fab color="primary">
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
   <mat-card-content>
     <mat-toolbar>
       <div class="gngt-actions">

@@ -44,12 +44,12 @@ import {AdminListCellDirective} from './list-cell';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   inputs: [
-    'title',
-    'headers',
-    'displayedColumns',
     'baseEditUrl',
+    'displayedColumns',
+    'headers',
     'newItemPath',
-    'service'
+    'service',
+    'title',
   ]
 })
 export class AdminListComponent<
