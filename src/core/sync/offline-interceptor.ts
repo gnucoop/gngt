@@ -155,6 +155,8 @@ export class OfflineInterceptor implements HttpInterceptor {
   }
 
   private _checkOfflineRequest(req: HttpRequest<any>): RegisteredModel[] {
-    return SYNC_REGISTERED_MODELS.filter(m => new RegExp(`^${m.endpoint}`).test(req.url));
+    const urlParts = req.url.split('?');
+    const url = urlParts[0].replace('/query', '');
+    return SYNC_REGISTERED_MODELS.filter(m => m.endpoint === url);
   }
 }

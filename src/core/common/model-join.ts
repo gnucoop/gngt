@@ -21,6 +21,8 @@
 
 export interface ModelJoin {
   model: string;
+  offlineModel?: string;
   property: string;
+  foreignKey?: string;
   fields?: string[];
 }
