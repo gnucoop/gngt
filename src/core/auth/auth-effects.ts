@@ -55,7 +55,7 @@ export class AuthEffects implements OnInitEffects {
         this._config.meSetter(user);
       }
       return new AuthActions.InitUserComplete({user});
-    })
+    }),
   ));
 
   initUserComplete$ = createEffect(() => this._actions$.pipe(
@@ -126,7 +126,12 @@ export class AuthEffects implements OnInitEffects {
           res.push(this._getRefreshTokenAction());
           return res;
         }),
-        catchError(() => obsOf(new AuthActions.InitComplete()))
+        catchError(err => {
+          if (err.status === 0) {
+            return obsOf(new AuthActions.InitUser());
+          }
+          return obsOf(new AuthActions.InitComplete());
+        }),
       )
     )
   ));
