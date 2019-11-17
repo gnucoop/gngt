@@ -476,7 +476,7 @@ export class SyncService {
   private _generateIndexName(tableName: string, fields: ModelSort[]): string {
     return `idx___${tableName}___${fields.map(f => {
       const key = Object.keys(f)[0];
-      return `${key}__${f[key]}`;
+      return `${key.replace('.', '_')}__${f[key]}`;
     }).join('___')}`;
   }
 
