@@ -20,15 +20,12 @@
  */
 
 import {ChangeDetectorRef, EventEmitter, OnDestroy} from '@angular/core';
-
+import {Model, ModelActions, ModelService, reducers as fromModel} from '@gngt/core/model';
 import {Observable, of as obsOf, Subscription} from 'rxjs';
 import {filter, map, switchMap, take} from 'rxjs/operators';
 
-import {Model, ModelActions, ModelService, reducers as fromModel} from '@gngt/core/model';
-
 import {AdminUserInteractionsService} from './admin-user-interactions';
 import {AdminListHeader} from './list-header';
-
 
 export abstract class AdminListComponent<
   T extends Model,
