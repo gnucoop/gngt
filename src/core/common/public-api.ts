@@ -26,6 +26,7 @@ export * from './get-object-property';
 export * from './get-params';
 export * from './list-params';
 export * from './list-result';
+export * from './merge-query-params';
 export * from './model';
 export * from './model-join';
 export * from './model-manager';

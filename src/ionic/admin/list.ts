@@ -23,7 +23,8 @@ import {
   ChangeDetectionStrategy, ChangeDetectorRef, Component,
   Input, OnDestroy, OnInit, ViewChild, ViewEncapsulation
 } from '@angular/core';
-import {AdminListComponent as BaseAdminListComponent, mergeQueryParams} from '@gngt/core/admin';
+import {AdminListComponent as BaseAdminListComponent} from '@gngt/core/admin';
+import {mergeQueryParams} from '@gngt/core/common';
 import {Model, ModelActions, ModelQueryParams, ModelService,
   reducers as fromModel} from '@gngt/core/model';
 import {IonInfiniteScroll} from '@ionic/angular';

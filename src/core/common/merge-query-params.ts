@@ -19,7 +19,7 @@
  *
  */
 
-import {ModelQueryParams} from '@gngt/core/common';
+import {ModelQueryParams} from './query-params';
 
 export function mergeQueryParams(
   win: Partial<ModelQueryParams>,

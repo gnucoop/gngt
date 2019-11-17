@@ -23,7 +23,7 @@ import {EventEmitter} from '@angular/core';
 import {CollectionViewer, DataSource} from '@angular/cdk/collections';
 import {MatPaginator, PageEvent} from '@angular/material/paginator';
 import {MatSort, Sort} from '@angular/material/sort';
-import {mergeQueryParams} from '@gngt/core/admin';
+import {mergeQueryParams} from '@gngt/core/common';
 import {Model, ModelActions, ModelListParams, ModelQueryParams, ModelService,
   reducers as fromModel} from '@gngt/core/model';
 import {BehaviorSubject, combineLatest, Observable, of as obsOf, Subscription} from 'rxjs';

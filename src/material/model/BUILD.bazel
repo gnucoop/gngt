@@ -17,6 +17,7 @@ ng_module(
     assets = [],
     module_name = "@gngt/material/model",
     deps = [
+        "//src/core/common",
         "//src/core/model",
         "@npm//@angular/cdk",
         "@npm//@angular/core",
