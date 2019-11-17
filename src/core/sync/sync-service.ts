@@ -461,7 +461,7 @@ export class SyncService {
         });
       }
       if (sortFields.length > 0 || selectorFields.length > 0) {
-        const fields = [...selectorFields, {table_name: dir}, {object_id: dir}, ...sortFields];
+        const fields = [...selectorFields, {table_name: dir}, ...sortFields];
         return from(this._database.createIndex({
           index: {
             name: this._generateIndexName(idxDef.tableName, fields),
