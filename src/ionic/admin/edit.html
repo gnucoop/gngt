@@ -6,59 +6,63 @@
     </ion-card-title>
   </ion-card-header>
   <ion-card-content>
-    <ion-list [formGroup]="editForm" [gngtFormDisabled]="loading|async">
-      <ng-container *ngFor="let field of fields">
-        <ng-container *ngIf="!field.hidden">
-          <ng-container [ngSwitch]="field.type">
-            <ion-item *ngSwitchCase="'input'">
-              <ion-label>{{ field.label | translate }}</ion-label>
-              <ion-input [formControlName]="field.name" [type]="field.subtype || 'text'"
-                  [readonly]="field.readonly"></ion-input>
-            </ion-item>
-            <ion-item *ngSwitchCase="'textarea'">
-              <ion-label>{{ field.label | translate }}</ion-label>
-              <ion-textarea [formControlName]="field.name"></ion-textarea>
-            </ion-item>
-            <ion-item *ngSwitchCase="'checkbox'">
-              <ion-label>{{ field.label | translate }}</ion-label>
-              <ion-checkbox slot="start" [formControlName]="field.name"></ion-checkbox>
-            </ion-item>
-            <ion-item *ngSwitchCase="'radio'">
-              <ion-label class="gngt-radio-label">{{ field.label | translate }}</ion-label>
-              <div class="gngt-radio-container">
-                <ion-radio-group [formControlName]="field.name">
-                  <div *ngFor="let choice of field.choices|async">
-                    <ion-radio [value]="choice.value"></ion-radio>
-                    <ion-label>{{ choice.label }}</ion-label>
-                  </div>
-                </ion-radio-group>
-              </div>
-            </ion-item>
-            <ion-item *ngSwitchCase="'select'">
-              <ion-label>{{ field.label | translate }}</ion-label>
-              <ion-select [formControlName]="field.name">
-                <ion-select-option *ngFor="let choice of field.choices|async"
-                    [value]="choice.value">{{ choice.label }}</ion-select-option>
-              </ion-select>
-            </ion-item>
-            <ion-item *ngSwitchCase="'multipleselect'">
-              <ion-label>{{ field.label | translate }}</ion-label>
-              <ion-select [formControlName]="field.name" multiple>
-                <ion-select-option *ngFor="let choice of field.choices|async"
-                    [value]="choice.value">{{ choice.label }}</ion-select-option>
-              </ion-select>
-            </ion-item>
-            <ion-item *ngSwitchCase="'autocomplete'">
-              <ion-label>{{ field.label | translate }}</ion-label>
-              <gic-autocomplete [formControlName]="field.name">
-                <gic-autocomplete-option
-                    *ngFor="let choice of field.choices|async">{{ choice.label }}</gic-autocomplete-option>
-              </gic-autocomplete>
-            </ion-item>
+    <div [formGroup]="editForm" [gngtFormDisabled]="loading|async">
+      <ng-content select="[gngtAdminEditFormHeader]"></ng-content>
+      <ion-list>
+        <ng-container *ngFor="let field of fields">
+          <ng-container *ngIf="!field.hidden">
+            <ng-container [ngSwitch]="field.type">
+              <ion-item *ngSwitchCase="'input'">
+                <ion-label>{{ field.label | translate }}</ion-label>
+                <ion-input [formControlName]="field.name" [type]="field.subtype || 'text'"
+                    [readonly]="field.readonly"></ion-input>
+              </ion-item>
+              <ion-item *ngSwitchCase="'textarea'">
+                <ion-label>{{ field.label | translate }}</ion-label>
+                <ion-textarea [formControlName]="field.name"></ion-textarea>
+              </ion-item>
+              <ion-item *ngSwitchCase="'checkbox'">
+                <ion-label>{{ field.label | translate }}</ion-label>
+                <ion-checkbox slot="start" [formControlName]="field.name"></ion-checkbox>
+              </ion-item>
+              <ion-item *ngSwitchCase="'radio'">
+                <ion-label class="gngt-radio-label">{{ field.label | translate }}</ion-label>
+                <div class="gngt-radio-container">
+                  <ion-radio-group [formControlName]="field.name">
+                    <div *ngFor="let choice of field.choices|async">
+                      <ion-radio [value]="choice.value"></ion-radio>
+                      <ion-label>{{ choice.label }}</ion-label>
+                    </div>
+                  </ion-radio-group>
+                </div>
+              </ion-item>
+              <ion-item *ngSwitchCase="'select'">
+                <ion-label>{{ field.label | translate }}</ion-label>
+                <ion-select [formControlName]="field.name">
+                  <ion-select-option *ngFor="let choice of field.choices|async"
+                      [value]="choice.value">{{ choice.label }}</ion-select-option>
+                </ion-select>
+              </ion-item>
+              <ion-item *ngSwitchCase="'multipleselect'">
+                <ion-label>{{ field.label | translate }}</ion-label>
+                <ion-select [formControlName]="field.name" multiple>
+                  <ion-select-option *ngFor="let choice of field.choices|async"
+                      [value]="choice.value">{{ choice.label }}</ion-select-option>
+                </ion-select>
+              </ion-item>
+              <ion-item *ngSwitchCase="'autocomplete'">
+                <ion-label>{{ field.label | translate }}</ion-label>
+                <gic-autocomplete [formControlName]="field.name">
+                  <gic-autocomplete-option
+                      *ngFor="let choice of field.choices|async">{{ choice.label }}</gic-autocomplete-option>
+                </gic-autocomplete>
+              </ion-item>
+            </ng-container>
           </ng-container>
         </ng-container>
-      </ng-container>
-    </ion-list>
+      </ion-list>
+      <ng-content select="[gngtAdminEditFormFooter]"></ng-content>
+    </div>
     <div class="ion-actions">
       <ion-spinner *ngIf="loading|async"></ion-spinner>
       <ion-button (click)="save()" [disabled]="!editForm.valid || (canSave === false)">{{ saveLabel | translate }}</ion-button>
