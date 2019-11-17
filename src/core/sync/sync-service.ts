@@ -603,13 +603,33 @@ export class SyncService {
       };
     });
     return this._httpClient.post<UpwardChangeResult[]>(this._syncUrl, payload).pipe(
-      map(res => res[res.length - 1].sequence),
       catchError((err: HttpErrorResponse) => {
         if (err.status !== 409) {
           return throwError(err);
         }
         p.hasNext = true;
-        return this._resolveUpwardConflict(p.docs, err.error);
+        return this._resolveUpwardConflict(p.docs, err.error).pipe(
+          map(() => err.error as UpwardChangeResult[]),
+        );
+      }),
+      exhaustMap(res => {
+        const conflictError = res.findIndex(r => r.error === 'conflict');
+        const lastValidIdx = conflictError - 1;
+        const localDocsDb = this._getLocalDocsDb();
+        const docsToDel = p.docs
+          .filter((d, idx) => d.syncEntry.entry_type === 'insert' && idx <= lastValidIdx);
+        const sequence = res[res.length - 1].sequence;
+        if (docsToDel.length === 0) {
+          return obsOf(sequence);
+        }
+        return from(localDocsDb.allDocs({
+          keys: docsToDel.map(d => d.syncEntry.doc_id),
+          include_docs: true,
+        })).pipe(
+          exhaustMap(result => from(localDocsDb.bulkDocs(
+            result.rows.map(row => ({...row.doc, _deleted: true} as any))))),
+          map(_ => sequence),
+        );
       }),
       exhaustMap(sequence => sequence >= 0 ? this._setLastLocalCheckpoint(sequence) : obsOf(null)),
       map(_ => p.hasNext),
