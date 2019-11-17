@@ -31,6 +31,7 @@ ng_test_library(
     ),
     deps = [
         ":sync",
+        "//src/core/common",
         "@npm//@angular/common",
         "@npm//@angular/platform-browser",
         "@npm//@types/pouchdb",
