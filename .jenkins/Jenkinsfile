@@ -14,7 +14,7 @@ pipeline {
     }
     stage('Lint') {
       steps {
-        sh 'yarn gulp ci:lint'
+        sh 'yarn -s lint'
       }
     }
     stage('Bazel targets') {
