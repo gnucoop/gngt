@@ -22,6 +22,7 @@
 export * from './common-module';
 export * from './form-disabled';
 export * from './force-boolean';
+export * from './get-object-property';
 export * from './get-params';
 export * from './list-params';
 export * from './list-result';
