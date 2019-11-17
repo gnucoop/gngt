@@ -597,7 +597,7 @@ export class SyncService {
       return {
         sequence: doc.syncEntry.sequence,
         table_name: doc.syncEntry.table_name,
-        object_id: doc.syncEntry.object_id,
+        object_id: doc.localDoc.object.id,
         entry_type: doc.syncEntry.entry_type,
         object: doc.localDoc.object
       };
@@ -622,7 +622,7 @@ export class SyncService {
     const conflictIdx = result.findIndex(r => r.ok === false && r.error === 'conflict')!;
     const conflict = result[conflictIdx];
     const conflictDoc = docs.find(d => d.syncEntry.sequence === conflict.sequence)!;
-    const checkpoint = conflictIdx > 0 ? result[conflictIdx - 1].sequence : -1;
+    const checkpoint = conflictIdx >= 0 ? result[conflictIdx].sequence - 1 : -1;
     const localDocsDb = this._getLocalDocsDb();
     return this._databaseIsInit.pipe(
       switchMap(_ => this._relationalModelIdxObs()),
