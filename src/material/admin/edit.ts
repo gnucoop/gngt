@@ -48,6 +48,7 @@ import {Model, ModelActions, reducers as fromModel} from '@gngt/core/model';
     'readonly',
     'hideSaveButton',
     'canSave',
+    'postSaveHook',
   ],
   outputs: ['valueChanges$']
 })

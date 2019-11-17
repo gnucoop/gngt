@@ -126,6 +126,12 @@ export abstract class AdminEditComponent<
     }
   }
 
+  private _postSaveHook: (obj: T) => Observable<T>;
+  @Input()
+  set postSaveHook(postSaveHook: (obj: T) => Observable<T>) {
+    this._postSaveHook = postSaveHook;
+  }
+
   readonly form: Observable<FormGroup>;
 
   private _loading: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
@@ -202,16 +208,16 @@ export abstract class AdminEditComponent<
           if (this._processFormData instanceof Observable) {
             return this._processFormData.pipe(
               tap(pd => pd(formValue)),
-              mapTo([formValue, service, id]),
+              mapTo([formValue, service, id] as [any, ModelService<T, S, A>, number|'new']),
             );
           } else {
             this._processFormData(formValue);
           }
         }
-        return obsOf([formValue, service, id]);
+        return obsOf([formValue, service, id] as [any, ModelService<T, S, A>, number|'new']);
       }),
-      tap(() => this._loading.next(true)),
-      switchMap(([formValue, service, id]) => {
+      tap<[any, ModelService<T, S, A>, number|'new']>(() => this._loading.next(true)),
+      switchMap(([formValue, service, id]: [any, ModelService<T, S, A>, number|'new']) => {
         if (id === 'new') {
           delete formValue['id'];
           return service!.create(formValue);
@@ -219,6 +225,12 @@ export abstract class AdminEditComponent<
         return service!.patch(formValue);
       }),
       take(1),
+      switchMap((r: T) => {
+        if (this._postSaveHook == null) {
+          return obsOf(r);
+        }
+        return this._postSaveHook(r);
+      }),
     ).subscribe(
       () => {
         this._loading.next(false);
