@@ -131,7 +131,7 @@ describe('SyncService', () => {
       syncService = TestBed.get(SyncService);
       httpClient = TestBed.get(HttpClient);
       originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
-      jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
+      jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000;
     });
 
     afterEach(() => {
@@ -229,7 +229,7 @@ describe('SyncService', () => {
 
     beforeEach(async () => {
       originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
-      jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
+      jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000;
 
       TestBed.configureTestingModule({
         imports: [
