@@ -245,7 +245,9 @@ describe('SyncService', () => {
 
       syncService = TestBed.get(SyncService);
 
-      for (let i = 1 ; i <= 70 ; i++) {
+      // TODO(trik) only 20 docs because the other should need further
+      // response from mock service
+      for (let i = 1 ; i <= 20 ; i++) {
         await syncService.create('table1', {foo: `bar${i}`}).toPromise();
       }
     });
