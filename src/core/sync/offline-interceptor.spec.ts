@@ -1,7 +1,7 @@
 import {HttpClient, HttpClientModule} from '@angular/common/http';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 import {TestBed} from '@angular/core/testing';
-
+import {ModelListResult} from '@gngt/core/common';
 import * as PouchDB from 'pouchdb';
 
 import {LocalDoc} from './local-doc';
@@ -86,10 +86,10 @@ describe('OfflineInterceptor', () => {
 
   it('should return a list of objects from local db when trying to list objects offline', done => {
     const url = 'http://remote/table';
-    httpClient.get<DbEntry[]>(url).subscribe(entries => {
-      expect(entries.length).toEqual(dbEntries.length);
+    httpClient.get<ModelListResult<DbEntry>>(url).subscribe(entries => {
+      expect(entries.results.length).toEqual(dbEntries.length);
       dbEntries.forEach((dbe, i) => {
-        expect(dbe.object).toEqual(entries[i]);
+        expect(dbe.object).toEqual(entries.results[i]);
       });
       done();
     });
