@@ -103,14 +103,18 @@ export class SyncService {
     const db = this._getLocalDocsDb();
     return this._databaseIsInit.pipe(
       exhaustMap(_ => this._relationalModelIdxObs()),
-      exhaustMap(_ => from(db.find(this._modelGetFindRequest(tableName, params))).pipe(take(1))),
-      switchMap(res => {
+      exhaustMap(rmi => from(db.find(this._modelGetFindRequest(tableName, params, rmi))).pipe(
+        take(1),
+        map(res => ({res, rmi})),
+      )),
+      switchMap(({res, rmi}) => {
         if (res.docs.length === 1) {
           let obj = this._subObject(res.docs[0].object, params.fields);
           if (params.joins != null) {
             return zip(...params.joins.map(join =>
               from(db.find(
-                this._modelGetFindRequest(join.model, {id: obj[join.property], fields: join.fields})
+                this._modelGetFindRequest(
+                  join.model, {id: obj[join.property], fields: join.fields}, rmi)
               )).pipe(
                 take(1),
                 map(related => related.docs.length === 1 ? related.docs[0].object : null),
@@ -151,7 +155,10 @@ export class SyncService {
           }),
         );
       }),
-      switchMap(res => {
+      switchMap(res => this._relationalModelIdxObs().pipe(
+        map(idx => ({res, idx})),
+      )),
+      switchMap(({res, idx}) => {
         if (params.joins != null) {
           const joinTables: {[table: string]: number[]} = params.joins.reduce((prev, cur) => {
             const fk = cur.foreignKey || cur.property;
@@ -160,7 +167,7 @@ export class SyncService {
           }, {} as {[table: string]: number[]});
           return zip(...params.joins.map(join => {
             const joinModel = join.offlineModel || join.model;
-            const req = this._modelListFindRequest(joinModel, {fields: join.fields});
+            const req = this._modelListFindRequest(joinModel, {fields: join.fields}, idx);
             req.selector['object_id'] = {'$in': joinTables[join.model]};
             return from(db.find(req)).pipe(
               take(1),
@@ -215,7 +222,9 @@ export class SyncService {
   update(tableName: string, id: number, object: any): Observable<any> {
     const db = this._getLocalDocsDb();
     return this._databaseIsInit.pipe(
-      exhaustMap(_ => from(db.find(this._modelGetFindRequest(tableName, {id}))).pipe(take(1))),
+      switchMap(_ => this._relationalModelIdxObs()),
+      exhaustMap(idx =>
+        from(db.find(this._modelGetFindRequest(tableName, {id}, idx))).pipe(take(1))),
       exhaustMap(res => {
         if (res.docs.length !== 1) {
           return throwError('not_found');
@@ -238,13 +247,16 @@ export class SyncService {
           take(1),
         );
       }),
+      take(1),
     );
   }
 
   delete(tableName: string, id: number): Observable<any> {
     const db = this._getLocalDocsDb();
     return this._databaseIsInit.pipe(
-      exhaustMap(_ => from(db.find(this._modelGetFindRequest(tableName, {id}))).pipe(take(1))),
+      switchMap(_ => this._relationalModelIdxObs()),
+      exhaustMap(idx =>
+        from(db.find(this._modelGetFindRequest(tableName, {id}, idx))).pipe(take(1))),
       exhaustMap(res => {
         if (res.docs.length !== 1) {
           return throwError('not_found');
@@ -267,13 +279,16 @@ export class SyncService {
           take(1),
         );
       }),
+      take(1),
     );
   }
 
   deleteAll(tableName: string, ids: number[]): Observable<any[]> {
     const db = this._getLocalDocsDb();
     return this._databaseIsInit.pipe(
-      exhaustMap(_ => from(db.find(this._modelBulkIdsFindRequest(tableName, ids))).pipe(take(1))),
+      switchMap(_ => this._relationalModelIdxObs()),
+      exhaustMap(idx =>
+        from(db.find(this._modelBulkIdsFindRequest(tableName, ids, idx))).pipe(take(1))),
       concatMap(res => {
         if (res.docs.length !== 1) {
           return throwError('not_found');
@@ -320,7 +335,8 @@ export class SyncService {
           }),
         );
       }),
-      switchMap(res => {
+      switchMap(res => this._relationalModelIdxObs().pipe(map(idx => ({res, idx})))),
+      switchMap(({res, idx}) => {
         if (params.joins != null) {
           const joinTables: {[table: string]: number[]} = params.joins.reduce((prev, cur) => {
             const fk = cur.foreignKey || cur.property;
@@ -329,7 +345,7 @@ export class SyncService {
           }, {} as {[table: string]: number[]});
           return zip(...params.joins.map(join => {
             const joinModel = join.offlineModel || join.model;
-            const req = this._modelListFindRequest(joinModel, {fields: join.fields});
+            const req = this._modelListFindRequest(joinModel, {fields: join.fields}, idx);
             req.selector['object_id'] = {'$in': joinTables[join.model]};
             return from(db.find(req)).pipe(
               map(related => ({join, related: related.docs})),
@@ -608,10 +624,13 @@ export class SyncService {
     const conflictDoc = docs.find(d => d.syncEntry.sequence === conflict.sequence)!;
     const checkpoint = conflictIdx > 0 ? result[conflictIdx - 1].sequence : -1;
     const localDocsDb = this._getLocalDocsDb();
-    const findReq = this._modelListFindRequest(conflictDoc.syncEntry.table_name, {});
-    findReq.selector['object_id'] = {$gte: conflictDoc.syncEntry.object_id};
     return this._databaseIsInit.pipe(
-      exhaustMap(_ => from(localDocsDb.find(findReq)).pipe(take(1))),
+      switchMap(_ => this._relationalModelIdxObs()),
+      exhaustMap(idx => {
+        const findReq = this._modelListFindRequest(conflictDoc.syncEntry.table_name, {}, idx);
+        findReq.selector['object_id'] = {$gte: conflictDoc.syncEntry.object_id};
+        return from(localDocsDb.find(findReq)).pipe(take(1));
+      }),
       exhaustMap(res => {
         const updDocs = res.docs.map((doc, idx) => {
           doc.object_id = doc.object.id = conflict.extra.next_id + idx;
@@ -683,7 +702,8 @@ export class SyncService {
     }
 
     const baseReq = this._relationalModelIdxObs().pipe(
-      exhaustMap(_ => from(this._database.find(this._syncEntryFindRequest(change))).pipe(take(1))),
+      exhaustMap(idx =>
+        from(this._database.find(this._syncEntryFindRequest(change, idx))).pipe(take(1))),
     );
 
     if (change.entry_type === 'insert') {
@@ -717,22 +737,38 @@ export class SyncService {
   }
 
   private _modelGetFindRequest(
-    tableName: string, params: ModelGetParams
+    tableName: string, params: ModelGetParams,
+    index?: PouchDB.Find.CreateIndexResponse<LocalDoc<any>>
   ): PouchDB.Find.FindRequest<LocalDoc<any>> {
-    return {
+    const req: PouchDB.Find.FindRequest<LocalDoc<any>> = {
       selector: {table_name: tableName, object_id: params.id}
     };
+    if (index != null) {
+      const idxParts = ((index as any).id || '').split('/');
+      if (idxParts.length === 2) {
+        req.use_index = idxParts[1];
+      }
+    }
+    return req;
   }
 
   private _modelBulkIdsFindRequest(
     tableName: string, ids: number[],
+    index?: PouchDB.Find.CreateIndexResponse<LocalDoc<any>>,
   ): PouchDB.Find.FindRequest<LocalDoc<any>> {
-    return {
+    const req = {
       selector: {
         table_name: tableName,
         object_id: {$in: ids}
       }
-    };
+    } as PouchDB.Find.FindRequest<LocalDoc<any>>;
+    if (index != null) {
+      const idxParts = ((index as any).id || '').split('/');
+      if (idxParts.length === 2) {
+        req.use_index = idxParts[1];
+      }
+    }
+    return req;
   }
 
   private _modelQueryFindRequest(
@@ -740,8 +776,14 @@ export class SyncService {
     index?: PouchDB.Find.CreateIndexResponse<LocalDoc<any>>
   ): PouchDB.Find.FindRequest<LocalDoc<any>> {
     const req: PouchDB.Find.FindRequest<LocalDoc<any>> = this._modelListFindRequest(
-      tableName, params, index
+      tableName, params
     );
+    if (index != null) {
+      const idxParts = ((index as any).id || '').split('/');
+      if (idxParts.length === 2) {
+        req.use_index = idxParts[1];
+      }
+    }
     return {...req, selector: {...req.selector, ...this._normalizeSelector(params.selector)}};
   }
 
@@ -794,8 +836,20 @@ export class SyncService {
     return {dir, fields};
   }
 
-  private _syncEntryFindRequest(entry: SyncEntry): PouchDB.Find.FindRequest<LocalDoc<any>> {
-    return {selector : this._syncEntryFindSelector(entry)};
+  private _syncEntryFindRequest(
+    entry: SyncEntry,
+    index?: PouchDB.Find.CreateIndexResponse<LocalDoc<any>>
+  ): PouchDB.Find.FindRequest<LocalDoc<any>> {
+    const req = {
+      selector : this._syncEntryFindSelector(entry)
+    } as PouchDB.Find.FindRequest<LocalDoc<any>>;
+    if (index != null) {
+      const idxParts = ((index as any).id || '').split('/');
+      if (idxParts.length === 2) {
+        req.use_index = idxParts[1];
+      }
+    }
+    return req;
   }
 
   private _syncEntryFindSelector(entry: SyncEntry): PouchDB.Find.Selector {
