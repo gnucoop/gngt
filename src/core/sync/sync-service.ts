@@ -659,10 +659,18 @@ export class SyncService {
         changes.map(change => ({change, doc: (docs || []).find(d => d.id === change)}))
       )),
       tap(_ => this._emitSyncSyncing()),
-      concatMap(({change, doc}) => doc == null
-        ? throwError(`missing_change_${change}`)
-        : this._processDownwardChange(doc)
-      ),
+      concatMap(({change, doc}) => {
+        const syncEntry = syncEntries.find(s => s.id === change);
+        if (syncEntry == null) {
+          return throwError(`missing_change_${change}`);
+        }
+        if (syncEntry.entry_type === 'delete' && doc == null) {
+          return this._processDownwardChange(syncEntry);
+        }
+        return doc == null
+          ? throwError(`missing_change_${change}`)
+          : this._processDownwardChange(doc);
+      }),
       concatMap(change => this._setLastRemoteCheckpoint(change.id))
     ).subscribe(
       _ => {},
