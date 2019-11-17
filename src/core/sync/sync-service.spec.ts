@@ -227,7 +227,7 @@ describe('SyncService', () => {
     let syncService: SyncService;
     let originalTimeout: number;
 
-    beforeEach(done => {
+    beforeEach(async () => {
       originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
       jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
 
@@ -245,15 +245,9 @@ describe('SyncService', () => {
 
       syncService = TestBed.get(SyncService);
 
-      const newObjs = [];
       for (let i = 1 ; i <= 70 ; i++) {
-        newObjs.push({foo: `bar${i}`});
+        await syncService.create('table1', {foo: `bar${i}`}).toPromise();
       }
-      concat(...newObjs.map(newObj => syncService.create('table1', newObj))).subscribe(
-        _ => {},
-        _ => {},
-        () => done()
-      );
     });
 
     afterEach(() => {
@@ -271,13 +265,13 @@ describe('SyncService', () => {
         syncService.stop();
 
         syncService.list('table1', {limit: 100}).subscribe(res => {
-          expect(res.length).toEqual(70);
+          expect(res.results.length).toEqual(70);
           for (let i = 1 ; i <= 10 ; i++) {
-            expect(res.find((r: any) => r.id === i)).toBeDefined();
+            expect(res.results.find((r: any) => r.id === i)).toBeDefined();
           }
-          expect(res.find((r: any) => r.id === 11)).not.toBeDefined();
+          expect(res.results.find((r: any) => r.id === 11)).not.toBeDefined();
           for (let i = 12 ; i <= 71 ; i++) {
-            expect(res.find((r: any) => r.id === i)).toBeDefined();
+            expect(res.results.find((r: any) => r.id === i)).toBeDefined();
           }
           done();
         });
@@ -288,7 +282,7 @@ describe('SyncService', () => {
   describe('Local database', () => {
     let syncService: SyncService;
 
-    beforeEach(() => {
+    beforeEach(async () => {
       TestBed.configureTestingModule({
         imports: [
           HttpClientModule,
@@ -302,174 +296,149 @@ describe('SyncService', () => {
       syncService = TestBed.get(SyncService);
 
       const db = new pouchDBStatic<LocalDoc<DbEntry | DbRelatedEntry>>(dbName);
-      dbEntries.forEach(dbe => {
-        db.post(dbe).then(() => {});
-      });
+      for (let i = 0 ; i < dbEntries.length ; i++) {
+        await db.post(dbEntries[i]);
+      }
     });
 
     afterEach(() => {
       return new pouchDBStatic(dbName).destroy();
     });
 
-    it('should get an object from local database', done => {
-      syncService.get('table1', {id: 1}).subscribe(obj => {
-        expect(obj).toEqual(dbEntries[0].object);
-        done();
-      });
+    it('should get an object from local database', async () => {
+      const obj = await syncService.get('table1', {id: 1}).toPromise();
+      expect(obj).toEqual(dbEntries[0].object);
     });
 
     it(
       'should throw a not_found error when trying to get an unexisting object from local db',
-      done => {
-        syncService.get('table1', {id: 4}).subscribe(_ => {}, err => {
+      async () => {
+        try {
+          await syncService.get('table1', {id: 4}).toPromise();
+        } catch (err) {
           expect(err).toEqual('not_found');
-          done();
-        });
+        };
       }
     );
 
-    it('should get desired fields of an object from local database', done => {
+    it('should get desired fields of an object from local database', async () => {
       const fields = ['id', 'counter'];
       const dbEntry = dbEntries[0];
-      syncService.get('table1', {id: 1, fields}).subscribe(obj => {
-        expect(dbEntry.object).toEqual(jasmine.objectContaining(obj));
-        fields.forEach(field =>  expect(obj[field]).toBeDefined());
-        const undefFields = Object.keys(dbEntry.object).filter(f => fields.indexOf(f) === -1);
-        undefFields.forEach(field => expect(obj[field]).not.toBeDefined());
-        done();
-      });
+      const obj = await syncService.get('table1', {id: 1, fields}).toPromise();
+      expect(dbEntry.object).toEqual(jasmine.objectContaining(obj));
+      fields.forEach(field =>  expect(obj[field]).toBeDefined());
+      const undefFields = Object.keys(dbEntry.object).filter(f => fields.indexOf(f) === -1);
+      undefFields.forEach(field => expect(obj[field]).not.toBeDefined());
     });
 
-    it('should get an object and its related model from local database', done => {
+    it('should get an object and its related model from local database', async () => {
       const joins = [{model: 'table2', property: 'related', fields: ['color']}];
-      syncService.get('table1', {id: 2, joins}).subscribe(obj => {
-        const related = dbEntries[4];
-        expect(obj.related).toEqual(related.object);
-        done();
-      });
+      const obj = await syncService.get('table1', {id: 2, joins}).toPromise();
+      const related = dbEntries[4];
+      expect(obj.related).toEqual(related.object);
     });
 
-    it('should list objects from local database', done => {
+    it('should list objects from local database', async () => {
       const entries = dbEntries.filter(e => e.table_name === 'table1');
-      syncService.list('table1', {}).subscribe(objs => {
-        expect(entries.length).toEqual(objs.length);
-        entries.forEach((entry, i) => {
-          expect(entry.object).toEqual(objs[i]);
-        });
-        done();
+      const objs = await syncService.list('table1', {}).toPromise();
+      expect(entries.length).toEqual(objs.results.length);
+      entries.forEach((entry, i) => {
+        expect(entry.object).toEqual(objs.results[i]);
       });
     });
 
-    it('should support start and limit params in list', done => {
+    it('should support start and limit params in list', async () => {
       const entries = dbEntries.filter(e => e.table_name === 'table1').slice(1, 3);
-      syncService.list('table1', {start: 1, limit: 2}).subscribe(objs => {
-        expect(entries.length).toEqual(objs.length);
-        entries.forEach((entry, i) => {
-          expect(entry.object).toEqual(objs[i]);
-        });
-        done();
+      const objs = await syncService.list('table1', {start: 1, limit: 2}).toPromise();
+      expect(entries.length).toEqual(objs.results.length);
+      entries.forEach((entry, i) => {
+        expect(entry.object).toEqual(objs.results[i]);
       });
     });
 
-    it('should support fields param in list', done => {
+    it('should support fields param in list', async () => {
       const fields = ['id', 'counter'];
       const entries = dbEntries.filter(e => e.table_name === 'table1');
-      syncService.list('table1', {fields}).subscribe(objs => {
-        const undefFields = Object.keys(entries[0].object).filter(f => fields.indexOf(f) === -1);
-        expect(entries.length).toEqual(objs.length);
-        entries.forEach((entry, i) => {
-          const obj = objs[i];
-          expect(entry.object).toEqual(jasmine.objectContaining(obj));
-          fields.forEach(field => expect(obj[field]).toBeDefined());
-          undefFields.forEach(field => expect(obj[field]).not.toBeDefined());
-        });
-        done();
+      const objs = await syncService.list('table1', {fields}).toPromise();
+      const undefFields = Object.keys(entries[0].object).filter(f => fields.indexOf(f) === -1);
+      expect(entries.length).toEqual(objs.results.length);
+      entries.forEach((entry, i) => {
+        const obj = objs.results[i];
+        expect(entry.object).toEqual(jasmine.objectContaining(obj));
+        fields.forEach(field => expect(obj[field]).toBeDefined());
+        undefFields.forEach(field => expect(obj[field]).not.toBeDefined());
       });
     });
 
-    it('should support joins param in list', done => {
+    it('should support joins param in list', async () => {
       const entries = dbEntries.filter(e => e.table_name === 'table1');
       const joins = [{model: 'table2', property: 'related', fields: ['color']}];
-      syncService.list('table1', {joins}).subscribe(objs => {
-        entries.forEach((entry, i) => {
-          const related = dbEntries.find(e =>
-            e.table_name === 'table2' && e.object_id === (entry.object as DbEntry).related);
-          expect(related!.object).toEqual(jasmine.objectContaining(objs[i].related));
-        });
-        done();
+      const objs = await syncService.list('table1', {joins}).toPromise();
+      entries.forEach((entry, i) => {
+        const related = dbEntries.find(e =>
+          e.table_name === 'table2' && e.object_id === (entry.object as DbEntry).related);
+        expect(related!.object).toEqual(jasmine.objectContaining(objs.results[i].related));
       });
     });
 
-    it('should support sort param in list', done => {
+    it('should support sort param in list', async () => {
       const entries = dbEntries.filter(e => e.table_name === 'table1')
         .sort((a, b) => (a.object as DbEntry).counter - (b.object as DbEntry).counter);
-      syncService.list('table1', {sort: {counter: 'asc'}}).subscribe(objs => {
-        entries.forEach((entry, i) => {
-          expect(entry.object).toEqual(objs[i]);
-        });
-        done();
+      const objs = await syncService.list('table1', {sort: {counter: 'asc'}}).toPromise();
+      entries.forEach((entry, i) => {
+        expect(entry.object).toEqual(objs.results[i]);
       });
     });
 
-    it('should create an object and save it to the local database', done => {
+    it('should create an object and save it to the local database', async () => {
       const newObj = {foo: '', counter: 0, related: 1};
       const expectedId = dbEntries.filter(e => e.table_name === 'table1')
         .sort((a, b) => b.object_id - a.object_id)[0].object_id + 1;
-      syncService.create('table1', newObj).subscribe(res => {
-        const newObjWithId = {id: expectedId, ...newObj};
-        expect(res).toEqual(newObjWithId);
-        syncService.get('table1', {id: expectedId}).subscribe(obj => {
-          expect(obj).toEqual(newObjWithId);
-          done();
-        });
-      });
+      const res = await syncService.create('table1', newObj).toPromise();
+      const newObjWithId = {id: expectedId, ...newObj};
+      expect(res).toEqual(newObjWithId);
+      const obj = await syncService.get('table1', {id: expectedId}).toPromise();
+      expect(obj).toEqual(newObjWithId);
     });
 
-    it('should update an existing object in the local database', done => {
+    it('should update an existing object in the local database', async () => {
       const entry = dbEntries[0];
       const updated = {...entry.object, counter: 666};
       const id = entry.object_id;
-      syncService.update('table1', id, updated).subscribe(res => {
-        expect(res).toEqual(updated);
-        syncService.get('table1', {id}).subscribe(obj => {
-          expect(obj).toEqual(updated);
-          done();
-        });
-      });
+      const res = await syncService.update('table1', id, updated).toPromise();
+      expect(res).toEqual(updated);
+      const obj = await syncService.get('table1', {id}).toPromise();
+      expect(obj).toEqual(updated);
     });
 
-    it('should throw an error when trying to update an unexisting object', done => {
+    it('should throw an error when trying to update an unexisting object', async () => {
       const entry = {...dbEntries[0], object: {...dbEntries[0].object}};
       entry.object_id = entry.object.id = 666;
-      syncService.update('table1', entry.object_id, entry.object).subscribe(_ => {}, err => {
+      try {
+        await syncService.update('table1', entry.object_id, entry.object).toPromise();
+      } catch (err) {
         expect(err).toEqual('not_found');
-        done();
-      });
+      }
     });
 
-    it('should delete an existing object in the local database', done => {
+    it('should delete an existing object in the local database', async () => {
       const entry = dbEntries[0];
       const id = entry.object_id;
-      syncService.delete('table1', id).subscribe(deleted => {
-        expect(deleted).toEqual(entry.object);
-        syncService.get('table1', {id}).subscribe(
-          _ => {},
-          err => {
-            expect(err).toEqual('not_found');
-            done();
-          }
-        );
-      });
+      const deleted = await syncService.delete('table1', id).toPromise();
+      expect(deleted).toEqual(entry.object);
+      try {
+        await syncService.get('table1', {id}).toPromise();
+      } catch (err) {
+        expect(err).toEqual('not_found');
+      }
     });
 
-    it('should throw an error when trying to delete an unexisting object', done => {
-      syncService.delete('table1', 11).subscribe(
-        _ => {},
-        err => {
+    it('should throw an error when trying to delete an unexisting object', async () => {
+      try {
+        await syncService.delete('table1', 11).toPromise();
+      } catch (err) {
           expect(err).toEqual('not_found');
-          done();
-        }
-      );
+      }
     });
   });
 });
