@@ -37,9 +37,9 @@ import * as fromModel from './reducers';
 import {createAction} from './utils';
 
 export abstract class ModelService<
-  T extends Model,
-  S extends fromModel.State<T>,
-  A extends ModelActions.ModelActionTypes> {
+  T extends Model = Model,
+  S extends fromModel.State<T> = fromModel.State<T>,
+  A extends ModelActions.ModelActionTypes = ModelActions.ModelActionTypes> {
   protected _modelState: MemoizedSelector<object, S>;
 
   private _lastGetEntry: UnaryFunction<

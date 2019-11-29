@@ -96,6 +96,9 @@ export class AuthEffects implements OnInitEffects {
       if (this._config.loggedInUserSetter) {
         this._config.loggedInUserSetter(payload.user_id);
       }
+      if (this._config.meSetter != null) {
+        this._config.meSetter(payload.user);
+      }
       this._router.navigate(['/']);
     }),
     mergeMap((action) => [

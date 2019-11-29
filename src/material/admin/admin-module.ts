@@ -84,7 +84,7 @@ import {AdminListComponent} from './list';
     AdminListComponent,
   ],
   entryComponents: [
-    AdminDeleteConfirmDialogComponent
+    AdminDeleteConfirmDialogComponent,
   ],
   providers: [
     AdminUserInteractionsService,

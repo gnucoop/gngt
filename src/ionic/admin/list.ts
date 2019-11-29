@@ -51,10 +51,10 @@ import {AdminUserInteractionsService} from './admin-user-interactions';
   ]
 })
 export class AdminListComponent<
-    T extends Model,
-    S extends fromModel.State<T>,
-    A extends ModelActions.ModelActionTypes,
-    MS extends ModelService<T, S, A>
+    T extends Model = Model,
+    S extends fromModel.State<T> = fromModel.State<T>,
+    A extends ModelActions.ModelActionTypes = ModelActions.ModelActionTypes,
+    MS extends ModelService<T, S, A> = ModelService<T, S, A>
   > extends BaseAdminListComponent<T, S, A, MS>
     implements OnDestroy, OnInit {
   @Input() baseQueryParams: Partial<ModelQueryParams>;

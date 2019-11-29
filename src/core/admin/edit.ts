@@ -34,9 +34,9 @@ import {AdminEditField} from './edit-field';
 import {ProcessDataFn} from './process-data-fn';
 
 export abstract class AdminEditComponent<
-  T extends Model,
-  S extends fromModel.State<T>,
-  A extends ModelActions.ModelActionTypes> implements OnDestroy {
+  T extends Model = Model,
+  S extends fromModel.State<T> = fromModel.State<T>,
+  A extends ModelActions.ModelActionTypes = ModelActions.ModelActionTypes> implements OnDestroy {
   private _title = '';
   get title(): string { return this._title; }
   @Input() set title(title: string) {

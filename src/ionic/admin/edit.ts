@@ -55,9 +55,9 @@ import {Model, ModelActions, reducers as fromModel} from '@gngt/core/model';
   ]
 })
 export class AdminEditComponent<
-    T extends Model,
-    S extends fromModel.State<T>,
-    A extends ModelActions.ModelActionTypes
+    T extends Model = Model,
+    S extends fromModel.State<T> = fromModel.State<T>,
+    A extends ModelActions.ModelActionTypes = ModelActions.ModelActionTypes
   > extends BaseAdminEditComponent<T, S, A> {
   constructor(cdr: ChangeDetectorRef, fb: FormBuilder, router: Router) {
     super(cdr, fb, router);
