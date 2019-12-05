@@ -107,12 +107,12 @@ export abstract class ModelEffects<
     ofType<ModelActions.ModelPatchAction<M>>(this._actionTypes.PATCH),
     mergeMap(action => this._manager.patch(action.payload.item.id, action.payload.item).pipe(
       map((item: M) => createAction<A>({
-        type: this._actionTypes.CREATE_SUCCESS,
+        type: this._actionTypes.PATCH_SUCCESS,
         payload: {item},
         uuid: action.uuid
       })),
       catchError(error => obsOf(createAction<A>({
-        type: this._actionTypes.CREATE_FAILURE,
+        type: this._actionTypes.PATCH_FAILURE,
         payload: {error},
         uuid: action.uuid
       }))),
