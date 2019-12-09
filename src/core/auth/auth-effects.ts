@@ -160,6 +160,20 @@ export class AuthEffects implements OnInitEffects {
     )
   ));
 
+  logout$ = createEffect(() => this._actions$.pipe(
+    ofType(AuthActions.AuthActionTypes.Logout),
+    tap(() => {
+      this._jwtHelperService.tokenSetter(null);
+      this._jwtHelperService.refreshTokenSetter(null);
+      if (this._config.loggedInUserSetter != null) {
+        this._config.loggedInUserSetter(null);
+      }
+      if (this._config.meSetter != null) {
+        this._config.meSetter(null);
+      }
+    }),
+  ), {dispatch: false});
+
   init$ = createEffect(() => this._actions$.pipe(
     ofType(AuthActions.AuthActionTypes.Init),
     switchMap(() => {

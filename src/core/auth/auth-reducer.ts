@@ -48,7 +48,10 @@ export function reducer(
     }
 
     case AuthActions.AuthActionTypes.Logout: {
-      return initialState;
+      return {
+        ...state,
+        user: null,
+      };
     }
 
     case AuthActions.AuthActionTypes.InitUserComplete: {

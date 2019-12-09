@@ -61,7 +61,7 @@ export abstract class ModelService<
 
   constructor(
     protected _store: Store<fromRoot.State>,
-    private _actions: Actions<ModelGenericAction>,
+    protected _actions: Actions<ModelGenericAction>,
     private _actionTypes: A,
     statePrefixes: [string, string]
   ) {

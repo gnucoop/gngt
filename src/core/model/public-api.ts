@@ -22,6 +22,7 @@
 import * as ModelActions from './model-actions';
 import * as reducers from './reducers';
 
+export * from './model-error';
 export * from './model-effects';
 export * from './model-generic-action';
 export * from './model-manager';

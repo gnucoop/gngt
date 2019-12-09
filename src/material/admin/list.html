@@ -57,7 +57,7 @@
         <td [routerLink]="baseEditUrl + element.id" mat-cell *matCellDef="let element">
           <ng-container *ngTemplateOutlet="cellTemplatesMap[header.column] ?
             cellTemplatesMap[header.column] : defaultCellTemplate;
-            context: {$implicit: element|gngtGetObjectProperty:header.column}">
+            context: {$implicit: element|gngtGetObjectProperty:header.column, item: element}">
           </ng-container>
           <ng-template #defaultCellTemplate>
             {{ element|gngtGetObjectProperty:header.column }}
