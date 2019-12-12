@@ -23,10 +23,8 @@ import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input,
   ViewEncapsulation} from '@angular/core';
 import {MatFormFieldAppearance} from '@angular/material/form-field';
 import {FormBuilder} from '@angular/forms';
-
-import {Store} from '@ngrx/store';
-
 import {LoginComponent as CoreLoginComponent, reducers as fromAuth} from '@gngt/core/auth';
+import {Store} from '@ngrx/store';
 
 @Component({
   moduleId: module.id,
@@ -42,6 +40,34 @@ export class LoginComponent extends CoreLoginComponent {
   get fieldsAppearance(): MatFormFieldAppearance { return this._fieldsAppearance; }
   @Input() set fieldsAppearance(fieldsAppearance: MatFormFieldAppearance) {
     this._fieldsAppearance = fieldsAppearance;
+    this._cdr.markForCheck();
+  }
+
+  private _usernamePrefixSvgIcon: string;
+  get usernamePrefixSvgIcon(): string { return this._usernamePrefixSvgIcon; }
+  @Input() set usernamePrefixSvgIcon(usernamePrefixSvgIcon: string) {
+    this._usernamePrefixSvgIcon = usernamePrefixSvgIcon;
+    this._cdr.markForCheck();
+  }
+
+  private _usernameSuffixSvgIcon: string;
+  get usernameSuffixSvgIcon(): string { return this._usernameSuffixSvgIcon; }
+  @Input() set usernameSuffixSvgIcon(usernameSuffixSvgIcon: string) {
+    this._usernameSuffixSvgIcon = usernameSuffixSvgIcon;
+    this._cdr.markForCheck();
+  }
+
+  private _passwordPrefixSvgIcon: string;
+  get passwordPrefixSvgIcon(): string { return this._passwordPrefixSvgIcon; }
+  @Input() set passwordPrefixSvgIcon(passwordPrefixSvgIcon: string) {
+    this._passwordPrefixSvgIcon = passwordPrefixSvgIcon;
+    this._cdr.markForCheck();
+  }
+
+  private _passwordSuffixSvgIcon: string;
+  get passwordSuffixSvgIcon(): string { return this._passwordSuffixSvgIcon; }
+  @Input() set passwordSuffixSvgIcon(passwordSuffixSvgIcon: string) {
+    this._passwordSuffixSvgIcon = passwordSuffixSvgIcon;
     this._cdr.markForCheck();
   }
 

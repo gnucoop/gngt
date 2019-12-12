@@ -65,7 +65,7 @@
     </div>
     <div class="ion-actions">
       <ion-spinner *ngIf="loading|async"></ion-spinner>
-      <ion-button (click)="save()" [disabled]="!editForm.valid || (canSave === false)">{{ saveLabel | translate }}</ion-button>
+      <ion-button (click)="save()" [disabled]="(canSave === false) || !editForm.valid">{{ saveLabel | translate }}</ion-button>
       <ion-button (click)="goBack()" color="warning">{{ cancelLabel | translate }}</ion-button>
     </div>
   </ion-card-content>

@@ -24,6 +24,7 @@ import {HTTP_INTERCEPTORS} from '@angular/common/http';
 import {NgModule, ModuleWithProviders} from '@angular/core';
 import {ReactiveFormsModule} from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
+import {MatIconModule} from '@angular/material/icon';
 import {MatDialog, MatDialogModule} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
@@ -47,6 +48,7 @@ import {LogoutConfirmDialogComponent} from './logout-confirm-dialog';
     MatButtonModule,
     MatDialogModule,
     MatFormFieldModule,
+    MatIconModule,
     MatInputModule,
     MatSnackBarModule,
     CoreAuthModule,

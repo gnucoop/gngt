@@ -28,10 +28,10 @@ import {AdminUserInteractionsService} from './admin-user-interactions';
 import {AdminListHeader} from './list-header';
 
 export abstract class AdminListComponent<
-  T extends Model,
-  S extends fromModel.State<T>,
-  A extends ModelActions.ModelActionTypes,
-  MS extends ModelService<T, S, A>> implements OnDestroy {
+  T extends Model = Model,
+  S extends fromModel.State<T> = fromModel.State<T>,
+  A extends ModelActions.ModelActionTypes = ModelActions.ModelActionTypes,
+  MS extends ModelService<T, S, A> = ModelService<T, S, A>> implements OnDestroy {
   get title(): string { return this._title; }
   set title(title: string) {
     this._title = title;
@@ -67,13 +67,13 @@ export abstract class AdminListComponent<
   }
   private _newItemPath = 'new';
 
-  private _service: MS;
+  protected _service: MS;
   set service(service: MS) {
     this._service = service;
     this._initService();
   }
 
-  private _actionProcessed: EventEmitter<string> = new EventEmitter<string>();
+  protected _actionProcessed: EventEmitter<string> = new EventEmitter<string>();
   readonly actionProcessed: Observable<string> = this._actionProcessed.asObservable();
 
   private _deletionEvt: EventEmitter<T[]> = new EventEmitter<T[]>();

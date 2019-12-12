@@ -61,4 +61,10 @@ export class AuthService {
       ? this._config.loggedInUserGetter()
       : null;
   }
+
+  getMe(): User | null {
+    return this._config.meGetter
+      ? this._config.meGetter()
+      : null;
+  }
 }

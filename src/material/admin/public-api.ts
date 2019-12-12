@@ -24,3 +24,4 @@ export * from './admin-user-interactions';
 export * from './delete-confirm';
 export * from './edit';
 export * from './list';
+export * from './list-cell';

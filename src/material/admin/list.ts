@@ -53,10 +53,10 @@ import {AdminListCellDirective} from './list-cell';
   ]
 })
 export class AdminListComponent<
-    T extends Model,
-    S extends fromModel.State<T>,
-    A extends ModelActions.ModelActionTypes,
-    MS extends ModelService<T, S, A>
+    T extends Model = Model,
+    S extends fromModel.State<T> = fromModel.State<T>,
+    A extends ModelActions.ModelActionTypes = ModelActions.ModelActionTypes,
+    MS extends ModelService<T, S, A> = ModelService<T, S, A>
   > extends BaseAdminListComponent<T, S, A, MS>
     implements AfterContentInit, OnDestroy, OnInit {
   private _dataSource: ModelDataSource<T, S, A, MS>;

@@ -96,6 +96,9 @@ export class AuthEffects implements OnInitEffects {
       if (this._config.loggedInUserSetter) {
         this._config.loggedInUserSetter(payload.user_id);
       }
+      if (this._config.meSetter != null) {
+        this._config.meSetter(payload.user);
+      }
       this._router.navigate(['/']);
     }),
     mergeMap((action) => [
@@ -156,6 +159,20 @@ export class AuthEffects implements OnInitEffects {
           : new AuthActions.LogoutConfirmationDismiss()
     )
   ));
+
+  logout$ = createEffect(() => this._actions$.pipe(
+    ofType(AuthActions.AuthActionTypes.Logout),
+    tap(() => {
+      this._jwtHelperService.tokenSetter(null);
+      this._jwtHelperService.refreshTokenSetter(null);
+      if (this._config.loggedInUserSetter != null) {
+        this._config.loggedInUserSetter(null);
+      }
+      if (this._config.meSetter != null) {
+        this._config.meSetter(null);
+      }
+    }),
+  ), {dispatch: false});
 
   init$ = createEffect(() => this._actions$.pipe(
     ofType(AuthActions.AuthActionTypes.Init),

@@ -33,10 +33,10 @@ import * as fromModel from './model-reducer';
 import {createAction} from './utils';
 
 export abstract class ModelEffects<
-    M extends Model,
-    S extends fromModel.State<M>,
-    A extends Action,
-    AT extends ModelActions.ModelActionTypes> {
+    M extends Model = Model,
+    S extends fromModel.State<M> = fromModel.State<M>,
+    A extends Action = Action,
+    AT extends ModelActions.ModelActionTypes = ModelActions.ModelActionTypes> {
 
   protected readonly modelGet$: Observable<A> = createEffect(() => this._actions.pipe(
     ofType<ModelActions.ModelGetAction>(this._actionTypes.GET),

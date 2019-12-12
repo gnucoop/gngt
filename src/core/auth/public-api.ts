@@ -35,6 +35,7 @@ export * from './jwt-interceptor';
 export * from './jwt-options-token';
 
 export * from './auth';
+export * from './auth-helper';
 export * from './auth-guard';
 export * from './jwt-helper';
 
