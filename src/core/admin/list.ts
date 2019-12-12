@@ -67,13 +67,13 @@ export abstract class AdminListComponent<
   }
   private _newItemPath = 'new';
 
-  private _service: MS;
+  protected _service: MS;
   set service(service: MS) {
     this._service = service;
     this._initService();
   }
 
-  private _actionProcessed: EventEmitter<string> = new EventEmitter<string>();
+  protected _actionProcessed: EventEmitter<string> = new EventEmitter<string>();
   readonly actionProcessed: Observable<string> = this._actionProcessed.asObservable();
 
   private _deletionEvt: EventEmitter<T[]> = new EventEmitter<T[]>();
