@@ -159,8 +159,7 @@ export abstract class AdminEditComponent<
       filter(([s, i]) => s != null && i != null),
       switchMap(([s, i]) => {
         if (i === 'new') { return obsOf({}); }
-        s!.get(i!);
-        return s!.getGetObject();
+        return s!.get(i!);
       }),
       filter(o => o != null),
       switchMap(o => {
