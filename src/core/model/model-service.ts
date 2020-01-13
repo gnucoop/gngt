@@ -20,7 +20,7 @@
  */
 
 import {Observable, pipe, throwError, UnaryFunction} from 'rxjs';
-import {filter, map, tap, switchMap} from 'rxjs/operators';
+import {filter, map, take, tap, switchMap} from 'rxjs/operators';
 
 import {Actions, ofType} from '@ngrx/effects';
 import {createSelector, createFeatureSelector, MemoizedSelector, select, Store} from '@ngrx/store';
@@ -416,6 +416,7 @@ export abstract class ModelService<
       }),
       filter(get => get!.object != null),
       map(get => get!.object!),
+      take(1),
     );
   }
 
@@ -441,6 +442,7 @@ export abstract class ModelService<
       }),
       filter(list => list!.objects != null),
       map(list => list!.objects!),
+      take(1),
     );
   }
 
@@ -466,6 +468,7 @@ export abstract class ModelService<
       }),
       filter(create => create!.object != null),
       map(create => create!.object!),
+      take(1),
     );
   }
 
@@ -491,6 +494,7 @@ export abstract class ModelService<
       }),
       filter(update => update!.object != null),
       map(update => update!.object!),
+      take(1),
     );
   }
 
@@ -516,6 +520,7 @@ export abstract class ModelService<
       }),
       filter(patch => patch!.object != null),
       map(patch => patch!.object!),
+      take(1),
     );
   }
 
@@ -541,6 +546,7 @@ export abstract class ModelService<
       }),
       filter(del => del!.object != null),
       map(del => del!.object!),
+      take(1),
     );
   }
 
@@ -566,6 +572,7 @@ export abstract class ModelService<
       }),
       filter(deleteAll => deleteAll!.objects != null),
       map(deleteAll => deleteAll!.objects!),
+      take(1),
     );
   }
 
@@ -591,6 +598,7 @@ export abstract class ModelService<
       }),
       filter(query => query!.objects != null),
       map(query => query!.objects!),
+      take(1),
     );
   }
 }
