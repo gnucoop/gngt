@@ -30,6 +30,7 @@ import {
 } from 'rxjs/operators';
 
 import {Model, ModelActions, ModelService, reducers as fromModel} from '@gngt/core/model';
+import {AfterSaveFn} from './after-save-fn';
 import {AdminEditField} from './edit-field';
 import {ProcessDataFn} from './process-data-fn';
 
@@ -91,6 +92,13 @@ export abstract class AdminEditComponent<
   set processFormData(
     processFormData: ProcessDataFn | Observable<ProcessDataFn>) {
     this._processFormData = processFormData;
+  }
+
+  private _afterSave: AfterSaveFn<T> | Observable<AfterSaveFn<T>>;
+  @Input()
+  set afterSave(
+    afterSave: AfterSaveFn<T> | Observable<AfterSaveFn<T>>) {
+    this._afterSave = afterSave;
   }
 
   private _readonly: boolean;
@@ -211,13 +219,30 @@ export abstract class AdminEditComponent<
       }),
       tap(() => this._loading.next(true)),
       switchMap(([formValue, service, id]) => {
-        if (id === 'new') {
+        let op: Observable<T>;
+        const isNew = id === 'new';
+        if (isNew) {
           delete formValue['id'];
-          return service!.create(formValue);
+          op = service!.create(formValue);
+        } else {
+          op = service!.patch(formValue);
         }
-        return service!.patch(formValue);
+        return op.pipe(
+          take(1),
+          map(value => ({value, isNew})),
+        );
       }),
-      take(1),
+      switchMap((params) => {
+        if (this._afterSave != null && this._afterSave instanceof Observable) {
+          return this._afterSave.pipe(
+            map(afterSave => afterSave(params)),
+          );
+        }
+        if (this._afterSave != null) {
+          return this._afterSave(params);
+        }
+        return obsOf(params);
+      }),
     ).subscribe(
       () => {
         this._loading.next(false);

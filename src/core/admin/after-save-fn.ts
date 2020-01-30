@@ -19,14 +19,11 @@
  *
  */
 
-export * from './after-save-fn';
-export * from './admin-user-interactions';
-export * from './edit';
-export * from './edit-field';
-export * from './edit-field-choice';
-export * from './edit-field-subtype';
-export * from './edit-field-type';
-export * from './edit-model';
-export * from './list';
-export * from './list-header';
-export * from './process-data-fn';
+import {Observable} from 'rxjs';
+
+export interface AfterSaveParams<T> {
+  isNew: boolean;
+  value: T;
+}
+
+export type AfterSaveFn<T> = (params: AfterSaveParams<T>) => Observable<AfterSaveParams<T>>;
