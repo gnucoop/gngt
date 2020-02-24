@@ -21,7 +21,6 @@
 
 import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
-import {MatListModule} from '@angular/material/list';
 import {RouterModule} from '@angular/router';
 import {IonicModule} from '@ionic/angular';
 import {E2eAppLayout, Home} from './e2e-app-layout';
@@ -29,9 +28,8 @@ import {E2eAppLayout, Home} from './e2e-app-layout';
 @NgModule({
   imports: [
     CommonModule,
-    MatListModule,
-    RouterModule,
     IonicModule,
+    RouterModule,
   ],
   declarations: [E2eAppLayout, Home],
   exports: [E2eAppLayout],

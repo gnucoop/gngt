@@ -602,6 +602,7 @@ export class SyncService {
         object: doc.localDoc.object
       };
     });
+    this._emitSyncSyncing();
     return this._httpClient.post<UpwardChangeResult[]>(this._syncUrl, payload).pipe(
       map(res => ({res, seq: null})),
       catchError((err: HttpErrorResponse) => {
@@ -627,8 +628,9 @@ export class SyncService {
           keys: docsToDel.map(d => d.syncEntry.doc_id),
           include_docs: true,
         })).pipe(
+          take(1),
           exhaustMap(result => from(localDocsDb.bulkDocs(
-            result.rows.map(row => ({...row.doc, _deleted: true} as any))))),
+            result.rows.map(row => ({...row.doc, _deleted: true} as any)))).pipe(take(1))),
           map(_ => sequence),
         );
       }),

@@ -25,25 +25,11 @@ import {DevAppHome} from './dev-app-home';
 
 export const DEV_APP_ROUTES: Routes = [
   {path: '', component: DevAppHome},
+  {path: 'admin-edit', loadChildren: 'admin-edit/admin-edit-demo-module#AdminEditDemoModule'},
+  {path: 'admin-list', loadChildren: 'admin-list/admin-list-demo-module#AdminListDemoModule'},
   {path: 'calendar', loadChildren: 'calendar/calendar-demo-module#CalendarDemoModule'},
-  {
-    path: 'checkbox-group',
-    loadChildren: 'checkbox-group/checkbox-group-demo-module#CheckboxGroupDemoModule'
-  },
-  {
-    path: 'form-builder',
-    loadChildren: 'form-builder/form-builder-demo-module#FormBuilderDemoModule'
-  },
-  {path: 'forms', loadChildren: 'forms/forms-demo-module#FormsDemoModule'},
-  {path: 'image', loadChildren: 'image/image-demo-module#ImageDemoModule'},
-  {path: 'node-icon', loadChildren: 'node-icon/node-icon-demo-module#NodeIconDemoModule'},
-  {path: 'page-slider', loadChildren: 'page-slider/page-slider-demo-module#PageSliderDemoModule'},
-  {
-    path: 'report-builder',
-    loadChildren: 'report-builder/report-builder-demo-module#ReportBuilderDemoModule'
-  },
-  {path: 'reports', loadChildren: 'reports/reports-demo-module#ReportsDemoModule'},
-  {path: 'time', loadChildren: 'time/time-demo-module#TimeDemoModule'},
+  {path: 'login', loadChildren: 'login/login-demo-module#LoginDemoModule'},
+  {path: 'sync', loadChildren: 'sync/sync-demo-module#SyncDemoModule'},
   {path: 'examples', loadChildren: 'examples-page/examples-page-module#ExamplesPageModule'},
   {path: '**', component: DevApp404},
 ];

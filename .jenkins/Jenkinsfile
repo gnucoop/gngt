@@ -7,49 +7,75 @@ pipeline {
     gitBranch = scmInfo.GIT_BRANCH.replace("origin/", "")
   }
   stages {
+    stage('Restore cache') {
+      steps {
+        script {
+          try {
+            sh 'gsutil cp gs://gngt-bazel-remote-cache/gngt-core-node-modules.tar.gz .'
+            sh 'tar xfz gngt-core-node-modules.tar.gz'
+            sh 'rm gngt-core-node-modules.tar.gz'
+            sh 'gsutil cp gs://gngt-bazel-remote-cache/gngt-core-bazel-repository.tar.gz .'
+            sh 'tar xfz gngt-core-bazel-repository.tar.gz -C /home/jenkins'
+            sh 'rm gngt-core-bazel-repository.tar.gz'
+          } catch (Exception e) {
+          }
+        }
+        sh 'cat .jenkins/bazelrc >> .bazelrc'
+      }
+    }
     stage('Setup') {
       steps {
-        sh 'yarn install'
+        sh 'yarn install --non-interactive'
       }
     }
     stage('Lint') {
       steps {
+        sh 'bazel build //:rollup_globals'
+        sh 'yarn check-rollup-globals $(bazel info bazel-bin)/rollup_globals.json'
+        sh 'bazel build //:entry_points_manifest'
+        sh 'yarn check-entry-point-setup $(bazel info bazel-bin)/entry_points_manifest.json'
         sh 'yarn -s lint'
       }
     }
-    stage('Bazel targets') {
+    stage('Build') {
       steps {
-        sh 'bazel build src/... --build_tag_filters=-docs-package'
-        sh 'bazel test src/... --build_tag_filters=-e2e --test_tag_filters=-e2e'
+        sh 'bazel build src/... --build_tag_filters=-docs-package,-release-package'
+      }
+    }
+    stage('API guard tests') {
+      steps {
         sh 'bazel test tools/public_api_guard/...'
       }
     }
     stage('Unit tests') {
       steps {
-        sh './scripts/circleci/run-local-browser-tests.sh'
+        sh 'bazel test src/... --build_tag_filters=-docs-package,-e2e --test_tag_filters=-e2e --config=view-engine --build_tests_only'
+        sh 'bazel test src/... --build_tag_filters=-e2e --test_tag_filters=-e2e --build_tests_only'
       }
     }
     stage('Integration tests') {
       steps {
         sh 'bazel test src/... --build_tag_filters=e2e --test_tag_filters=e2e'
-        sh 'yarn gulp ci:prerender'
       }
     }
     stage('Release output') {
       steps {
-        sh 'yarn gulp ci:build-release-packages'
+        sh 'yarn build'
         sh 'yarn check-release-output'
-        sh 'yarn gulp ci:aot'
+        sh 'mkdir -p node_modules/@gngt'
+        sh 'cp -R dist/releases/* node_modules/@gngt/'
+        sh 'yarn ngcc'
+        sh 'rm -Rf node_modules/@gngt'
       }
     }
-    stage('Publish snapshots') {
-      when {
-        expression {
-          return gitBranch == 'master'
-        }
-      }
+    stage('Save cache') {
       steps {
-        sh './scripts/deploy/publish-build-artifacts.sh --no-build'
+        sh 'tar cfz gngt-core-node-modules.tar.gz node_modules'
+        sh 'gsutil cp gngt-core-node-modules.tar.gz gs://gngt-bazel-remote-cache/'
+        sh 'rm gngt-core-node-modules.tar.gz'
+        sh 'tar cfz gngt-core-bazel-repository.tar.gz -C /home/jenkins bazel_repository_cache'
+        sh 'gsutil cp gngt-core-bazel-repository.tar.gz gs://gngt-bazel-remote-cache/'
+        sh 'rm gngt-core-bazel-repository.tar.gz'
       }
     }
   }

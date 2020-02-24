@@ -1,24 +1,12 @@
-// We need to configure AMD modules which are not named because otherwise "require.js" is not
-// able to resolve AMD imports to such modules.
-
-const nodeModulesBasePath = '/base/npm/node_modules/';
-
 require.config({
   paths: {
-    '@gic/angular': `${nodeModulesBasePath}@gic/angular/angular.umd`,
-    '@gic/core': `${nodeModulesBasePath}@gic/core/core.umd`,
-    '@gic/core/loader': `${nodeModulesBasePath}@gic/core/core-loader.umd`,
-    '@ionic/angular': `${nodeModulesBasePath}@ionic/angular/angular.umd`,
-    '@ionic/core': `${nodeModulesBasePath}@ionic/core/core.umd`,
-    '@ionic/core/loader': `${nodeModulesBasePath}@ionic/core/core-loader.umd`,
-    'date-fns': `${nodeModulesBasePath}date-fns/date-fns.umd`,
-    'debug': `${nodeModulesBasePath}debug/debug.umd`,
-    'pouchdb': `${nodeModulesBasePath}pouchdb/pouchdb.umd`,
-    'pouchdb-debug': `${nodeModulesBasePath}pouchdb-debug/pouchdb-debug.umd`,
-    'pouchdb-find': `${nodeModulesBasePath}pouchdb-find/pouchdb-find.umd`,
-    'url-parse': `${nodeModulesBasePath}url-parse/url-parse.umd`,
-    'uuid': `${nodeModulesBasePath}uuid/uuid.umd`,
+    '@gic/angular': '@gic/angular/angular.umd',
+    '@gic/core': '@gic/core/core.umd',
+    '@gic/core/loader': '@gic/core/core-loader.umd',
+    '@ionic/angular': '@ionic/angular/angular.umd',
+    '@ionic/core': '@ionic/core/core.umd',
+    '@ionic/core/loader': '@ionic/core/core-loader.umd',
+    'date-fns': 'date-fns/date-fns.umd',
+    'debug': 'debug/debug.umd',
   }
 });
-
-var module = {id: ''};

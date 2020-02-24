@@ -13,8 +13,13 @@ build --symlink_prefix=/
 build --watchfs
 
 # Turn off legacy external runfiles
+build --nolegacy_external_runfiles
 run --nolegacy_external_runfiles
 test --nolegacy_external_runfiles
+
+# This flag is needed to so that the bazel cache is not invalidated
+# when running bazel via `yarn bazel`.
+build --incompatible_strict_action_env
 
 ###############################
 # Output control              #
@@ -35,23 +40,30 @@ test --test_output=errors
 # Configures script to do version stamping.
 # See https://docs.bazel.build/versions/master/user-manual.html#flag--workspace_status_command
 build:release --workspace_status_command="node ./tools/bazel-stamp-vars.js"
-
-###############################
-# Typescript / Angular / Sass #
-###############################
-
-# Make compilation fast, by keeping a few copies of the compilers
-# running as daemons, and cache SourceFile AST's to reduce parse time.
-build --strategy=TypeScriptCompile=worker
-build --strategy=AngularTemplateCompile=worker
+build:release --stamp
 
 ################################
-# Temporary Settings for Ivy   #
+# View Engine / Ivy toggle     #
 ################################
+build:view-engine --define=angular_ivy_enabled=False
+build:ivy --define=angular_ivy_enabled=True
 
-# Use the legacy AOT compiler strategy. We don't want to compile with Ivy nor with "ngtsc" which
-# does not generate factory files which are needed for AOT.
-build --define=compile=legacy
+# Set Ivy as the default
+build --config=ivy
+
+#######################
+# Remote HTTP Caching #
+#######################
+build --remote_http_cache=https://storage.googleapis.com/dewco-bazel-remote-cache
+build --remote_accept_cached=true
+build --remote_upload_local_results=false
+
+######################################
+# Remote HTTP Caching writes support #
+# Turn on these settings with        #
+#  --config=-http-caching            #
+######################################
+build:remote-http-caching --remote_upload_local_results=true
 
 ################################
 # Remote Execution Setup       #
@@ -61,12 +73,7 @@ build --define=compile=legacy
 build:remote --remote_instance_name=projects/internal-200822/instances/default_instance
 build:remote --project_id=internal-200822
 
-# Setup the build strategy for various types of actions. Mixing "local" and "remote"
-# can cause unexpected results and we want to run everything remotely if possible.
-build:remote --spawn_strategy=remote,local
-build:remote --strategy=Javac=remote
-build:remote --strategy=Closure=remote
-build:remote --strategy=Genrule=remote
+# Needed due to: https://github.com/bazelbuild/bazel/issues/7254
 build:remote --define=EXECUTOR=remote
 
 # Setup the remote build execution servers.
@@ -112,5 +119,4 @@ try-import .bazelrc.user
 
 # TODO: check if we can enable these deprecations.
 build --incompatible_new_actions_api=false
-build --incompatible_depset_is_not_iterable=false
 build --incompatible_no_support_tools_in_action_inputs=false

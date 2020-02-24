@@ -19,9 +19,9 @@
  *
  */
 
-import * as AuthActions from './auth-actions';
-import * as AuthApiActions from './auth-api-actions';
-import * as reducers from './reducers';
+export * from './auth-actions';
+export * from './auth-api-actions';
+export * from './reducers';
 
 export * from './auth-options';
 export * from './credentials';
@@ -44,5 +44,3 @@ export * from './login';
 
 export * from './auth-module-options';
 export * from './auth-module';
-
-export {AuthActions, AuthApiActions, reducers};

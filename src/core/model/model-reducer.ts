@@ -24,7 +24,34 @@ import {
 } from '@gngt/core/common';
 
 import {ModelError} from './model-error';
-import * as ModelActions from './model-actions';
+import {
+  ModelActionTypes,
+  ModelBaseAction,
+  ModelCreateAction,
+  ModelCreateFailureAction,
+  ModelCreateSuccessAction,
+  ModelDeleteAction,
+  ModelDeleteFailureAction,
+  ModelDeleteSuccessAction,
+  ModelDeleteAllAction,
+  ModelDeleteAllFailureAction,
+  ModelDeleteAllSuccessAction,
+  ModelGetAction,
+  ModelGetFailureAction,
+  ModelGetSuccessAction,
+  ModelListAction,
+  ModelListFailureAction,
+  ModelListSuccessAction,
+  ModelPatchAction,
+  ModelPatchFailureAction,
+  ModelPatchSuccessAction,
+  ModelQueryAction,
+  ModelQueryFailureAction,
+  ModelQuerySuccessAction,
+  ModelUpdateAction,
+  ModelUpdateFailureAction,
+  ModelUpdateSuccessAction,
+} from './model-actions';
 
 const stateQueueLimit = 20;
 
@@ -118,8 +145,8 @@ export function generateInitialModelState<M extends Model>(): State<M> {
 
 export function modelReducer<M extends Model>(
   state: State<M>,
-  action: ModelActions.ModelBaseAction,
-  actionTypes: ModelActions.ModelActionTypes
+  action: ModelBaseAction,
+  actionTypes: ModelActionTypes
 ): State<M> {
   switch (action.type) {
 
@@ -130,7 +157,7 @@ export function modelReducer<M extends Model>(
         uuid: action.uuid,
         loading: true,
         options: {id: null},
-        id: (<ModelActions.ModelGetAction>action).payload.id,
+        id: (<ModelGetAction>action).payload.id,
         object: null,
         error: null
       }, ...state.get.slice(0, stateQueueLimit - 1)],
@@ -144,7 +171,7 @@ export function modelReducer<M extends Model>(
         get: [...state.get.slice(0, successGetIdx), {
           ...state.get[successGetIdx],
           loading: false,
-          object: (<ModelActions.ModelGetSuccessAction<M>>action).payload.item,
+          object: (<ModelGetSuccessAction<M>>action).payload.item,
           error: null
         }, ...state.get.slice(successGetIdx + 1)],
       };
@@ -160,7 +187,7 @@ export function modelReducer<M extends Model>(
           ...state.get[failureGetIdx],
           loading: false,
           object: null,
-          error: (<ModelActions.ModelGetFailureAction>action).payload.error
+          error: (<ModelGetFailureAction>action).payload.error
         }, ...state.get.slice(failureGetIdx + 1)],
       };
     }
@@ -172,7 +199,7 @@ export function modelReducer<M extends Model>(
       list: [{
         uuid: action.uuid,
         loading: true,
-        options: (<ModelActions.ModelListAction>action).payload.params,
+        options: (<ModelListAction>action).payload.params,
         objects: null,
         error: null
       }, ...state.list.slice(0, stateQueueLimit - 1)],
@@ -186,7 +213,7 @@ export function modelReducer<M extends Model>(
         list: [...state.list.slice(0, successListIdx), {
           ...state.list[successListIdx],
           loading: false,
-          objects: (<ModelActions.ModelListSuccessAction<M>>action).payload.result,
+          objects: (<ModelListSuccessAction<M>>action).payload.result,
           error: null
         }, ...state.list.slice(successListIdx + 1)],
       };
@@ -202,7 +229,7 @@ export function modelReducer<M extends Model>(
           ...state.list[failureListIdx],
           loading: false,
           objects: null,
-          error: (<ModelActions.ModelListFailureAction>action).payload.error
+          error: (<ModelListFailureAction>action).payload.error
         }, ...state.list.slice(failureListIdx + 1)],
       };
     }
@@ -214,7 +241,7 @@ export function modelReducer<M extends Model>(
       create: [{
         uuid: action.uuid,
         loading: true,
-        object: (<ModelActions.ModelCreateAction<M>>action).payload.item,
+        object: (<ModelCreateAction<M>>action).payload.item,
         error: null
       }, ...state.create.slice(0, stateQueueLimit - 1)],
     };
@@ -227,7 +254,7 @@ export function modelReducer<M extends Model>(
         create: [...state.create.slice(0, successCreateIdx), {
           ...state.create[successCreateIdx],
           loading: false,
-          object: (<ModelActions.ModelCreateSuccessAction<M>>action).payload.item,
+          object: (<ModelCreateSuccessAction<M>>action).payload.item,
           error: null
         }, ...state.create.slice(successCreateIdx + 1)],
       };
@@ -243,7 +270,7 @@ export function modelReducer<M extends Model>(
           ...state.create[failureCreateIdx],
           loading: false,
           object: null,
-          error: (<ModelActions.ModelCreateFailureAction>action).payload.error
+          error: (<ModelCreateFailureAction>action).payload.error
         }, ...state.create.slice(failureCreateIdx + 1)],
       };
     }
@@ -255,8 +282,8 @@ export function modelReducer<M extends Model>(
       update: [{
         uuid: action.uuid,
         loading: true,
-        id: (<ModelActions.ModelUpdateAction<M>>action).payload.item.id,
-        object: (<ModelActions.ModelUpdateAction<M>>action).payload.item,
+        id: (<ModelUpdateAction<M>>action).payload.item.id,
+        object: (<ModelUpdateAction<M>>action).payload.item,
         error: null
       }, ...state.update.slice(0, stateQueueLimit - 1)]
     };
@@ -269,7 +296,7 @@ export function modelReducer<M extends Model>(
         update: [...state.update.slice(0, successUpdateIdx), {
           ...state.update[successUpdateIdx],
           loading: false,
-          object: (<ModelActions.ModelUpdateSuccessAction<M>>action).payload.item,
+          object: (<ModelUpdateSuccessAction<M>>action).payload.item,
           error: null
         }, ...state.update.slice(successUpdateIdx + 1)],
       };
@@ -285,7 +312,7 @@ export function modelReducer<M extends Model>(
           ...state.update[failureUpdateIdx],
           loading: false,
           object: null,
-          error: (<ModelActions.ModelUpdateFailureAction>action).payload.error
+          error: (<ModelUpdateFailureAction>action).payload.error
         }, ...state.update.slice(failureUpdateIdx + 1)],
       };
     }
@@ -297,8 +324,8 @@ export function modelReducer<M extends Model>(
       patch: [{
         uuid: action.uuid,
         loading: true,
-        id: (<ModelActions.ModelPatchAction<M>>action).payload.item.id,
-        object: (<ModelActions.ModelPatchAction<M>>action).payload.item,
+        id: (<ModelPatchAction<M>>action).payload.item.id,
+        object: (<ModelPatchAction<M>>action).payload.item,
         error: null
       }, ...state.patch.slice(0, stateQueueLimit - 1)]
     };
@@ -311,7 +338,7 @@ export function modelReducer<M extends Model>(
         patch: [...state.patch.slice(0, successPatchIdx), {
           ...state.patch[successPatchIdx],
           loading: false,
-          object: (<ModelActions.ModelPatchSuccessAction<M>>action).payload.item,
+          object: (<ModelPatchSuccessAction<M>>action).payload.item,
           error: null
         }, ...state.patch.slice(successPatchIdx + 1)],
       };
@@ -327,7 +354,7 @@ export function modelReducer<M extends Model>(
           ...state.patch[failurePatchIdx],
           loading: false,
           object: null,
-          error: (<ModelActions.ModelPatchFailureAction>action).payload.error
+          error: (<ModelPatchFailureAction>action).payload.error
         }, ...state.patch.slice(failurePatchIdx + 1)],
       };
     }
@@ -339,7 +366,7 @@ export function modelReducer<M extends Model>(
       delete: [{
         uuid: action.uuid,
         loading: true,
-        id: (<ModelActions.ModelDeleteAction<M>>action).payload.item.id,
+        id: (<ModelDeleteAction<M>>action).payload.item.id,
         object: null,
         error: null
       }, ...state.delete.slice(0, stateQueueLimit - 1)],
@@ -353,7 +380,7 @@ export function modelReducer<M extends Model>(
         delete: [...state.delete.slice(0, successDeleteIdx), {
           ...state.delete[successDeleteIdx],
           loading: false,
-          object: (<ModelActions.ModelDeleteSuccessAction<M>>action).payload.item,
+          object: (<ModelDeleteSuccessAction<M>>action).payload.item,
           error: null
         }, ...state.delete.slice(successDeleteIdx + 1)],
       };
@@ -369,7 +396,7 @@ export function modelReducer<M extends Model>(
           ...state.delete[failureDeleteIdx],
           loading: false,
           object: null,
-          error: (<ModelActions.ModelDeleteFailureAction>action).payload.error
+          error: (<ModelDeleteFailureAction>action).payload.error
         }, ...state.delete.slice(failureDeleteIdx + 1)],
       };
     }
@@ -381,7 +408,7 @@ export function modelReducer<M extends Model>(
       deleteAll: [{
         uuid: action.uuid,
         loading: true,
-        ids: (<ModelActions.ModelDeleteAllAction<M>>action).payload.items.map(i => i.id),
+        ids: (<ModelDeleteAllAction<M>>action).payload.items.map(i => i.id),
         objects: null,
         error: null
       }, ...state.deleteAll.slice(0, stateQueueLimit - 1)],
@@ -395,7 +422,7 @@ export function modelReducer<M extends Model>(
         deleteAll: [...state.deleteAll.slice(0, successDeleteAllIdx), {
           ...state.deleteAll[successDeleteAllIdx],
           loading: false,
-          objects: (<ModelActions.ModelDeleteAllSuccessAction<M>>action).payload.items,
+          objects: (<ModelDeleteAllSuccessAction<M>>action).payload.items,
           error: null
         }, ...state.deleteAll.slice(successDeleteAllIdx + 1)],
       };
@@ -411,7 +438,7 @@ export function modelReducer<M extends Model>(
           ...state.deleteAll[failureDeleteAllIdx],
           loading: false,
           objects: null,
-          error: (<ModelActions.ModelDeleteAllFailureAction>action).payload.error
+          error: (<ModelDeleteAllFailureAction>action).payload.error
         }, ...state.deleteAll.slice(failureDeleteAllIdx + 1)],
       };
     }
@@ -423,7 +450,7 @@ export function modelReducer<M extends Model>(
       query: [{
         uuid: action.uuid,
         loading: true,
-        options: (<ModelActions.ModelQueryAction>action).payload.params,
+        options: (<ModelQueryAction>action).payload.params,
         objects: null,
         error: null
       }, ...state.query.slice(0, stateQueueLimit - 1)],
@@ -438,7 +465,7 @@ export function modelReducer<M extends Model>(
           ...state.query[successQueryIdx],
           loading: false,
           options: {...state.query[successQueryIdx].options!},
-          objects: (<ModelActions.ModelQuerySuccessAction<M>>action).payload.result,
+          objects: (<ModelQuerySuccessAction<M>>action).payload.result,
           error: null
         }, ...state.query.slice(successQueryIdx + 1)],
       };
@@ -455,7 +482,7 @@ export function modelReducer<M extends Model>(
           loading: false,
           options: {...state.query[failureQueryIdx].options!},
           objects: null,
-          error: (<ModelActions.ModelQueryFailureAction>action).payload.error
+          error: (<ModelQueryFailureAction>action).payload.error
         }, ...state.query.slice(failureQueryIdx + 1)],
       };
     }

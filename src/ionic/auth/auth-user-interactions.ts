@@ -19,14 +19,11 @@
  *
  */
 
+import {AuthUserInteractionsService as CoreAuthUserInteractionsService} from '@gngt/core/auth';
 import {AlertController, ToastController} from '@ionic/angular';
-
+import {TranslateService} from '@ngx-translate/core';
 import {from, Observable} from 'rxjs';
 import {map, mapTo, switchMap} from 'rxjs/operators';
-
-import {TranslateService} from '@ngx-translate/core';
-
-import {AuthUserInteractionsService as CoreAuthUserInteractionsService} from '@gngt/core/auth';
 
 export class AuthUserInteractionsService extends CoreAuthUserInteractionsService {
   constructor(
@@ -55,7 +52,6 @@ export class AuthUserInteractionsService extends CoreAuthUserInteractionsService
   showLoginError(error: string): void {
     this._toast.create({
       message: error,
-      showCloseButton: false,
       duration: 3000
     }).then(t => t.present());
   }

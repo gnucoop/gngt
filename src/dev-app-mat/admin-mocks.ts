@@ -20,7 +20,7 @@
  */
 
 import {EventEmitter} from '@angular/core';
-import {ModelListParams, ModelListResult} from '@gngt/core/model';
+import {ModelListParams, ModelListResult} from '@gngt/core/common';
 import {Action} from '@ngrx/store';
 import {Observable, of as obsOf, Subject} from 'rxjs';
 import {map} from 'rxjs/operators';

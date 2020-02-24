@@ -8,7 +8,7 @@ const github = new GitHubApi();
 
 /** CONFIGURATION: change these things if you want to tweak how the runs are made. */
 
-/** Path to the local gngt. By default based on the location of this script. */
+/** Path to the local gngt repo. By default based on the location of this script. */
 const localRepo = path.resolve(__dirname, '..', '..');
 
 /** Where to write the output from the presubmit script. */
@@ -19,7 +19,7 @@ const logDir = '/tmp/pr-presubmit-logs';
  * The default path is stored in an environment variable because it references an internal-Google
  * location.
  */
-const presubmitScript = `${process.env.MAT_PRESUBMIT_DIR}/material-presubmit.sh`;
+const presubmitScript = `${process.env.MAT_PRESUBMIT_DIR}/gngt-presubmit.sh`;
 
 /** Time to start presubmits. */
 const startTime = '9:30 pm';

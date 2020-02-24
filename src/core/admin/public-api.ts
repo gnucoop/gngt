@@ -19,7 +19,9 @@
  *
  */
 
+export * from './admin-module';
 export * from './admin-user-interactions';
+export * from './choices-pipe';
 export * from './edit';
 export * from './edit-field';
 export * from './edit-field-choice';

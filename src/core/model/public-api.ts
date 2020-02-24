@@ -19,8 +19,8 @@
  *
  */
 
-import * as ModelActions from './model-actions';
-import * as reducers from './reducers';
+export * from './model-actions';
+export * from './reducers';
 
 export * from './model-error';
 export * from './model-effects';
@@ -31,7 +31,3 @@ export * from './model-options-token';
 export * from './model-reducer';
 export * from './model-service';
 export * from './utils';
-export {ModelActions, reducers};
-export {
-  Model, ModelGetParams, ModelJoin, ModelListParams, ModelListResult, ModelQueryParams
-} from '@gngt/core/common';

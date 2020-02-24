@@ -37,13 +37,12 @@ const choices = obsOf([
 ]);
 
 @Component({
-  moduleId: module.id,
   selector: 'admin-edit-demo',
   templateUrl: 'admin-edit-demo.html',
   styleUrls: ['admin-edit-demo.css'],
 })
 export class AdminEditDemo {
-  readonly service = new AdminModelMockService();
+  readonly service = new AdminModelMockService() as any;
   readonly fields: AdminEditField[] = [
     {name: 'foo', label: 'Foo', type: ft.Input, subtype: fst.Text},
     {name: 'bar', label: 'Bar', type: ft.Input, subtype: fst.Text},

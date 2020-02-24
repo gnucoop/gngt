@@ -16,7 +16,7 @@ import {ExportDoc} from 'dgeni-packages/typescript/api-doc-types/ExportDoc';
  *   export {ScrollDispatcher as X} from './scroll-dispatcher';
  * ```
  *
- * This issue occurs sometimes in the Gnucoop Angular Toolkit repository, because some imports are
+ * This issue occurs sometimes in the Angular Material repository, because some imports are
  * re-exported with a different name (for deprecation), or from a different secondary entry-point.
  */
 export class FilterDuplicateExports implements Processor {

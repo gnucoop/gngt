@@ -1,35 +1,26 @@
 package(default_visibility = ["//visibility:public"])
 
-load("//:packages.bzl", "CORE_TARGETS", "IONIC_TARGETS", "ROLLUP_GLOBALS")
 load("//tools:defaults.bzl", "ng_module", "ng_package")
 load("//tools/highlight-files:index.bzl", "highlight_files")
 load("//tools/package-docs-content:index.bzl", "package_docs_content")
 
+EXAMPLE_PACKAGES = [
+    # TODO(devversion): try to have for each entry-point a bazel package so that
+    # we can automate this using the "package.bzl" variables. Currently generated
+    # with "bazel query 'kind("ng_module", //src/components-examples/...:*)' --output="label"
+    "//src/ionic-examples/ionic/calendar",
+]
+
 ng_module(
-    name = "examples",
-    srcs = glob(["**/*.ts"]) + [":example-module"],
-    assets = glob([
-        "**/*.html",
-        "**/*.css",
-    ]),
+    name = "ionic-examples",
+    srcs = glob(["*.ts"]) + [":example-module.ts"],
     module_name = "@gngt/ionic-examples",
-    # Specify the tsconfig that is also used by Gulp. We need to explicitly use this tsconfig
-    # because in order to import Moment with TypeScript, some specific options need to be set.
-    tsconfig = ":tsconfig-build.json",
-    deps = [
-        "@npm//@angular/common",
-        "@npm//@angular/core",
-        "@npm//@angular/forms",
-    ] + CORE_TARGETS + IONIC_TARGETS,
+    deps = EXAMPLE_PACKAGES,
 )
 
 filegroup(
     name = "example-source-files",
-    srcs = glob([
-        "*/*.html",
-        "*/*.css",
-        "*/*.ts",
-    ]),
+    srcs = ["%s:source-files" % pkg for pkg in EXAMPLE_PACKAGES],
 )
 
 highlight_files(
@@ -45,20 +36,20 @@ package_docs_content(
         # in the documentation.
         "//guides": "guides",
 
-        # For the live-examples in our docs, we want to package the highlighted files
-        # into the docs content. These will be used to show the source code for examples.
-        ":highlighted-source-files": "examples-highlighted",
+        # Package the overviews for "@gngt/ionic" and "@gngt/core" into the docs content
+        "//src/core:overviews": "overviews/core",
+        "//src/ionic:overviews": "overviews/ionic",
+
+        # Package the API docs for the Material and Core package into the docs-content
+        "//src:api-docs": "api-docs",
 
         # In order to be able to run examples in StackBlitz, we also want to package the
         # plain source files into the docs-content.
         ":example-source-files": "examples-source",
 
-        # Package the overviews for "@gngt/ionic" and "@gngt/core" into the docs content
-        "//src/ionic:overviews": "overviews/ionic",
-        "//src/core:overviews": "overviews/core",
-
-        # Package the API docs for the Material and Core package into the docs-content
-        "//src:api-docs": "api-docs",
+        # For the live-examples in our docs, we want to package the highlighted files
+        # into the docs content. These will be used to show the source code for examples.
+        ":highlighted-source-files": "examples-highlighted",
     },
     tags = ["docs-package"],
 )
@@ -68,33 +59,29 @@ ng_package(
     srcs = ["package.json"],
     data = [":docs-content"],
     entry_point = ":public-api.ts",
-    globals = ROLLUP_GLOBALS,
     tags = ["docs-package"],
-    deps = [":examples"],
+    deps = [":ionic-examples"] + EXAMPLE_PACKAGES,
 )
 
 genrule(
     name = "example-module",
-    # In case the example-module.ts file is present as an actual source file (e.g. generated
-    # through Gulp), we need to exclude it because otherwise the genrule would fail.
-    # TODO(devversion): remove this once gulp has been replaced with bazel.
-    srcs = glob(
-        ["**/*.ts"],
-        exclude = ["example-module.ts"],
-    ),
-    # TODO(devversion): we can't name the genrule output "example-module.ts" as it would
-    # get accidentally picked up when building the example module. See: angular/angular#30259
-    outs = ["example-module_generated.ts"],
+    srcs = [":example-source-files"],
+    outs = [
+        "example-module.ts",
+        "_example_module.MF",
+    ],
     cmd = """
-    # As a workaround for https://github.com/bazelbuild/rules_nodejs/issues/404, we pass the
-    # data to the Bazel entry-point through environment variables.
-    export _SOURCE_FILES="$(SRCS)"
-    export _OUTPUT_FILE="$@"
-    export _BASE_DIR="$$(dirname $(location //src/ionic-examples:index.ts))"
+      # Create source file manifest
+      echo "$(locations //src/ionic-examples:example-source-files)" \
+          > $(location _example_module.MF)
 
-    # Run the bazel entry-point for generating the example module.
-    ./$(location //tools/example-module:bazel-bin)
-  """,
+      # Run the bazel entry-point for generating the example module.
+      ./$(location //tools/example-module:bazel-bin) \
+          "ionic" \
+          "$(location _example_module.MF)" \
+          "$(location example-module.ts)" \
+          "$$PWD/src/ionic-examples"
+    """,
     output_to_bindir = True,
     tools = ["//tools/example-module:bazel-bin"],
 )

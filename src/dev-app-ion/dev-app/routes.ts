@@ -27,7 +27,6 @@ export const DEV_APP_ROUTES: Routes = [
   {path: '', component: DevAppHome},
   {path: 'admin-edit', loadChildren: 'admin-edit/admin-edit-demo-module#AdminEditDemoModule'},
   {path: 'admin-list', loadChildren: 'admin-list/admin-list-demo-module#AdminListDemoModule'},
-  {path: 'calendar', loadChildren: 'calendar/calendar-demo-module#CalendarDemoModule'},
   {path: 'login', loadChildren: 'login/login-demo-module#LoginDemoModule'},
   {path: 'examples', loadChildren: 'examples-page/examples-page-module#ExamplesPageModule'},
   {path: '**', component: DevApp404},

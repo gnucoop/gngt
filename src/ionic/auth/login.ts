@@ -19,23 +19,24 @@
  *
  */
 
+import {BooleanInput} from '@angular/cdk/coercion';
 import {ChangeDetectorRef, ChangeDetectionStrategy, Component,
   ViewEncapsulation} from '@angular/core';
 import {FormBuilder} from '@angular/forms';
-import {LoginComponent as CoreLoginComponent, reducers as fromAuth} from '@gngt/core/auth';
+import {LoginComponent as CoreLoginComponent, State as AuthState} from '@gngt/core/auth';
 import {Store} from '@ngrx/store';
 
 @Component({
-  moduleId: module.id,
   selector: 'gngt-login',
   templateUrl: 'login.html',
   styleUrls: ['login.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  inputs: ['disabled', 'usernamePlaceholder', 'passwordPlaceholder', 'showLabels'],
 })
 export class LoginComponent extends CoreLoginComponent {
-  constructor(fb: FormBuilder, store: Store<fromAuth.State>, cdr: ChangeDetectorRef) {
+  constructor(fb: FormBuilder, store: Store<AuthState>, cdr: ChangeDetectorRef) {
     super(fb, store, cdr);
   }
+
+  static ngAcceptInputType_showLabels: BooleanInput;
 }

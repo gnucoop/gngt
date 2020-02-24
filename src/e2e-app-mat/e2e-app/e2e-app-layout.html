@@ -1,8 +1,10 @@
-<button (click)="showLinks = !showLinks">Toggle Navigation Links</button>
+<header>
+  <button (click)="showLinks = !showLinks">Toggle Navigation Links</button>
 
-<mat-nav-list *ngIf="showLinks">
-  <a mat-list-item [routerLink]="['calendar']">Calendar</a>
-</mat-nav-list>
+  <mat-nav-list *ngIf="showLinks">
+    <a mat-list-item [routerLink]="['calendar']">Calendar</a>
+  </mat-nav-list>
+</header>
 
 <main>
   <ng-content></ng-content>

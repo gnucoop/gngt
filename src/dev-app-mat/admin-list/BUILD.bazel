@@ -1,0 +1,22 @@
+package(default_visibility = ["//visibility:public"])
+
+load("//tools:defaults.bzl", "ng_module", "sass_binary")
+
+ng_module(
+    name = "admin-list",
+    srcs = glob(["**/*.ts"]),
+    assets = [
+        "admin-list-demo.html",
+        ":admin_list_demo_scss",
+    ],
+    deps = [
+        "//src/dev-app-mat:dev-app-mat-mocks",
+        "//src/material/admin",
+        "@npm//@angular/router",
+    ],
+)
+
+sass_binary(
+    name = "admin_list_demo_scss",
+    src = "admin-list-demo.scss",
+)

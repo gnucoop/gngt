@@ -1,0 +1,21 @@
+package(default_visibility = ["//visibility:public"])
+
+load("//tools:defaults.bzl", "ng_module", "sass_binary")
+
+ng_module(
+    name = "sync",
+    srcs = glob(["**/*.ts"]),
+    assets = [
+        "sync-demo.html",
+        ":sync_demo_scss",
+    ],
+    deps = [
+        "//src/core/sync",
+        "@npm//@angular/router",
+    ],
+)
+
+sass_binary(
+    name = "sync_demo_scss",
+    src = "sync-demo.scss",
+)

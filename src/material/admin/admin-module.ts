@@ -38,10 +38,10 @@ import {MatSortModule} from '@angular/material/sort';
 import {MatTableModule} from '@angular/material/table';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {RouterModule} from '@angular/router';
-
+import {GngtAdminModule as CoreModule} from '@gngt/core/admin';
+import {CommonModule as GngtCommonModule} from '@gngt/core/common';
 import {TranslateModule} from '@ngx-translate/core';
 
-import {CommonModule as GngtCommonModule} from '@gngt/core/common';
 
 import {AdminUserInteractionsService} from './admin-user-interactions';
 import {AdminDeleteConfirmDialogComponent} from './delete-confirm';
@@ -52,7 +52,8 @@ import {AdminListComponent} from './list';
 @NgModule({
   imports: [
     CommonModule,
-    ReactiveFormsModule,
+    CoreModule,
+    GngtCommonModule,
     MatAutocompleteModule,
     MatButtonModule,
     MatCardModule,
@@ -68,9 +69,9 @@ import {AdminListComponent} from './list';
     MatSortModule,
     MatTableModule,
     MatToolbarModule,
+    ReactiveFormsModule,
     RouterModule,
     TranslateModule,
-    GngtCommonModule
   ],
   declarations: [
     AdminDeleteConfirmDialogComponent,

@@ -5,6 +5,7 @@
     "rootDir": "..",
     "baseUrl": ".",
     "paths": {
+      "@gngt/core": ["../core"],
       "@gngt/core/*": ["../core/*"],
       "@gngt/ionic/*": ["./*"]
     }

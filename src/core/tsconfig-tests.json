@@ -2,31 +2,28 @@
 // used to compile the tests for Karma. Since the code will run inside of the browser, the target
 // needs to be ES5. The format needs to be CommonJS since Karma only supports that module format.
 {
-  "extends": "./tsconfig-build",
+  "extends": "../bazel-tsconfig-build.json",
   "compilerOptions": {
+    "baseUrl": ".",
+    "outDir": "../../dist/packages/core",
+    "rootDir": ".",
+    "rootDirs": [
+      ".",
+      "../../dist/packages/core"
+    ],
     "importHelpers": false,
     "module": "commonjs",
     "target": "es5",
     "types": ["jasmine"],
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "paths": {
       "@gngt/core/*": ["./*"]
     }
   },
-  "angularCompilerOptions": {
-    "strictMetadataEmit": true,
-    "skipTemplateCodegen": true,
-    "emitDecoratorMetadata": true,
-    "fullTemplateTypeCheck": true,
-
-    // Unset options inherited from tsconfig-build
-    "annotateForClosureCompiler": false,
-    "flatModuleOutFile": null,
-    "flatModuleId": null
-  },
   "include": [
     "./*/index.ts",
-    "**/*.spec.ts",
-    "./*/typings.d.ts"
+    "**/*.spec.ts"
   ],
   "exclude": [
     "**/schematics/**/*.ts",

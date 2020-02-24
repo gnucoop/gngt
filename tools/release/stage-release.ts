@@ -1,18 +1,21 @@
 import * as OctokitApi from '@octokit/rest';
-import {default as chalk} from 'chalk';
-import {readFileSync, writeFileSync} from 'fs';
+import chalk from 'chalk';
+import {existsSync, readFileSync, writeFileSync} from 'fs';
 import {join} from 'path';
 import {BaseReleaseTask} from './base-release-task';
 import {promptAndGenerateChangelog} from './changelog';
 import {GitClient} from './git/git-client';
 import {getGithubBranchCommitsUrl} from './git/github-urls';
 import {promptForNewVersion} from './prompt/new-version-prompt';
+import {checkPackageJsonMigrations} from './release-output/output-validations';
+import {releasePackages} from './release-output/release-packages';
 import {parseVersionName, Version} from './version-name/parse-version';
-
-const {bold, cyan, green, italic, red, yellow} = chalk;
 
 /** Default filename for the changelog. */
 export const CHANGELOG_FILE_NAME = 'CHANGELOG.md';
+
+/** Path to the Bazel file that configures the release output. */
+const BAZEL_RELEASE_CONFIG_PATH = './packages.bzl';
 
 /**
  * Class that can be instantiated in order to stage a new release. The tasks requires user
@@ -50,7 +53,8 @@ class StageReleaseTask extends BaseReleaseTask {
   githubApi: OctokitApi;
 
   constructor(
-      public projectDir: string, public repositoryOwner: string, public repositoryName: string) {
+      public projectDir: string, public packagesDir: string, public repositoryOwner: string,
+      public repositoryName: string) {
     super(new GitClient(projectDir, `https://github.com/${repositoryOwner}/${repositoryName}.git`));
 
     this.packageJsonPath = join(projectDir, 'package.json');
@@ -58,9 +62,9 @@ class StageReleaseTask extends BaseReleaseTask {
     this.currentVersion = parseVersionName(this.packageJson.version)!;
 
     if (!this.currentVersion) {
-      console.error(
-          red(`Cannot parse current version in ${italic('package.json')}. Please ` +
-              `make sure "${this.packageJson.version}" is a valid Semver version.`));
+      console.error(chalk.red(
+          `Cannot parse current version in ${chalk.italic('package.json')}. Please ` +
+          `make sure "${this.packageJson.version}" is a valid Semver version.`));
       process.exit(1);
     }
 
@@ -69,9 +73,9 @@ class StageReleaseTask extends BaseReleaseTask {
 
   async run() {
     console.log();
-    console.log(cyan('-----------------------------------------'));
-    console.log(cyan('        Gngt stage release script'));
-    console.log(cyan('-----------------------------------------'));
+    console.log(chalk.cyan('-----------------------------------------'));
+    console.log(chalk.cyan('        Gngt stage release script'));
+    console.log(chalk.cyan('-----------------------------------------'));
     console.log();
 
     const newVersion = await promptForNewVersion(this.currentVersion);
@@ -88,39 +92,42 @@ class StageReleaseTask extends BaseReleaseTask {
     this.verifyNoUncommittedChanges();
 
     // Branch that will be used to stage the release for the new selected version.
-    const publishBranch = this.switchToPublishBranch(newVersion);
+    const publishBranch = await this.assertValidPublishBranch(newVersion);
 
     this.verifyLocalCommitsMatchUpstream(publishBranch);
+    this._verifyAngularPeerDependencyVersion(newVersion);
+    this._checkUpdateMigrationCollection(newVersion);
     await this._verifyPassingGithubStatus(publishBranch);
 
     if (!this.git.checkoutNewBranch(stagingBranch)) {
-      console.error(red(`Could not create release staging branch: ${stagingBranch}. Aborting...`));
+      console.error(
+          chalk.red(`Could not create release staging branch: ${stagingBranch}. Aborting...`));
       process.exit(1);
     }
 
     if (needsVersionBump) {
       this._updatePackageJsonVersion(newVersionName);
 
-      console.log(green(
-          `  ✓   Updated the version to "${bold(newVersionName)}" inside of the ` +
-          `${italic('package.json')}`));
+      console.log(chalk.green(
+          `  ✓   Updated the version to "${chalk.bold(newVersionName)}" inside of the ` +
+          `${chalk.italic('package.json')}`));
       console.log();
     }
 
     await promptAndGenerateChangelog(join(this.projectDir, CHANGELOG_FILE_NAME));
 
     console.log();
-    console.log(green(
+    console.log(chalk.green(
         `  ✓   Updated the changelog in ` +
-        `"${bold(CHANGELOG_FILE_NAME)}"`));
-    console.log(yellow(
+        `"${chalk.bold(CHANGELOG_FILE_NAME)}"`));
+    console.log(chalk.yellow(
         `  ⚠   Please review CHANGELOG.md and ensure that the log contains only changes ` +
         `that apply to the public library release. When done, proceed to the prompt below.`));
     console.log();
 
     if (!await this.promptConfirm('Do you want to proceed and commit the changes?')) {
       console.log();
-      console.log(yellow('Aborting release staging...'));
+      console.log(chalk.yellow('Aborting release staging...'));
       process.exit(0);
     }
 
@@ -135,8 +142,8 @@ class StageReleaseTask extends BaseReleaseTask {
     }
 
     console.info();
-    console.info(green(`  ✓   Created the staging commit for: "${newVersionName}".`));
-    console.info(green(`  ✓   Please push the changes and submit a PR on GitHub.`));
+    console.info(chalk.green(`  ✓   Created the staging commit for: "${newVersionName}".`));
+    console.info(chalk.green(`  ✓   Please push the changes and submit a PR on GitHub.`));
     console.info();
 
     // TODO(devversion): automatic push and PR open URL shortcut.
@@ -146,6 +153,56 @@ class StageReleaseTask extends BaseReleaseTask {
   private _updatePackageJsonVersion(newVersionName: string) {
     const newPackageJson = {...this.packageJson, version: newVersionName};
     writeFileSync(this.packageJsonPath, JSON.stringify(newPackageJson, null, 2) + '\n');
+  }
+
+  /**
+   * Ensures that the Angular version placeholder has been correctly updated to support
+   * given Angular versions. The following rules apply:
+   *   `N.x.x` requires Angular `^N.0.0 || (N+1).0.0-0`
+   *   `N.0.0-x` requires Angular `^N.0.0-0 || (N+1).0.0-0`
+   */
+  private _verifyAngularPeerDependencyVersion(newVersion: Version) {
+    const currentVersionRange = this._getAngularVersionPlaceholderOrExit();
+    const isMajorWithPrerelease =
+        newVersion.minor === 0 && newVersion.patch === 0 && newVersion.prereleaseLabel !== null;
+    const requiredRange = isMajorWithPrerelease ?
+        `^${newVersion.major}.0.0-0 || ^${newVersion.major + 1}.0.0-0` :
+        `^${newVersion.major}.0.0 || ^${newVersion.major + 1}.0.0-0`;
+
+    if (requiredRange !== currentVersionRange) {
+      console.error(chalk.red(
+          `  ✘   Cannot stage release. The required Angular version range ` +
+          `is invalid. The version range should be: ${requiredRange}`));
+      console.error(chalk.red(
+          `      Please manually update the version range ` +
+          `in: ${BAZEL_RELEASE_CONFIG_PATH}`));
+      return process.exit(1);
+    }
+  }
+
+  /**
+   * Gets the Angular version placeholder from the bazel release config. If
+   * the placeholder could not be found, the process will be terminated.
+   */
+  private _getAngularVersionPlaceholderOrExit(): string {
+    const bzlConfigPath = join(this.projectDir, BAZEL_RELEASE_CONFIG_PATH);
+    if (!existsSync(bzlConfigPath)) {
+      console.error(chalk.red(
+          `  ✘   Cannot stage release. Could not find the file which sets ` +
+          `the Angular peerDependency placeholder value. Looked for: ${bzlConfigPath}`));
+      return process.exit(1);
+    }
+
+    const configFileContent = readFileSync(bzlConfigPath, 'utf8');
+    const matches = configFileContent.match(/ANGULAR_PACKAGE_VERSION = ["']([^"']+)/);
+    if (!matches || !matches[1]) {
+      console.error(chalk.red(
+          `  ✘   Cannot stage release. Could not find the ` +
+          `"ANGULAR_PACKAGE_VERSION" variable. Please ensure this variable exists. ` +
+          `Looked in: ${bzlConfigPath}`));
+      return process.exit(1);
+    }
+    return matches[1];
   }
 
   /** Verifies that the latest commit of the current branch is passing all Github statuses. */
@@ -160,24 +217,24 @@ class StageReleaseTask extends BaseReleaseTask {
                     })).data;
 
     if (state === 'failure') {
-      console.error(
-          red(`  ✘   Cannot stage release. Commit "${commitRef}" does not pass all github ` +
-              `status checks. Please make sure this commit passes all checks before re-running.`));
-      console.error(red(`      Please have a look at: ${githubCommitsUrl}`));
+      console.error(chalk.red(
+          `  ✘   Cannot stage release. Commit "${commitRef}" does not pass all github ` +
+          `status checks. Please make sure this commit passes all checks before re-running.`));
+      console.error(chalk.red(`      Please have a look at: ${githubCommitsUrl}`));
       if (await this.promptConfirm('Do you want to ignore the Github status and proceed?')) {
-        console.info(green(
+        console.info(chalk.green(
             `  ⚠   Upstream commit is failing CI checks, but status has been ` +
             `forcibly ignored.`));
         return;
       }
       process.exit(1);
     } else if (state === 'pending') {
-      console.error(
-          red(`  ✘   Commit "${commitRef}" still has pending github statuses that ` +
-              `need to succeed before staging a release.`));
-      console.error(red(`      Please have a look at: ${githubCommitsUrl}`));
+      console.error(chalk.red(
+          `  ✘   Commit "${commitRef}" still has pending github statuses that ` +
+          `need to succeed before staging a release.`));
+      console.error(chalk.red(`      Please have a look at: ${githubCommitsUrl}`));
       if (await this.promptConfirm('Do you want to ignore the Github status and proceed?')) {
-        console.info(green(
+        console.info(chalk.green(
             `  ⚠   Upstream commit is pending CI, but status has been ` +
             `forcibly ignored.`));
         return;
@@ -185,11 +242,30 @@ class StageReleaseTask extends BaseReleaseTask {
       process.exit(0);
     }
 
-    console.info(green(`  ✓   Upstream commit is passing all github status checks.`));
+    console.info(chalk.green(`  ✓   Upstream commit is passing all github status checks.`));
+  }
+
+  /**
+   * Checks if the update migration collections are set up to properly
+   * handle the given new version.
+   */
+  private _checkUpdateMigrationCollection(newVersion: Version) {
+    const failures: string[] = [];
+    releasePackages.forEach(packageName => {
+      failures.push(...checkPackageJsonMigrations(
+                        join(this.packagesDir, packageName, 'package.json'), newVersion)
+                        .map(f => chalk.yellow(`       ⮑  ${chalk.bold(packageName)}: ${f}`)));
+    });
+    if (failures.length) {
+      console.error(chalk.red(`  ✘   Failures in ng-update migration collection detected:`));
+      failures.forEach(f => console.error(f));
+      process.exit(1);
+    }
   }
 }
 
 /** Entry-point for the release staging script. */
 if (require.main === module) {
-  new StageReleaseTask(join(__dirname, '../../'), 'gnucoop', 'gngt').run();
+  const projectDir = join(__dirname, '../../');
+  new StageReleaseTask(projectDir, join(projectDir, 'src/'), 'gnucoop', 'gngt').run();
 }

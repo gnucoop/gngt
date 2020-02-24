@@ -22,7 +22,6 @@
 import {ChangeDetectionStrategy, Component, ViewEncapsulation} from '@angular/core';
 
 @Component({
-  moduleId: module.id,
   selector: 'gngt-admin-delete-confirm',
   templateUrl: 'delete-confirm.html',
   styleUrls: ['delete-confirm.css'],

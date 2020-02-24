@@ -1,10 +1,10 @@
 <mat-card *ngIf="form|async as editForm">
   <div *ngIf="title" mat-card-title>
     <h2>{{ title }}</h2>
-    <span *ngIf="editForm.value['id']">#{{ editForm.value['id'] }}</span>
+    <span *ngIf="editForm!.value.id">#{{ editForm!.value.id }}</span>
   </div>
   <mat-card-content>
-    <form [formGroup]="editForm" [gngtFormDisabled]="loading|async">
+    <form [formGroup]="editForm!" [gngtFormDisabled]="(loading|async) === true">
       <ng-content select="[gngtAdminEditFormHeader]"></ng-content>
       <ng-container *ngFor="let field of fields">
         <div *ngIf="!field.hidden">
@@ -21,18 +21,18 @@
             </div>
             <mat-radio-group *ngSwitchCase="'radio'" [formControlName]="field.name">
               <label class="mat-form-field-label">{{ field.label | translate }}</label>
-              <mat-radio-button *ngFor="let choice of field.choices|async"
+              <mat-radio-button *ngFor="let choice of field.choices|gngtChoices"
                   [value]="choice.value">{{ choice.label | translate }}</mat-radio-button>
             </mat-radio-group>
             <mat-form-field *ngSwitchCase="'select'">
               <mat-select [placeholder]="field.label | translate" [formControlName]="field.name">
-                <mat-option *ngFor="let choice of field.choices|async"
+                <mat-option *ngFor="let choice of field.choices|gngtChoices"
                     [value]="choice.value">{{ choice.label | translate }}</mat-option>
               </mat-select>
             </mat-form-field>
             <mat-form-field *ngSwitchCase="'multipleselect'">
               <mat-select [placeholder]="field.label | translate" [formControlName]="field.name" multiple>
-                <mat-option *ngFor="let choice of field.choices|async"
+                <mat-option *ngFor="let choice of field.choices|gngtChoices"
                     [value]="choice.value">{{ choice.label | translate }}</mat-option>
               </mat-select>
             </mat-form-field>
@@ -41,7 +41,7 @@
                   [placeholder]="field.label | translate" [readonly]="field.readonly"
                   [matAutocomplete]="auto">
               <mat-autocomplete #auto="matAutocomplete">
-                <mat-option *ngFor="let option of field.choices|async"
+                <mat-option *ngFor="let option of field.choices|gngtChoices"
                     [value]="option.value">{{ option.label | translate }}</mat-option>
               </mat-autocomplete>
             </mat-form-field>
@@ -52,7 +52,7 @@
     </form>
   </mat-card-content>
   <mat-card-actions>
-    <button *ngIf="!hideSaveButton" (click)="save()" [disabled]="(canSave === false) || !editForm.valid"
+    <button *ngIf="!hideSaveButton" (click)="save()" [disabled]="(canSave === false) || !(editForm!.valid)"
         mat-raised-button color="primary">{{ saveLabel | translate }}</button>
     <button (click)="goBack()" mat-raised-button color="warn">{{ cancelLabel | translate }}</button>
   </mat-card-actions>

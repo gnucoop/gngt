@@ -25,7 +25,12 @@ import {Store} from '@ngrx/store';
 import {Observable, of as obsOf} from 'rxjs';
 import {map} from 'rxjs/operators';
 
-import * as AuthActions from './auth-actions';
+import {
+  AuthActionTypes,
+  AuthActionsUnion,
+  Logout,
+  LogoutConfirmation,
+} from './auth-actions';
 import {State} from './auth-reducer';
 
 @Injectable({providedIn: 'root'})
@@ -37,16 +42,16 @@ export class AuthHelper {
 
   logout(requestConfirmation = true): Observable<boolean> {
     if (!requestConfirmation) {
-      this._store.dispatch(new AuthActions.Logout());
+      this._store.dispatch(new Logout());
       return obsOf(true);
     }
-    this._store.dispatch(new AuthActions.LogoutConfirmation());
+    this._store.dispatch(new LogoutConfirmation());
     return this._actions.pipe(
-      ofType<AuthActions.AuthActionsUnion>(
-        AuthActions.AuthActionTypes.Logout,
-        AuthActions.AuthActionTypes.LogoutConfirmationDismiss,
+      ofType<AuthActionsUnion>(
+        AuthActionTypes.Logout,
+        AuthActionTypes.LogoutConfirmationDismiss,
       ),
-      map(action => action.type === AuthActions.AuthActionTypes.Logout),
+      map(action => action.type === AuthActionTypes.Logout),
     );
   }
 }

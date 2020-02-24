@@ -1,0 +1,23 @@
+package(default_visibility = ["//visibility:public"])
+
+load("//tools:defaults.bzl", "ng_module", "sass_binary")
+
+ng_module(
+    name = "dev-app",
+    srcs = glob(["**/*.ts"]),
+    assets = [
+        "dev-app-layout.html",
+        ":dev_app_layout_scss",
+    ],
+    deps = [
+        "@npm//@angular/cdk",
+        "@npm//@angular/router",
+        "@npm//@ionic/angular",
+        "@npm//@ngx-translate/core",
+    ],
+)
+
+sass_binary(
+    name = "dev_app_layout_scss",
+    src = "dev-app-layout.scss",
+)

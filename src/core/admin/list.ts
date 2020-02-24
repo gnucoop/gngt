@@ -19,56 +19,58 @@
  *
  */
 
-import {ChangeDetectorRef, EventEmitter, OnDestroy} from '@angular/core';
-import {Model, ModelActions, ModelService, reducers as fromModel} from '@gngt/core/model';
+import {ChangeDetectorRef, Directive, EventEmitter, Input, OnDestroy} from '@angular/core';
+import {Model} from '@gngt/core/common';
+import {ModelActionTypes, ModelService, State as ModelState} from '@gngt/core/model';
 import {Observable, of as obsOf, Subscription} from 'rxjs';
 import {filter, map, switchMap, take} from 'rxjs/operators';
 
 import {AdminUserInteractionsService} from './admin-user-interactions';
 import {AdminListHeader} from './list-header';
 
+@Directive()
 export abstract class AdminListComponent<
   T extends Model = Model,
-  S extends fromModel.State<T> = fromModel.State<T>,
-  A extends ModelActions.ModelActionTypes = ModelActions.ModelActionTypes,
+  S extends ModelState<T> = ModelState<T>,
+  A extends ModelActionTypes = ModelActionTypes,
   MS extends ModelService<T, S, A> = ModelService<T, S, A>> implements OnDestroy {
   get title(): string { return this._title; }
-  set title(title: string) {
+  @Input() set title(title: string) {
     this._title = title;
     this._cdr.markForCheck();
   }
   private _title: string;
 
   get headers(): AdminListHeader[] { return this._headers; }
-  set headers(headers: AdminListHeader[]) {
+  @Input() set headers(headers: AdminListHeader[]) {
     this._headers = headers;
     this._cdr.markForCheck();
   }
   private _headers: AdminListHeader[] = [];
 
   get displayedColumns(): string[] { return this._displayedColumns; }
-  set displayedColumns(displayedColumns: string[]) {
+  @Input() set displayedColumns(displayedColumns: string[]) {
     this._displayedColumns = ['select', ...displayedColumns];
     this._cdr.markForCheck();
   }
   private _displayedColumns: string[] = [];
 
   get baseEditUrl(): string { return this._baseEditUrl; }
-  set baseEditUrl(baseEditUrl: string) {
+  @Input() set baseEditUrl(baseEditUrl: string) {
     this._baseEditUrl = baseEditUrl;
     this._cdr.markForCheck();
   }
   private _baseEditUrl = '';
 
   get newItemPath(): string { return this._newItemPath; }
-  set newItemPath(newItemPath: string) {
+  @Input() set newItemPath(newItemPath: string) {
     this._newItemPath = newItemPath;
     this._cdr.markForCheck();
   }
   private _newItemPath = 'new';
 
   protected _service: MS;
-  set service(service: MS) {
+  @Input() set service(service: MS) {
     this._service = service;
     this._initService();
   }

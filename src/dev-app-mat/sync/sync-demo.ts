@@ -27,7 +27,6 @@ import {Observable} from 'rxjs';
 import {SyncService, SyncStatus} from '@gngt/core/sync';
 
 @Component({
-  moduleId: module.id,
   selector: 'sync-demo',
   templateUrl: 'sync-demo.html',
   styleUrls: ['sync-demo.css'],

@@ -19,7 +19,7 @@
  *
  */
 
-import {coerceBooleanProperty} from '@angular/cdk/coercion';
+import {BooleanInput, coerceBooleanProperty} from '@angular/cdk/coercion';
 import {Component, Input} from '@angular/core';
 import {EXAMPLE_COMPONENTS} from '@gngt/ionic-examples';
 
@@ -74,10 +74,10 @@ export class ExampleList {
 
   @Input()
   get expandAll(): boolean { return this._expandAll; }
-  set expandAll(v: boolean) {
-    this._expandAll = coerceBooleanProperty(v);
-  }
+  set expandAll(v: boolean) { this._expandAll = coerceBooleanProperty(v); }
   _expandAll: boolean;
 
   exampleComponents = EXAMPLE_COMPONENTS;
+
+  static ngAcceptInputType_expandAll: BooleanInput;
 }

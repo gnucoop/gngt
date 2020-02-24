@@ -1,17 +1,21 @@
 package(default_visibility = ["//visibility:public"])
 
-load("//:packages.bzl", "CORE_PACKAGES", "IONIC_PACKAGES", "MATERIAL_PACKAGES")
-load("//tools:defaults.bzl", "ts_library")
+load("@npm_bazel_typescript//:index.bzl", "ts_config")
+load("//src/core:config.bzl", "CORE_ENTRYPOINTS")
+load("//src/ionic:config.bzl", "IONIC_ENTRYPOINTS", "IONIC_TESTING_ENTRYPOINTS")
+load("//src/material:config.bzl", "MATERIAL_ENTRYPOINTS", "MATERIAL_TESTING_ENTRYPOINTS")
 load("//tools/dgeni:index.bzl", "dgeni_api_docs")
 
+coreApiEntryPoints = CORE_ENTRYPOINTS
+
+ionicApiEntryPoints = IONIC_ENTRYPOINTS + IONIC_TESTING_ENTRYPOINTS
+
+materialApiEntryPoints = MATERIAL_ENTRYPOINTS + MATERIAL_TESTING_ENTRYPOINTS
+
 # List that contains all source files that need to be processed by Dgeni.
-apiSourceFiles = ["//src/core/%s:source-files" % name for name in CORE_PACKAGES] + [
-    "//src/material/%s:source-files" % name
-    for name in MATERIAL_PACKAGES
-] + [
-    "//src/ionic/%s:source-files" % name
-    for name in IONIC_PACKAGES
-]
+apiSourceFiles = ["//src/core/%s:source-files" % name for name in coreApiEntryPoints] + \
+                 ["//src/ionic/%s:source-files" % name for name in ionicApiEntryPoints] + \
+                 ["//src/material/%s:source-files" % name for name in materialApiEntryPoints]
 
 exports_files([
     "bazel-tsconfig-build.json",
@@ -19,15 +23,16 @@ exports_files([
     "README.md",
 ])
 
-ts_library(
-    name = "module-typings",
-    srcs = [":module-typings.d.ts"],
+ts_config(
+    name = "tsconfig-test",
+    src = "bazel-tsconfig-test.json",
+    deps = ["bazel-tsconfig-build.json"],
 )
 
 dgeni_api_docs(
     name = "api-docs",
     srcs = apiSourceFiles + [
-        # Add all Angular packages to the sources because some Gngt exports use
+        # Add all Angular packages to the sources because some Material exports use
         # Angular exports and these should not cause any warnings when Dgeni uses the
         # type checker to parse our TypeScript sources.
         "@npm//@angular/core",
@@ -37,9 +42,9 @@ dgeni_api_docs(
         "@npm//@angular/platform-browser",
     ],
     entry_points = {
-        "core": CORE_PACKAGES,
-        "material": MATERIAL_PACKAGES,
-        "ionic": IONIC_PACKAGES,
+        "core": coreApiEntryPoints,
+        "ionic": ionicApiEntryPoints,
+        "material": materialApiEntryPoints,
     },
     tags = ["docs-package"],
 )

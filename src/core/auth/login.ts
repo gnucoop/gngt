@@ -20,7 +20,7 @@
  */
 
 import {coerceBooleanProperty} from '@angular/cdk/coercion';
-import {ChangeDetectorRef, Directive, EventEmitter, OnDestroy} from '@angular/core';
+import {ChangeDetectorRef, Directive, EventEmitter, Input, OnDestroy} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Observable, Subscription} from 'rxjs';
@@ -41,19 +41,20 @@ export class LoginPasswordDirective { }
 @Directive({selector: '[gngtLoginAction]'})
 export class LoginActionDirective { }
 
+@Directive()
 export abstract class LoginComponent implements OnDestroy {
   readonly loginForm: FormGroup;
   readonly valid: Observable<boolean>;
 
   private _disabled: boolean;
   get disabled(): boolean { return this._disabled; }
-  set disabled(disabled: boolean) {
+  @Input() set disabled(disabled: boolean) {
     this._disabled = forceBooleanProp(disabled);
     this._cdr.markForCheck();
   }
 
   private _usernamePlaceholder: string;
-  get usernamePlaceholder(): string {
+  @Input() get usernamePlaceholder(): string {
     return this._usernamePlaceholder;
   }
   set usernamePlaceholder(usernamePlaceholder: string) {
@@ -62,7 +63,7 @@ export abstract class LoginComponent implements OnDestroy {
   }
 
   private _passwordPlaceholder: string;
-  get passwordPlaceholder(): string {
+  @Input() get passwordPlaceholder(): string {
     return this._passwordPlaceholder;
   }
   set passwordPlaceholder(passwordPlaceholder: string) {
@@ -72,7 +73,7 @@ export abstract class LoginComponent implements OnDestroy {
 
   private _showLabels = true;
   get showLabels(): boolean { return this._showLabels; }
-  set showLabels(showLabels: boolean) {
+  @Input() set showLabels(showLabels: boolean) {
     this._showLabels = coerceBooleanProperty(showLabels);
     this._cdr.markForCheck();
   }

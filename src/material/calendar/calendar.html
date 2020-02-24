@@ -14,7 +14,7 @@
     <button
         mat-raised-button
         [class.gngt-calendar-partial-selection]="entry.selected == 'partial'"
-        [color]="entry.selected != 'none' ? 'warn' : null"
+        [color]="entry.selected != 'none' ? 'warn' : undefined"
         (click)="selectEntry(entry)"
         *ngFor="let entry of row">
       {{ entry }}

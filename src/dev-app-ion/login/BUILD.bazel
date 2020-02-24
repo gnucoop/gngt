@@ -1,0 +1,21 @@
+package(default_visibility = ["//visibility:public"])
+
+load("//tools:defaults.bzl", "ng_module", "sass_binary")
+
+ng_module(
+    name = "login",
+    srcs = glob(["**/*.ts"]),
+    assets = [
+        "login-demo.html",
+        ":login_demo_scss",
+    ],
+    deps = [
+        "//src/ionic/auth",
+        "@npm//@angular/router",
+    ],
+)
+
+sass_binary(
+    name = "login_demo_scss",
+    src = "login-demo.scss",
+)

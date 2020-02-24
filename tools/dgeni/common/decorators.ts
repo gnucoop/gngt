@@ -42,22 +42,21 @@ export function isDeprecatedDoc(doc: any) {
   return (doc.tags && doc.tags.tags || []).some((tag: any) => tag.tagName === 'deprecated');
 }
 
-/** Whether the given document is annotated with the "@docs-primary-module" jsdoc tag. */
-export function isPrimaryModuleDoc(doc: any) {
+/** Whether the given document is annotated with the "@docs-primary-export" jsdoc tag. */
+export function isPrimaryExportDoc(doc: any) {
   return (doc.tags && doc.tags.tags || [])
-      .some((tag: any) => tag.tagName === 'docs-primary-module');
+      .some((tag: any) => tag.tagName === 'docs-primary-export');
 }
 
 export function getDirectiveSelectors(classDoc: CategorizedClassDoc) {
-  if (!classDoc.directiveMetadata) {
-    return;
-  }
+  if (classDoc.directiveMetadata) {
+    const directiveSelectors: string = classDoc.directiveMetadata.get('selector');
 
-  const directiveSelectors: string = classDoc.directiveMetadata.get('selector');
-
-  if (directiveSelectors) {
-    return directiveSelectors.replace(/[\r\n]/g, '').split(/\s*,\s*/).filter(s => s !== '');
+    if (directiveSelectors) {
+      return directiveSelectors.replace(/[\r\n]/g, '').split(/\s*,\s*/).filter(s => s !== '');
+    }
   }
+  return undefined;
 }
 
 export function hasMemberDecorator(doc: MemberDoc, decoratorName: string) {

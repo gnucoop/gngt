@@ -30,32 +30,24 @@ import {MatSelect} from '@angular/material/select';
 import {MatSort} from '@angular/material/sort';
 
 import {AdminListComponent as BaseAdminListComponent} from '@gngt/core/admin';
-import {Model, ModelActions, ModelService, reducers as fromModel} from '@gngt/core/model';
+import {Model} from '@gngt/core/common';
+import {ModelActionTypes, ModelService, State as ModelState} from '@gngt/core/model';
 import {ModelDataSource} from '@gngt/material/model';
 
 import {AdminUserInteractionsService} from './admin-user-interactions';
 import {AdminListCellDirective} from './list-cell';
 
 @Component({
-  moduleId: module.id,
   selector: 'gngt-admin-list',
   templateUrl: 'list.html',
   styleUrls: ['list.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  inputs: [
-    'baseEditUrl',
-    'displayedColumns',
-    'headers',
-    'newItemPath',
-    'service',
-    'title',
-  ]
 })
 export class AdminListComponent<
     T extends Model = Model,
-    S extends fromModel.State<T> = fromModel.State<T>,
-    A extends ModelActions.ModelActionTypes = ModelActions.ModelActionTypes,
+    S extends ModelState<T> = ModelState<T>,
+    A extends ModelActionTypes = ModelActionTypes,
     MS extends ModelService<T, S, A> = ModelService<T, S, A>
   > extends BaseAdminListComponent<T, S, A, MS>
     implements AfterContentInit, OnDestroy, OnInit {
@@ -67,9 +59,10 @@ export class AdminListComponent<
       this._fillDataSource();
     }
   }
-  @ViewChild(MatPaginator, {static: true}) paginatorCmp: MatPaginator;
-  @ViewChild(MatSort, {static: true}) sortCmp: MatSort;
-  @ViewChild('actionSel', {static: true, read: MatSelect}) actionSel: MatSelect;
+  @ViewChild(MatPaginator) paginatorCmp: MatPaginator;
+  @ViewChild(MatSort) sortCmp: MatSort;
+  @ViewChild('actionSel', {read: MatSelect}) actionSel: MatSelect;
+  // tslint:disable-next-line
   @ContentChildren(AdminListCellDirective) cellTemplates: QueryList<AdminListCellDirective>;
   readonly selection: SelectionModel<T> = new SelectionModel<T>(true, []);
 
