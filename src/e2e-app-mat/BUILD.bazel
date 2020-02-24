@@ -1,17 +1,22 @@
 package(default_visibility = ["//visibility:public"])
 
-load("@npm_bazel_typescript//:defs.bzl", "ts_devserver")
+load("@npm_bazel_typescript//:index.bzl", "ts_devserver")
+load("//:packages.bzl", "getAngularUmdTargets")
 load("//tools:defaults.bzl", "ng_module")
-load("//:packages.bzl", "ANGULAR_LIBRARY_UMDS", "LIBRARIES_UMDS")
 
 exports_files([
+    "devserver-configure.js",
     "protractor.conf.js",
     "start-devserver.js",
 ])
 
 ng_module(
     name = "e2e-app-mat",
-    srcs = glob(["**/*.ts"]),
+    testonly = True,
+    srcs = glob(
+        ["**/*.ts"],
+        exclude = ["test-util/**"],
+    ),
     assets = glob(
         [
             "**/*.html",
@@ -20,7 +25,7 @@ ng_module(
         exclude = ["index.html"],
     ),
     deps = [
-        "//src/material-examples:examples",
+        "//src/material-examples",
         "//src/material/calendar",
         "@npm//@angular/common",
         "@npm//@angular/core",
@@ -30,26 +35,26 @@ ng_module(
         "@npm//@angular/router",
         "@npm//@ngx-translate/core",
         "@npm//@ngx-translate/http-loader",
+        "@npm//@webcomponents/custom-elements",
     ],
 )
 
 ts_devserver(
     name = "devserver",
-    # Root paths can be used simplify the loading of files from external Bazel repositories
-    # (such as the Bazel managed deps repository called "npm")
+    testonly = True,
     additional_root_paths = [
         "npm/node_modules",
     ],
     # Name of the AMD module that should be required on page load.
     entry_module = "gngt/src/e2e-app-mat/main",
     port = 4200,
-    # Scripts which will be included in the serving_path bundle after "require.js" has been
-    # loaded.
+    # Scripts which will be included in the serving_path bundle after
+    # RequireJS has been loaded.
     scripts = [
         ":devserver-configure.js",
         "//tools/rxjs:rxjs_umd_modules",
         "@npm//:node_modules/tslib/tslib.js",
-    ] + ANGULAR_LIBRARY_UMDS + LIBRARIES_UMDS,
+    ] + getAngularUmdTargets(),
     # Serving path of the bundle that serves all files specified in "deps" and "scripts".
     serving_path = "/bundle.js",
     # Files which should be provided by Bazel when running the devserver. These are not
@@ -58,10 +63,9 @@ ts_devserver(
         "@npm//zone.js",
         "@npm//core-js",
         "@npm//hammerjs",
+        "@npm//@angular/material",
         "@npm//@ngx-translate/core",
         ":index.html",
     ],
-    # Dependencies that produce JavaScript output will be automatically included in the
-    # serving_path bundle
     deps = [":e2e-app-mat"],
 )

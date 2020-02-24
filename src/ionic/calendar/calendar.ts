@@ -26,27 +26,11 @@ import {
 import {Calendar} from '@gngt/core/calendar';
 
 @Component({
-  moduleId: module.id,
   selector: 'gngt-calendar',
   templateUrl: 'calendar.html',
   styleUrls: ['calendar.css'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  inputs: [
-    'viewDate',
-    'disabled',
-    'dateOnlyForDay',
-    'viewMode',
-    'selectionMode',
-    'startOfWeekDay',
-    'isoMode',
-    'minDate',
-    'maxDate',
-    'selectedPeriod',
-  ],
-  outputs: [
-    'change'
-  ]
 })
 export class CalendarComponent extends Calendar {
   constructor(cdr: ChangeDetectorRef) {

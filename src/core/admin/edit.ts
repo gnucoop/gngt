@@ -20,23 +20,24 @@
  */
 
 import {coerceBooleanProperty} from '@angular/cdk/coercion';
-import {ChangeDetectorRef, EventEmitter, Input, OnDestroy, Output} from '@angular/core';
+import {ChangeDetectorRef, Directive, EventEmitter, Input, OnDestroy, Output} from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {Router} from '@angular/router';
-
+import {Model} from '@gngt/core/common';
 import {BehaviorSubject, combineLatest, Observable, of as obsOf, Subscription} from 'rxjs';
 import {
   filter, map, mapTo, shareReplay, switchMap, take, tap, withLatestFrom
 } from 'rxjs/operators';
 
-import {Model, ModelActions, ModelService, reducers as fromModel} from '@gngt/core/model';
+import {ModelActionTypes, ModelService, State as ModelState} from '@gngt/core/model';
 import {AdminEditField} from './edit-field';
 import {ProcessDataFn} from './process-data-fn';
 
+@Directive()
 export abstract class AdminEditComponent<
-  T extends Model,
-  S extends fromModel.State<T>,
-  A extends ModelActions.ModelActionTypes> implements OnDestroy {
+  T extends Model = Model,
+  S extends ModelState<T> = ModelState<T>,
+  A extends ModelActionTypes = ModelActionTypes> implements OnDestroy {
   private _title = '';
   get title(): string { return this._title; }
   @Input() set title(title: string) {
@@ -159,8 +160,7 @@ export abstract class AdminEditComponent<
       filter(([s, i]) => s != null && i != null),
       switchMap(([s, i]) => {
         if (i === 'new') { return obsOf({}); }
-        s!.get(i!);
-        return s!.getGetObject();
+        return s!.get(i!);
       }),
       filter(o => o != null),
       switchMap(o => {

@@ -1,7 +1,7 @@
 import {HttpClient, HttpClientModule} from '@angular/common/http';
 import {TestBed} from '@angular/core/testing';
 
-import {concat, Observable, of as obsOf, throwError} from 'rxjs';
+import {Observable, of as obsOf, throwError} from 'rxjs';
 import {filter, skip} from 'rxjs/operators';
 
 import * as PouchDB from 'pouchdb';
@@ -88,6 +88,7 @@ class MockUpwardHttpClient {
     res.push({sequence: 11, ok: false, error: 'conflict', extra: {next_id: 12}});
     this._postRes.push(res);
 
+    res = [];
     for (let i = 12 ; i <= 71 ; i++) {
       res.push({sequence: i, ok: true});
     }
@@ -229,7 +230,7 @@ describe('SyncService', () => {
 
     beforeEach(async () => {
       originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
-      jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000;
+      jasmine.DEFAULT_TIMEOUT_INTERVAL = 200000;
 
       TestBed.configureTestingModule({
         imports: [
@@ -267,15 +268,12 @@ describe('SyncService', () => {
         syncService.stop();
 
         syncService.list('table1', {limit: 100}).subscribe(res => {
-          // TODO(trik) only 60 docs because the other should need further
-          // response from mock service
-          expect(res.results.length).toEqual(60);
+          expect(res.results.length).toEqual(10);
           for (let i = 1 ; i <= 10 ; i++) {
-            // expect(res.results.find((r: any) => r.id === i)).toBeDefined();
             expect(res.results.find((r: any) => r.id === i)).not.toBeDefined();
           }
           expect(res.results.find((r: any) => r.id === 11)).not.toBeDefined();
-          for (let i = 12 ; i <= 71 ; i++) {
+          for (let i = 12 ; i <= 20 ; i++) {
             expect(res.results.find((r: any) => r.id === i)).toBeDefined();
           }
           done();

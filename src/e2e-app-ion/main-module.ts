@@ -13,10 +13,10 @@ import {E2E_APP_ROUTES} from './e2e-app/routes';
   imports: [
     BrowserModule,
     E2eAppModule,
+    IonicModule.forRoot(),
     NoopAnimationsModule,
     RouterModule.forRoot(E2E_APP_ROUTES),
     TranslateModule.forRoot(),
-    IonicModule.forRoot(),
 
     // E2E demos
     CalendarE2eModule,

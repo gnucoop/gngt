@@ -31,7 +31,7 @@ import {SyncService} from '@gngt/core/sync';
 import {ModelOptions} from './model-options';
 
 
-export abstract class ModelManager<M extends Model> extends BaseModelManager {
+export abstract class ModelManager<M extends Model = Model> extends BaseModelManager {
   get endPoint(): string { return this._endPoint; }
 
   private _baseUrl: string;

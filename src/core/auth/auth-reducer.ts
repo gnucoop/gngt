@@ -20,7 +20,10 @@
  */
 
 import {AuthApiActionsUnion, AuthApiActionTypes} from './auth-api-actions';
-import * as AuthActions from './auth-actions';
+import {
+  AuthActionTypes,
+  AuthActionsUnion,
+} from './auth-actions';
 import {User} from './user';
 
 export interface State {
@@ -37,7 +40,7 @@ export const initialState: State = {
 
 export function reducer(
   state = initialState,
-  action: AuthApiActionsUnion | AuthActions.AuthActionsUnion
+  action: AuthApiActionsUnion | AuthActionsUnion
 ): State {
   switch (action.type) {
     case AuthApiActionTypes.LoginSuccess: {
@@ -47,11 +50,14 @@ export function reducer(
       };
     }
 
-    case AuthActions.AuthActionTypes.Logout: {
-      return initialState;
+    case AuthActionTypes.Logout: {
+      return {
+        ...state,
+        user: null,
+      };
     }
 
-    case AuthActions.AuthActionTypes.InitUserComplete: {
+    case AuthActionTypes.InitUserComplete: {
       return {
         ...state,
         init: true,
@@ -59,7 +65,7 @@ export function reducer(
       };
     }
 
-    case AuthActions.AuthActionTypes.InitComplete: {
+    case AuthActionTypes.InitComplete: {
       return {
         ...state,
         init: true

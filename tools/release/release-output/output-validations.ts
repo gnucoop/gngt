@@ -9,6 +9,13 @@ const inlineStylesSourcemapRegex = /styles: ?\[["'].*sourceMappingURL=.*["']/;
 const externalReferencesRegex = /(templateUrl|styleUrls): *["'[]/;
 
 /**
+ * List of fields which are mandatory in entry-point "package.json" files and refer
+ * to files in the release output.
+ */
+const packageJsonPathFields =
+    ['main', 'module', 'typings', 'es2015', 'fesm5', 'fesm2015', 'esm5', 'esm2015'];
+
+/**
  * Checks the specified release bundle and ensures that it does not contain
  * any external resource URLs.
  */
@@ -23,6 +30,32 @@ export function checkReleaseBundle(bundlePath: string): string[] {
   if (externalReferencesRegex.exec(bundleContent) !== null) {
     failures.push('Found external component resource references');
   }
+
+  return failures;
+}
+
+/**
+ * Checks a "package.json" file by ensuring that common fields which are
+ * specified in the Angular package format are present. Those fields which
+ * resolve to paths are checked so that they do not refer to non-existent files.
+ */
+export function checkPackageJsonFile(filePath: string): string[] {
+  const fileContent = readFileSync(filePath, 'utf8');
+  const parsed = JSON.parse(fileContent);
+  const packageJsonDir = dirname(filePath);
+  const failures: string[] = [];
+
+  packageJsonPathFields.forEach(fieldName => {
+    if (!parsed[fieldName]) {
+      failures.push(`Missing field: ${fieldName}`);
+    }
+
+    const resolvedPath = join(packageJsonDir, parsed[fieldName]);
+
+    if (!existsSync(resolvedPath)) {
+      failures.push(`File referenced in "${fieldName}" field does not exist.`);
+    }
+  });
 
   return failures;
 }

@@ -19,9 +19,9 @@
  *
  */
 
+import {BooleanInput, coerceBooleanProperty} from '@angular/cdk/coercion';
 import {Component, Input} from '@angular/core';
 import {EXAMPLE_COMPONENTS} from '@gngt/material-examples';
-import {coerceBooleanProperty} from '@angular/cdk/coercion';
 
 /** Displays a set of gngt examples in a mat-accordion. */
 @Component({
@@ -78,4 +78,6 @@ export class ExampleList {
   _expandAll: boolean;
 
   exampleComponents = EXAMPLE_COMPONENTS;
+
+  static ngAcceptInputType_expandAll: BooleanInput;
 }

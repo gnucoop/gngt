@@ -1,22 +1,23 @@
 import {Package} from 'dgeni';
+import {ReadTypeScriptModules} from 'dgeni-packages/typescript/processors/readTypeScriptModules';
 import {Host} from 'dgeni-packages/typescript/services/ts-host/host';
+import {TypeFormatFlags} from 'typescript';
 import {HighlightNunjucksExtension} from './nunjucks-tags/highlight';
 import {patchLogService} from './patch-log-service';
+import {AsyncFunctionsProcessor} from './processors/async-functions';
+import {categorizer} from './processors/categorizer';
 import {DocsPrivateFilter} from './processors/docs-private-filter';
-import {Categorizer} from './processors/categorizer';
-import {FilterDuplicateExports} from './processors/filter-duplicate-exports';
-import {MergeInheritedProperties} from './processors/merge-inherited-properties';
 import {EntryPointGrouper} from './processors/entry-point-grouper';
-import {ReadTypeScriptModules} from 'dgeni-packages/typescript/processors/readTypeScriptModules';
-import {TypeFormatFlags} from 'typescript';
+import {FilterDuplicateExports} from './processors/filter-duplicate-exports';
+import {mergeInheritedProperties} from './processors/merge-inherited-properties';
 
-// Dgeni packages that the Gngt docs package depends on.
+// Dgeni packages that the Material docs package depends on.
 const jsdocPackage = require('dgeni-packages/jsdoc');
 const nunjucksPackage = require('dgeni-packages/nunjucks');
 const typescriptPackage = require('dgeni-packages/typescript');
 
 /**
- * Dgeni package for the Gngt docs. This just defines the package, but doesn't
+ * Dgeni package for the Angular Material docs. This just defines the package, but doesn't
  * generate the docs yet.
  *
  * Dgeni packages are very similar to AngularJS modules. Those can contain:
@@ -38,16 +39,21 @@ export const apiDocsPackage = new Package('material2-api-docs', [
 apiDocsPackage.processor(new FilterDuplicateExports());
 
 // Processor that merges inherited properties of a class with the class doc.
-apiDocsPackage.processor(new MergeInheritedProperties());
+// Note: needs to use a factory function since the processor relies on DI.
+apiDocsPackage.processor(mergeInheritedProperties);
 
 // Processor that filters out symbols that should not be shown in the docs.
 apiDocsPackage.processor(new DocsPrivateFilter());
 
 // Processor that appends categorization flags to the docs, e.g. `isDirective`, `isNgModule`, etc.
-apiDocsPackage.processor(new Categorizer());
+apiDocsPackage.processor(categorizer);
 
 // Processor to group docs into top-level entry-points such as "tabs", "sidenav", etc.
 apiDocsPackage.processor(new EntryPointGrouper());
+
+// Processor that marks asynchronous methods. Additionally, automatically adds a return
+// description for async methods which do not return any value.
+apiDocsPackage.processor(new AsyncFunctionsProcessor());
 
 // Configure the log level of the API docs dgeni package.
 apiDocsPackage.config(function(log: any) {
@@ -56,7 +62,7 @@ apiDocsPackage.config(function(log: any) {
 
 // Configure the processor for reading files from the file system.
 apiDocsPackage.config(function(readFilesProcessor: any) {
-  // Disable we currently only use the "readTypeScriptModules" processor
+  // Disabled since we only use the "readTypeScriptModules" processor
   readFilesProcessor.$enabled = false;
 });
 
@@ -79,7 +85,7 @@ apiDocsPackage.config(function(parseTagsProcessor: any) {
   parseTagsProcessor.tagDefinitions = parseTagsProcessor.tagDefinitions.concat([
     {name: 'docs-private'},
     {name: 'docs-public'},
-    {name: 'docs-primary-module'},
+    {name: 'docs-primary-export'},
     {name: 'breaking-change'},
   ]);
 });

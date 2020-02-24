@@ -5,13 +5,13 @@ set -e -o pipefail
 tunnelFileName="BrowserStackLocal-linux-x64.zip"
 tunnelUrl="https://www.browserstack.com/browserstack-local/${tunnelFileName}"
 
-tunnelTmpDir="/tmp/material-browserstack"
+tunnelTmpDir="/tmp/gngt-browserstack"
 tunnelLogFile="${tunnelTmpDir}/browserstack-local.log"
 tunnelReadyFile="${tunnelTmpDir}/readyfile"
 tunnelErrorFile="${tunnelTmpDir}/errorfile"
 
 # Cleanup and create the folder structure for the tunnel connector.
-rm -rf ${tunnelTmpDir} ${tunnelReadyFile} ${tunnelErrorFile}
+rm -rf ${tunnelTmpDir}
 mkdir -p ${tunnelTmpDir}
 touch ${tunnelLogFile}
 
@@ -31,7 +31,7 @@ rm ${tunnelFileName}
 ARGS=""
 
 if [ ! -z "${CIRCLE_BUILD_NUM}" ]; then
-  ARGS="${ARGS} --local-identifier ${CIRCLE_BUILD_NUM}-${CIRCLE_NODE_INDEX}"
+  ARGS="${ARGS} --local-identifier gngt-${CIRCLE_BUILD_NUM}-${CIRCLE_NODE_INDEX}"
 fi
 
 echo "Starting Browserstack Local in the background, logging into: ${tunnelLogFile}"
@@ -68,3 +68,7 @@ browserstack-tunnel/BrowserStackLocal -k ${BROWSER_STACK_ACCESS_KEY} ${ARGS} 2>&
 
 # Wait for the tunnel to be ready and create the readyfile with the Browserstack PID
 create_ready_file ${!} &
+
+# Wait for all sub processes to finish. This ensures that no zombie
+# processes are left over.
+wait

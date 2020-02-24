@@ -26,7 +26,6 @@ import {ChangeDetectionStrategy, Component, ViewEncapsulation} from '@angular/co
  * otherwise it will close with undefined.
  */
 @Component({
-  moduleId: module.id,
   selector: 'gngt-logout-confirm',
   templateUrl: 'logout-confirm-dialog.html',
   styleUrls: ['logout-confirm-dialog.css'],

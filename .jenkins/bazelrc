@@ -1,0 +1,3 @@
+build --remote_http_cache=https://storage.googleapis.com/gngt-bazel-remote-cache --google_default_credentials --experimental_repository_cache=/home/jenkins/bazel_repository_cache
+build --remote_upload_local_results=true
+test --jobs 6

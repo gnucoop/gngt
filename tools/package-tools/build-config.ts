@@ -5,16 +5,14 @@ export interface BuildConfig {
   projectVersion: string;
   /** Required Angular version for the project. */
   angularVersion: string;
-  /** Required Gnucoop Angular Toolkit version for the project. */
+  /** Required Angular Material version for the project. */
   angularMaterialVersion: string;
-  /** Required Ngrx Platform version for the project. */
-  ngrxVersion: string;
-  /** Required Ngx Translate version for the project. */
-  ngxtVersion: string;
-  /** Required Ionic version for the project. */
-  ionicVersion: string;
   /** Required Gic version for the project. */
   gicVersion: string;
+  /** Required Ionic version for the project. */
+  ionicVersion: string;
+  /** Required Ngx Translate version for the project. */
+  ngxtVersion: string;
   /** Path to the root of the project. */
   projectDir: string;
   /** Path to the directory where all packages are living. */

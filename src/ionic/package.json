@@ -3,9 +3,13 @@
   "version": "0.0.0-PLACEHOLDER",
   "description": "",
   "main": "./bundles/ionic.umd.js",
-  "module": "./esm5/ionic.es5.js",
-  "es2015": "./esm2015/ionic.js",
-  "typings": "./ionic.d.ts",
+  "fesm5": "./fesm5/ionic.js",
+  "fesm2015": "./fesm2015/ionic.js",
+  "esm5": "./esm5/index.js",
+  "esm2015": "./esm2015/index.js",
+  "typings": "./index.d.ts",
+  "module": "./fesm5/ionic.js",
+  "es2015": "./fesm2015/ionic.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/gnucoop/gngt.git"
@@ -23,10 +27,7 @@
     "@angular/router": "0.0.0-NG",
     "@gic/angular": "0.0.0-GIC",
     "@gngt/core": "0.0.0-PLACEHOLDER",
-    "@ionic/angular": "0.0.0-ION"
-  },
-  "dependencies": {
-    "tslib": "^1.9.3"
+    "tslib": "0.0.0-TSLIB"
   },
   "schematics": "./schematics/collection.json",
   "ng-update": {

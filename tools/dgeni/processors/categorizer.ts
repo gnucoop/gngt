@@ -1,5 +1,8 @@
 import {DocCollection, Processor} from 'dgeni';
+import {ClassLikeExportDoc} from 'dgeni-packages/typescript/api-doc-types/ClassLikeExportDoc';
 import {MemberDoc} from 'dgeni-packages/typescript/api-doc-types/MemberDoc';
+import * as ts from 'typescript';
+import {getInheritedDocsOfClass} from '../common/class-inheritance';
 import {
   decorateDeprecatedDoc,
   getDirectiveSelectors,
@@ -24,6 +27,14 @@ import {isPublicDoc} from '../common/private-docs';
 import {getInputBindingData, getOutputBindingData} from '../common/property-bindings';
 import {sortCategorizedMethodMembers, sortCategorizedPropertyMembers} from '../common/sort-members';
 
+/**
+ * Factory function for the "Categorizer" processor. Dgeni does not support
+ * dependency injection for classes. The symbol docs map is provided by the
+ * TypeScript dgeni package.
+ */
+export function categorizer(exportSymbolsToDocsMap: Map<ts.Symbol, ClassLikeExportDoc>) {
+  return new Categorizer(exportSymbolsToDocsMap);
+}
 
 /**
  * Processor to add properties to docs objects.
@@ -34,8 +45,11 @@ import {sortCategorizedMethodMembers, sortCategorizedPropertyMembers} from '../c
  * isNgModule   | Whether the doc is for an NgModule
  */
 export class Categorizer implements Processor {
-  name = 'categorizer';
-  $runBefore = ['docs-processed'];
+  $runBefore = ['docs-processed', 'entryPointGrouper'];
+
+  constructor(
+    /** Shared map that can be used to resolve docs through symbols. */
+    private _exportSymbolsToDocsMap: Map<ts.Symbol, ClassLikeExportDoc>) {}
 
   $process(docs: DocCollection) {
     docs.filter(doc => doc.docType === 'class' || doc.docType === 'interface')
@@ -82,7 +96,8 @@ export class Categorizer implements Processor {
 
   /**
    * Decorates all Dgeni class documents for a simpler use inside of the template.
-   * - Identifies directives, services or NgModules and marks them them inside of the doc.
+   * - Identifies directives, services, NgModules or harnesses and marks them them
+   *   inside of the doc.
    * - Links the Dgeni document to the Dgeni document that the current class extends from.
    */
   private _decorateClassDoc(classDoc: CategorizedClassDoc) {
@@ -91,6 +106,7 @@ export class Categorizer implements Processor {
     // store the extended class in a variable.
     classDoc.extendedDoc = classDoc.extendsClauses[0] ? classDoc.extendsClauses[0].doc! : undefined;
     classDoc.directiveMetadata = getDirectiveMetadata(classDoc);
+    classDoc.inheritedDocs = getInheritedDocsOfClass(classDoc, this._exportSymbolsToDocsMap);
 
     // In case the extended document is not public, we don't want to print it in the
     // rendered class API doc. This causes confusion and also is not helpful as the
@@ -108,6 +124,8 @@ export class Categorizer implements Processor {
       classDoc.isService = true;
     } else if (isNgModule(classDoc)) {
       classDoc.isNgModule = true;
+    } else if (this._isTestHarness(classDoc)) {
+      classDoc.isTestHarness = true;
     }
   }
 
@@ -186,6 +204,14 @@ export class Categorizer implements Processor {
     });
 
     classDoc.methods.push(...methodsToAdd);
+  }
+
+  /**
+   * Whether the given class doc is considered a test harness. We naively detect
+   * test harness classes by checking the inheritance chain for "ComponentHarness".
+   */
+  private _isTestHarness(doc: CategorizedClassDoc): boolean {
+    return doc.inheritedDocs.some(d => d.name === 'ComponentHarness');
   }
 }
 

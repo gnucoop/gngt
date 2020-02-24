@@ -26,7 +26,6 @@ import {DevAppDirectionality} from './dev-app-directionality';
 
 /** Root component for the dev-app demos. */
 @Component({
-  moduleId: module.id,
   selector: 'dev-app-layout',
   templateUrl: 'dev-app-layout.html',
   styleUrls: ['dev-app-layout.css'],
@@ -36,13 +35,9 @@ export class DevAppLayout {
   dark = false;
   navItems = [
     {name: 'Examples', route: '/examples'},
-    {name: 'Calendar', route: '/calendar'},
-    {name: 'Checkbox group', route: '/checkbox-group'},
-    {name: 'Forms', route: '/forms'},
-    {name: 'Image', route: '/image'},
-    {name: 'Node icon', route: '/node-icon'},
-    {name: 'Page slider', route: '/page-slider'},
-    {name: 'Reports', route: '/reports'},
+    {name: 'Admin Edit', route: '/admin-edit'},
+    {name: 'Admin List', route: '/admin-list'},
+    {name: 'Login', route: '/login'},
   ];
 
   constructor(

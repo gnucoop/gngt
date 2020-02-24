@@ -6,6 +6,7 @@ load(
     "ng_module",
     "ng_test_library",
     "ng_web_test_suite",
+    "sass_library",
 )
 
 ng_module(
@@ -21,6 +22,12 @@ ng_module(
         "@npm//@angular/forms",
         "@npm//date-fns",
     ],
+)
+
+sass_library(
+    name = "calendar_scss_lib",
+    srcs = glob(["**/_*.scss"]),
+    deps = [],
 )
 
 ng_test_library(

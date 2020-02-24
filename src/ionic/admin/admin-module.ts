@@ -23,32 +23,32 @@ import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
 import {ReactiveFormsModule} from '@angular/forms';
 import {RouterModule} from '@angular/router';
-
-import {IonicModule} from '@ionic/angular';
-
 import {GicModule} from '@gic/angular';
-
-import {TranslateModule} from '@ngx-translate/core';
-
 import {CommonModule as GngtCommonModule} from '@gngt/core/common';
+import {GngtAdminModule as CoreModule} from '@gngt/core/admin';
+import {IonicModule} from '@ionic/angular';
+import {TranslateModule} from '@ngx-translate/core';
 
 import {AdminUserInteractionsService} from './admin-user-interactions';
 import {AdminEditComponent} from './edit';
+import {InputTypePipe} from './input-type-pipe';
 import {AdminListComponent} from './list';
 
 @NgModule({
   imports: [
     CommonModule,
-    ReactiveFormsModule,
-    IonicModule,
+    CoreModule,
     GicModule,
+    GngtCommonModule,
+    IonicModule,
+    ReactiveFormsModule,
     RouterModule,
     TranslateModule,
-    GngtCommonModule
   ],
   declarations: [
     AdminEditComponent,
-    AdminListComponent
+    AdminListComponent,
+    InputTypePipe,
   ],
   exports: [
     AdminEditComponent,

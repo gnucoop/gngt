@@ -23,9 +23,8 @@ import {EventEmitter} from '@angular/core';
 import {CollectionViewer, DataSource} from '@angular/cdk/collections';
 import {MatPaginator, PageEvent} from '@angular/material/paginator';
 import {MatSort, Sort} from '@angular/material/sort';
-import {mergeQueryParams} from '@gngt/core/common';
-import {Model, ModelActions, ModelListParams, ModelQueryParams, ModelService,
-  reducers as fromModel} from '@gngt/core/model';
+import {Model, ModelListParams, ModelQueryParams, mergeQueryParams} from '@gngt/core/common';
+import {ModelActionTypes, ModelService, State as ModelState} from '@gngt/core/model';
 import {BehaviorSubject, combineLatest, Observable, of as obsOf, Subscription} from 'rxjs';
 import {debounceTime, map, startWith, switchMap, tap} from 'rxjs/operators';
 
@@ -38,8 +37,8 @@ type DataStreamType = [
 
 export class ModelDataSource<
       T extends Model,
-      S extends fromModel.State<T> = fromModel.State<T>,
-      A extends ModelActions.ModelActionTypes = ModelActions.ModelActionTypes,
+      S extends ModelState<T> = ModelState<T>,
+      A extends ModelActionTypes = ModelActionTypes,
       MS extends ModelService<T, S, A> = ModelService<T, S, A>
     > extends DataSource<T> {
   constructor(private _service: MS, private _baseParams: ModelListParams = {}) {

@@ -1,10 +1,16 @@
 {
   "rulesDirectory": [
     "./tools/tslint-rules/",
+    "node_modules/vrsource-tslint-rules/rules",
     "node_modules/codelyzer"
   ],
   "rules": {
-    "max-line-length": [true, 100],
+    "max-line-length": [true, {
+        "limit": 100,
+        "check-strings": true,
+        "check-regex": true
+      }
+    ],
     // Disable this flag because of SHA tslint#48b0c597f9257712c7d1f04b55ed0aa60e333f6a
     // TSLint now shows warnings if types for properties are inferred. This rule needs to be
     // disabled because all properties need to have explicit types set to work for Dgeni.
@@ -19,6 +25,8 @@
       "spaces"
     ],
     "eofline": true,
+    "no-construct": true,
+    "prefer-literal": [true, "object"],
     "no-duplicate-variable": true,
     "no-eval": true,
     "no-arg": true,
@@ -27,6 +35,7 @@
     "no-bitwise": true,
     "no-shadowed-variable": true,
     "no-unused-expression": true,
+    "no-unused-variable": true,
     "no-var-keyword": true,
     "member-access": [true, "no-public"],
     "no-debugger": true,
@@ -58,7 +67,8 @@
       true,
       "ban-keywords",
       "check-format",
-      "allow-leading-underscore"
+      "allow-leading-underscore",
+      "allow-snake-case"
     ],
     "whitespace": [
       true,
@@ -76,14 +86,16 @@
       ["fdescribe"],
       ["xit"],
       ["xdescribe"],
-      {"name": "Object.assign", "message": "Use the spread operator instead."}
+      {"name": ["first"], "message": "Use take(1) instead."},
+      {"name": ["Object", "assign"], "message": "Use the spread operator instead."}
     ],
     // Avoids inconsistent linebreak styles in source files. Forces developers to use LF linebreaks.
     "linebreak-style": [true, "LF"],
-    // Namespaces are no allowed, because of Closure compiler.
+    // Namespaces are not allowed, because of Closure compiler.
     "no-namespace": true,
     "jsdoc-format": [true, "check-multiline-start"],
     "no-duplicate-imports": true,
+    "await-promise": true,
 
     // Codelyzer
     "template-banana-in-box": true,
@@ -96,14 +108,21 @@
     // Custom Rules
     "ts-loader": true,
     "no-exposed-todo": true,
-    "no-import-spacing": true,
+    "no-import-export-spacing": true,
     "no-private-getters": true,
     "no-undecorated-base-class-di": true,
+    "no-undecorated-class-with-ng-fields": true,
     "setters-after-getters": true,
     "ng-on-changes-property-access": true,
-    "rxjs-imports": true,
     "require-breaking-change-version": true,
-    "static-query": true,
+    "class-list-signatures": true,
+    "coercion-types": [true,
+      ["coerceBooleanProperty", "coerceCssPixelValue", "coerceNumberProperty"],
+      {
+        "CanDisable": ["disabled"],
+        "CanDisableRipple": ["disableRipple"]
+      }
+    ],
     "no-host-decorator-in-concrete": [
       true,
       "HostBinding",
@@ -114,26 +133,46 @@
     }],
     "validate-decorators": [true, {
       "Component": {
-        "!host": "\\[class\\]",
-        "!preserveWhitespaces": ".*",
-        "!styles": ".*",
-        "changeDetection": "\\.OnPush$",
-        "encapsulation": "\\.None$",
-        "moduleId": "^module\\.id$"
+        "argument": 0,
+        "properties": {
+          "!host": "\\[class\\]",
+          "!preserveWhitespaces": ".*",
+          "!styles": ".*",
+          "!moduleId": ".*",
+          "changeDetection": "\\.OnPush$",
+          "encapsulation": "\\.None$"
+        }
       },
       "Directive": {
-        "!host": "\\[class\\]"
+        "argument": 0,
+        "properties": {
+          "!host": "\\[class\\]"
+        }
       },
-      "NgModule": "^(?!\\s*$).+"
-    }, "src/+(core|material|ionic)/**/!(*.spec).ts"],
+      "NgModule": {
+        "argument": 0,
+        "properties": {
+          "*": "^(?!\\s*$).+"
+        }
+      },
+      "ContentChildren": {
+        "argument": 1,
+        "required": true,
+        "properties": {
+          "descendants": "^(true|false)$"
+        }
+      }
+    }, "src/!(a11y-demo|e2e-app-ion|e2e-app-mat|ionic-examples|material-examples|universal-app-ion|universal-app-mat|dev-app-ion|dev-app-mat)/**/!(*.spec).ts"],
     "require-license-banner": [
       true,
-      "src/+(core|material|ionic|dev-app-mat|dev-app-ion)/**/!(*.spec).ts"
+      "src/!(a11y-demo|e2e-app-ion|e2e-app-mat|ionic-examples|material-examples|universal-app-ion|universal-app-mat)/**/!(*.spec).ts"
     ],
-    "missing-rollup-globals": [
+    "no-cross-entry-point-relative-imports": [
       true,
-      "./tools/package-tools/rollup-globals.ts",
-      "src/+(core|material|ionic|material-examples|ionic-examples)/!(schematics)**/*.ts"
+      "src/!(a11y-demo|e2e-app-ion|e2e-app-mat|ionic-examples|material-examples|universal-app-ion|universal-app-mat|dev-app-ion|dev-app-mat)/**/!(*.spec).ts",
+      "!src/+(cdk|material)/schematics/**/*",
+      "!src/cdk/testing/+(private|tests)/**/*",
+      "!src/google-maps/testing/**/*"
     ],
     "file-name-casing": [true, {
       // Exclude custom lint rule files since they have to always be camel-cased and end
@@ -141,19 +180,15 @@
       "\\w+Rule.ts": "camel-case",
       ".*": "kebab-case"
     }],
-    "no-unescaped-html-tag": true
+    "no-unescaped-html-tag": true,
+    // Ensures that all rxjs imports come only from `rxjs` and `rxjs/operators`. Also ensures
+    // that no AST utils from `@schematics/angular` are imported. These should be vendored.
+    "import-blacklist": [true, ["^@schematics/angular/.*(ast).*", "^rxjs(?!$|/operators$).*"]]
   },
   "linterOptions": {
     "exclude": [
       // Exclude the API golden files
-      "tools/public_api_guard/**/*.d.ts",
-      // Exclude schematic template files and test cases that can't be linted.
-      "src/core/schematics/ng-generate/*/files/**/*",
-      "src/material/schematics/ng-generate/*/files/**/*",
-      "src/ionic/schematics/ng-generate/*/files/**/*",
-      "src/core/schematics/ng-update/test-cases/**/*",
-      "src/material/schematics/ng-update/test-cases/**/*",
-      "src/ionic/schematics/ng-update/test-cases/**/*"
+      "tools/public_api_guard/**/*.d.ts"
     ]
   }
 }

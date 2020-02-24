@@ -6,19 +6,21 @@ exports.config = {
     defaultTimeoutInterval: 120000,
   },
 
-  plugins: [{
-    // Runs the axe-core accessibility checks each time the e2e page changes and
-    // Angular is ready.
-    path: require.resolve('gngt/tools/axe-protractor'),
+  plugins: [
+    {
+      // Runs the axe-core accessibility checks each time the e2e page changes and
+      // Angular is ready.
+      path: require.resolve('gngt/tools/axe-protractor'),
 
-    rules: [
-      // Exclude mat-menu elements because those are empty if not active.
-      {id: 'aria-required-children', selector: '*:not(mat-menu)'},
+      rules: [
+        // Exclude mat-menu elements because those are empty if not active.
+        {id: 'aria-required-children', selector: '*:not(mat-menu)'},
 
-      // Disable color contrast checks since the final colors will vary based on the theme.
-      {id: 'color-contrast', enabled: false},
-    ]
-  }],
+        // Disable color contrast checks since the final colors will vary based on the theme.
+        {id: 'color-contrast', enabled: false},
+      ]
+    }
+  ],
 
   // Since we want to use async/await we don't want to mix up with selenium's promise
   // manager. In order to enforce this, we disable the promise manager.

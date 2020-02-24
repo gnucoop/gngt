@@ -12,4 +12,5 @@ cd $(dirname ${0})/../..
 
 # Deploy the docs content to the Github repository. We don't want to build the examples
 # package here again because it's already fetched from the CircleCI workspace storage.
-./scripts/deploy/publish-docs-content.sh --no-build
+# ./scripts/deploy/publish-docs-content.sh --no-build
+

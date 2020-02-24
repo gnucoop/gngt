@@ -24,41 +24,30 @@ import {
   Input, OnDestroy, OnInit, ViewChild, ViewEncapsulation
 } from '@angular/core';
 import {AdminListComponent as BaseAdminListComponent} from '@gngt/core/admin';
-import {mergeQueryParams} from '@gngt/core/common';
-import {Model, ModelActions, ModelQueryParams, ModelService,
-  reducers as fromModel} from '@gngt/core/model';
+import {mergeQueryParams, Model, ModelQueryParams} from '@gngt/core/common';
+import {ModelActionTypes, ModelService, State as ModelState} from '@gngt/core/model';
 import {IonInfiniteScroll} from '@ionic/angular';
-
 import {Subscription} from 'rxjs';
 import {filter} from 'rxjs/operators';
 
 import {AdminUserInteractionsService} from './admin-user-interactions';
 
 @Component({
-  moduleId: module.id,
   selector: 'gngt-admin-list',
   templateUrl: 'list.html',
   styleUrls: ['list.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  inputs: [
-    'baseEditUrl',
-    'displayedColumns',
-    'headers',
-    'newItemPath',
-    'service',
-    'title',
-  ]
 })
 export class AdminListComponent<
-    T extends Model,
-    S extends fromModel.State<T>,
-    A extends ModelActions.ModelActionTypes,
-    MS extends ModelService<T, S, A>
+    T extends Model = Model,
+    S extends ModelState<T> = ModelState<T>,
+    A extends ModelActionTypes = ModelActionTypes,
+    MS extends ModelService<T, S, A> = ModelService<T, S, A>
   > extends BaseAdminListComponent<T, S, A, MS>
     implements OnDestroy, OnInit {
   @Input() baseQueryParams: Partial<ModelQueryParams>;
-  @ViewChild(IonInfiniteScroll, {static: true}) infiniteScroll: IonInfiniteScroll;
+  @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
 
   private _items: T[] = [];
   get items(): T[] { return this._items; }

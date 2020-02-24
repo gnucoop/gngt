@@ -1,7 +1,4 @@
 import {Component, NgModule} from '@angular/core';
-import {BrowserModule} from '@angular/platform-browser';
-import {ServerModule} from '@angular/platform-server';
-
 
 @Component({
   selector: 'kitchen-sink',
@@ -9,20 +6,8 @@ import {ServerModule} from '@angular/platform-server';
 })
 export class KitchenSink { }
 
-
 @NgModule({
-  imports: [
-    BrowserModule.withServerTransition({appId: 'kitchen-sink'}),
-  ],
-  bootstrap: [KitchenSink],
   declarations: [KitchenSink],
-  entryComponents: [],
+  exports: [KitchenSink],
 })
-export class KitchenSinkClientModule { }
-
-
-@NgModule({
-  imports: [KitchenSinkClientModule, ServerModule],
-  bootstrap: [KitchenSink],
-})
-export class KitchenSinkServerModule { }
+export class KitchenSinkModule { }

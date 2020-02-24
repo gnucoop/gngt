@@ -19,7 +19,7 @@
  *
  */
 
-import {Model} from '@gngt/core/model';
+import {Model} from '@gngt/core/common';
 
 import {AdminEditField} from './edit-field';
 

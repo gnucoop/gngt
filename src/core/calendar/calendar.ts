@@ -20,7 +20,7 @@
  */
 
 import {
-  AfterContentInit, ChangeDetectorRef, EventEmitter, forwardRef, OnInit
+  AfterContentInit, ChangeDetectorRef, Directive, EventEmitter, forwardRef, Input, OnInit, Output
 } from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 
@@ -28,7 +28,7 @@ import {Observable} from 'rxjs';
 
 import {
   addDays, addMonths, addWeeks, addYears, endOfDay, endOfISOWeek, endOfMonth, endOfWeek, endOfYear,
-  format, isAfter, isBefore, isSameDay, parse, setISODay, startOfDay, startOfISOWeek,
+  format, isAfter, isBefore, isSameDay, parseISO, setISODay, startOfDay, startOfISOWeek,
   startOfMonth, startOfWeek, startOfYear, subMonths, subWeeks, subYears
 } from 'date-fns';
 
@@ -112,13 +112,14 @@ export class CalendarEntry {
   }
 }
 
+@Directive()
 export abstract class Calendar implements AfterContentInit, ControlValueAccessor, OnInit {
   get viewDate(): Date { return this._viewDate; }
-  set viewDate(viewDate: Date) { this._setViewDate(viewDate); }
+  @Input() set viewDate(viewDate: Date) { this._setViewDate(viewDate); }
 
   private _disabled = false;
   get disabled(): boolean { return this._disabled; }
-  set disabled(disabled: boolean) {
+  @Input() set disabled(disabled: boolean) {
     const newDisabled = disabled != null && `${disabled}` !== 'false';
     if (newDisabled !== this._disabled) {
       this._disabled = newDisabled;
@@ -128,20 +129,20 @@ export abstract class Calendar implements AfterContentInit, ControlValueAccessor
 
   private _dateOnlyForDay = false;
   get dateOnlyForDay(): boolean { return this._disabled; }
-  set dateOnlyForDay(dateOnlyForDay: boolean) {
+  @Input() set dateOnlyForDay(dateOnlyForDay: boolean) {
     this._dateOnlyForDay = dateOnlyForDay != null && `${dateOnlyForDay}` !== 'false';
   }
 
   private _viewMode: CalendarViewMode = 'month';
   get viewMode(): CalendarViewMode { return this._viewMode; }
-  set viewMode(viewMode: CalendarViewMode) {
+  @Input() set viewMode(viewMode: CalendarViewMode) {
     this._viewMode = viewMode;
     this._buildCalendar();
   }
 
   private _selectionMode: CalendarPeriodType = 'day';
   get selectionMode(): CalendarPeriodType { return this._selectionMode; }
-  set selectionMode(selectionMode: CalendarPeriodType) {
+  @Input() set selectionMode(selectionMode: CalendarPeriodType) {
     this._selectionMode = selectionMode;
   }
 
@@ -149,7 +150,7 @@ export abstract class Calendar implements AfterContentInit, ControlValueAccessor
   get startOfWeekDay(): CalendarWeekDay {
     return <CalendarWeekDay>weekDays[this._startOfWeekDay];
   }
-  set startOfWeekDay(weekDay: CalendarWeekDay) {
+  @Input() set startOfWeekDay(weekDay: CalendarWeekDay) {
     this._startOfWeekDay = weekDays.indexOf(weekDay);
 
     if (this._viewMode === 'month') {
@@ -160,27 +161,27 @@ export abstract class Calendar implements AfterContentInit, ControlValueAccessor
   private _isoMode: boolean = false;
 
   get isoMode(): boolean { return this._isoMode; }
-  set isoMode(isoMode: boolean) { this._isoMode = isoMode; }
+  @Input() set isoMode(isoMode: boolean) { this._isoMode = isoMode; }
 
   private _minDate: Date | null;
   get minDate(): Date | null { return this._minDate; }
-  set minDate(minDate: Date | null) {
+  @Input() set minDate(minDate: Date | null) {
     this._minDate = minDate != null ? new Date(minDate.valueOf()) : null;
   }
 
   private _maxDate: Date | null;
   get maxDate(): Date | null { return this._maxDate; }
-  set maxDate(maxDate: Date | null) {
+  @Input() set maxDate(maxDate: Date | null) {
     this._maxDate = maxDate != null ? new Date(maxDate.valueOf()) : null;
   }
 
   private _change: EventEmitter<CalendarChange> = new EventEmitter<CalendarChange>();
-  get change(): Observable<CalendarChange> {
+  @Output() get change(): Observable<CalendarChange> {
     return this._change.asObservable();
   }
 
   private _selectedPeriod: CalendarPeriod | null;
-  private set selectedPeriod(period: CalendarPeriod | null) {
+  @Input() set selectedPeriod(period: CalendarPeriod | null) {
     this._selectedPeriod = period;
     this._change.emit({
       source: this,
@@ -272,10 +273,10 @@ export abstract class Calendar implements AfterContentInit, ControlValueAccessor
         type: 'week',
         startDate: this._isoMode ?
           startOfISOWeek(entry.date) :
-          startOfWeek(entry.date, {weekStartsOn: this._startOfWeekDay}),
+          startOfWeek(entry.date, {weekStartsOn: this._startOfWeekDay} as any),
         endDate: this._isoMode ?
           endOfISOWeek(entry.date) :
-          endOfWeek(entry.date, {weekStartsOn: this._startOfWeekDay})
+          endOfWeek(entry.date, {weekStartsOn: this._startOfWeekDay} as any)
       };
     } else if (this._selectionMode == 'month') {
       const monthBounds = this._getMonthStartEnd(entry.date);
@@ -306,7 +307,7 @@ export abstract class Calendar implements AfterContentInit, ControlValueAccessor
 
   writeValue(value: any) {
     if (typeof value === 'string') {
-      value = parse(value);
+      value = parseISO(value);
     }
     this.value = value;
   }
@@ -410,7 +411,7 @@ export abstract class Calendar implements AfterContentInit, ControlValueAccessor
   }
 
   private _buildMonthView(): void {
-    this._viewHeader = format(this._viewDate, 'MMM YYYY');
+    this._viewHeader = format(this._viewDate, 'MMM yyyy');
 
     this._buildMonthViewWeekDays();
     const monthBounds = this._getMonthStartEnd(this._viewDate);
@@ -436,7 +437,7 @@ export abstract class Calendar implements AfterContentInit, ControlValueAccessor
           type: 'day',
           date: date,
           selected: 'none',
-          highlight: format(todayDate, 'YYYY-MM-DD') === format(curDate, 'YYYY-MM-DD'),
+          highlight: format(todayDate, 'yyyy-MM-dd') === format(curDate, 'yyyy-MM-dd'),
           disabled: disabled
         });
         newEntry.selected = this._isEntrySelected(newEntry);

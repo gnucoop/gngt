@@ -19,23 +19,20 @@
  *
  */
 
+import {BooleanInput} from '@angular/cdk/coercion';
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input,
   ViewEncapsulation} from '@angular/core';
 import {MatFormFieldAppearance} from '@angular/material/form-field';
 import {FormBuilder} from '@angular/forms';
-
+import {LoginComponent as CoreLoginComponent, State as AuthState} from '@gngt/core/auth';
 import {Store} from '@ngrx/store';
 
-import {LoginComponent as CoreLoginComponent, reducers as fromAuth} from '@gngt/core/auth';
-
 @Component({
-  moduleId: module.id,
   selector: 'gngt-login',
   templateUrl: 'login.html',
   styleUrls: ['login.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  inputs: ['disabled', 'usernamePlaceholder', 'passwordPlaceholder', 'showLabels'],
 })
 export class LoginComponent extends CoreLoginComponent {
   private _fieldsAppearance: MatFormFieldAppearance = 'legacy';
@@ -45,7 +42,37 @@ export class LoginComponent extends CoreLoginComponent {
     this._cdr.markForCheck();
   }
 
-  constructor(fb: FormBuilder, store: Store<fromAuth.State>, cdr: ChangeDetectorRef) {
+  private _usernamePrefixSvgIcon: string;
+  get usernamePrefixSvgIcon(): string { return this._usernamePrefixSvgIcon; }
+  @Input() set usernamePrefixSvgIcon(usernamePrefixSvgIcon: string) {
+    this._usernamePrefixSvgIcon = usernamePrefixSvgIcon;
+    this._cdr.markForCheck();
+  }
+
+  private _usernameSuffixSvgIcon: string;
+  get usernameSuffixSvgIcon(): string { return this._usernameSuffixSvgIcon; }
+  @Input() set usernameSuffixSvgIcon(usernameSuffixSvgIcon: string) {
+    this._usernameSuffixSvgIcon = usernameSuffixSvgIcon;
+    this._cdr.markForCheck();
+  }
+
+  private _passwordPrefixSvgIcon: string;
+  get passwordPrefixSvgIcon(): string { return this._passwordPrefixSvgIcon; }
+  @Input() set passwordPrefixSvgIcon(passwordPrefixSvgIcon: string) {
+    this._passwordPrefixSvgIcon = passwordPrefixSvgIcon;
+    this._cdr.markForCheck();
+  }
+
+  private _passwordSuffixSvgIcon: string;
+  get passwordSuffixSvgIcon(): string { return this._passwordSuffixSvgIcon; }
+  @Input() set passwordSuffixSvgIcon(passwordSuffixSvgIcon: string) {
+    this._passwordSuffixSvgIcon = passwordSuffixSvgIcon;
+    this._cdr.markForCheck();
+  }
+
+  constructor(fb: FormBuilder, store: Store<AuthState>, cdr: ChangeDetectorRef) {
     super(fb, store, cdr);
   }
+
+  static ngAcceptInputType_showLabels: BooleanInput;
 }

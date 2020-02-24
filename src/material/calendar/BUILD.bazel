@@ -1,6 +1,6 @@
 package(default_visibility = ["//visibility:public"])
 
-load("@io_bazel_rules_sass//sass:sass.bzl", "sass_binary")
+load("//src/e2e-app-mat:test_suite.bzl", "e2e_test_suite")
 load(
     "//tools:defaults.bzl",
     "markdown_to_html",
@@ -8,8 +8,9 @@ load(
     "ng_module",
     "ng_test_library",
     "ng_web_test_suite",
+    "sass_binary",
+    "sass_library",
 )
-load("//src/e2e-app-mat:test_suite.bzl", "e2e_test_suite")
 
 ng_module(
     name = "calendar",
@@ -27,6 +28,12 @@ ng_module(
         "@npm//@angular/material",
         "@npm//@ngx-translate/core",
     ],
+)
+
+sass_library(
+    name = "calendar_scss_lib",
+    srcs = glob(["**/_*.scss"]),
+    deps = [],
 )
 
 sass_binary(

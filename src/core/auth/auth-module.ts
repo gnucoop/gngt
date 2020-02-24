@@ -27,6 +27,7 @@ import {StoreModule} from '@ngrx/store';
 import {AuthService} from './auth';
 import {AuthEffects} from './auth-effects';
 import {AuthGuard} from './auth-guard';
+import {AuthHelper} from './auth-helper';
 import {JwtHelperService} from './jwt-helper';
 import {JwtInterceptor} from './jwt-interceptor';
 import {LoginActionDirective, LoginPasswordDirective, LoginUsernameDirective} from './login';
@@ -50,6 +51,7 @@ import {reducers} from './reducers';
   providers: [
     AuthEffects,
     AuthGuard,
+    AuthHelper,
     AuthService,
     JwtHelperService,
     JwtInterceptor

@@ -14,6 +14,8 @@
         autocomplete="username"
         formControlName="username"
     >
+    <mat-icon *ngIf="usernamePrefixSvgIcon" matPrefix [svgIcon]="usernamePrefixSvgIcon"></mat-icon>
+    <mat-icon *ngIf="usernameSuffixSvgIcon" matPrefix [svgIcon]="usernameSuffixSvgIcon"></mat-icon>
   </mat-form-field>
   <mat-form-field [appearance]="fieldsAppearance">
     <mat-label *ngIf="showLabels">
@@ -26,6 +28,8 @@
         autocomplete="current-password"
         formControlName="password"
     >
+    <mat-icon *ngIf="passwordPrefixSvgIcon" matPrefix [svgIcon]="passwordPrefixSvgIcon"></mat-icon>
+    <mat-icon *ngIf="passwordSuffixSvgIcon" matPrefix [svgIcon]="passwordSuffixSvgIcon"></mat-icon>
   </mat-form-field>
 </form>
 <div class="gngt-login-actions">

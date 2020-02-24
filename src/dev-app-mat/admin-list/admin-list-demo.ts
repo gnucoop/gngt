@@ -27,13 +27,12 @@ import {ModelDataSource} from '@gngt/material/model';
 import {AdminModelMockService} from '../admin-mocks';
 
 @Component({
-  moduleId: module.id,
   selector: 'admin-list-demo',
   templateUrl: 'admin-list-demo.html',
   styleUrls: ['admin-list-demo.css'],
 })
 export class AdminListDemo {
-  readonly service = new AdminModelMockService();
+  readonly service = new AdminModelMockService() as any;
   readonly headers: AdminListHeader[] = [
     {column: 'foo', label: 'Foo', sortable: false},
     {column: 'bar', label: 'Bar', sortable: false},

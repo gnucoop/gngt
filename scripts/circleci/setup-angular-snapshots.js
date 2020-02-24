@@ -14,11 +14,10 @@
  * Read more here: https://yarnpkg.com/lang/en/docs/package-json/#toc-resolutions
  */
 
-const {yellow, green} = require('chalk');
 const {writeFileSync} = require('fs');
 const {join} = require('path');
-const {execSync} = require('child_process');
 
+const [tag] = process.argv.slice(2);
 const projectDir = join(__dirname, '../../');
 const packageJsonPath = join(projectDir, 'package.json');
 const packageJson = require(packageJsonPath);
@@ -30,13 +29,15 @@ packageJson['resolutions'] = packageJson['resolutions'] || {};
 // List that contains the names of all installed Angular packages (e.g. "@angular/core")
 const angularPackages = Object.keys({...packageJson.dependencies, ...packageJson.devDependencies})
   .filter(packageName => packageName.startsWith('@angular/'));
+const packageSuffix = tag ? ` (${tag})` : '';
 
-console.log(green('Setting up snapshot builds for:\n'));
-console.log(yellow(`  ${angularPackages.join('\n  ')}\n`));
+console.log('Setting up snapshot builds for:\n');
+console.log(`  ${angularPackages.map(n => `${n}${packageSuffix}`).join('\n  ')}\n`);
 
 // Setup the snapshot version for each Angular package specified in the "package.json" file.
 angularPackages.forEach(packageName => {
-  const buildsUrl = `github:angular/${packageName.split('/')[1]}-builds`;
+  let buildsUrl = `github:angular/${packageName.split('/')[1]}-builds${tag ? `#${tag}` : ''}`;
+
   // Add resolutions for each package in the format "**/{PACKAGE}" so that all
   // nested versions of that specific Angular package will have the same version.
   packageJson.resolutions[`**/${packageName}`] = buildsUrl;
@@ -53,8 +54,4 @@ angularPackages.forEach(packageName => {
 // Write changes to the "packageJson", so that we can install the new versions afterwards.
 writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2));
 
-console.log(green('Successfully added the "resolutions" to the "package.json".'));
-
-// Run "yarn" in the directory that contains the "package.json". Also pipe all output to the
-// current process so that everything can be debugged within CircleCI.
-execSync('yarn', {cwd: projectDir, stdio: 'inherit', shell: true});
+console.log('Successfully added the "resolutions" to the "package.json".');

@@ -2,7 +2,7 @@
 
 set -e -o pipefail
 
-tunnelTmpDir="/tmp/material-browserstack"
+tunnelTmpDir="/tmp/gngt-browserstack"
 tunnelReadyFile="${tunnelTmpDir}/readyfile"
 
 if [[ ! -f ${tunnelReadyFile} ]]; then
@@ -19,10 +19,5 @@ tunnelProcessId=$(cat ${tunnelReadyFile})
 # we cannot use killall because CircleCI base container images don't have it installed.
 kill ${tunnelProcessId}
 
-while (ps -p ${tunnelProcessId} &> /dev/null); do
-  printf "."
-  sleep .5
-done
-
 echo ""
-echo "Browserstack tunnel has been shut down"
+echo "Browserstack tunnel interrupt signal has been sent."

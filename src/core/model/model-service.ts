@@ -19,27 +19,39 @@
  *
  */
 
-import {Observable, pipe, throwError, UnaryFunction} from 'rxjs';
-import {filter, map, tap, switchMap} from 'rxjs/operators';
-
+import * as fromRoot from '@gngt/core/reducers';
 import {Actions, ofType} from '@ngrx/effects';
 import {createSelector, createFeatureSelector, MemoizedSelector, select, Store} from '@ngrx/store';
-
-import * as fromRoot from '@gngt/core/reducers';
+import {Observable, pipe, throwError, UnaryFunction} from 'rxjs';
+import {filter, map, take, tap, switchMap} from 'rxjs/operators';
 
 import {
   Model, ModelGetParams, ModelListParams, ModelListResult, ModelQueryParams
 } from '@gngt/core/common';
-import * as ModelActions from './model-actions';
+import {
+  ModelActionTypes,
+  ModelCreateAction,
+  ModelCreateSuccessAction,
+  ModelDeleteAction,
+  ModelDeleteSuccessAction,
+  ModelDeleteAllAction,
+  ModelDeleteAllSuccessAction,
+  ModelGetAction,
+  ModelListAction,
+  ModelPatchAction,
+  ModelQueryAction,
+  ModelUpdateAction,
+  ModelUpdateSuccessAction,
+} from './model-actions';
 import {ModelError} from './model-error';
 import {ModelGenericAction} from './model-generic-action';
 import * as fromModel from './reducers';
 import {createAction} from './utils';
 
 export abstract class ModelService<
-  T extends Model,
-  S extends fromModel.State<T>,
-  A extends ModelActions.ModelActionTypes> {
+  T extends Model = Model,
+  S extends fromModel.State<T> = fromModel.State<T>,
+  A extends ModelActionTypes = ModelActionTypes> {
   protected _modelState: MemoizedSelector<object, S>;
 
   private _lastGetEntry: UnaryFunction<
@@ -61,7 +73,7 @@ export abstract class ModelService<
 
   constructor(
     protected _store: Store<fromRoot.State>,
-    private _actions: Actions<ModelGenericAction>,
+    protected _actions: Actions<ModelGenericAction>,
     private _actionTypes: A,
     statePrefixes: [string, string]
   ) {
@@ -364,38 +376,38 @@ export abstract class ModelService<
     );
   }
 
-  getCreateSuccess(): Observable<ModelActions.ModelCreateSuccessAction<T>> {
+  getCreateSuccess(): Observable<ModelCreateSuccessAction<T>> {
     return this._actions.pipe(
       ofType(this._actionTypes.CREATE_SUCCESS),
     );
   }
 
-  getUpdateSuccess(): Observable<ModelActions.ModelUpdateSuccessAction<T>> {
+  getUpdateSuccess(): Observable<ModelUpdateSuccessAction<T>> {
     return this._actions.pipe(
       ofType(this._actionTypes.UPDATE_SUCCESS),
     );
   }
 
-  getPatchSuccess(): Observable<ModelActions.ModelUpdateSuccessAction<T>> {
+  getPatchSuccess(): Observable<ModelUpdateSuccessAction<T>> {
     return this._actions.pipe(
       ofType(this._actionTypes.PATCH_SUCCESS),
     );
   }
 
-  getDeleteSuccess(): Observable<ModelActions.ModelDeleteSuccessAction<T>> {
+  getDeleteSuccess(): Observable<ModelDeleteSuccessAction<T>> {
     return this._actions.pipe(
       ofType(this._actionTypes.DELETE_SUCCESS),
     );
   }
 
-  getDeleteAllSuccess(): Observable<ModelActions.ModelDeleteAllSuccessAction<T>> {
+  getDeleteAllSuccess(): Observable<ModelDeleteAllSuccessAction<T>> {
     return this._actions.pipe(
       ofType(this._actionTypes.DELETE_ALL_SUCCESS),
     );
   }
 
   get(id: number): Observable<T> {
-    const action = createAction<ModelActions.ModelGetAction>({
+    const action = createAction<ModelGetAction>({
       type: this._actionTypes.GET,
       payload: {id}
     });
@@ -416,11 +428,12 @@ export abstract class ModelService<
       }),
       filter(get => get!.object != null),
       map(get => get!.object!),
+      take(1),
     );
   }
 
   list(options?: ModelListParams): Observable<ModelListResult<T>> {
-    const action = createAction<ModelActions.ModelListAction>({
+    const action = createAction<ModelListAction>({
       type: this._actionTypes.LIST,
       payload: {params: options || {}}
     });
@@ -441,11 +454,12 @@ export abstract class ModelService<
       }),
       filter(list => list!.objects != null),
       map(list => list!.objects!),
+      take(1),
     );
   }
 
   create(data: Partial<T>): Observable<T> {
-    const action = createAction<ModelActions.ModelCreateAction<T>>({
+    const action = createAction<ModelCreateAction<T>>({
       type: this._actionTypes.CREATE,
       payload: {item: data},
     });
@@ -466,11 +480,12 @@ export abstract class ModelService<
       }),
       filter(create => create!.object != null),
       map(create => create!.object!),
+      take(1),
     );
   }
 
   update(data: T): Observable<T> {
-    const action = createAction<ModelActions.ModelUpdateAction<T>>({
+    const action = createAction<ModelUpdateAction<T>>({
       type: this._actionTypes.UPDATE,
       payload: {item: data},
     });
@@ -491,11 +506,12 @@ export abstract class ModelService<
       }),
       filter(update => update!.object != null),
       map(update => update!.object!),
+      take(1),
     );
   }
 
   patch(data: T): Observable<T> {
-    const action = createAction<ModelActions.ModelPatchAction<T>>({
+    const action = createAction<ModelPatchAction<T>>({
       type: this._actionTypes.PATCH,
       payload: {item: data}
     });
@@ -516,11 +532,12 @@ export abstract class ModelService<
       }),
       filter(patch => patch!.object != null),
       map(patch => patch!.object!),
+      take(1),
     );
   }
 
   delete(data: T): Observable<T> {
-    const action = createAction<ModelActions.ModelDeleteAction<T>>({
+    const action = createAction<ModelDeleteAction<T>>({
       type: this._actionTypes.DELETE,
       payload: {item: data}
     });
@@ -541,11 +558,12 @@ export abstract class ModelService<
       }),
       filter(del => del!.object != null),
       map(del => del!.object!),
+      take(1),
     );
   }
 
   deleteAll(data: T[]): Observable<T[]> {
-    const action = createAction<ModelActions.ModelDeleteAllAction<T>>({
+    const action = createAction<ModelDeleteAllAction<T>>({
       type: this._actionTypes.DELETE_ALL,
       payload: {items: data}
     });
@@ -566,11 +584,12 @@ export abstract class ModelService<
       }),
       filter(deleteAll => deleteAll!.objects != null),
       map(deleteAll => deleteAll!.objects!),
+      take(1),
     );
   }
 
   query(options: ModelQueryParams): Observable<ModelListResult<T>> {
-    const action = createAction<ModelActions.ModelQueryAction>({
+    const action = createAction<ModelQueryAction>({
       type: this._actionTypes.QUERY,
       payload: {params: options || {}}
     });
@@ -591,6 +610,7 @@ export abstract class ModelService<
       }),
       filter(query => query!.objects != null),
       map(query => query!.objects!),
+      take(1),
     );
   }
 }
