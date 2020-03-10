@@ -13,8 +13,7 @@
     "yarn": ">= 1.19.1"
   },
   "scripts": {
-    "postinstall": "node tools/postinstall/apply-patches.js && yarn -s third-party-libs && ngcc --properties main --create-ivy-entry-points && node tools/postinstall/update-ngcc-main-fields.js",
-    "third-party-libs": "rollup -c tools/third-party-libs/date-fns-bundle.js && rollup -c tools/third-party-libs/debug-bundle.js && rollup -c tools/third-party-libs/gic-core-bundle.js && rollup -c tools/third-party-libs/gic-core-loader-bundle.js && rollup -c tools/third-party-libs/ionic-core-bundle.js && rollup -c tools/third-party-libs/ionic-core-loader-bundle.js && webpack --config tools/third-party-libs/pouchdb-bundle.js && webpack --config tools/third-party-libs/pouchdb-debug-bundle.js && webpack --config tools/third-party-libs/pouchdb-find-bundle.js && rollup -c tools/third-party-libs/url-parse-bundle.js && webpack --config tools/third-party-libs/uuid-bundle.js",
+    "postinstall": "node tools/postinstall/apply-patches.js && ngcc --properties main --create-ivy-entry-points && node tools/postinstall/update-ngcc-main-fields.js",
     "bazel": "bazelisk",
     "build": "node ./scripts/build-packages-dist.js",
     "bazel:buildifier": "find . -type f \\( -name \"*.bzl\" -or -name WORKSPACE -or -name BUILD -or -name BUILD.bazel \\) ! -path \"*/node_modules/*\" | xargs buildifier -v --warnings=attr-cfg,attr-license,attr-non-empty,attr-output-default,attr-single-file,constant-glob,ctx-args,depset-iteration,depset-union,dict-concatenation,duplicated-name,filetype,git-repository,http-archive,integer-division,load,load-on-top,native-build,native-package,output-group,package-name,package-on-top,redefined-variable,repository-name,same-origin-load,string-iteration,unused-variable,unsorted-dict-items,out-of-order-load",
@@ -71,7 +70,7 @@
     "systemjs": "0.19.47",
     "tslib": "^1.9.0",
     "url-parse": "^1.4.4",
-    "uuid": "^3.4.0",
+    "uuid": "^7.0.1",
     "zone.js": "~0.10.2"
   },
   "devDependencies": {
@@ -91,10 +90,15 @@
     "@bazel/jasmine": "^1.4.0",
     "@bazel/karma": "^1.4.0",
     "@bazel/protractor": "^1.4.0",
+    "@bazel/rollup": "^1.4.0",
     "@bazel/typescript": "^1.4.0",
     "@firebase/app-types": "^0.5.0",
     "@ngx-translate/http-loader": "^4.0.0",
     "@octokit/rest": "^17.0.0",
+    "@rollup/plugin-commonjs": "^11.0.2",
+    "@rollup/plugin-json": "^4.0.2",
+    "@rollup/plugin-node-resolve": "^7.1.1",
+    "@rollup/plugin-replace": "^2.3.1",
     "@schematics/angular": "^9.0.5",
     "@types/browser-sync": "^2.26.1",
     "@types/debug": "^4.1.5",
@@ -165,11 +169,11 @@
     "requirejs": "^2.3.6",
     "resolve-bin": "^0.4.0",
     "rollup": "^1.29.1",
-    "rollup-plugin-alias": "^2.2.0",
-    "rollup-plugin-babel": "^4.3.3",
     "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-node-globals": "^1.4.0",
+    "rollup-plugin-node-polyfills": "^0.2.1",
     "rollup-plugin-node-resolve": "^5.2.0",
-    "rollup-plugin-sourcemaps": "^0.4.2",
+    "rollup-plugin-sourcemaps": "^0.5.0",
     "run-sequence": "^2.2.1",
     "scss-bundle": "^3.0.2",
     "selenium-webdriver": "^3.6.0",
@@ -184,13 +188,12 @@
     "tsutils": "^3.17.1",
     "typescript": "~3.7.5",
     "uglify-js": "^3.7.6",
-    "vrsource-tslint-rules": "5.1.1",
-    "webpack": "^4.41.6",
-    "webpack-cli": "^3.3.11"
+    "vrsource-tslint-rules": "5.1.1"
   },
   "resolutions": {
     "dgeni-packages/typescript": "3.7.5",
     "leveldown": "5.4.1",
+    "ltgt": "2.2.1",
     "**/graceful-fs": "4.2.2"
   }
 }

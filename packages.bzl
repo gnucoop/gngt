@@ -46,17 +46,17 @@ THIRD_PARTY_NGCC_BUNDLES = [
 ]
 
 THIRD_PARTY_NO_NGCC_BUNDLES = [
-    "@gic/core/core.umd.js",
-    "@gic/core/core-loader.umd.js",
-    "@ionic/core/core.umd.js",
-    "@ionic/core/core-loader.umd.js",
-    "date-fns/date-fns.umd.js",
-    "debug/debug.umd.js",
-    "pouchdb/pouchdb.umd.js",
-    "pouchdb-debug/pouchdb-debug.umd.js",
-    "pouchdb-find/pouchdb-find.umd.js",
-    "uuid/uuid.umd.js",
-    "url-parse/url-parse.umd.js",
+    ("@gic/core", "//tools/third-party-libs:gic-core-bundle.js"),
+    ("@gic/core/core", "//tools/third-party-libs:gic-core-loader-bundle.js"),
+    ("@ionic/core", "//tools/third-party-libs:ionic-core-bundle.js"),
+    ("@ionic/core/core", "//tools/third-party-libs:ionic-core-loader-bundle.js"),
+    ("date-fns", "//tools/third-party-libs:date-fns-bundle.js"),
+    ("debug", "//tools/third-party-libs:debug-bundle.js"),
+    ("pouchdb", "//tools/third-party-libs:pouchdb-bundle.js"),
+    ("pouchdb-debug", "//tools/third-party-libs:pouchdb-debug-bundle.js"),
+    ("pouchdb-find", "//tools/third-party-libs:pouchdb-find-bundle.js"),
+    ("uuid", "//tools/third-party-libs:uuid-bundle.js"),
+    ("url-parse", "//tools/third-party-libs:url-parse-bundle.js"),
 ]
 
 """

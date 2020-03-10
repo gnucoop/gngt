@@ -18,7 +18,8 @@ var MATERIAL_PACKAGES = $MATERIAL_ENTRYPOINTS_TMPL;
 var frameworkPackages = $ANGULAR_PACKAGE_BUNDLES;
 
 /** Map of third party packages and their bundle names. */
-var thirdPartyPackes = $THIRD_PARTY_PACKAGE_BUNDLES;
+var thirdPartyPackages = $THIRD_PARTY_PACKAGE_BUNDLES;
+var thirdPartyNoNgccPackages = $THIRD_PARTY_NO_NGCC_PACKAGE_BUNDLES;
 
 /** Whether Ivy is enabled. */
 var isRunningWithIvy = '$ANGULAR_IVY_ENABLED_TMPL'.toString() === 'True';
@@ -88,6 +89,7 @@ System.config({
   packages: packagesConfig,
   paths: {
     'node:*': nodeModulesPath + '*',
+    'tpl:*': 'tools/third-party-libs/*',
   }
 });
 
@@ -140,16 +142,24 @@ function setupFrameworkPackages() {
  * them in SystemJS. Framework packages should always resolve to the UMD bundles.
  */
 function setupThirdPartyPackages() {
-  Object.keys(thirdPartyPackes).forEach(function(moduleName) {
+  Object.keys(thirdPartyPackages).forEach(function(moduleName) {
     // Ensures that imports to the framework package are resolved
     // to the configured node modules directory.
     pathMapping[moduleName] = 'node:' + moduleName;
-    var bundleName = thirdPartyPackes[moduleName];
+    var bundleName = thirdPartyPackages[moduleName];
     var bundlePath = 'bundles/' + bundleName;
     if (isRunningWithIvy) {
       bundlePath = '__ivy_ngcc__/' + bundlePath;
     }
     packagesConfig[moduleName] = {main: bundlePath};
+  });
+}
+
+function setupThirdPartyNoNgccPackages() {
+  Object.keys(thirdPartyNoNgccPackages).forEach(function(moduleName) {
+    // Ensures that imports to the framework package are resolved
+    // to the configured node modules directory.
+    pathMapping[moduleName] = 'tpl:' + thirdPartyNoNgccPackages[moduleName];
   });
 }
 
