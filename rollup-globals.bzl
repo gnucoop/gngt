@@ -60,7 +60,6 @@ ROLLUP_GLOBALS = {
     "pouchdb-find": "pouchdb.find",
     "rxjs": "rxjs",
     "rxjs/operators": "rxjs.operators",
-    "tslib": "tslib",
     "url-parse": "urlParse",
     "uuid": "uuid",
 }
