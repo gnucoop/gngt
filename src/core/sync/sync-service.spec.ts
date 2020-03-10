@@ -308,19 +308,16 @@ describe('SyncService', () => {
       return new pouchDBStatic(dbName).destroy();
     });
 
-    it('should get an object from local database', async () => {
-      const obj = await syncService.get('table1', {id: 1}).toPromise();
-      expect(obj).toEqual(dbEntries[0].object);
+    it('should get an object from local database', () => {
+      const obj = syncService.get('table1', {id: 1}).toPromise();
+      expectAsync(obj).toBeResolvedTo(dbEntries[0].object);
     });
 
     it(
       'should throw a not_found error when trying to get an unexisting object from local db',
-      async () => {
-        try {
-          await syncService.get('table1', {id: 4}).toPromise();
-        } catch (err) {
-          expect(err).toEqual('not_found');
-        }
+      () => {
+        const promise = syncService.get('table1', {id: 4}).toPromise();
+        expectAsync(promise).toBeRejectedWithError('not_found');
       }
     );
 
@@ -393,55 +390,46 @@ describe('SyncService', () => {
       });
     });
 
-    it('should create an object and save it to the local database', async () => {
+    it('should create an object and save it to the local database', () => {
       const newObj = {foo: '', counter: 0, related: 1};
       const expectedId = dbEntries.filter(e => e.table_name === 'table1')
         .sort((a, b) => b.object_id - a.object_id)[0].object_id + 1;
-      const res = await syncService.create('table1', newObj).toPromise();
+      const res = syncService.create('table1', newObj).toPromise();
       const newObjWithId = {id: expectedId, ...newObj};
-      expect(res).toEqual(newObjWithId);
-      const obj = await syncService.get('table1', {id: expectedId}).toPromise();
-      expect(obj).toEqual(newObjWithId);
+      expectAsync(res).toBeResolvedTo(newObjWithId);
+      const obj = syncService.get('table1', {id: expectedId}).toPromise();
+      expectAsync(obj).toBeResolvedTo(newObjWithId);
     });
 
-    it('should update an existing object in the local database', async () => {
+    it('should update an existing object in the local database', () => {
       const entry = dbEntries[0];
       const updated = {...entry.object, counter: 666};
       const id = entry.object_id;
-      const res = await syncService.update('table1', id, updated).toPromise();
-      expect(res).toEqual(updated);
-      const obj = await syncService.get('table1', {id}).toPromise();
-      expect(obj).toEqual(updated);
+      const res = syncService.update('table1', id, updated).toPromise();
+      expectAsync(res).toBeResolvedTo(updated);
+      const obj = syncService.get('table1', {id}).toPromise();
+      expectAsync(obj).toBeResolvedTo(updated);
     });
 
-    it('should throw an error when trying to update an unexisting object', async () => {
+    it('should throw an error when trying to update an unexisting object', () => {
       const entry = {...dbEntries[0], object: {...dbEntries[0].object}};
       entry.object_id = entry.object.id = 666;
-      try {
-        await syncService.update('table1', entry.object_id, entry.object).toPromise();
-      } catch (err) {
-        expect(err).toEqual('not_found');
-      }
+      const promise = syncService.update('table1', entry.object_id, entry.object).toPromise();
+      expectAsync(promise).toBeRejectedWithError('not_found');
     });
 
-    it('should delete an existing object in the local database', async () => {
+    it('should delete an existing object in the local database', () => {
       const entry = dbEntries[0];
       const id = entry.object_id;
-      const deleted = await syncService.delete('table1', id).toPromise();
-      expect(deleted).toEqual(entry.object);
-      try {
-        await syncService.get('table1', {id}).toPromise();
-      } catch (err) {
-        expect(err).toEqual('not_found');
-      }
+      const deleted = syncService.delete('table1', id).toPromise();
+      expectAsync(deleted).toBeResolvedTo(entry.object);
+      const promise = syncService.get('table1', {id}).toPromise();
+      expectAsync(promise).toBeRejectedWithError('not_found');
     });
 
-    it('should throw an error when trying to delete an unexisting object', async () => {
-      try {
-        await syncService.delete('table1', 11).toPromise();
-      } catch (err) {
-          expect(err).toEqual('not_found');
-      }
+    it('should throw an error when trying to delete an unexisting object', () => {
+      const promise = syncService.delete('table1', 11).toPromise();
+      expectAsync(promise).toBeRejectedWithError('not_found');
     });
   });
 });
