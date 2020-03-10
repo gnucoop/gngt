@@ -21,7 +21,8 @@
 
 import {BooleanInput, coerceBooleanProperty} from '@angular/cdk/coercion';
 import {Component, Injector, Input, OnInit, ViewContainerRef} from '@angular/core';
-import {EXAMPLE_COMPONENTS, loadExampleFactory} from '@gngt/ionic-examples';
+import {EXAMPLE_COMPONENTS} from '@gngt/ionic-examples';
+import {loadExampleFactory} from '@gngt/ionic-examples/private';
 
 @Component({
   selector: 'ionic-example',

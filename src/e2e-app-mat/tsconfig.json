@@ -7,7 +7,7 @@
     "paths": {
       "@gngt/core/*": ["../core/*"],
       "@gngt/material/*": ["../material/*"],
-      "@gngt/material-examples": ["../material-examples/"]
+      "@gngt/material-examples/*": ["../material-examples/*"]
     }
   },
   "include": ["./**/*.ts"]

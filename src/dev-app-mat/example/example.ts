@@ -21,7 +21,8 @@
 
 import {BooleanInput, coerceBooleanProperty} from '@angular/cdk/coercion';
 import {Component, Injector, Input, OnInit, ViewContainerRef} from '@angular/core';
-import {EXAMPLE_COMPONENTS, loadExampleFactory} from '@gngt/material-examples';
+import {EXAMPLE_COMPONENTS} from '@gngt/material-examples';
+import {loadExampleFactory} from '@gngt/material-examples/private';
 
 @Component({
   selector: 'material-example',

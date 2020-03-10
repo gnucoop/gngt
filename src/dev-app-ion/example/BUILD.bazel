@@ -7,6 +7,7 @@ ng_module(
     srcs = glob(["**/*.ts"]),
     deps = [
         "//src/ionic-examples",
+        "//src/ionic-examples/private",
         "@npm//@angular/cdk",
         "@npm//@angular/elements",
         "@npm//@angular/material",

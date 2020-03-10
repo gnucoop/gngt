@@ -172,6 +172,10 @@ function setupLocalReleasePackages() {
   MATERIAL_PACKAGES.forEach(function(pkgName) {
     configureEntryPoint('material', pkgName);
   });
+
+  // Private secondary entry-points.
+  configureEntryPoint('ionic-examples', 'private');
+  configureEntryPoint('material-examples', 'private');
 }
 
 /** Configures the specified package, its entry-point and its examples. */

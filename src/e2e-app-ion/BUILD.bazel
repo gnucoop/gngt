@@ -25,7 +25,7 @@ ng_module(
         exclude = ["index.html"],
     ),
     deps = [
-        "//src/ionic-examples",
+        "//src/ionic-examples/private",
         "//src/ionic/calendar",
         "@npm//@angular/common",
         "@npm//@angular/core",

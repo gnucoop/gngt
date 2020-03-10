@@ -7,7 +7,7 @@
     "paths": {
       "@gngt/core/*": ["../core/*"],
       "@gngt/ionic/*": ["../ionic/*"],
-      "@gngt/ionic-examples": ["../ionic-examples/"]
+      "@gngt/ionic-examples/*": ["../ionic-examples/*"]
     }
   },
   "include": ["./**/*.ts"]

@@ -7,8 +7,7 @@
  */
 
 import {Component, Injector, Input, OnInit, ViewContainerRef} from '@angular/core';
-import {createCustomElement} from '@angular/elements';
-import {loadExampleFactory} from '@gngt/material-examples';
+import {loadExampleFactory} from '@gngt/material-examples/private';
 
 /** Loads an example component from `@angular/material-examples` */
 @Component({
