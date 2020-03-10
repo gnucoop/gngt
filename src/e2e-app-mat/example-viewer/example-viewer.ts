@@ -6,9 +6,9 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-import {Component, ElementRef, Injector, Input, OnInit} from '@angular/core';
+import {Component, Injector, Input, OnInit, ViewContainerRef} from '@angular/core';
 import {createCustomElement} from '@angular/elements';
-import {EXAMPLE_COMPONENTS} from '@gngt/material-examples';
+import {loadExampleFactory} from '@gngt/material-examples';
 
 /** Loads an example component from `@angular/material-examples` */
 @Component({
@@ -23,18 +23,10 @@ export class ExampleViewer implements OnInit {
   /** ID of the material example to display. */
   @Input() id: string;
 
-  constructor(private _elementRef: ElementRef<HTMLElement>, private _injector: Injector) {}
+  constructor(private _injector: Injector,
+              private _viewContainerRef: ViewContainerRef) {}
 
-  ngOnInit() {
-    let exampleElementCtor = customElements.get(this.id);
-
-    if (!exampleElementCtor) {
-      exampleElementCtor =
-          createCustomElement(EXAMPLE_COMPONENTS[this.id].component, {injector: this._injector});
-
-      customElements.define(this.id, exampleElementCtor);
-    }
-
-    this._elementRef.nativeElement.appendChild(new exampleElementCtor(this._injector));
+  async ngOnInit() {
+    this._viewContainerRef.createComponent(await loadExampleFactory(this.id, this._injector));
   }
 }

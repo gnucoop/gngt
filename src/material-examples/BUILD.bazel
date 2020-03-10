@@ -77,7 +77,6 @@ genrule(
 
       # Run the bazel entry-point for generating the example module.
       ./$(location //tools/example-module:bazel-bin) \
-          "material" \
           "$(location _example_module.MF)" \
           "$(location example-module.ts)" \
           "$$PWD/src/material-examples"

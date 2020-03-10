@@ -6,11 +6,11 @@ import {generateExampleModule} from './generate-example-module';
  * bazel-bin.js {sourceFileManifest} {outputFilePath} {baseDirPath}
  */
 if (require.main === module) {
-  const [pkgName, sourceFileManifest, outputFile, baseDir] = process.argv.slice(2);
+  const [sourceFileManifest, outputFile, baseDir] = process.argv.slice(2);
   const sourceFiles = readFileSync(sourceFileManifest, 'utf8')
     .split(' ')
     .map(filePath => filePath.trim())
     .filter(s => s.endsWith('.ts'));
 
-  generateExampleModule(pkgName, sourceFiles, outputFile, baseDir);
+  generateExampleModule(sourceFiles, outputFile, baseDir);
 }
