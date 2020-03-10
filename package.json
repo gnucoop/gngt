@@ -27,7 +27,6 @@
     "e2e": "bazel test //src/... --test_tag_filters=e2e",
     "deploy-dev-app-ion": "node ./scripts/deploy-dev-app.js ion",
     "deploy-dev-app-mat": "node ./scripts/deploy-dev-app.js mat",
-    "webdriver-manager": "webdriver-manager",
     "breaking-changes": "ts-node --project scripts/tsconfig.json scripts/breaking-changes.ts",
     "gulp": "gulp",
     "stage-release": "ts-node --project tools/release/tsconfig.json tools/release/stage-release.ts",
