@@ -9,5 +9,5 @@ export declare class InputAriaLabelDirective implements AfterViewInit, OnDestroy
     ngAfterViewInit(): void;
     ngOnDestroy(): void;
     static ɵdir: i0.ɵɵDirectiveDefWithMeta<InputAriaLabelDirective, "[gngtInputAriaLabel]", never, { "gngtInputAriaLabel": "gngtInputAriaLabel"; }, {}, never>;
-    static ɵfac: i0.ɵɵFactoryDef<InputAriaLabelDirective>;
+    static ɵfac: i0.ɵɵFactoryDef<InputAriaLabelDirective, [{ optional: true; host: true; }, null, null]>;
 }

@@ -1,6 +1,6 @@
 export declare class AdminDeleteConfirmDialogComponent {
-    static ɵcmp: i0.ɵɵComponentDefWithMeta<AdminDeleteConfirmDialogComponent, "gngt-admin-delete-confirm", never, {}, {}, never>;
-    static ɵfac: i0.ɵɵFactoryDef<AdminDeleteConfirmDialogComponent>;
+    static ɵcmp: i0.ɵɵComponentDefWithMeta<AdminDeleteConfirmDialogComponent, "gngt-admin-delete-confirm", never, {}, {}, never, never>;
+    static ɵfac: i0.ɵɵFactoryDef<AdminDeleteConfirmDialogComponent, never>;
 }
 
 export declare class AdminEditComponent<T extends Model = Model, S extends ModelState<T> = ModelState<T>, A extends ModelActionTypes = ModelActionTypes> extends BaseAdminEditComponent<T, S, A> {
@@ -8,8 +8,8 @@ export declare class AdminEditComponent<T extends Model = Model, S extends Model
     static ngAcceptInputType_canSave: BooleanInput;
     static ngAcceptInputType_hideSaveButton: BooleanInput;
     static ngAcceptInputType_readonly: BooleanInput;
-    static ɵcmp: i0.ɵɵComponentDefWithMeta<AdminEditComponent<any, any, any>, "gngt-admin-edit", never, {}, {}, never>;
-    static ɵfac: i0.ɵɵFactoryDef<AdminEditComponent<any, any, any>>;
+    static ɵcmp: i0.ɵɵComponentDefWithMeta<AdminEditComponent<any, any, any>, "gngt-admin-edit", never, {}, {}, never, ["[gngtAdminEditFormHeader]", "[gngtAdminEditFormFooter]"]>;
+    static ɵfac: i0.ɵɵFactoryDef<AdminEditComponent<any, any, any>, never>;
 }
 
 export declare class AdminListCellDirective {
@@ -17,7 +17,7 @@ export declare class AdminListCellDirective {
     readonly templateRef: TemplateRef<any>;
     constructor(templateRef: TemplateRef<any>);
     static ɵdir: i0.ɵɵDirectiveDefWithMeta<AdminListCellDirective, "[gngtAdminListCell]", never, { "column": "gngtAdminListCell"; }, {}, never>;
-    static ɵfac: i0.ɵɵFactoryDef<AdminListCellDirective>;
+    static ɵfac: i0.ɵɵFactoryDef<AdminListCellDirective, never>;
 }
 
 export declare class AdminListComponent<T extends Model = Model, S extends ModelState<T> = ModelState<T>, A extends ModelActionTypes = ModelActionTypes, MS extends ModelService<T, S, A> = ModelService<T, S, A>> extends BaseAdminListComponent<T, S, A, MS> implements AfterContentInit, OnDestroy, OnInit {
@@ -39,8 +39,8 @@ export declare class AdminListComponent<T extends Model = Model, S extends Model
     ngOnInit(): void;
     refreshList(): void;
     selectAll(): void;
-    static ɵcmp: i0.ɵɵComponentDefWithMeta<AdminListComponent<any, any, any, any>, "gngt-admin-list", never, { "dataSource": "dataSource"; }, {}, ["cellTemplates"]>;
-    static ɵfac: i0.ɵɵFactoryDef<AdminListComponent<any, any, any, any>>;
+    static ɵcmp: i0.ɵɵComponentDefWithMeta<AdminListComponent<any, any, any, any>, "gngt-admin-list", never, { "dataSource": "dataSource"; }, {}, ["cellTemplates"], never>;
+    static ɵfac: i0.ɵɵFactoryDef<AdminListComponent<any, any, any, any>, never>;
 }
 
 export declare class AdminModule {
@@ -51,6 +51,6 @@ export declare class AdminModule {
 export declare class AdminUserInteractionsService extends CoreAdminUserInteractionsService {
     constructor(_dialog: MatDialog);
     askDeleteConfirm(): Observable<boolean>;
-    static ɵfac: i0.ɵɵFactoryDef<AdminUserInteractionsService>;
+    static ɵfac: i0.ɵɵFactoryDef<AdminUserInteractionsService, never>;
     static ɵprov: i0.ɵɵInjectableDef<AdminUserInteractionsService>;
 }

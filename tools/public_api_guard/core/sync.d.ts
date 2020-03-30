@@ -8,7 +8,7 @@ export interface LocalDoc<T extends Model> {
 export declare class OfflineInterceptor implements HttpInterceptor {
     constructor(_syncService: SyncService);
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>>;
-    static ɵfac: i0.ɵɵFactoryDef<OfflineInterceptor>;
+    static ɵfac: i0.ɵɵFactoryDef<OfflineInterceptor, never>;
     static ɵprov: i0.ɵɵInjectableDef<OfflineInterceptor>;
 }
 
@@ -52,7 +52,7 @@ export declare class SyncService {
     start(immediate?: boolean): void;
     stop(): void;
     update(tableName: string, id: number, object: any): Observable<any>;
-    static ɵfac: i0.ɵɵFactoryDef<SyncService>;
+    static ɵfac: i0.ɵɵFactoryDef<SyncService, never>;
     static ɵprov: i0.ɵɵInjectableDef<SyncService>;
 }
 

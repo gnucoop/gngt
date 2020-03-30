@@ -17,6 +17,6 @@ export declare class LoginComponent extends CoreLoginComponent {
     set usernameSuffixSvgIcon(usernameSuffixSvgIcon: string);
     constructor(fb: FormBuilder, store: Store<AuthState>, cdr: ChangeDetectorRef);
     static ngAcceptInputType_showLabels: BooleanInput;
-    static ɵcmp: i0.ɵɵComponentDefWithMeta<LoginComponent, "gngt-login", never, { "fieldsAppearance": "fieldsAppearance"; "usernamePrefixSvgIcon": "usernamePrefixSvgIcon"; "usernameSuffixSvgIcon": "usernameSuffixSvgIcon"; "passwordPrefixSvgIcon": "passwordPrefixSvgIcon"; "passwordSuffixSvgIcon": "passwordSuffixSvgIcon"; }, {}, never>;
-    static ɵfac: i0.ɵɵFactoryDef<LoginComponent>;
+    static ɵcmp: i0.ɵɵComponentDefWithMeta<LoginComponent, "gngt-login", never, { "fieldsAppearance": "fieldsAppearance"; "usernamePrefixSvgIcon": "usernamePrefixSvgIcon"; "usernameSuffixSvgIcon": "usernameSuffixSvgIcon"; "passwordPrefixSvgIcon": "passwordPrefixSvgIcon"; "passwordSuffixSvgIcon": "passwordSuffixSvgIcon"; }, {}, never, ["[gngtLoginUsername]", "[gngtLoginPassword]", "[gngtLoginAction]"]>;
+    static ɵfac: i0.ɵɵFactoryDef<LoginComponent, never>;
 }

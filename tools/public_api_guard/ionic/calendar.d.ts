@@ -1,7 +1,7 @@
 export declare class CalendarComponent extends Calendar {
     constructor(cdr: ChangeDetectorRef);
-    static ɵcmp: i0.ɵɵComponentDefWithMeta<CalendarComponent, "gngt-calendar", never, {}, {}, never>;
-    static ɵfac: i0.ɵɵFactoryDef<CalendarComponent>;
+    static ɵcmp: i0.ɵɵComponentDefWithMeta<CalendarComponent, "gngt-calendar", never, {}, {}, never, never>;
+    static ɵfac: i0.ɵɵFactoryDef<CalendarComponent, never>;
 }
 
 export declare class CalendarModule {

@@ -99,10 +99,10 @@ def getThirdPartyUmdFilePaths(packages, ngcc_artifacts):
     ]
 
 def getThirdPartyNoNgccUmdFilePaths(packages):
-    tmpl = "@npm//:node_modules/%s"
+    tmpl = "%s"
     return [
         tmpl % bundleName
-        for bundleName in packages
+        for _, bundleName in packages
     ]
 
 ANGULAR_PACKAGE_BUNDLES = getFrameworkPackageBundles()

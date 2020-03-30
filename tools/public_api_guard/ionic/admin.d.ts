@@ -3,8 +3,8 @@ export declare class AdminEditComponent<T extends Model = Model, S extends Model
     static ngAcceptInputType_canSave: BooleanInput;
     static ngAcceptInputType_hideSaveButton: BooleanInput;
     static ngAcceptInputType_readonly: BooleanInput;
-    static ɵcmp: i0.ɵɵComponentDefWithMeta<AdminEditComponent<any, any, any>, "gngt-admin-edit", never, {}, {}, never>;
-    static ɵfac: i0.ɵɵFactoryDef<AdminEditComponent<any, any, any>>;
+    static ɵcmp: i0.ɵɵComponentDefWithMeta<AdminEditComponent<any, any, any>, "gngt-admin-edit", never, {}, {}, never, ["[gngtAdminEditFormHeader]", "[gngtAdminEditFormFooter]"]>;
+    static ɵfac: i0.ɵɵFactoryDef<AdminEditComponent<any, any, any>, never>;
 }
 
 export declare class AdminListComponent<T extends Model = Model, S extends ModelState<T> = ModelState<T>, A extends ModelActionTypes = ModelActionTypes, MS extends ModelService<T, S, A> = ModelService<T, S, A>> extends BaseAdminListComponent<T, S, A, MS> implements OnDestroy, OnInit {
@@ -21,8 +21,8 @@ export declare class AdminListComponent<T extends Model = Model, S extends Model
     ngOnInit(): void;
     refreshList(): void;
     selectAll(): void;
-    static ɵcmp: i0.ɵɵComponentDefWithMeta<AdminListComponent<any, any, any, any>, "gngt-admin-list", never, { "baseQueryParams": "baseQueryParams"; }, {}, never>;
-    static ɵfac: i0.ɵɵFactoryDef<AdminListComponent<any, any, any, any>>;
+    static ɵcmp: i0.ɵɵComponentDefWithMeta<AdminListComponent<any, any, any, any>, "gngt-admin-list", never, { "baseQueryParams": "baseQueryParams"; }, {}, never, never>;
+    static ɵfac: i0.ɵɵFactoryDef<AdminListComponent<any, any, any, any>, never>;
 }
 
 export declare class AdminModule {
@@ -33,6 +33,6 @@ export declare class AdminModule {
 export declare class AdminUserInteractionsService extends CoreAdminUserInteractionsService {
     constructor(_alert: AlertController, _ts: TranslateService);
     askDeleteConfirm(): Observable<boolean>;
-    static ɵfac: i0.ɵɵFactoryDef<AdminUserInteractionsService>;
+    static ɵfac: i0.ɵɵFactoryDef<AdminUserInteractionsService, never>;
     static ɵprov: i0.ɵɵInjectableDef<AdminUserInteractionsService>;
 }

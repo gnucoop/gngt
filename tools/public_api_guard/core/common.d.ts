@@ -10,14 +10,14 @@ export declare class FormDisabledDirective {
     readonly fgd: FormGroupDirective;
     constructor(fgd: FormGroupDirective);
     static ɵdir: i0.ɵɵDirectiveDefWithMeta<FormDisabledDirective, "[gngtFormDisabled]", never, { "disabled": "gngtFormDisabled"; }, {}, never>;
-    static ɵfac: i0.ɵɵFactoryDef<FormDisabledDirective>;
+    static ɵfac: i0.ɵɵFactoryDef<FormDisabledDirective, [{ host: true; self: true; }]>;
 }
 
 export declare function getObjectProperty(value: any, prop: string): any;
 
 export declare class GetObjectProperty implements PipeTransform {
     transform(value: any, prop: string): any;
-    static ɵfac: i0.ɵɵFactoryDef<GetObjectProperty>;
+    static ɵfac: i0.ɵɵFactoryDef<GetObjectProperty, never>;
     static ɵpipe: i0.ɵɵPipeDefWithMeta<GetObjectProperty, "gngtGetObjectProperty">;
 }
 

@@ -27,7 +27,7 @@ export declare abstract class AdminEditComponent<T extends Model = Model, S exte
     ngOnDestroy(): void;
     save(): void;
     static ɵdir: i0.ɵɵDirectiveDefWithMeta<AdminEditComponent<any, any, any>, never, never, { "title": "title"; "listUrl": "listUrl"; "cancelLabel": "cancelLabel"; "saveLabel": "saveLabel"; "service": "service"; "fields": "fields"; "id": "id"; "processObject": "processObject"; "processFormData": "processFormData"; "readonly": "readonly"; "hideSaveButton": "hideSaveButton"; "canSave": "canSave"; "postSaveHook": "postSaveHook"; }, { "valueChanges$": "valueChanges$"; }, never>;
-    static ɵfac: i0.ɵɵFactoryDef<AdminEditComponent<any, any, any>>;
+    static ɵfac: i0.ɵɵFactoryDef<AdminEditComponent<any, any, any>, never>;
 }
 
 export interface AdminEditField {
@@ -106,7 +106,7 @@ export declare abstract class AdminListComponent<T extends Model = Model, S exte
     abstract refreshList(): void;
     abstract selectAll(): void;
     static ɵdir: i0.ɵɵDirectiveDefWithMeta<AdminListComponent<any, any, any, any>, never, never, { "title": "title"; "headers": "headers"; "displayedColumns": "displayedColumns"; "baseEditUrl": "baseEditUrl"; "newItemPath": "newItemPath"; "service": "service"; }, {}, never>;
-    static ɵfac: i0.ɵɵFactoryDef<AdminListComponent<any, any, any, any>>;
+    static ɵfac: i0.ɵɵFactoryDef<AdminListComponent<any, any, any, any>, never>;
 }
 
 export interface AdminListHeader {
@@ -123,7 +123,7 @@ export declare abstract class AdminUserInteractionsService {
 export declare class ChoicesPipe implements PipeTransform {
     constructor(cdr: ChangeDetectorRef);
     transform(value: AdminEditFieldChoice[] | Observable<AdminEditFieldChoice[]> | Promise<AdminEditFieldChoice[]> | null | undefined): AdminEditFieldChoice[];
-    static ɵfac: i0.ɵɵFactoryDef<ChoicesPipe>;
+    static ɵfac: i0.ɵɵFactoryDef<ChoicesPipe, never>;
     static ɵpipe: i0.ɵɵPipeDefWithMeta<ChoicesPipe, "gngtChoices">;
 }
 

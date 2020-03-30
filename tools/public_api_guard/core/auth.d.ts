@@ -25,14 +25,14 @@ export declare class AuthGuard implements CanActivate, CanActivateChild {
     constructor(_store: Store<fromAuth.State>);
     canActivate(): Observable<boolean>;
     canActivateChild(_cr: ActivatedRouteSnapshot, _state: RouterStateSnapshot): Observable<boolean>;
-    static ɵfac: i0.ɵɵFactoryDef<AuthGuard>;
+    static ɵfac: i0.ɵɵFactoryDef<AuthGuard, never>;
     static ɵprov: i0.ɵɵInjectableDef<AuthGuard>;
 }
 
 export declare class AuthHelper {
     constructor(_store: Store<State>, _actions: Actions);
     logout(requestConfirmation?: boolean): Observable<boolean>;
-    static ɵfac: i0.ɵɵFactoryDef<AuthHelper>;
+    static ɵfac: i0.ɵɵFactoryDef<AuthHelper, never>;
     static ɵprov: i0.ɵɵInjectableDef<AuthHelper>;
 }
 
@@ -73,7 +73,7 @@ export declare class AuthService {
     login(credentials: Credentials): Observable<LoginResponse>;
     logout(): Observable<null>;
     refreshToken(refreshToken: string): Observable<RefreshTokenResponse>;
-    static ɵfac: i0.ɵɵFactoryDef<AuthService>;
+    static ɵfac: i0.ɵɵFactoryDef<AuthService, never>;
     static ɵprov: i0.ɵɵInjectableDef<AuthService>;
 }
 
@@ -136,7 +136,7 @@ export declare class JwtHelperService {
     getTokenExpirationDate(token?: string | null): Date | null;
     isTokenExpired(token?: string | null, offsetSeconds?: number): boolean;
     urlBase64Decode(str: string): string;
-    static ɵfac: i0.ɵɵFactoryDef<JwtHelperService>;
+    static ɵfac: i0.ɵɵFactoryDef<JwtHelperService, never>;
     static ɵprov: i0.ɵɵInjectableDef<JwtHelperService>;
 }
 
@@ -154,7 +154,7 @@ export declare class JwtInterceptor implements HttpInterceptor {
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>>;
     isBlacklistedRoute(request: HttpRequest<any>): boolean;
     isWhitelistedDomain(request: HttpRequest<any>): boolean;
-    static ɵfac: i0.ɵɵFactoryDef<JwtInterceptor>;
+    static ɵfac: i0.ɵɵFactoryDef<JwtInterceptor, never>;
     static ɵprov: i0.ɵɵInjectableDef<JwtInterceptor>;
 }
 
@@ -178,7 +178,7 @@ export interface JwtToken {
 
 export declare class LoginActionDirective {
     static ɵdir: i0.ɵɵDirectiveDefWithMeta<LoginActionDirective, "[gngtLoginAction]", never, {}, {}, never>;
-    static ɵfac: i0.ɵɵFactoryDef<LoginActionDirective>;
+    static ɵfac: i0.ɵɵFactoryDef<LoginActionDirective, never>;
 }
 
 export declare abstract class LoginComponent implements OnDestroy {
@@ -197,7 +197,7 @@ export declare abstract class LoginComponent implements OnDestroy {
     login(): void;
     ngOnDestroy(): void;
     static ɵdir: i0.ɵɵDirectiveDefWithMeta<LoginComponent, never, never, { "disabled": "disabled"; "usernamePlaceholder": "usernamePlaceholder"; "passwordPlaceholder": "passwordPlaceholder"; "showLabels": "showLabels"; }, {}, never>;
-    static ɵfac: i0.ɵɵFactoryDef<LoginComponent>;
+    static ɵfac: i0.ɵɵFactoryDef<LoginComponent, never>;
 }
 
 export declare class LoginFailure implements Action {
@@ -212,7 +212,7 @@ export declare class LoginFailure implements Action {
 
 export declare class LoginPasswordDirective {
     static ɵdir: i0.ɵɵDirectiveDefWithMeta<LoginPasswordDirective, "[gngtLoginPassword]", never, {}, {}, never>;
-    static ɵfac: i0.ɵɵFactoryDef<LoginPasswordDirective>;
+    static ɵfac: i0.ɵɵFactoryDef<LoginPasswordDirective, never>;
 }
 
 export declare class LoginRedirect implements Action {
@@ -231,7 +231,7 @@ export declare class LoginSuccess implements Action {
 
 export declare class LoginUsernameDirective {
     static ɵdir: i0.ɵɵDirectiveDefWithMeta<LoginUsernameDirective, "[gngtLoginUsername]", never, {}, {}, never>;
-    static ɵfac: i0.ɵɵFactoryDef<LoginUsernameDirective>;
+    static ɵfac: i0.ɵɵFactoryDef<LoginUsernameDirective, never>;
 }
 
 export declare class Logout implements Action {
