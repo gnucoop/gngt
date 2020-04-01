@@ -85,3 +85,4 @@
 /*                                                 @trik
 /.github/**                                        @trik
 /src/*                                             @trik
+/goldens/ts-circular-deps.json                     @trik

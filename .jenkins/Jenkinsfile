@@ -35,6 +35,7 @@ pipeline {
         sh 'bazel build //:entry_points_manifest'
         sh 'yarn check-entry-point-setup $(bazel info bazel-bin)/entry_points_manifest.json'
         sh 'yarn -s lint'
+        sh 'yarn -s ts-circular-deps:check'
       }
     }
     stage('Build') {
