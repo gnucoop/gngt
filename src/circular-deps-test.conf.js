@@ -20,12 +20,26 @@
  *
  */
 
+const path = require('path');
+
 module.exports = {
   baseDir: '../',
   goldenFile: '../goldens/ts-circular-deps.json',
-  // The test should not capture deprecated packages such as `http`, or the `webworker` platform.
   glob: `./**/*.ts`,
   // Command that will be displayed if the golden needs to be updated.
   approveCommand: 'yarn ts-circular-deps:approve',
-  resolveModule: () => {}
+  resolveModule,
 };
+
+/**
+ * Custom module resolver that maps specifiers starting with `@dewco/` to the
+ * local packages folder. This ensures that imports using the module name can be
+ * resolved. Cross entry-point/package circular dependencies are already be detected
+ * by Bazel, but in rare cases, the module name is used for imports within entry-points.
+ */
+function resolveModule(specifier) {
+  if (specifier.startsWith('@gngt/')) {
+    return path.join(__dirname, specifier.substr('@gngt/'.length));
+  }
+  return null;
+}
