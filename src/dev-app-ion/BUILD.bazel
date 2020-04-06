@@ -73,7 +73,7 @@ dev_server(
         "npm/node_modules",
         # Needed for compatibility with "pkg_web" which always uses the tree
         # artifact output as workspace root.
-        "gngt",
+        "gc_gngt",
     ],
     tags = ["manual"],
     deps = [

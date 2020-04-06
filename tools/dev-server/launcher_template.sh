@@ -22,7 +22,7 @@ fi
 # resolve the "nodejs_binary" executable with different file extensions on
 # windows, but since we already run this launcher as part of a "sh_binary", we
 # can safely execute another shell script from the current shell.
-devserverBin=$(rlocation "gngt/tools/dev-server/dev-server_bin.sh")
+devserverBin=$(rlocation "gc_gngt/tools/dev-server/dev-server_bin.sh")
 
 # Start the devserver with the given arguments. The arguments will be
 # substituted based on the rule attributes.

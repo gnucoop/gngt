@@ -40,7 +40,7 @@ searchAndReplace(
 // that tsickle is available for esm5 output re-compilations.
 searchAndReplace(
     '@npm//@bazel/typescript/bin:tsc_wrapped',
-    '@gngt//tools:tsc_wrapped_with_tsickle',
+    '@gc_gngt//tools:tsc_wrapped_with_tsickle',
     'node_modules/@angular/bazel/src/esm5.bzl');
 
 // Workaround for: https://github.com/angular/angular/issues/32651. We just do not
