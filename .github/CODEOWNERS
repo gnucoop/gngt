@@ -53,11 +53,8 @@
 /src/e2e-app/example-viewer/**                     @trik
 /src/e2e-app/mat-calendar/**                       @trik
 
-# Universal app material
-/src/universal-app-mat/**                          @trik
-
-# Universal app ionic
-/src/universal-app-ion/**                          @trik
+# Universal
+/src/universal-app/**                              @trik
 
 # Tooling
 /.circleci/**                                      @trik

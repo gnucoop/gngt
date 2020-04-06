@@ -162,14 +162,14 @@
           "descendants": "^(true|false)$"
         }
       }
-    }, "src/!(e2e-app|gngt-examples|universal-app-ion|universal-app-mat|dev-app)/**/!(*.spec).ts"],
+    }, "src/!(e2e-app|gngt-examples|universal-app|dev-app)/**/!(*.spec).ts"],
     "require-license-banner": [
       true,
-      "src/!(e2e-app|gngt-examples|universal-app-ion|universal-app-mat)/**/!(*.spec).ts"
+      "src/!(e2e-app|gngt-examples|universal-app)/**/!(*.spec).ts"
     ],
     "no-cross-entry-point-relative-imports": [
       true,
-      "src/!(e2e-app|gngt-examples|universal-app-ion|universal-app-mat|dev-app)/**/!(*.spec).ts",
+      "src/!(e2e-app|gngt-examples|universal-app|dev-app)/**/!(*.spec).ts",
       "!src/+(core|ionic|material)/schematics/**/*",
       "!src/core/testing/+(private|tests)/**/*"
     ],

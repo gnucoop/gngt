@@ -3,6 +3,7 @@ package(default_visibility = ["//visibility:public"])
 load("@build_bazel_rules_nodejs//:index.bzl", "nodejs_test")
 load("//src/core:config.bzl", "CORE_TARGETS")
 load("//src/ionic:config.bzl", "IONIC_TARGETS")
+load("//src/material:config.bzl", "MATERIAL_TARGETS")
 load("//tools:defaults.bzl", "ng_module", "ts_library")
 
 ng_module(
@@ -16,7 +17,7 @@ ng_module(
     ],
     deps = [
         "@npm//@angular/platform-server",
-    ] + CORE_TARGETS + IONIC_TARGETS,
+    ] + CORE_TARGETS + IONIC_TARGETS + MATERIAL_TARGETS,
 )
 
 ts_library(
