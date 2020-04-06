@@ -20,6 +20,7 @@ var frameworkPackages = $ANGULAR_PACKAGE_BUNDLES;
 /** Map of third party packages and their bundle names. */
 var thirdPartyPackages = $THIRD_PARTY_PACKAGE_BUNDLES;
 var thirdPartyNoNgccPackages = $THIRD_PARTY_NO_NGCC_PACKAGE_BUNDLES;
+var thirdPartyGenPackages = $THIRD_PARTY_GEN_PACKAGE_BUNDLES;
 
 /** Whether Ivy is enabled. */
 var isRunningWithIvy = '$ANGULAR_IVY_ENABLED_TMPL'.toString() === 'True';
@@ -37,23 +38,6 @@ var pathMapping = {
 
   'rxjs': 'node:rxjs/bundles/rxjs.umd.min.js',
   'rxjs/operators': 'tools/system-rxjs-operators.js',
-
-  'chart.js': 'node:chart.js/Chart.umd.js',
-  'chart.piecelabel.js': 'node:chart.piecelabel.js/build/Chart.PieceLabel.min.js',
-  'css-element-queries': 'node:css-element-queries/css-element-queries.umd.js',
-  'date-fns': 'node:date-fns/date-fns.umd.js',
-  'debug': 'node:debug/debug.umd.js',
-  'esprima': 'node:esprima/esprima.umd.js',
-  'leaflet': 'node:leaflet/leaflet.umd.js',
-  'numeral': 'node:numeral/numeral.umd.js',
-  'quill': 'node:quill/dist/quill.min.js',
-
-  '@angular/cdk': 'node:@angular/cdk',
-  '@gic/core': 'node:@gic/core/core.umd.js',
-  '@gic/core/loader': 'node:@gic/core/core-loader.umd.js',
-  '@ionic/core': 'node:@ionic/core/core.umd.js',
-  '@ionic/core/loader': 'node:@ionic/core/core-loader.umd.js',
-  '@zxing/library': 'node:@zxing/library/umd/index.min.js',
 };
 
 /** Package configurations that will be used in SystemJS. */
@@ -78,6 +62,8 @@ setupFrameworkPackages();
 
 // Configure third party packages.
 setupThirdPartyPackages();
+setupThirdPartyNoNgccPackages();
+setupThirdPartyGenPackages();
 
 // Configure Angular components packages/entry-points.
 setupLocalReleasePackages();
@@ -89,7 +75,7 @@ System.config({
   packages: packagesConfig,
   paths: {
     'node:*': nodeModulesPath + '*',
-    'tpl:*': 'tools/third-party-libs/*',
+    paths: {'node:*': nodeModulesPath + '*', 'tpl:*': nodeModulesPath + '*'}
   }
 });
 
@@ -159,7 +145,16 @@ function setupThirdPartyNoNgccPackages() {
   Object.keys(thirdPartyNoNgccPackages).forEach(function(moduleName) {
     // Ensures that imports to the framework package are resolved
     // to the configured node modules directory.
-    pathMapping[moduleName] = 'tpl:' + thirdPartyNoNgccPackages[moduleName];
+    pathMapping[moduleName] = 'node:' + moduleName;
+    var bundleName = thirdPartyNoNgccPackages[moduleName];
+    packagesConfig[moduleName] = {main: bundleName};
+  });
+}
+
+function setupThirdPartyGenPackages() {
+  Object.keys(thirdPartyGenPackages).forEach(function(moduleName) {
+    var bundleName = thirdPartyGenPackages[moduleName];
+    pathMapping[moduleName] = 'tpl:tools/third-party-libs/' + bundleName;
   });
 }
 

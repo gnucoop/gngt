@@ -46,17 +46,20 @@ THIRD_PARTY_NGCC_BUNDLES = [
 ]
 
 THIRD_PARTY_NO_NGCC_BUNDLES = [
-    ("@gic/core", "//tools/third-party-libs:gic-core-bundle.js"),
-    ("@gic/core/core", "//tools/third-party-libs:gic-core-loader-bundle.js"),
-    ("@ionic/core", "//tools/third-party-libs:ionic-core-bundle.js"),
-    ("@ionic/core/core", "//tools/third-party-libs:ionic-core-loader-bundle.js"),
-    ("date-fns", "//tools/third-party-libs:date-fns-bundle.js"),
-    ("debug", "//tools/third-party-libs:debug-bundle.js"),
-    ("pouchdb", "//tools/third-party-libs:pouchdb-bundle.js"),
-    ("pouchdb-debug", "//tools/third-party-libs:pouchdb-debug-bundle.js"),
-    ("pouchdb-find", "//tools/third-party-libs:pouchdb-find-bundle.js"),
-    ("uuid", "//tools/third-party-libs:uuid-bundle.js"),
-    ("url-parse", "//tools/third-party-libs:url-parse-bundle.js"),
+]
+
+THIRD_PARTY_GEN_BUNDLES = [
+    ("@gic/core", "gic-core-bundle.js"),
+    ("@gic/core/core", "gic-core-loader-bundle.js"),
+    ("@ionic/core", "ionic-core-bundle.js"),
+    ("@ionic/core/core", "ionic-core-loader-bundle.js"),
+    ("date-fns", "date-fns-bundle.js"),
+    ("debug", "debug-bundle.js"),
+    ("pouchdb", "pouchdb-bundle.js"),
+    ("pouchdb-debug", "pouchdb-debug-bundle.js"),
+    ("pouchdb-find", "pouchdb-find-bundle.js"),
+    ("uuid", "uuid-bundle.js"),
+    ("url-parse", "url-parse-bundle.js"),
 ]
 
 """
@@ -76,6 +79,18 @@ def getFrameworkPackageBundles():
 def getThirdPartyPackageBundles():
     res = {}
     for pkgName, bundleName in THIRD_PARTY_NGCC_BUNDLES:
+        res[pkgName] = bundleName
+    return res
+
+def getThirdPartyNoNgccPackageBundles():
+    res = {}
+    for pkgName, bundleName in THIRD_PARTY_NO_NGCC_BUNDLES:
+        res[pkgName] = bundleName
+    return res
+
+def getThirdPartyGenPackageBundles():
+    res = {}
+    for pkgName, bundleName in THIRD_PARTY_GEN_BUNDLES:
         res[pkgName] = bundleName
     return res
 
@@ -99,7 +114,14 @@ def getThirdPartyUmdFilePaths(packages, ngcc_artifacts):
     ]
 
 def getThirdPartyNoNgccUmdFilePaths(packages):
-    tmpl = "%s"
+    tmpl = "@npm//:node_modules/%s/%s"
+    return [
+        tmpl % (package, bundleName)
+        for package, bundleName in packages
+    ]
+
+def getThirdPartyGenUmdFilePaths(packages):
+    tmpl = "//tools/third-party-libs:%s"
     return [
         tmpl % bundleName
         for _, bundleName in packages
@@ -108,16 +130,20 @@ def getThirdPartyNoNgccUmdFilePaths(packages):
 ANGULAR_PACKAGE_BUNDLES = getFrameworkPackageBundles()
 
 THIRD_PARTY_PACKAGE_BUNDLES = getThirdPartyPackageBundles()
+THIRD_PARTY_NO_NGCC_PACKAGE_BUNDLES = getThirdPartyNoNgccPackageBundles()
+THIRD_PARTY_GEN_PACKAGE_BUNDLES = getThirdPartyGenPackageBundles()
 
 ANGULAR_LIBRARY_VIEW_ENGINE_UMDS = getUmdFilePaths(ANGULAR_NO_NGCC_BUNDLES, False) + \
                                    getUmdFilePaths(ANGULAR_NGCC_BUNDLES, False) + \
                                    getThirdPartyUmdFilePaths(THIRD_PARTY_NGCC_BUNDLES, False) + \
-                                   getThirdPartyNoNgccUmdFilePaths(THIRD_PARTY_NO_NGCC_BUNDLES)
+                                   getThirdPartyNoNgccUmdFilePaths(THIRD_PARTY_NO_NGCC_BUNDLES) + \
+                                   getThirdPartyGenUmdFilePaths(THIRD_PARTY_GEN_BUNDLES)
 
 ANGULAR_LIBRARY_IVY_UMDS = getUmdFilePaths(ANGULAR_NO_NGCC_BUNDLES, False) + \
                            getUmdFilePaths(ANGULAR_NGCC_BUNDLES, True) + \
                            getThirdPartyUmdFilePaths(THIRD_PARTY_NGCC_BUNDLES, True) + \
-                           getThirdPartyNoNgccUmdFilePaths(THIRD_PARTY_NO_NGCC_BUNDLES)
+                           getThirdPartyNoNgccUmdFilePaths(THIRD_PARTY_NO_NGCC_BUNDLES) + \
+                           getThirdPartyGenUmdFilePaths(THIRD_PARTY_GEN_BUNDLES)
 
 """
   Gets the list of targets for the Angular library UMD bundles. Conditionally
