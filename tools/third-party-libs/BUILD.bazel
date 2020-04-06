@@ -92,8 +92,8 @@ third_party_bundle(
     name = "pouchdb-debug",
     entry_point = "@npm//:node_modules/pouchdb-debug/lib/index.es.js",
     globals = {
-        "pouchdb": "PouchDB",
         "debug": "debug",
+        "pouchdb": "PouchDB",
     },
     module_name = "pouchdb-debug",
     deps = [

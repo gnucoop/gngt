@@ -38,6 +38,6 @@ def generate_test_targets(golden_files):
                 "fromLoginPage",
                 "fromModel",
                 "fromRoot",
-                "i0"
+                "i0",
             ],
         )
