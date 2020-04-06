@@ -21,8 +21,7 @@
 
 import {EventEmitter} from '@angular/core';
 import {ModelListParams, ModelListResult} from '@gngt/core/common';
-import {Action} from '@ngrx/store';
-import {Observable, of as obsOf, Subject} from 'rxjs';
+import {Observable, of as obsOf} from 'rxjs';
 import {switchMap} from 'rxjs/operators';
 
 export class AdminModel {
@@ -33,8 +32,6 @@ export class AdminModel {
 }
 
 export class AdminModelMockService {
-  private _subject: Subject<AdminModel> = new Subject<AdminModel>();
-  private _actionSubject: Subject<Action> = new Subject<Action>();
   private _listEvt: EventEmitter<void> = new EventEmitter<void>();
   private _currentStart = 0;
   private _currentLimit = 20;

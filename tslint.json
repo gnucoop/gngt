@@ -162,17 +162,16 @@
           "descendants": "^(true|false)$"
         }
       }
-    }, "src/!(a11y-demo|e2e-app-ion|e2e-app-mat|gngt-examples|universal-app-ion|universal-app-mat|dev-app)/**/!(*.spec).ts"],
+    }, "src/!(e2e-app|gngt-examples|universal-app-ion|universal-app-mat|dev-app)/**/!(*.spec).ts"],
     "require-license-banner": [
       true,
-      "src/!(a11y-demo|e2e-app-ion|e2e-app-mat|gngt-examples|universal-app-ion|universal-app-mat)/**/!(*.spec).ts"
+      "src/!(e2e-app|gngt-examples|universal-app-ion|universal-app-mat)/**/!(*.spec).ts"
     ],
     "no-cross-entry-point-relative-imports": [
       true,
-      "src/!(a11y-demo|e2e-app-ion|e2e-app-mat|gngt-examples|universal-app-ion|universal-app-mat|dev-app)/**/!(*.spec).ts",
-      "!src/+(cdk|material)/schematics/**/*",
-      "!src/cdk/testing/+(private|tests)/**/*",
-      "!src/google-maps/testing/**/*"
+      "src/!(e2e-app|gngt-examples|universal-app-ion|universal-app-mat|dev-app)/**/!(*.spec).ts",
+      "!src/+(core|ionic|material)/schematics/**/*",
+      "!src/core/testing/+(private|tests)/**/*"
     ],
     "file-name-casing": [true, {
       // Exclude custom lint rule files since they have to always be camel-cased and end

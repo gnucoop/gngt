@@ -2,7 +2,8 @@
   <button (click)="showLinks = !showLinks">Toggle Navigation Links</button>
 
   <mat-nav-list *ngIf="showLinks">
-    <a mat-list-item [routerLink]="['calendar']">Calendar</a>
+    <a mat-list-item [routerLink]="['ion-calendar']">Ionic - Calendar</a>
+    <a mat-list-item [routerLink]="['mat-calendar']">Material Calendar</a>
   </mat-nav-list>
 </header>
 

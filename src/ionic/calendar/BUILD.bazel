@@ -1,6 +1,6 @@
 package(default_visibility = ["//visibility:public"])
 
-load("//src/e2e-app-ion:test_suite.bzl", "e2e_test_suite")
+load("//src/e2e-app:test_suite.bzl", "e2e_test_suite")
 load(
     "//tools:defaults.bzl",
     "markdown_to_html",

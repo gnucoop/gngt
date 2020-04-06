@@ -19,20 +19,15 @@
  *
  */
 
-import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
-import {RouterModule} from '@angular/router';
-import {IonicModule} from '@ionic/angular';
-import {E2eAppLayout, Home} from './e2e-app-layout';
+import {CalendarModule} from '@gngt/ionic/calendar';
+import {IonicCalendarE2E} from './calendar-e2e';
 
 @NgModule({
   imports: [
-    CommonModule,
-    IonicModule,
-    RouterModule,
+    CalendarModule,
   ],
-  declarations: [E2eAppLayout, Home],
-  exports: [E2eAppLayout],
+  declarations: [IonicCalendarE2E],
 })
-export class E2eAppModule {
+export class IonicCalendarE2eModule {
 }

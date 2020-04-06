@@ -11,7 +11,7 @@ exports_files([
 ])
 
 ng_module(
-    name = "e2e-app-mat",
+    name = "e2e-app",
     testonly = True,
     srcs = glob(
         ["**/*.ts"],
@@ -26,6 +26,7 @@ ng_module(
     ),
     deps = [
         "//src/gngt-examples/private",
+        "//src/ionic/calendar",
         "//src/material/calendar",
         "@npm//@angular/common",
         "@npm//@angular/core",
@@ -33,6 +34,7 @@ ng_module(
         "@npm//@angular/forms",
         "@npm//@angular/platform-browser",
         "@npm//@angular/router",
+        "@npm//@ionic/angular",
         "@npm//@ngx-translate/core",
         "@npm//@ngx-translate/http-loader",
         "@npm//@webcomponents/custom-elements",
@@ -46,7 +48,7 @@ ts_devserver(
         "npm/node_modules",
     ],
     # Name of the AMD module that should be required on page load.
-    entry_module = "gc_gngt/src/e2e-app-mat/main",
+    entry_module = "gc_gngt/src/e2e-app/main",
     port = 4200,
     # Scripts which will be included in the serving_path bundle after
     # RequireJS has been loaded.
@@ -67,5 +69,5 @@ ts_devserver(
         "@npm//@ngx-translate/core",
         ":index.html",
     ],
-    deps = [":e2e-app-mat"],
+    deps = [":e2e-app"],
 )

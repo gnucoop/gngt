@@ -46,19 +46,12 @@
 /src/dev-app/mat-login/*                          @trik
 /src/dev-app/sync/*                               @trik
 
-# E2E app material
-/src/e2e-app-mat/*                                 @trik
-/src/e2e-app-mat/calendar/**                       @trik
-/src/e2e-app-mat/e2e-app/**                        @trik
-/src/e2e-app-mat/login/**                          @trik
-/src/e2e-app-mat/example-viewer/**                 @trik
-
-# E2E app ionic
-/src/e2e-app-ion/*                                 @trik
-/src/e2e-app-ion/calendar/**                       @trik
-/src/e2e-app-ion/e2e-app/**                        @trik
-/src/e2e-app-ion/login/**                          @trik
-/src/e2e-app-ion/example-viewer/**                 @trik
+# E2E app
+/src/e2e-app/*                                     @trik
+/src/e2e-app/e2e-app/**                            @trik
+/src/e2e-app/ion-calendar/**                       @trik
+/src/e2e-app/example-viewer/**                     @trik
+/src/e2e-app/mat-calendar/**                       @trik
 
 # Universal app material
 /src/universal-app-mat/**                          @trik

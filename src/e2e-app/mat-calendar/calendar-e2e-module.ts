@@ -21,13 +21,13 @@
 
 import {NgModule} from '@angular/core';
 import {CalendarModule} from '@gngt/material/calendar';
-import {CalendarE2E} from './calendar-e2e';
+import {MaterialCalendarE2E} from './calendar-e2e';
 
 @NgModule({
   imports: [
     CalendarModule,
   ],
-  declarations: [CalendarE2E],
+  declarations: [MaterialCalendarE2E],
 })
-export class CalendarE2eModule {
+export class MaterialCalendarE2eModule {
 }
