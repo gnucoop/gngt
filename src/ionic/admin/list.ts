@@ -111,7 +111,7 @@ export class AdminListComponent<
   private _loadList(): void {
     const service = this._getService();
     if (service == null || !this._hasMore) { return; }
-    const queryParams = mergeQueryParams(this._queryParams, this.baseQueryParams);
+    const queryParams = mergeQueryParams(this._queryParams, this.baseQueryParams || {});
     service.query(queryParams);
   }
 }

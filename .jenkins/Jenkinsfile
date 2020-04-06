@@ -30,33 +30,33 @@ pipeline {
     }
     stage('Lint') {
       steps {
-        sh 'bazel build //:rollup_globals'
-        sh 'yarn check-rollup-globals $(bazel info bazel-bin)/rollup_globals.json'
-        sh 'bazel build //:entry_points_manifest'
-        sh 'yarn check-entry-point-setup $(bazel info bazel-bin)/entry_points_manifest.json'
+        sh 'yarn -s bazel build //:rollup_globals'
+        sh 'yarn -s check-rollup-globals $(yarn -s bazel info bazel-bin)/rollup_globals.json'
+        sh 'yarn -s bazel build //:entry_points_manifest'
+        sh 'yarn -s check-entry-point-setup $(yarn -s bazel info bazel-bin)/entry_points_manifest.json'
         sh 'yarn -s lint'
         sh 'yarn -s ts-circular-deps:check'
       }
     }
     stage('Build') {
       steps {
-        sh 'bazel build src/... --build_tag_filters=-docs-package,-release-package'
+        sh 'yarn -s bazel build src/... --build_tag_filters=-docs-package,-release-package'
       }
     }
     stage('API guard tests') {
       steps {
-        sh 'bazel test tools/public_api_guard/...'
+        sh 'yarn -s bazel test tools/public_api_guard/...'
       }
     }
     stage('Unit tests') {
       steps {
-        sh 'bazel test src/... --build_tag_filters=-docs-package,-e2e --test_tag_filters=-e2e --config=view-engine --build_tests_only'
-        sh 'bazel test src/... --build_tag_filters=-e2e --test_tag_filters=-e2e --build_tests_only'
+        sh 'yarn -s bazel test src/... --build_tag_filters=-docs-package,-e2e --test_tag_filters=-e2e --config=view-engine --build_tests_only'
+        sh 'yarn -s bazel test src/... --build_tag_filters=-e2e --test_tag_filters=-e2e --build_tests_only'
       }
     }
     stage('Integration tests') {
       steps {
-        sh 'bazel test src/... --build_tag_filters=e2e --test_tag_filters=e2e'
+        sh 'yarn -s bazel test src/... --build_tag_filters=e2e --test_tag_filters=e2e'
       }
     }
     stage('Release output') {

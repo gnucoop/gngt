@@ -30,29 +30,21 @@
 
 # Docs examples & guides
 /guides/**                                         @trik
-/src/material-examples/**                          @trik
-/src/ionic-examples/**                             @trik
+/src/gngt-examples/**                              @trik
 
-# Dev app material
-/src/dev-app-mat/*                                @trik
-/src/dev-app-mat/dev-app/**                       @trik
-/src/dev-app-mat/example/**                       @trik
-/src/dev-app-mat/examples-page/**                 @trik
-/src/dev-app-mat/admin-edit/*                     @trik
-/src/dev-app-mat/admin-list/*                     @trik
-/src/dev-app-mat/calendar/*                       @trik
-/src/dev-app-mat/login/*                          @trik
-/src/dev-app-mat/sync/*                           @trik
-
-# Dev app ionic
-/src/dev-app-ion/*                                @trik
-/src/dev-app-ion/dev-app/**                       @trik
-/src/dev-app-ion/example/**                       @trik
-/src/dev-app-ion/examples-page/**                 @trik
-/src/dev-app-ion/admin-edit/*                     @trik
-/src/dev-app-ion/admin-list/*                     @trik
-/src/dev-app-ion/calendar/*                       @trik
-/src/dev-app-ion/login/*                          @trik
+# Dev app
+/src/dev-app/*                                    @trik
+/src/dev-app/dev-app/**                           @trik
+/src/dev-app/example/**                           @trik
+/src/dev-app/examples-page/**                     @trik
+/src/dev-app/ion-admin-edit/*                     @trik
+/src/dev-app/ion-admin-list/*                     @trik
+/src/dev-app/ion-login/*                          @trik
+/src/dev-app/mat-admin-edit/*                     @trik
+/src/dev-app/mat-admin-list/*                     @trik
+/src/dev-app/mat-calendar/*                       @trik
+/src/dev-app/mat-login/*                          @trik
+/src/dev-app/sync/*                               @trik
 
 # E2E app material
 /src/e2e-app-mat/*                                 @trik

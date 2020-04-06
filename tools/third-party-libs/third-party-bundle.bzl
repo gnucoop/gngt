@@ -12,14 +12,20 @@ def _create_rollup_config(
         output_name,
         module_name,
         globals = {},
+        exports = "named",
+        named_exports = {},
+        main_fields = ["browser", "module", "main"],
         template = "//tools/third-party-libs:rollup.config-tmpl.js"):
     expand_template(
         name = name,
         output_name = output_name,
         configuration_env_vars = [],
         substitutions = {
+            "$EXPORTS": exports,
             "$GLOBALS": str(globals),
+            "$MAIN_FIELDS": str(main_fields),
             "$MODULE_NAME": module_name,
+            "$NAMED_EXPORTS": str(named_exports),
         },
         template = template,
     )
@@ -29,6 +35,9 @@ def third_party_bundle(
         module_name,
         entry_point,
         globals = {},
+        exports = "named",
+        named_exports = {},
+        main_fields = ["browser", "module", "main"],
         template = "//tools/third-party-libs:rollup.config-tmpl.js",
         deps = []):
     config_name = "%s-rollup-config" % name
@@ -37,6 +46,9 @@ def third_party_bundle(
         "%s.js" % config_name,
         module_name,
         globals,
+        exports,
+        named_exports,
+        main_fields,
         template,
     )
 

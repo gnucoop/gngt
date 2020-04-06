@@ -1,0 +1,117 @@
+load("@build_bazel_rules_nodejs//:index.bzl", "pkg_web")
+load("@build_bazel_rules_nodejs//internal/common:devmode_js_sources.bzl", "devmode_js_sources")
+load("//tools:create-system-config.bzl", "create_system_config")
+load("//tools:defaults.bzl", "ng_module", "ts_library")
+load("//tools/dev-server:index.bzl", "dev_server")
+
+package(default_visibility = ["//visibility:public"])
+
+ts_library(
+    name = "dev-app-mocks",
+    srcs = [
+        "admin-mocks.ts",
+    ],
+    deps = [
+        "//src/core/common",
+        "@npm//@angular/core",
+        "@npm//@ngrx/store",
+        "@npm//rxjs",
+    ],
+)
+
+ng_module(
+    name = "dev-app",
+    srcs = [
+        "dev-app.ts",
+        "main.ts",
+        "main-module.ts",
+    ],
+    deps = [
+        "//src/dev-app/dev-app",
+        "//src/dev-app/example",
+        "//src/dev-app/examples-page",
+        "//src/dev-app/ion-admin-edit",
+        "//src/dev-app/ion-admin-list",
+        "//src/dev-app/ion-login",
+        "//src/dev-app/mat-admin-edit",
+        "//src/dev-app/mat-admin-list",
+        "//src/dev-app/mat-calendar",
+        "//src/dev-app/mat-login",
+        "//src/dev-app/sync",
+        "@npm//@angular/router",
+    ],
+)
+
+create_system_config(
+    name = "system-config",
+    output_name = "system-config.js",
+)
+
+# File group for all static files which are needed to serve the dev-app. These files are
+# used in the devserver as runfiles and will be copied into the static web package that can
+# be deployed on static hosting services (like firebase).
+filegroup(
+    name = "dev_app_static_files",
+    srcs = [
+        "favicon.ico",
+        "index.html",
+        ":system-config",
+        "//tools:system-rxjs-operators.js",
+        "//tools/third-party-libs:date-fns-bundle.js",
+        "//tools/third-party-libs:debug-bundle.js",
+        "//tools/third-party-libs:gic-core-bundle.js",
+        "//tools/third-party-libs:gic-core-loader-bundle.js",
+        "//tools/third-party-libs:ionic-core-bundle.js",
+        "//tools/third-party-libs:ionic-core-loader-bundle.js",
+        "//tools/third-party-libs:pouchdb-bundle.js",
+        "//tools/third-party-libs:pouchdb-debug-bundle.js",
+        "//tools/third-party-libs:pouchdb-find-bundle.js",
+        "//tools/third-party-libs:url-parse-bundle.js",
+        "//tools/third-party-libs:uuid-bundle.js",
+        "@npm//:node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
+        "@npm//:node_modules/@ionic/angular/css/ionic.bundle.css",
+        "@npm//:node_modules/@webcomponents/custom-elements/custom-elements.min.js",
+        "@npm//:node_modules/core-js/client/core.js",
+        "@npm//:node_modules/rxjs/bundles/rxjs.umd.min.js",
+        "@npm//:node_modules/systemjs/dist/system.js",
+        "@npm//:node_modules/tslib/tslib.js",
+        "@npm//:node_modules/zone.js/dist/zone.js",
+    ],
+)
+
+dev_server(
+    name = "devserver",
+    srcs = [":dev_app_static_files"],
+    additional_root_paths = [
+        "npm/node_modules",
+        # Needed for compatibility with "pkg_web" which always uses the tree
+        # artifact output as workspace root.
+        "gc_gngt",
+    ],
+    tags = ["manual"],
+    deps = [
+        ":dev-app",
+    ],
+)
+
+# Collects all ES5 JavaScript files which are required to serve the dev-app. By default,
+# ts_library and ng_module targets only expose the type definition files as outputs.
+devmode_js_sources(
+    name = "dev_app_js_sources",
+    tags = ["manual"],
+    deps = [":dev-app"],
+)
+
+# Target that builds a static web package of the dev-app. The web package can be
+# deployed on static hosting services (such as firebase).
+pkg_web(
+    name = "web_package",
+    srcs = [
+        ":dev_app_js_sources",
+        ":dev_app_static_files",
+    ],
+    additional_root_paths = [
+        "npm/node_modules",
+    ],
+    tags = ["manual"],
+)

@@ -162,14 +162,14 @@
           "descendants": "^(true|false)$"
         }
       }
-    }, "src/!(a11y-demo|e2e-app-ion|e2e-app-mat|ionic-examples|material-examples|universal-app-ion|universal-app-mat|dev-app-ion|dev-app-mat)/**/!(*.spec).ts"],
+    }, "src/!(a11y-demo|e2e-app-ion|e2e-app-mat|gngt-examples|universal-app-ion|universal-app-mat|dev-app)/**/!(*.spec).ts"],
     "require-license-banner": [
       true,
-      "src/!(a11y-demo|e2e-app-ion|e2e-app-mat|ionic-examples|material-examples|universal-app-ion|universal-app-mat)/**/!(*.spec).ts"
+      "src/!(a11y-demo|e2e-app-ion|e2e-app-mat|gngt-examples|universal-app-ion|universal-app-mat)/**/!(*.spec).ts"
     ],
     "no-cross-entry-point-relative-imports": [
       true,
-      "src/!(a11y-demo|e2e-app-ion|e2e-app-mat|ionic-examples|material-examples|universal-app-ion|universal-app-mat|dev-app-ion|dev-app-mat)/**/!(*.spec).ts",
+      "src/!(a11y-demo|e2e-app-ion|e2e-app-mat|gngt-examples|universal-app-ion|universal-app-mat|dev-app)/**/!(*.spec).ts",
       "!src/+(cdk|material)/schematics/**/*",
       "!src/cdk/testing/+(private|tests)/**/*",
       "!src/google-maps/testing/**/*"

@@ -459,7 +459,7 @@ export abstract class Calendar implements AfterContentInit, ControlValueAccessor
     }
     let weekDayNames: string[] = [];
     for (let i = 0; i < 7; i++) {
-      weekDayNames.push(format(curDate, 'dddd'));
+      weekDayNames.push(format(curDate, 'EEE'));
       curDate = addDays(curDate, 1);
     }
     this._weekDays = weekDayNames;

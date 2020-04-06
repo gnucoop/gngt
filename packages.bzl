@@ -33,7 +33,7 @@ ANGULAR_NGCC_BUNDLES = [
     ("@angular/core", ["core-testing.umd.js", "core.umd.js"]),
     ("@angular/elements", ["elements.umd.js"]),
     ("@angular/forms", ["forms.umd.js"]),
-    ("@angular/material", ["material-autocomplete.umd.js", "material-button.umd.js", "material-button-toggle.umd.js", "material-card.umd.js", "material-checkbox.umd.js", "material-chips.umd.js", "material-core.umd.js", "material-dialog.umd.js", "material-divider.umd.js", "material-expansion.umd.js", "material-form-field.umd.js", "material-grid-list.umd.js", "material-icon.umd.js", "material-input.umd.js", "material-list.umd.js", "material-menu.umd.js", "material-radio.umd.js", "material-select.umd.js", "material-sidenav.umd.js", "material-slide-toggle.umd.js", "material-slider.umd.js", "material-table.umd.js", "material-tabs.umd.js", "material-toolbar.umd.js", "material-tooltip.umd.js"]),
+    ("@angular/material", ["material-autocomplete.umd.js", "material-button.umd.js", "material-button-toggle.umd.js", "material-card.umd.js", "material-checkbox.umd.js", "material-chips.umd.js", "material-core.umd.js", "material-dialog.umd.js", "material-divider.umd.js", "material-expansion.umd.js", "material-form-field.umd.js", "material-grid-list.umd.js", "material-icon.umd.js", "material-input.umd.js", "material-list.umd.js", "material-menu.umd.js", "material-paginator.umd.js", "material-progress-bar.umd.js", "material-radio.umd.js", "material-select.umd.js", "material-sidenav.umd.js", "material-slide-toggle.umd.js", "material-slider.umd.js", "material-snack-bar.umd.js", "material-sort.umd.js", "material-table.umd.js", "material-tabs.umd.js", "material-toolbar.umd.js", "material-tooltip.umd.js"]),
     ("@angular/platform-browser-dynamic", ["platform-browser-dynamic-testing.umd.js", "platform-browser-dynamic.umd.js"]),
     ("@angular/platform-browser", ["platform-browser.umd.js", "platform-browser-testing.umd.js", "platform-browser-animations.umd.js"]),
     ("@angular/router", ["router.umd.js"]),
@@ -42,6 +42,8 @@ ANGULAR_NGCC_BUNDLES = [
 THIRD_PARTY_NGCC_BUNDLES = [
     ("@gic/angular", "gic-angular.umd.js"),
     ("@ionic/angular", "ionic-angular.umd.js"),
+    ("@ngrx/effects", "effects.umd.js"),
+    ("@ngrx/store", "store.umd.js"),
     ("@ngx-translate/core", "ngx-translate-core.umd.js"),
 ]
 
@@ -50,9 +52,9 @@ THIRD_PARTY_NO_NGCC_BUNDLES = [
 
 THIRD_PARTY_GEN_BUNDLES = [
     ("@gic/core", "gic-core-bundle.js"),
-    ("@gic/core/core", "gic-core-loader-bundle.js"),
+    ("@gic/core/loader", "gic-core-loader-bundle.js"),
     ("@ionic/core", "ionic-core-bundle.js"),
-    ("@ionic/core/core", "ionic-core-loader-bundle.js"),
+    ("@ionic/core/loader", "ionic-core-loader-bundle.js"),
     ("date-fns", "date-fns-bundle.js"),
     ("debug", "debug-bundle.js"),
     ("pouchdb", "pouchdb-bundle.js"),

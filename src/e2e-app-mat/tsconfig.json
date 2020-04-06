@@ -6,8 +6,8 @@
     "baseUrl": ".",
     "paths": {
       "@gngt/core/*": ["../core/*"],
-      "@gngt/material/*": ["../material/*"],
-      "@gngt/material-examples/*": ["../material-examples/*"]
+      "@gngt/gngt-examples/*": ["../gngt-examples/*"],
+      "@gngt/material/*": ["../material/*"]
     }
   },
   "include": ["./**/*.ts"]

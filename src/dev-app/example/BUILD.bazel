@@ -1,0 +1,15 @@
+package(default_visibility = ["//visibility:public"])
+
+load("//tools:defaults.bzl", "ng_module")
+
+ng_module(
+    name = "example",
+    srcs = glob(["**/*.ts"]),
+    deps = [
+        "//src/gngt-examples",
+        "//src/gngt-examples/private",
+        "@npm//@angular/cdk",
+        "@npm//@angular/elements",
+        "@npm//@angular/material",
+    ],
+)

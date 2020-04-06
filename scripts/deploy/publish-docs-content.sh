@@ -23,8 +23,8 @@ docsDistPath="${projectPath}/dist/docs"
 # Path to the cloned docs-content repository.
 docsContentPath="${projectPath}/tmp/gngt-docs-content"
 
-# Path to the release output of the Bazel "@gngt/material-examples" NPM package.
-examplesPackagePath="$(bazel info bazel-bin)/src/material-examples/npm_package"
+# Path to the release output of the Bazel "@gngt/gngt-examples" NPM package.
+examplesPackagePath="$(bazel info bazel-bin)/src/gngt-examples/npm_package"
 
 # Git clone URL for the gngt-docs-content repository.
 docsContentRepoUrl="https://github.com/gnucoop/gngt-docs-content"

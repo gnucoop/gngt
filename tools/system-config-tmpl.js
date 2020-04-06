@@ -1,9 +1,22 @@
 /**
  * @license
- * Copyright Google LLC All Rights Reserved.
+ * Copyright (C) 2018 Gnucoop soc. coop.
  *
- * Use of this source code is governed by an MIT-style license that can be
- * found in the LICENSE file at https://angular.io/license
+ * This file is part of the Gnucoop Angular Toolkit (gngt).
+ *
+ * Gnucoop Angular Toolkit (gngt) is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Gnucoop Angular Toolkit (gngt) is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Gnucoop Angular Toolkit (gngt).  If not, see http://www.gnu.org/licenses/.
+ *
  */
 
 // Note that this file isn't being transpiled so we need to keep it in ES5. Also
@@ -73,10 +86,7 @@ System.config({
   baseURL: '$BASE_URL',
   map: pathMapping,
   packages: packagesConfig,
-  paths: {
-    'node:*': nodeModulesPath + '*',
-    paths: {'node:*': nodeModulesPath + '*', 'tpl:*': nodeModulesPath + '*'}
-  }
+  paths: {'node:*': nodeModulesPath + '*', 'tpl:*': nodeModulesPath + '*'}
 });
 
 /**
@@ -162,9 +172,8 @@ function setupThirdPartyGenPackages() {
 function setupLocalReleasePackages() {
   // Configure all primary entry-points.
   configureEntryPoint('core');
-  configureEntryPoint('ionic-examples');
+  configureEntryPoint('gngt-examples');
   configureEntryPoint('ionic');
-  configureEntryPoint('material-examples');
   configureEntryPoint('material');
 
   // Configure all secondary entry-points.
@@ -179,23 +188,19 @@ function setupLocalReleasePackages() {
   });
 
   // Private secondary entry-points.
-  configureEntryPoint('ionic-examples', 'private');
-  configureEntryPoint('material-examples', 'private');
+  configureEntryPoint('gngt-examples', 'private');
 }
 
 /** Configures the specified package, its entry-point and its examples. */
 function configureEntryPoint(pkgName, entryPoint) {
   var name = entryPoint ? pkgName + '/' + entryPoint : pkgName;
-  var ionicExamplesName = 'ionic-examples/' + name;
-  var materialExamplesName = 'material-examples/' + name;
+  var examplesName = 'gngt-examples/' + name;
 
   pathMapping['@gngt/' + name] = packagesPath + '/' + name;
-  pathMapping['@gngt/' + ionicExamplesName] = packagesPath + '/' + ionicExamplesName;
-  pathMapping['@gngt/' + materialExamplesName] = packagesPath + '/' + materialExamplesName;
+  pathMapping['@gngt/' + examplesName] = packagesPath + '/' + examplesName;
 
   // Ensure that imports which resolve to the entry-point directory are
   // redirected to the "index.js" file of the directory.
   packagesConfig[packagesPath + '/' + name] =
-      packagesConfig[packagesPath + '/' + ionicExamplesName] =
-        packagesConfig[packagesPath + '/' + materialExamplesName] = {main: 'index.js'};
+      packagesConfig[packagesPath + '/' + examplesName] = {main: 'index.js'};
 }

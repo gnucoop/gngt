@@ -89,5 +89,4 @@ create_globals("material", MATERIAL_ENTRYPOINTS + MATERIAL_TESTING_ENTRYPOINTS)
 # Rollup globals the examples package. Since individual examples are
 # grouped by package and component, the primary entry-point imports
 # from entry-points which should be treated as external imports.
-# create_globals("ionic-examples", IONIC_ENTRYPOINTS)
-# create_globals("material-examples", MATERIAL_ENTRYPOINTS)
+# create_globals("gngt-examples", IONIC_ENTRYPOINTS)
