@@ -1,5 +1,3 @@
-package(default_visibility = ["//visibility:public"])
-
 load(
     "//src/material:config.bzl",
     "MATERIAL_ENTRYPOINTS",
@@ -8,6 +6,8 @@ load(
     "MATERIAL_TESTING_TARGETS",
 )
 load("//tools:defaults.bzl", "ng_package", "ts_library")
+
+package(default_visibility = ["//visibility:public"])
 
 ts_library(
     name = "material",

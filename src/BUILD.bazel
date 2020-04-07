@@ -1,10 +1,10 @@
-package(default_visibility = ["//visibility:public"])
-
 load("@npm_bazel_typescript//:index.bzl", "ts_config")
 load("//src/core:config.bzl", "CORE_ENTRYPOINTS")
 load("//src/ionic:config.bzl", "IONIC_ENTRYPOINTS", "IONIC_TESTING_ENTRYPOINTS")
 load("//src/material:config.bzl", "MATERIAL_ENTRYPOINTS", "MATERIAL_TESTING_ENTRYPOINTS")
 load("//tools/dgeni:index.bzl", "dgeni_api_docs")
+
+package(default_visibility = ["//visibility:public"])
 
 coreApiEntryPoints = CORE_ENTRYPOINTS
 
