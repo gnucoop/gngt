@@ -19,11 +19,9 @@
  *
  */
 
-import {Injectable, Inject} from '@angular/core';
-import {HttpRequest, HttpHandler, HttpEvent, HttpInterceptor} from '@angular/common/http';
-
+import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
+import {Inject, Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
-
 import * as URLParse from 'url-parse';
 
 import {JwtHelperService} from './jwt-helper';
@@ -33,24 +31,18 @@ import {JWT_OPTIONS} from './jwt-options-token';
 
 @Injectable({providedIn: 'root'})
 export class JwtInterceptor implements HttpInterceptor {
-  tokenGetter: (() => string | null) | undefined;
+  tokenGetter: (() => string | null)|undefined;
   headerName: string;
   authScheme: string;
-  whitelistedDomains: Array<string | RegExp>;
-  blacklistedRoutes: Array<string | RegExp>;
+  whitelistedDomains: Array<string|RegExp>;
+  blacklistedRoutes: Array<string|RegExp>;
   throwNoTokenError: boolean;
   skipWhenExpired: boolean;
 
-  constructor(
-    @Inject(JWT_OPTIONS) config: JwtOptions,
-    public jwtHelper: JwtHelperService
-  ) {
+  constructor(@Inject(JWT_OPTIONS) config: JwtOptions, public jwtHelper: JwtHelperService) {
     this.tokenGetter = config.tokenGetter;
     this.headerName = config.headerName || 'Authorization';
-    this.authScheme =
-      config.authScheme || config.authScheme === ''
-        ? config.authScheme
-        : 'Bearer ';
+    this.authScheme = config.authScheme || config.authScheme === '' ? config.authScheme : 'Bearer ';
     this.whitelistedDomains = config.whitelistedDomains || [];
     this.blacklistedRoutes = config.blacklistedRoutes || [];
     this.throwNoTokenError = config.throwNoTokenError || false;
@@ -60,39 +52,26 @@ export class JwtInterceptor implements HttpInterceptor {
   isWhitelistedDomain(request: HttpRequest<any>): boolean {
     const requestUrl = new URLParse(request.url);
 
-    return (
-      requestUrl.host === null ||
-      this.whitelistedDomains.findIndex(
-        domain =>
-          typeof domain === 'string'
-            ? domain === requestUrl.host
-            : domain instanceof RegExp
-              ? domain.test(requestUrl.host)
-              : false
-      ) > -1
-    );
+    return (requestUrl.host === null || this.whitelistedDomains.findIndex(domain => {
+      if (typeof domain === 'string') {
+        return domain === requestUrl.host;
+      }
+      return domain instanceof RegExp ? domain.test(requestUrl.host) : false;
+    }) > -1);
   }
 
   isBlacklistedRoute(request: HttpRequest<any>): boolean {
     const url = request.url;
 
-    return (
-      this.blacklistedRoutes.findIndex(
-        route =>
-          typeof route === 'string'
-            ? route === url
-            : route instanceof RegExp
-              ? route.test(url)
-              : false
-      ) > -1
-    );
+    return (this.blacklistedRoutes.findIndex(route => {
+      if (typeof route === 'string') {
+        return route === url;
+      }
+      return route instanceof RegExp ? route.test(url) : false;
+    }) > -1);
   }
 
-  handleInterception(
-    token: string | null,
-    request: HttpRequest<any>,
-    next: HttpHandler
-  ) {
+  handleInterception(token: string|null, request: HttpRequest<any>, next: HttpHandler) {
     let tokenIsExpired = false;
 
     if (!token && this.throwNoTokenError) {
@@ -105,24 +84,13 @@ export class JwtInterceptor implements HttpInterceptor {
 
     if (token && tokenIsExpired && this.skipWhenExpired) {
       request = request.clone();
-    } else if (
-      token &&
-      this.isWhitelistedDomain(request) &&
-      !this.isBlacklistedRoute(request)
-    ) {
-      request = request.clone({
-        setHeaders: {
-          [this.headerName]: `${this.authScheme}${token}`
-        }
-      });
+    } else if (token && this.isWhitelistedDomain(request) && !this.isBlacklistedRoute(request)) {
+      request = request.clone({setHeaders: {[this.headerName]: `${this.authScheme}${token}`}});
     }
     return next.handle(request);
   }
 
-  intercept(
-    request: HttpRequest<any>,
-    next: HttpHandler
-  ): Observable<HttpEvent<any>> {
+  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const token = this.tokenGetter ? this.tokenGetter() : null;
 
     return this.handleInterception(token, request, next);

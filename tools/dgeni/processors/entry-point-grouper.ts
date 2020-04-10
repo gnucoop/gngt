@@ -20,7 +20,6 @@ export interface ModuleInfo {
 
 /** Document type for an entry-point. */
 export class EntryPointDoc {
-
   /** Unique document type for Dgeni. */
   docType = 'entry-point';
 
@@ -100,9 +99,17 @@ export class EntryPointGrouper implements Processor {
       const moduleInfo = this._getModulePackageInfo(doc);
 
       const packageName = moduleInfo.packageName;
-      const packageDisplayName = packageName === 'core' ? 'Core' : (
-        packageName === 'material' ? 'Material' : 'Ionic'
-      );
+      let packageDisplayName = '';
+      switch (packageName) {
+        case 'core':
+          packageDisplayName = 'Core';
+          break;
+        case 'ionic':
+          packageDisplayName = 'Ionic';
+          break;
+        case 'material':
+          packageDisplayName = 'Material';
+      }
 
       const moduleImportPath = `@gngt/${packageName}/${moduleInfo.entryPointName}`;
       const entryPointName = packageName + '-' + moduleInfo.name;
@@ -236,5 +243,4 @@ export class EntryPointGrouper implements Processor {
     }
     return foundEntryPoint;
   }
-
 }

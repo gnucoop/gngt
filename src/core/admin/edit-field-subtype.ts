@@ -19,7 +19,7 @@
  *
  */
 
-export enum AdminEditFieldSubtype {
+export const enum AdminEditFieldSubtype {
   Color = 'color',
   Date = 'date',
   DateTimeLocal = 'datetime-local',

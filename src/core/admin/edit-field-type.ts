@@ -19,7 +19,7 @@
  *
  */
 
-export enum AdminEditFieldType {
+export const enum AdminEditFieldType {
   Input = 'input',
   TextArea = 'textarea',
   CheckBox = 'checkbox',

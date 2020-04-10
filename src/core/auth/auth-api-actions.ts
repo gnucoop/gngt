@@ -22,11 +22,11 @@
 import {Action} from '@ngrx/store';
 import {LoginResponse} from './login-response';
 
-export enum AuthApiActionTypes {
+export const enum AuthApiActionTypes {
   LoginSuccess = '[Auth/API] Login Success',
   LoginFailure = '[Auth/API] Login Failure',
   LoginRedirect = '[Auth/API] Login Redirect',
-  RefreshToken= '[Auth/API] Refresh token'
+  RefreshToken = '[Auth/API] Refresh token'
 }
 
 export class LoginSuccess implements Action {
@@ -38,7 +38,7 @@ export class LoginSuccess implements Action {
 export class LoginFailure implements Action {
   readonly type = AuthApiActionTypes.LoginFailure;
 
-  constructor(public payload: { error: any }) {}
+  constructor(public payload: {error: any}) {}
 }
 
 export class LoginRedirect implements Action {
@@ -48,11 +48,7 @@ export class LoginRedirect implements Action {
 export class RefreshToken implements Action {
   readonly type = AuthApiActionTypes.RefreshToken;
 
-  constructor(public payload: { refreshDelay: number, fromInit?: boolean }) {}
+  constructor(public payload: {refreshDelay: number, fromInit?: boolean}) {}
 }
 
-export type AuthApiActionsUnion =
-  | LoginSuccess
-  | LoginFailure
-  | LoginRedirect
-  | RefreshToken;
+export type AuthApiActionsUnion = LoginSuccess|LoginFailure|LoginRedirect|RefreshToken;

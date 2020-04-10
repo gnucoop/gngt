@@ -22,14 +22,14 @@
 import {Action} from '@ngrx/store';
 import {Credentials} from './credentials';
 
-export enum LoginPageActionTypes {
+export const enum LoginPageActionTypes {
   Login = '[Login Page] Login',
 }
 
 export class Login implements Action {
   readonly type = LoginPageActionTypes.Login;
 
-  constructor(public payload: { credentials: Credentials }) {}
+  constructor(public payload: {credentials: Credentials}) {}
 }
 
 export type LoginPageActionsUnion = Login;
