@@ -36,7 +36,7 @@ export class AdminModelMockService {
   private _currentStart = 0;
   private _currentLimit = 20;
 
-  delete() { }
+  delete() {}
 
   get(_id: number): Observable<AdminModel> {
     return obsOf({id: 1, foo: 'foo', bar: 'bar', baz: 1});
@@ -44,9 +44,9 @@ export class AdminModelMockService {
 
   getListObjects(): Observable<ModelListResult<AdminModel>> {
     return this._listEvt.pipe(
-      switchMap(_ => {
-        return this._returnObjects();
-      }),
+        switchMap(_ => {
+          return this._returnObjects();
+        }),
     );
   }
 
@@ -67,7 +67,7 @@ export class AdminModelMockService {
 
   private _returnObjects(): Observable<ModelListResult<AdminModel>> {
     const objs: AdminModel[] = [];
-    for (let i = 0 ; i < this._currentLimit ; i++) {
+    for (let i = 0; i < this._currentLimit; i++) {
       const id = this._currentStart + i + 1;
       objs.push({id, foo: `foo ${id}`, bar: `bar ${id}`, baz: id});
     }

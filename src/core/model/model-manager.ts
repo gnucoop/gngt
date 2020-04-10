@@ -21,33 +21,40 @@
 
 import {HttpClient} from '@angular/common/http';
 import {Optional} from '@angular/core';
-
-import {Observable} from 'rxjs';
-
 import {
-  Model, ModelListParams, ModelListResult, ModelManager as BaseModelManager, ModelQueryParams
+  Model,
+  ModelListParams,
+  ModelListResult,
+  ModelManager as BaseModelManager,
+  ModelQueryParams
 } from '@gngt/core/common';
 import {SyncService} from '@gngt/core/sync';
+import {Observable} from 'rxjs';
+
 import {ModelOptions} from './model-options';
 
 
 export abstract class ModelManager<M extends Model = Model> extends BaseModelManager {
-  get endPoint(): string { return this._endPoint; }
+  get endPoint(): string {
+    return this._endPoint;
+  }
 
   private _baseUrl: string;
-  get baseUrl(): string { return this._baseUrl; }
+  get baseUrl(): string {
+    return this._baseUrl;
+  }
 
   private _useTrailingSlash = false;
 
   constructor(
-    config: ModelOptions, private _endPoint: string,
-    protected _http: HttpClient, @Optional() syncService?: SyncService,
+      config: ModelOptions,
+      private _endPoint: string,
+      protected _http: HttpClient,
+      @Optional() syncService?: SyncService,
   ) {
     super();
     this._baseUrl = `${config.baseApiUrl}${this._endPoint}`;
-    this._useTrailingSlash = config.addTrailingSlash != null
-      ? config.addTrailingSlash
-      : false;
+    this._useTrailingSlash = config.addTrailingSlash != null ? config.addTrailingSlash : false;
     if (syncService != null && config.syncModel) {
       if (config.tableName == null) {
         throw new Error(`Table name must be set for model ${this._endPoint}`);
@@ -131,13 +138,16 @@ export abstract class ModelManager<M extends Model = Model> extends BaseModelMan
         paramsArray.push(`fields=${options.fields.join(',')}`);
       }
       if (options.joins) {
-        paramsArray.push(`joins=${options.joins.map(j => {
-          const join = `${j.model}.${j.property}`;
-          if (j.fields) {
-            return `${join}.${j.fields.join(';')}`;
-          }
-          return join;
-        }).join(',')}`);
+        paramsArray.push(`joins=${
+            options.joins
+                .map(j => {
+                  const join = `${j.model}.${j.property}`;
+                  if (j.fields) {
+                    return `${join}.${j.fields.join(';')}`;
+                  }
+                  return join;
+                })
+                .join(',')}`);
       }
       if (paramsArray.length > 0) {
         params = `?${paramsArray.join('&')}`;

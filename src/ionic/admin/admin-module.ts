@@ -24,8 +24,8 @@ import {NgModule} from '@angular/core';
 import {ReactiveFormsModule} from '@angular/forms';
 import {RouterModule} from '@angular/router';
 import {GicModule} from '@gic/angular';
-import {CommonModule as GngtCommonModule} from '@gngt/core/common';
 import {GngtAdminModule as CoreModule} from '@gngt/core/admin';
+import {CommonModule as GngtCommonModule} from '@gngt/core/common';
 import {IonicModule} from '@ionic/angular';
 import {TranslateModule} from '@ngx-translate/core';
 
@@ -52,10 +52,11 @@ import {AdminListComponent} from './list';
   ],
   exports: [
     AdminEditComponent,
-    AdminListComponent
+    AdminListComponent,
   ],
   providers: [
     AdminUserInteractionsService,
   ]
 })
-export class AdminModule {}
+export class AdminModule {
+}

@@ -20,7 +20,6 @@
  */
 
 import {NgModule} from '@angular/core';
-
 import {EffectsModule} from '@ngrx/effects';
 import {StoreModule} from '@ngrx/store';
 
@@ -35,8 +34,8 @@ import {reducers} from './reducers';
 
 @NgModule({
   imports: [
-    StoreModule.forFeature('auth', reducers),
     EffectsModule.forFeature([AuthEffects]),
+    StoreModule.forFeature('auth', reducers),
   ],
   declarations: [
     LoginActionDirective,
@@ -48,13 +47,7 @@ import {reducers} from './reducers';
     LoginPasswordDirective,
     LoginUsernameDirective,
   ],
-  providers: [
-    AuthEffects,
-    AuthGuard,
-    AuthHelper,
-    AuthService,
-    JwtHelperService,
-    JwtInterceptor
-  ]
+  providers: [AuthEffects, AuthGuard, AuthHelper, AuthService, JwtHelperService, JwtInterceptor]
 })
-export class AuthModule { }
+export class AuthModule {
+}

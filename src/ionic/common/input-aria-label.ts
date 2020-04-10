@@ -20,25 +20,29 @@
  */
 
 import {
-  AfterViewInit, Directive, ElementRef, Input, Host, OnDestroy, Optional, Renderer2
+  AfterViewInit,
+  Directive,
+  ElementRef,
+  Host,
+  Input,
+  OnDestroy,
+  Optional,
+  Renderer2
 } from '@angular/core';
-
-import {Subscription} from 'rxjs';
-
 import {IonInput} from '@ionic/angular';
+import {Subscription} from 'rxjs';
 
 @Directive({selector: '[gngtInputAriaLabel]'})
 export class InputAriaLabelDirective implements AfterViewInit, OnDestroy {
   private _inputLoadSub: Subscription = Subscription.EMPTY;
 
   constructor(
-    @Host() @Optional() private _input: IonInput,
-    private _el: ElementRef,
-    private _renderer: Renderer2
-  ) { }
+      @Host() @Optional() private _input: IonInput, private _el: ElementRef,
+      private _renderer: Renderer2) {}
 
   private _gngtInputAriaLabel: string;
-  @Input('gngtInputAriaLabel') set gngtInputAriaLabel(gngtInputAriaLabel: string) {
+  @Input('gngtInputAriaLabel')
+  set gngtInputAriaLabel(gngtInputAriaLabel: string) {
     this._gngtInputAriaLabel = gngtInputAriaLabel;
     this._updateLabel();
   }
@@ -64,11 +68,10 @@ export class InputAriaLabelDirective implements AfterViewInit, OnDestroy {
     }
   }
 
-  private _setLabelOnChildren(
-    inputs: HTMLCollectionOf<HTMLInputElement> | NodeListOf<HTMLInputElement>
-  ): void {
+  private _setLabelOnChildren(inputs: HTMLCollectionOf<HTMLInputElement>|
+                              NodeListOf<HTMLInputElement>): void {
     const inputsNum = inputs.length;
-    for (let i = 0 ; i < inputsNum ; i++) {
+    for (let i = 0; i < inputsNum; i++) {
       const input = inputs.item(i);
       if (input) {
         this._setLabel(input);

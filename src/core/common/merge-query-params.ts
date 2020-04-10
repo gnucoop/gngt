@@ -22,19 +22,17 @@
 import {ModelQueryParams} from './query-params';
 
 export function mergeQueryParams(
-  win: Partial<ModelQueryParams>,
-  loose: Partial<ModelQueryParams>,
-): ModelQueryParams {
-  const fields = loose.fields || win.fields
-    ? [
-      ...(loose.fields || []),
-      ...(win.fields || [])
-    ] : null;
-  const joins = loose.joins || win.joins
-    ? [
-      ...(loose.joins || []),
-      ...(win.joins || []),
-    ] : null;
+    win: Partial<ModelQueryParams>,
+    loose: Partial<ModelQueryParams>,
+    ): ModelQueryParams {
+  const fields =
+      loose.fields || win.fields ? [...(loose.fields || []), ...(win.fields || [])] : null;
+  const joins = loose.joins || win.joins ?
+      [
+        ...(loose.joins || []),
+        ...(win.joins || []),
+      ] :
+      null;
   const merged = {
     ...loose,
     ...win,

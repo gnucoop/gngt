@@ -25,5 +25,5 @@ import {Directive, Input, TemplateRef} from '@angular/core';
 export class AdminListCellDirective {
   @Input('gngtAdminListCell') column: string;
 
-  constructor(readonly templateRef: TemplateRef<any>) { }
+  constructor(readonly templateRef: TemplateRef<any>) {}
 }

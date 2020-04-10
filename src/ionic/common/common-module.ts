@@ -31,4 +31,5 @@ import {InputAriaLabelDirective} from './input-aria-label';
     InputAriaLabelDirective,
   ]
 })
-export class CommonModule { }
+export class CommonModule {
+}

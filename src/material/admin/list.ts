@@ -19,16 +19,24 @@
  *
  */
 
-import {
-  AfterContentInit, ChangeDetectionStrategy, ChangeDetectorRef, Component,
-  ContentChildren, Input, OnDestroy, OnInit, QueryList, TemplateRef,
-  ViewChild, ViewEncapsulation
-} from '@angular/core';
 import {SelectionModel} from '@angular/cdk/collections';
+import {
+  AfterContentInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ContentChildren,
+  Input,
+  OnDestroy,
+  OnInit,
+  QueryList,
+  TemplateRef,
+  ViewChild,
+  ViewEncapsulation
+} from '@angular/core';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSelect} from '@angular/material/select';
 import {MatSort} from '@angular/material/sort';
-
 import {AdminListComponent as BaseAdminListComponent} from '@gngt/core/admin';
 import {Model} from '@gngt/core/common';
 import {ModelActionTypes, ModelService, State as ModelState} from '@gngt/core/model';
@@ -44,16 +52,17 @@ import {AdminListCellDirective} from './list-cell';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
 })
-export class AdminListComponent<
-    T extends Model = Model,
-    S extends ModelState<T> = ModelState<T>,
-    A extends ModelActionTypes = ModelActionTypes,
-    MS extends ModelService<T, S, A> = ModelService<T, S, A>
-  > extends BaseAdminListComponent<T, S, A, MS>
-    implements AfterContentInit, OnDestroy, OnInit {
+export class AdminListComponent<T extends Model = Model, S extends ModelState<T> = ModelState<T>,
+                                                                   A extends
+                                    ModelActionTypes = ModelActionTypes, MS extends
+                                        ModelService<T, S, A> = ModelService<T, S, A>> extends
+    BaseAdminListComponent<T, S, A, MS> implements AfterContentInit, OnDestroy, OnInit {
   private _dataSource: ModelDataSource<T, S, A, MS>;
-  get dataSource(): ModelDataSource<T, S, A, MS> { return this._dataSource; }
-  @Input() set dataSource(dataSource: ModelDataSource<T, S, A, MS>) {
+  get dataSource(): ModelDataSource<T, S, A, MS> {
+    return this._dataSource;
+  }
+  @Input()
+  set dataSource(dataSource: ModelDataSource<T, S, A, MS>) {
     if (dataSource !== this.dataSource) {
       this._dataSource = dataSource;
       this._fillDataSource();
@@ -67,7 +76,9 @@ export class AdminListComponent<
   readonly selection: SelectionModel<T> = new SelectionModel<T>(true, []);
 
   private _cellTemplatesMap: {[column: string]: TemplateRef<any>} = {};
-  get cellTemplatesMap(): {[column: string]: TemplateRef<any>} { return this._cellTemplatesMap; }
+  get cellTemplatesMap(): {[column: string]: TemplateRef<any>} {
+    return this._cellTemplatesMap;
+  }
 
   constructor(cdr: ChangeDetectorRef, aui: AdminUserInteractionsService) {
     super(cdr, aui);
@@ -93,22 +104,30 @@ export class AdminListComponent<
   }
 
   clearSelection(): void {
-    if (this.selection == null) { return; }
+    if (this.selection == null) {
+      return;
+    }
     this.selection.clear();
   }
 
   selectAll(): void {
-    if (this.dataSource == null) { return; }
+    if (this.dataSource == null) {
+      return;
+    }
     this.dataSource.data.forEach(row => this.selection.select(row));
   }
 
   refreshList(): void {
-    if (this.dataSource == null) { return; }
+    if (this.dataSource == null) {
+      return;
+    }
     this.dataSource.refresh();
   }
 
   private _fillDataSource(): void {
-    if (this.dataSource == null) { return; }
+    if (this.dataSource == null) {
+      return;
+    }
     this.dataSource.paginator = this.paginatorCmp;
     this.dataSource.sort = this.sortCmp;
   }

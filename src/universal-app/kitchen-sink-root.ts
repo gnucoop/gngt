@@ -14,10 +14,7 @@ export class KitchenSinkRoot {
 }
 
 @NgModule({
-  imports: [
-    BrowserModule.withServerTransition({appId: 'kitchen-sink'}),
-    KitchenSinkModule
-  ],
+  imports: [BrowserModule.withServerTransition({appId: 'kitchen-sink'}), KitchenSinkModule],
   declarations: [KitchenSinkRoot],
   exports: [KitchenSinkRoot],
   bootstrap: [KitchenSinkRoot],

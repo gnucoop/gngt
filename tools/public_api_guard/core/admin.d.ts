@@ -46,7 +46,7 @@ export interface AdminEditFieldChoice {
     value: any;
 }
 
-export declare enum AdminEditFieldSubtype {
+export declare const enum AdminEditFieldSubtype {
     Color = "color",
     Date = "date",
     DateTimeLocal = "datetime-local",
@@ -62,7 +62,7 @@ export declare enum AdminEditFieldSubtype {
     Week = "week"
 }
 
-export declare enum AdminEditFieldType {
+export declare const enum AdminEditFieldType {
     Input = "input",
     TextArea = "textarea",
     CheckBox = "checkbox",

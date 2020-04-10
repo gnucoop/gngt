@@ -21,10 +21,8 @@
 
 import {Injectable} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
-
-import {Observable} from 'rxjs';
-
 import {AdminUserInteractionsService as CoreAdminUserInteractionsService} from '@gngt/core/admin';
+import {Observable} from 'rxjs';
 
 import {AdminDeleteConfirmDialogComponent} from './delete-confirm';
 

@@ -22,16 +22,20 @@
 import {Pipe, PipeTransform} from '@angular/core';
 
 export function getObjectProperty(value: any, prop: string): any {
-  if (prop == null) { return null; }
+  if (prop == null) {
+    return null;
+  }
   if (!/\./.test(prop)) {
     return value[prop];
   }
   const props = prop.split('.');
   const propsNum = props.length;
   let curValue = value;
-  for (let i = 0 ; i < propsNum ; i++) {
+  for (let i = 0; i < propsNum; i++) {
     curValue = curValue[props[i]];
-    if (curValue == null) { return null; }
+    if (curValue == null) {
+      return null;
+    }
   }
   return curValue;
 }

@@ -21,8 +21,8 @@
 
 import {NgModule} from '@angular/core';
 
-import {GetObjectProperty} from './get-object-property';
 import {FormDisabledDirective} from './form-disabled';
+import {GetObjectProperty} from './get-object-property';
 
 @NgModule({
   declarations: [
@@ -34,4 +34,5 @@ import {FormDisabledDirective} from './form-disabled';
     GetObjectProperty,
   ]
 })
-export class CommonModule { }
+export class CommonModule {
+}

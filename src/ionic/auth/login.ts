@@ -20,8 +20,12 @@
  */
 
 import {BooleanInput} from '@angular/cdk/coercion';
-import {ChangeDetectorRef, ChangeDetectionStrategy, Component,
-  ViewEncapsulation} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ViewEncapsulation
+} from '@angular/core';
 import {FormBuilder} from '@angular/forms';
 import {LoginComponent as CoreLoginComponent, State as AuthState} from '@gngt/core/auth';
 import {Store} from '@ngrx/store';

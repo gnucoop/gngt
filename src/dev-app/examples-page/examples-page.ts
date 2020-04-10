@@ -23,9 +23,7 @@ import {Component} from '@angular/core';
 import {EXAMPLE_COMPONENTS} from '@gngt/gngt-examples';
 
 /** Renders all ionic examples listed in the generated EXAMPLE_COMPONENTS. */
-@Component({
-  template: `<gngt-example-list [ids]="examples"></gngt-example-list>`
-})
+@Component({template: `<gngt-example-list [ids]="examples"></gngt-example-list>`})
 export class ExamplesPage {
   examples = Object.keys(EXAMPLE_COMPONENTS);
 }

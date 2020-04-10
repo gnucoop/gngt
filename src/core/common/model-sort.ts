@@ -20,5 +20,5 @@
  */
 
 export interface ModelSort {
-  [propName: string]: 'asc' | 'desc';
+  [propName: string]: 'asc'|'desc';
 }

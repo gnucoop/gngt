@@ -31,4 +31,5 @@ import {ChoicesPipe} from './choices-pipe';
     ChoicesPipe,
   ],
 })
-export class GngtAdminModule { }
+export class GngtAdminModule {
+}

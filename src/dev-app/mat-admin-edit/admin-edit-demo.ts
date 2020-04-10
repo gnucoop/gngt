@@ -20,12 +20,12 @@
  */
 
 import {Component} from '@angular/core';
-
-import {of as obsOf} from 'rxjs';
-
 import {
-  AdminEditField, AdminEditFieldType as ft, AdminEditFieldSubtype as fst
+  AdminEditField,
+  AdminEditFieldSubtype as fst,
+  AdminEditFieldType as ft
 } from '@gngt/core/admin';
+import {of as obsOf} from 'rxjs';
 
 import {AdminModelMockService} from '../admin-mocks';
 
@@ -60,10 +60,10 @@ export class AdminEditDemo {
           case 'foo':
           case 'bar':
           default:
-          value[element] = String(value[element]);
-          break;
+            value[element] = String(value[element]);
+            break;
           case 'baz':
-          value[element] = parseInt(value[element]);
+            value[element] = parseInt(value[element]);
         }
       }
     });

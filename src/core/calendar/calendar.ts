@@ -20,17 +20,42 @@
  */
 
 import {
-  AfterContentInit, ChangeDetectorRef, Directive, EventEmitter, forwardRef, Input, OnInit, Output
+  AfterContentInit,
+  ChangeDetectorRef,
+  Directive,
+  EventEmitter,
+  forwardRef,
+  Input,
+  OnInit,
+  Output
 } from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
-
-import {Observable} from 'rxjs';
-
 import {
-  addDays, addMonths, addWeeks, addYears, endOfDay, endOfISOWeek, endOfMonth, endOfWeek, endOfYear,
-  format, isAfter, isBefore, isSameDay, parseISO, setISODay, startOfDay, startOfISOWeek,
-  startOfMonth, startOfWeek, startOfYear, subMonths, subWeeks, subYears
+  addDays,
+  addMonths,
+  addWeeks,
+  addYears,
+  endOfDay,
+  endOfISOWeek,
+  endOfMonth,
+  endOfWeek,
+  endOfYear,
+  format,
+  isAfter,
+  isBefore,
+  isSameDay,
+  parseISO,
+  setISODay,
+  startOfDay,
+  startOfISOWeek,
+  startOfMonth,
+  startOfWeek,
+  startOfYear,
+  subMonths,
+  subWeeks,
+  subYears
 } from 'date-fns';
+import {Observable} from 'rxjs';
 
 
 export const CALENDAR_CONTROL_VALUE_ACCESSOR: any = {
@@ -39,17 +64,15 @@ export const CALENDAR_CONTROL_VALUE_ACCESSOR: any = {
   multi: true
 };
 
-const weekDays: string[] = [
-  '', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'
-];
+const weekDays: string[] =
+    ['', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
 
-export type CalendarViewMode = ('month' | 'year' | 'decade');
-export type CalendarPeriodType = ('day' | 'week' | 'month' | 'year');
-export type CalendarEntryType = ('day' | 'month' | 'year');
-export type CalendarWeekDay = (
-  'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday'
-);
-export type CalendarEntrySelectedState = ('none' | 'partial' | 'full');
+export type CalendarViewMode = ('month'|'year'|'decade');
+export type CalendarPeriodType = ('day'|'week'|'month'|'year');
+export type CalendarEntryType = ('day'|'month'|'year');
+export type CalendarWeekDay =
+    ('monday'|'tuesday'|'wednesday'|'thursday'|'friday'|'saturday'|'sunday');
+export type CalendarEntrySelectedState = ('none'|'partial'|'full');
 
 export class CalendarPeriod {
   type: CalendarPeriodType;
@@ -59,7 +82,7 @@ export class CalendarPeriod {
 
 export class CalendarChange {
   source: Calendar;
-  period: CalendarPeriod | null;
+  period: CalendarPeriod|null;
 }
 
 export class CalendarEntry {
@@ -99,9 +122,9 @@ export class CalendarEntry {
     return `${this.date.getFullYear()}`;
   }
 
-  getRange(): { start: Date, end: Date } {
+  getRange(): {start: Date, end: Date} {
     if (this.type === 'day') {
-      return { start: new Date(this.date), end: new Date(this.date) };
+      return {start: new Date(this.date), end: new Date(this.date)};
     } else {
       let curDate: Date = new Date(this.date);
       return {
@@ -114,12 +137,20 @@ export class CalendarEntry {
 
 @Directive()
 export abstract class Calendar implements AfterContentInit, ControlValueAccessor, OnInit {
-  get viewDate(): Date { return this._viewDate; }
-  @Input() set viewDate(viewDate: Date) { this._setViewDate(viewDate); }
+  get viewDate(): Date {
+    return this._viewDate;
+  }
+  @Input()
+  set viewDate(viewDate: Date) {
+    this._setViewDate(viewDate);
+  }
 
   private _disabled = false;
-  get disabled(): boolean { return this._disabled; }
-  @Input() set disabled(disabled: boolean) {
+  get disabled(): boolean {
+    return this._disabled;
+  }
+  @Input()
+  set disabled(disabled: boolean) {
     const newDisabled = disabled != null && `${disabled}` !== 'false';
     if (newDisabled !== this._disabled) {
       this._disabled = newDisabled;
@@ -128,21 +159,30 @@ export abstract class Calendar implements AfterContentInit, ControlValueAccessor
   }
 
   private _dateOnlyForDay = false;
-  get dateOnlyForDay(): boolean { return this._disabled; }
-  @Input() set dateOnlyForDay(dateOnlyForDay: boolean) {
+  get dateOnlyForDay(): boolean {
+    return this._disabled;
+  }
+  @Input()
+  set dateOnlyForDay(dateOnlyForDay: boolean) {
     this._dateOnlyForDay = dateOnlyForDay != null && `${dateOnlyForDay}` !== 'false';
   }
 
   private _viewMode: CalendarViewMode = 'month';
-  get viewMode(): CalendarViewMode { return this._viewMode; }
-  @Input() set viewMode(viewMode: CalendarViewMode) {
+  get viewMode(): CalendarViewMode {
+    return this._viewMode;
+  }
+  @Input()
+  set viewMode(viewMode: CalendarViewMode) {
     this._viewMode = viewMode;
     this._buildCalendar();
   }
 
   private _selectionMode: CalendarPeriodType = 'day';
-  get selectionMode(): CalendarPeriodType { return this._selectionMode; }
-  @Input() set selectionMode(selectionMode: CalendarPeriodType) {
+  get selectionMode(): CalendarPeriodType {
+    return this._selectionMode;
+  }
+  @Input()
+  set selectionMode(selectionMode: CalendarPeriodType) {
     this._selectionMode = selectionMode;
   }
 
@@ -150,7 +190,8 @@ export abstract class Calendar implements AfterContentInit, ControlValueAccessor
   get startOfWeekDay(): CalendarWeekDay {
     return <CalendarWeekDay>weekDays[this._startOfWeekDay];
   }
-  @Input() set startOfWeekDay(weekDay: CalendarWeekDay) {
+  @Input()
+  set startOfWeekDay(weekDay: CalendarWeekDay) {
     this._startOfWeekDay = weekDays.indexOf(weekDay);
 
     if (this._viewMode === 'month') {
@@ -160,51 +201,57 @@ export abstract class Calendar implements AfterContentInit, ControlValueAccessor
 
   private _isoMode: boolean = false;
 
-  get isoMode(): boolean { return this._isoMode; }
-  @Input() set isoMode(isoMode: boolean) { this._isoMode = isoMode; }
+  get isoMode(): boolean {
+    return this._isoMode;
+  }
+  @Input()
+  set isoMode(isoMode: boolean) {
+    this._isoMode = isoMode;
+  }
 
-  private _minDate: Date | null;
-  get minDate(): Date | null { return this._minDate; }
-  @Input() set minDate(minDate: Date | null) {
+  private _minDate: Date|null;
+  get minDate(): Date|null {
+    return this._minDate;
+  }
+  @Input()
+  set minDate(minDate: Date|null) {
     this._minDate = minDate != null ? new Date(minDate.valueOf()) : null;
   }
 
-  private _maxDate: Date | null;
-  get maxDate(): Date | null { return this._maxDate; }
-  @Input() set maxDate(maxDate: Date | null) {
+  private _maxDate: Date|null;
+  get maxDate(): Date|null {
+    return this._maxDate;
+  }
+  @Input()
+  set maxDate(maxDate: Date|null) {
     this._maxDate = maxDate != null ? new Date(maxDate.valueOf()) : null;
   }
 
   private _change: EventEmitter<CalendarChange> = new EventEmitter<CalendarChange>();
-  @Output() get change(): Observable<CalendarChange> {
+  @Output()
+  get change(): Observable<CalendarChange> {
     return this._change.asObservable();
   }
 
-  private _selectedPeriod: CalendarPeriod | null;
-  @Input() set selectedPeriod(period: CalendarPeriod | null) {
+  private _selectedPeriod: CalendarPeriod|null;
+  @Input()
+  set selectedPeriod(period: CalendarPeriod|null) {
     this._selectedPeriod = period;
-    this._change.emit({
-      source: this,
-      period: period
-    });
+    this._change.emit({source: this, period: period});
     this._refreshSelection();
   }
 
-  get value(): CalendarPeriod | Date | null {
+  get value(): CalendarPeriod|Date|null {
     if (this._dateOnlyForDay && this.selectionMode === 'day') {
       return this._selectedPeriod != null ? this._selectedPeriod.startDate : null;
     }
     return this._selectedPeriod;
   }
-  set value(period: CalendarPeriod | Date | null) {
+  set value(period: CalendarPeriod|Date|null) {
     if (this._dateOnlyForDay && this.selectionMode === 'day') {
       if (period instanceof Date &&
-        (this._selectedPeriod == null || period !== this._selectedPeriod.startDate)) {
-        this.selectedPeriod = {
-          type: 'day',
-          startDate: period,
-          endDate: period
-        };
+          (this._selectedPeriod == null || period !== this._selectedPeriod.startDate)) {
+        this.selectedPeriod = {type: 'day', startDate: period, endDate: period};
         this._onChangeCallback(period);
       }
     } else if (period instanceof Object && period !== this._selectedPeriod) {
@@ -213,9 +260,15 @@ export abstract class Calendar implements AfterContentInit, ControlValueAccessor
     }
   }
 
-  get calendarRows(): CalendarEntry[][] { return this._calendarRows; }
-  get viewHeader(): string { return this._viewHeader; }
-  get weekDays(): string[] { return this._weekDays; }
+  get calendarRows(): CalendarEntry[][] {
+    return this._calendarRows;
+  }
+  get viewHeader(): string {
+    return this._viewHeader;
+  }
+  get weekDays(): string[] {
+    return this._weekDays;
+  }
 
   private _viewDate: Date = new Date();
   private _viewHeader = '';
@@ -223,7 +276,7 @@ export abstract class Calendar implements AfterContentInit, ControlValueAccessor
   private _calendarRows: CalendarEntry[][] = [];
   private _weekDays: string[] = [];
 
-  constructor(private _cdr: ChangeDetectorRef) { }
+  constructor(private _cdr: ChangeDetectorRef) {}
 
   prevPage(): void {
     if (this._viewMode == 'month') {
@@ -259,24 +312,19 @@ export abstract class Calendar implements AfterContentInit, ControlValueAccessor
       return this._nextViewMode(entry);
     }
 
-    let newPeriod: CalendarPeriod | null = null;
+    let newPeriod: CalendarPeriod|null = null;
     if (this._isEntrySelected(entry) == 'full') {
       newPeriod = null;
     } else if (this._selectionMode == 'day') {
-      newPeriod = {
-        type: 'day',
-        startDate: entry.date,
-        endDate: entry.date
-      };
+      newPeriod = {type: 'day', startDate: entry.date, endDate: entry.date};
     } else if (this._selectionMode == 'week') {
       newPeriod = {
         type: 'week',
         startDate: this._isoMode ?
-          startOfISOWeek(entry.date) :
-          startOfWeek(entry.date, {weekStartsOn: this._startOfWeekDay} as any),
-        endDate: this._isoMode ?
-          endOfISOWeek(entry.date) :
-          endOfWeek(entry.date, {weekStartsOn: this._startOfWeekDay} as any)
+            startOfISOWeek(entry.date) :
+            startOfWeek(entry.date, {weekStartsOn: this._startOfWeekDay} as any),
+        endDate: this._isoMode ? endOfISOWeek(entry.date) :
+                                 endOfWeek(entry.date, {weekStartsOn: this._startOfWeekDay} as any)
       };
     } else if (this._selectionMode == 'month') {
       const monthBounds = this._getMonthStartEnd(entry.date);
@@ -320,15 +368,15 @@ export abstract class Calendar implements AfterContentInit, ControlValueAccessor
     this._refreshSelection();
   }
 
-  private _onChangeCallback: (_: any) => void = (_: any) => { };
+  private _onChangeCallback: (_: any) => void = (_: any) => {};
   // tslint:disable-next-line
-  private _onTouchedCallback: (_: any) => void = (_: any) => { };
+  private _onTouchedCallback: (_: any) => void = (_: any) => {};
 
   private _setViewDate(date: Date): void {
     this._viewDate = date;
   }
 
-  private _getMonthStartEnd(date: Date): { start: Date, end: Date } {
+  private _getMonthStartEnd(date: Date): {start: Date, end: Date} {
     let startDate = startOfMonth(date);
     let endDate = endOfMonth(date);
     if (this._isoMode) {
@@ -343,7 +391,7 @@ export abstract class Calendar implements AfterContentInit, ControlValueAccessor
       startDate = startOfISOWeek(startDate);
       endDate = endOfISOWeek(endDate);
     }
-    return { start: startDate, end: endDate };
+    return {start: startDate, end: endDate};
   }
 
   private _buildCalendar(): void {
@@ -372,11 +420,7 @@ export abstract class Calendar implements AfterContentInit, ControlValueAccessor
       let row: CalendarEntry[] = [];
       for (let j = 0; j < 3; j++) {
         let date = new Date(curDate);
-        let newEntry = new CalendarEntry({
-          type: 'year',
-          date: date,
-          selected: 'none'
-        });
+        let newEntry = new CalendarEntry({type: 'year', date: date, selected: 'none'});
         newEntry.selected = this._isEntrySelected(newEntry);
         row.push(newEntry);
         curDate = addYears(curDate, 1);
@@ -396,11 +440,7 @@ export abstract class Calendar implements AfterContentInit, ControlValueAccessor
       let row: CalendarEntry[] = [];
       for (let j = 0; j < 3; j++) {
         let date = new Date(curDate);
-        let newEntry = new CalendarEntry({
-          type: 'month',
-          date: date,
-          selected: 'none'
-        });
+        let newEntry = new CalendarEntry({type: 'month', date: date, selected: 'none'});
         newEntry.selected = this._isEntrySelected(newEntry);
         row.push(newEntry);
         curDate = addMonths(curDate, 1);
@@ -431,7 +471,7 @@ export abstract class Calendar implements AfterContentInit, ControlValueAccessor
       let row: CalendarEntry[] = [];
       for (let i = 0; i < 7; i++) {
         let disabled = (minDate != null && isBefore(curDate, minDate)) ||
-          (maxDate != null && isAfter(curDate, maxDate));
+            (maxDate != null && isAfter(curDate, maxDate));
         let date = new Date(curDate);
         let newEntry: CalendarEntry = new CalendarEntry({
           type: 'day',
@@ -471,26 +511,23 @@ export abstract class Calendar implements AfterContentInit, ControlValueAccessor
   }
 
   private _isEntrySelected(entry: CalendarEntry): CalendarEntrySelectedState {
-    if (
-      this._selectedPeriod != null && this._selectedPeriod.startDate != null &&
-      this._selectedPeriod.endDate != null
-    ) {
+    if (this._selectedPeriod != null && this._selectedPeriod.startDate != null &&
+        this._selectedPeriod.endDate != null) {
       let selectionStart: Date = startOfDay(this._selectedPeriod.startDate);
       let selectionEnd: Date = endOfDay(this._selectedPeriod.endDate);
       let selectionPeriodOrder: number = this._periodOrder(this._selectedPeriod.type);
 
       let entryPeriodOrder: number = this._periodOrder(entry.type);
-      let entryRange: { start: Date, end: Date } = entry.getRange();
+      let entryRange: {start: Date, end: Date} = entry.getRange();
 
       if (entryPeriodOrder <= selectionPeriodOrder &&
-        this._isBetween(entryRange.start, selectionStart, selectionEnd) &&
-        this._isBetween(entryRange.end, selectionStart, selectionEnd)
-      ) {
+          this._isBetween(entryRange.start, selectionStart, selectionEnd) &&
+          this._isBetween(entryRange.end, selectionStart, selectionEnd)) {
         return 'full';
-      } else if (entryPeriodOrder > selectionPeriodOrder &&
-        this._isBetween(selectionStart, entryRange.start, entryRange.end) &&
-        this._isBetween(selectionEnd, entryRange.start, entryRange.end)
-      ) {
+      } else if (
+          entryPeriodOrder > selectionPeriodOrder &&
+          this._isBetween(selectionStart, entryRange.start, entryRange.end) &&
+          this._isBetween(selectionEnd, entryRange.start, entryRange.end)) {
         return 'partial';
       }
     }
@@ -499,8 +536,8 @@ export abstract class Calendar implements AfterContentInit, ControlValueAccessor
   }
 
   private _isBetween(date: Date, rangeLeft: Date, rangeRight: Date): boolean {
-    return (isAfter(date, rangeLeft) || isSameDay(date, rangeLeft))
-      && (isBefore(date, rangeRight) || isSameDay(date, rangeRight));
+    return (isAfter(date, rangeLeft) || isSameDay(date, rangeLeft)) &&
+        (isBefore(date, rangeRight) || isSameDay(date, rangeRight));
   }
 
   private _refreshSelection(): void {

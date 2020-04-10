@@ -32,4 +32,5 @@ import {ChangeDetectionStrategy, Component, ViewEncapsulation} from '@angular/co
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
-export class LogoutConfirmDialogComponent {}
+export class LogoutConfirmDialogComponent {
+}

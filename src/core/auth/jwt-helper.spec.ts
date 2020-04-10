@@ -4,53 +4,44 @@ import {JwtHelperService} from './jwt-helper';
 
 declare const CryptoJS: any;
 
-const dayMs = 86400000; // 24 * 60 * 60 * 1000;
+const dayMs = 86400000;  // 24 * 60 * 60 * 1000;
 
 describe('JwtHelperService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [JwtHelperService]
+      providers: [JwtHelperService],
     });
   });
 
-  it(
-    'should decode base64 econded strings',
-    inject([JwtHelperService], (service: JwtHelperService) => {
-      expect(service.urlBase64Decode('dGVzdCBzdHJpbmc=')).toEqual('test string');
-    })
-  );
+  it('should decode base64 econded strings',
+     inject([JwtHelperService], (service: JwtHelperService) => {
+       expect(service.urlBase64Decode('dGVzdCBzdHJpbmc=')).toEqual('test string');
+     }));
 
-  it(
-    'should decode a valid JWT',
-    inject([JwtHelperService], (service: JwtHelperService) => {
-      const token = createToken();
-      const decoded = service.decodeToken(token)!;
-      expect(decoded.user_id).toEqual(1337);
-    })
-  );
+  it('should decode a valid JWT', inject([JwtHelperService], (service: JwtHelperService) => {
+       const token = createToken();
+       const decoded = service.decodeToken(token)!;
+       expect(decoded.user_id).toEqual(1337);
+     }));
 
-  it(
-    'should extract expiration date from a JWT token',
-    inject([JwtHelperService], (service: JwtHelperService) => {
-      const exp = new Date(new Date().getTime() + dayMs);
-      const token = createToken(Math.floor(exp.getTime() / 1000));
-      const exp1 = Math.floor(+service.getTokenExpirationDate(token)!.getTime() / 1000);
-      const exp2 = Math.floor(+exp.getTime() / 1000);
-      expect(exp1).toEqual(exp2);
-    })
-  );
+  it('should extract expiration date from a JWT token',
+     inject([JwtHelperService], (service: JwtHelperService) => {
+       const exp = new Date(new Date().getTime() + dayMs);
+       const token = createToken(Math.floor(exp.getTime() / 1000));
+       const exp1 = Math.floor(+service.getTokenExpirationDate(token)!.getTime() / 1000);
+       const exp2 = Math.floor(+exp.getTime() / 1000);
+       expect(exp1).toEqual(exp2);
+     }));
 
-  it(
-    'should detect if a token is expired',
-    inject([JwtHelperService], (service: JwtHelperService) => {
-      const date1 = new Date(new Date().getTime() + dayMs);
-      const date2 = new Date(new Date().getTime() - dayMs);
-      const token1 = createToken(Math.floor(date1.getTime() / 1000));
-      const token2 = createToken(Math.floor(date2.getTime() / 1000));
-      expect(service.isTokenExpired(token1)).toBeFalsy();
-      expect(service.isTokenExpired(token2)).toBeTruthy();
-    })
-  );
+  it('should detect if a token is expired',
+     inject([JwtHelperService], (service: JwtHelperService) => {
+       const date1 = new Date(new Date().getTime() + dayMs);
+       const date2 = new Date(new Date().getTime() - dayMs);
+       const token1 = createToken(Math.floor(date1.getTime() / 1000));
+       const token2 = createToken(Math.floor(date2.getTime() / 1000));
+       expect(service.isTokenExpired(token1)).toBeFalsy();
+       expect(service.isTokenExpired(token2)).toBeTruthy();
+     }));
 });
 
 function base64url(source: any) {

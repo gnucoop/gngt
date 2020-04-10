@@ -19,14 +19,17 @@
  *
  */
 
+import * as fromRoot from '@gngt/core/reducers';
 import {
-  createSelector, createFeatureSelector, ActionReducerMap, MemoizedSelector
+  ActionReducerMap,
+  createFeatureSelector,
+  createSelector,
+  MemoizedSelector
 } from '@ngrx/store';
 
-import * as fromRoot from '@gngt/core/reducers';
+import {AuthApiActionsUnion} from './auth-api-actions';
 import * as fromAuth from './auth-reducer';
 import * as fromLoginPage from './login-page-reducer';
-import {AuthApiActionsUnion} from './auth-api-actions';
 import {User} from './user';
 
 export interface AuthState {
@@ -50,8 +53,8 @@ export const selectAuthStatusState: MemoizedSelector<State, fromAuth.State> =
     createSelector(selectAuthState, (state: AuthState) => state.status);
 export const getInit: MemoizedSelector<State, boolean> =
     createSelector(selectAuthStatusState, fromAuth.getInit);
-export const getUser: MemoizedSelector<State, User | null> =
-  createSelector(selectAuthStatusState, fromAuth.getUser);
+export const getUser: MemoizedSelector<State, User|null> =
+    createSelector(selectAuthStatusState, fromAuth.getUser);
 export const getLoggedIn: MemoizedSelector<State, boolean> =
     createSelector(getUser, user => user != null);
 

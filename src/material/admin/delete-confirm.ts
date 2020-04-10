@@ -28,4 +28,5 @@ import {ChangeDetectionStrategy, Component, ViewEncapsulation} from '@angular/co
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
-export class AdminDeleteConfirmDialogComponent { }
+export class AdminDeleteConfirmDialogComponent {
+}

@@ -20,12 +20,11 @@
  */
 
 import {ValidatorFn} from '@angular/forms';
-
 import {Observable} from 'rxjs';
 
 import {AdminEditFieldChoice} from './edit-field-choice';
-import {AdminEditFieldType} from './edit-field-type';
 import {AdminEditFieldSubtype} from './edit-field-subtype';
+import {AdminEditFieldType} from './edit-field-type';
 
 export interface AdminEditField {
   name: string;
@@ -35,5 +34,5 @@ export interface AdminEditField {
   validators?: ValidatorFn[];
   readonly?: boolean;
   hidden?: boolean;
-  choices?: AdminEditFieldChoice[] | Observable<AdminEditFieldChoice[]>;
+  choices?: AdminEditFieldChoice[]|Observable<AdminEditFieldChoice[]>;
 }

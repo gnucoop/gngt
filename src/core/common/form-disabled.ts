@@ -19,12 +19,13 @@
  *
  */
 
-import {Directive, Host, Self, Input} from '@angular/core';
+import {Directive, Host, Input, Self} from '@angular/core';
 import {FormGroupDirective} from '@angular/forms';
 
 @Directive({selector: '[gngtFormDisabled]'})
 export class FormDisabledDirective {
-  @Input('gngtFormDisabled') set disabled(disabled: boolean) {
+  @Input('gngtFormDisabled')
+  set disabled(disabled: boolean) {
     if (disabled) {
       this.fgd.form.disable();
     } else {
@@ -32,5 +33,5 @@ export class FormDisabledDirective {
     }
   }
 
-  constructor(@Host() @Self() readonly fgd: FormGroupDirective) { }
+  constructor(@Host() @Self() readonly fgd: FormGroupDirective) {}
 }

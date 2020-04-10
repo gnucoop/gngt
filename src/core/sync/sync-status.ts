@@ -20,7 +20,7 @@
  */
 
 interface BaseSyncStatus {
-  status: 'initializing' | 'paused' | 'syncing' | 'error';
+  status: 'initializing'|'paused'|'syncing'|'error';
 }
 
 export interface SyncStatusInitializing extends BaseSyncStatus {
@@ -40,8 +40,4 @@ export interface SyncStatusError extends BaseSyncStatus {
   error: string;
 }
 
-export type SyncStatus =
-  | SyncStatusInitializing
-  | SyncStatusPaused
-  | SyncStatusSyncing
-  | SyncStatusError;
+export type SyncStatus = SyncStatusInitializing|SyncStatusPaused|SyncStatusSyncing|SyncStatusError;

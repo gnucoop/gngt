@@ -22,10 +22,8 @@
 import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-
-import {TranslateModule} from '@ngx-translate/core';
-
 import {IonicModule} from '@ionic/angular';
+import {TranslateModule} from '@ngx-translate/core';
 
 import {CalendarComponent} from './calendar';
 
@@ -33,8 +31,8 @@ import {CalendarComponent} from './calendar';
   imports: [
     CommonModule,
     FormsModule,
-    TranslateModule,
     IonicModule,
+    TranslateModule,
   ],
   declarations: [
     CalendarComponent,
@@ -43,4 +41,5 @@ import {CalendarComponent} from './calendar';
     CalendarComponent,
   ],
 })
-export class CalendarModule {}
+export class CalendarModule {
+}

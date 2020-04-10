@@ -21,7 +21,10 @@
 
 import {BooleanInput} from '@angular/cdk/coercion';
 import {
-  ChangeDetectionStrategy, ChangeDetectorRef, Component, ViewEncapsulation
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ViewEncapsulation
 } from '@angular/core';
 import {FormBuilder} from '@angular/forms';
 import {Router} from '@angular/router';
@@ -37,10 +40,8 @@ import {ModelActionTypes, State as ModelState} from '@gngt/core/model';
   encapsulation: ViewEncapsulation.None,
 })
 export class AdminEditComponent<
-    T extends Model = Model,
-    S extends ModelState<T> = ModelState<T>,
-    A extends ModelActionTypes = ModelActionTypes
-  > extends BaseAdminEditComponent<T, S, A> {
+    T extends Model = Model, S extends ModelState<T> = ModelState<T>, A extends
+        ModelActionTypes = ModelActionTypes> extends BaseAdminEditComponent<T, S, A> {
   constructor(cdr: ChangeDetectorRef, fb: FormBuilder, router: Router) {
     super(cdr, fb, router);
   }

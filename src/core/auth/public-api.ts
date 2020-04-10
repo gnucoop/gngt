@@ -22,25 +22,20 @@
 export * from './auth-actions';
 export * from './auth-api-actions';
 export * from './reducers';
-
 export * from './auth-options';
 export * from './credentials';
 export * from './jwt-options';
 export * from './jwt-token';
 export * from './login-response';
 export * from './user';
-
 export * from './auth-options-token';
 export * from './jwt-interceptor';
 export * from './jwt-options-token';
-
 export * from './auth';
 export * from './auth-helper';
 export * from './auth-guard';
 export * from './jwt-helper';
-
 export * from './auth-user-interactions';
 export * from './login';
-
 export * from './auth-module-options';
 export * from './auth-module';

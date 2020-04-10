@@ -20,9 +20,11 @@
  */
 
 import {
-  ChangeDetectionStrategy, ChangeDetectorRef, Component, ViewEncapsulation
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ViewEncapsulation
 } from '@angular/core';
-
 import {Calendar} from '@gngt/core/calendar';
 
 @Component({

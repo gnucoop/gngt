@@ -21,25 +21,26 @@
 
 import {coerceBooleanProperty} from '@angular/cdk/coercion';
 import {ChangeDetectorRef, Directive, EventEmitter, Input, OnDestroy} from '@angular/core';
-import {Store} from '@ngrx/store';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {forceBooleanProp} from '@gngt/core/common';
+import {Store} from '@ngrx/store';
 import {Observable, Subscription} from 'rxjs';
 import {map} from 'rxjs/operators';
-
-
-import {forceBooleanProp} from '@gngt/core/common';
 
 import * as LoginPageActions from './login-page-actions';
 import * as fromAuth from './reducers';
 
 @Directive({selector: '[gngtLoginUsername]'})
-export class LoginUsernameDirective { }
+export class LoginUsernameDirective {
+}
 
 @Directive({selector: '[gngtLoginPassword]'})
-export class LoginPasswordDirective { }
+export class LoginPasswordDirective {
+}
 
 @Directive({selector: '[gngtLoginAction]'})
-export class LoginActionDirective { }
+export class LoginActionDirective {
+}
 
 @Directive()
 export abstract class LoginComponent implements OnDestroy {
@@ -47,14 +48,18 @@ export abstract class LoginComponent implements OnDestroy {
   readonly valid: Observable<boolean>;
 
   private _disabled: boolean;
-  get disabled(): boolean { return this._disabled; }
-  @Input() set disabled(disabled: boolean) {
+  get disabled(): boolean {
+    return this._disabled;
+  }
+  @Input()
+  set disabled(disabled: boolean) {
     this._disabled = forceBooleanProp(disabled);
     this._cdr.markForCheck();
   }
 
   private _usernamePlaceholder: string;
-  @Input() get usernamePlaceholder(): string {
+  @Input()
+  get usernamePlaceholder(): string {
     return this._usernamePlaceholder;
   }
   set usernamePlaceholder(usernamePlaceholder: string) {
@@ -63,7 +68,8 @@ export abstract class LoginComponent implements OnDestroy {
   }
 
   private _passwordPlaceholder: string;
-  @Input() get passwordPlaceholder(): string {
+  @Input()
+  get passwordPlaceholder(): string {
     return this._passwordPlaceholder;
   }
   set passwordPlaceholder(passwordPlaceholder: string) {
@@ -72,8 +78,11 @@ export abstract class LoginComponent implements OnDestroy {
   }
 
   private _showLabels = true;
-  get showLabels(): boolean { return this._showLabels; }
-  @Input() set showLabels(showLabels: boolean) {
+  get showLabels(): boolean {
+    return this._showLabels;
+  }
+  @Input()
+  set showLabels(showLabels: boolean) {
     this._showLabels = coerceBooleanProperty(showLabels);
     this._cdr.markForCheck();
   }
@@ -82,17 +91,13 @@ export abstract class LoginComponent implements OnDestroy {
   private _loginSub: Subscription = Subscription.EMPTY;
 
   constructor(fb: FormBuilder, store: Store<fromAuth.State>, protected _cdr: ChangeDetectorRef) {
-    this.loginForm = fb.group({
-      username: [null, [Validators.required]],
-      password: [null, [Validators.required]]
-    });
+    this.loginForm = fb.group(
+        {username: [null, [Validators.required]], password: [null, [Validators.required]]});
 
-    this.valid = this.loginForm.valueChanges.pipe(
-      map(() => this.loginForm.valid)
-    );
+    this.valid = this.loginForm.valueChanges.pipe(map(() => this.loginForm.valid));
 
     this._loginSub = this._loginEvt.subscribe(() => {
-      store.dispatch(new LoginPageActions.Login({ credentials: this.loginForm.value }));
+      store.dispatch(new LoginPageActions.Login({credentials: this.loginForm.value}));
     });
   }
 

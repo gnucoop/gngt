@@ -29,8 +29,8 @@ import {catchError, delayWhen, exhaustMap, map, mergeMap, switchMap, tap} from '
 
 import {AuthService} from './auth';
 import {
-  AuthActionTypes,
   AuthActionsUnion,
+  AuthActionTypes,
   Init,
   InitComplete,
   InitUser,
@@ -39,8 +39,8 @@ import {
   LogoutConfirmationDismiss,
 } from './auth-actions';
 import {
-  AuthApiActionTypes,
   AuthApiActionsUnion,
+  AuthApiActionTypes,
   LoginFailure,
   LoginSuccess,
   RefreshToken,
@@ -48,181 +48,170 @@ import {
 import {AuthOptions} from './auth-options';
 import {AUTH_OPTIONS} from './auth-options-token';
 import {AuthUserInteractionsService} from './auth-user-interactions';
+import {Credentials} from './credentials';
 import {JwtHelperService} from './jwt-helper';
 import * as LoginPageActions from './login-page-actions';
-import {Credentials} from './credentials';
 
 export type AllAuthActions = AuthActionsUnion|AuthApiActionsUnion;
 
 @Injectable()
 export class AuthEffects implements OnInitEffects {
-  initUser$: Observable<AuthActionsUnion> = createEffect(() => this._actions$.pipe(
-    ofType<InitUser>(AuthActionTypes.InitUser),
-    exhaustMap(() =>
-      this._authService.getCurrentUser().pipe(catchError(_ => {
-        return obsOf(this._config.meGetter != null ? this._config.meGetter() : null);
-      }))
-    ),
-    map((user) => {
-      if (this._config.meSetter != null) {
-        this._config.meSetter(user);
-      }
-      return new InitUserComplete({user});
-    }),
-  ));
+  initUser$: Observable<AuthActionsUnion> = createEffect(
+      () => this._actions$.pipe(
+          ofType<InitUser>(AuthActionTypes.InitUser),
+          exhaustMap(() => this._authService.getCurrentUser().pipe(catchError(_ => {
+            return obsOf(this._config.meGetter != null ? this._config.meGetter() : null);
+          }))),
+          map((user) => {
+            if (this._config.meSetter != null) {
+              this._config.meSetter(user);
+            }
+            return new InitUserComplete({user});
+          }),
+          ));
 
-  initUserComplete$: Observable<AuthActionsUnion> = createEffect(() => this._actions$.pipe(
-      ofType<InitUserComplete>(AuthActionTypes.InitUserComplete),
-      map(() => new InitComplete())
-    ));
+  initUserComplete$: Observable<AuthActionsUnion> = createEffect(
+      () => this._actions$.pipe(
+          ofType<InitUserComplete>(AuthActionTypes.InitUserComplete),
+          map(() => new InitComplete())));
 
-  login$: Observable<AuthApiActionsUnion> = createEffect(() => this._actions$.pipe(
-    ofType<LoginPageActions.Login>(LoginPageActions.LoginPageActionTypes.Login),
-    map(action => action.payload.credentials),
-    exhaustMap((auth: Credentials) =>
-      this._authService.login(auth).pipe(
-        map((res) => new LoginSuccess(res)),
-        catchError((err: HttpErrorResponse) => {
-          const errors: string[] = [];
-          if (err.status === 0 || !err.error.message) {
-            errors.push('Connection problem. Please try again');
-          } else {
-            errors.push(err.error.message);
-          }
-          return zip(...errors.map(e => <Observable<string>>this._ts.get(e)))
-            .pipe(
-              map(error => new LoginFailure({error}))
-            );
-        })
-      )
-    )
-  ));
+  login$: Observable<AuthApiActionsUnion> = createEffect(
+      () => this._actions$.pipe(
+          ofType<LoginPageActions.Login>(LoginPageActions.LoginPageActionTypes.Login),
+          map(action => action.payload.credentials),
+          exhaustMap(
+              (auth: Credentials) => this._authService.login(auth).pipe(
+                  map((res) => new LoginSuccess(res)), catchError((err: HttpErrorResponse) => {
+                    const errors: string[] = [];
+                    if (err.status === 0 || !err.error.message) {
+                      errors.push('Connection problem. Please try again');
+                    } else {
+                      errors.push(err.error.message);
+                    }
+                    return zip(...errors.map(e => <Observable<string>>this._ts.get(e)))
+                        .pipe(map(error => new LoginFailure({error})));
+                  })))));
 
-  loginSuccess$: Observable<AllAuthActions> = createEffect(() => this._actions$.pipe(
-      ofType<LoginSuccess>(AuthApiActionTypes.LoginSuccess),
-      tap((action) => {
-        const payload = <any>action.payload;
-        const tokenKey = this._config.tokenKey || 'access_token';
-        const refreshTokenKey = this._config.refreshTokenKey || 'refresh_token';
-        this._jwtHelperService.tokenSetter(payload[tokenKey]);
-        this._jwtHelperService.refreshTokenSetter(payload[refreshTokenKey]);
-        if (this._config.loggedInUserSetter) {
-          this._config.loggedInUserSetter(payload.user_id);
-        }
-        if (this._config.meSetter != null) {
-          this._config.meSetter(payload.user);
-        }
-        this._router.navigate(['/']);
-      }),
-      mergeMap((action) => [
-        this._getRefreshTokenAction(),
-        new InitUserComplete({user: action.payload.user}),
-      ]),
-    ));
-
-  loginFailure$: Observable<AuthApiActionsUnion> = createEffect(() => this._actions$.pipe(
-      ofType<LoginFailure>(AuthApiActionTypes.LoginFailure),
-      tap((action) => {
-        this._userInteractionsService.showLoginError(action.payload.error.join('\n'));
-      }),
-    ), {dispatch: false});
-
-  refreshToken$: Observable<AllAuthActions> = createEffect(() => this._actions$.pipe(
-      ofType<RefreshToken>(AuthApiActionTypes.RefreshToken),
-      delayWhen((action: RefreshToken) => timer(action.payload.refreshDelay)),
-      exhaustMap((action: RefreshToken) =>
-        this._authService.refreshToken(this._jwtHelperService.refreshTokenGetter() || '').pipe(
-          switchMap((payload: any) => {
-            const res: (AuthApiActionsUnion | AuthActionsUnion)[] = [];
+  loginSuccess$: Observable<AllAuthActions> = createEffect(
+      () => this._actions$.pipe(
+          ofType<LoginSuccess>(AuthApiActionTypes.LoginSuccess),
+          tap((action) => {
+            const payload = <any>action.payload;
             const tokenKey = this._config.tokenKey || 'access_token';
+            const refreshTokenKey = this._config.refreshTokenKey || 'refresh_token';
             this._jwtHelperService.tokenSetter(payload[tokenKey]);
-            if (action.payload.fromInit) {
-              res.push(new InitUser());
+            this._jwtHelperService.refreshTokenSetter(payload[refreshTokenKey]);
+            if (this._config.loggedInUserSetter) {
+              this._config.loggedInUserSetter(payload.user_id);
             }
-            res.push(this._getRefreshTokenAction());
-            return res;
-          }),
-          catchError(err => {
-            if (err.status === 0) {
-              return obsOf(new InitUser());
+            if (this._config.meSetter != null) {
+              this._config.meSetter(payload.user);
             }
-            return obsOf(new InitComplete());
+            this._router.navigate(['/']);
           }),
-        )
-      )
-    ));
+          mergeMap(
+              (action) =>
+                  [this._getRefreshTokenAction(),
+                   new InitUserComplete({user: action.payload.user}),
+  ]),
+          ));
 
-  loginRedirect$: Observable<AllAuthActions> = createEffect(() => this._actions$.pipe(
-      ofType(
-        AuthApiActionTypes.LoginRedirect,
-        AuthActionTypes.Logout
-      ),
-      tap(_authed => {
-        this._router.navigate(['/login']);
-      })
-    ), {dispatch: false});
+  loginFailure$: Observable<AuthApiActionsUnion> = createEffect(
+      () => this._actions$.pipe(
+          ofType<LoginFailure>(AuthApiActionTypes.LoginFailure),
+          tap((action) => {
+            this._userInteractionsService.showLoginError(action.payload.error.join('\n'));
+          }),
+          ),
+      {dispatch: false});
 
-  logoutConfirmation$: Observable<AuthActionsUnion> = createEffect(() => this._actions$.pipe(
-      ofType(AuthActionTypes.LogoutConfirmation),
-      exhaustMap(() => this._userInteractionsService.askLogoutConfirm()),
-      map(
-        result =>
-          result
-            ? new Logout()
-            : new LogoutConfirmationDismiss()
-      )
-    ));
+  refreshToken$: Observable<AllAuthActions> = createEffect(
+      () => this._actions$.pipe(
+          ofType<RefreshToken>(AuthApiActionTypes.RefreshToken),
+          delayWhen((action: RefreshToken) => timer(action.payload.refreshDelay)),
+          exhaustMap(
+              (action: RefreshToken) =>
+                  this._authService.refreshToken(this._jwtHelperService.refreshTokenGetter() || '')
+                      .pipe(
+                          switchMap((payload: any) => {
+                            const res: (AuthApiActionsUnion|AuthActionsUnion)[] = [];
+                            const tokenKey = this._config.tokenKey || 'access_token';
+                            this._jwtHelperService.tokenSetter(payload[tokenKey]);
+                            if (action.payload.fromInit) {
+                              res.push(new InitUser());
+                            }
+                            res.push(this._getRefreshTokenAction());
+                            return res;
+                          }),
+                          catchError(err => {
+                            if (err.status === 0) {
+                              return obsOf(new InitUser());
+                            }
+                            return obsOf(new InitComplete());
+                          }),
+                          ))));
 
-  logout$: Observable<AuthActionsUnion> = createEffect(() => this._actions$.pipe(
-    ofType(AuthActionTypes.Logout),
-    tap(() => {
-      this._jwtHelperService.tokenSetter(null);
-      this._jwtHelperService.refreshTokenSetter(null);
-      if (this._config.loggedInUserSetter != null) {
-        this._config.loggedInUserSetter(null);
-      }
-      if (this._config.meSetter != null) {
-        this._config.meSetter(null);
-      }
-    }),
-  ), {dispatch: false});
+  loginRedirect$: Observable<AllAuthActions> = createEffect(
+      () => this._actions$.pipe(
+          ofType(AuthApiActionTypes.LoginRedirect, AuthActionTypes.Logout), tap(_authed => {
+            this._router.navigate(['/login']);
+          })),
+      {dispatch: false});
 
-  init$: Observable<AllAuthActions> = createEffect(() => this._actions$.pipe(
-      ofType(AuthActionTypes.Init),
-      switchMap(() => {
-        const res: (AuthApiActionsUnion | AuthActionsUnion)[] = [];
-        const token = this._jwtHelperService.tokenGetter();
-        if (token) {
-          try {
-            if (!this._jwtHelperService.isTokenExpired(token)) {
-              const decoded = this._jwtHelperService.decodeToken(token);
-              const scopes = this._config.disableScopes ? [] : this._getScopesFromToken(decoded);
-              if (this._config.disableScopes || scopes.indexOf('admin') > -1) {
-                res.push(new InitUser());
-                res.push(this._getRefreshTokenAction());
+  logoutConfirmation$: Observable<AuthActionsUnion> = createEffect(
+      () => this._actions$.pipe(
+          ofType(AuthActionTypes.LogoutConfirmation),
+          exhaustMap(() => this._userInteractionsService.askLogoutConfirm()),
+          map(result => result ? new Logout() : new LogoutConfirmationDismiss())));
+
+  logout$: Observable<AuthActionsUnion> = createEffect(
+      () => this._actions$.pipe(
+          ofType(AuthActionTypes.Logout),
+          tap(() => {
+            this._jwtHelperService.tokenSetter(null);
+            this._jwtHelperService.refreshTokenSetter(null);
+            if (this._config.loggedInUserSetter != null) {
+              this._config.loggedInUserSetter(null);
+            }
+            if (this._config.meSetter != null) {
+              this._config.meSetter(null);
+            }
+          }),
+          ),
+      {dispatch: false});
+
+  init$: Observable<AllAuthActions> = createEffect(
+      () => this._actions$.pipe(
+          ofType(AuthActionTypes.Init), switchMap(() => {
+            const res: (AuthApiActionsUnion|AuthActionsUnion)[] = [];
+            const token = this._jwtHelperService.tokenGetter();
+            if (token) {
+              try {
+                if (!this._jwtHelperService.isTokenExpired(token)) {
+                  const decoded = this._jwtHelperService.decodeToken(token);
+                  const scopes =
+                      this._config.disableScopes ? [] : this._getScopesFromToken(decoded);
+                  if (this._config.disableScopes || scopes.indexOf('admin') > -1) {
+                    res.push(new InitUser());
+                    res.push(this._getRefreshTokenAction());
+                  }
+                } else {
+                  res.push(new RefreshToken({refreshDelay: 0, fromInit: true}));
+                }
+              } catch (e) {
+                res.push(new InitComplete());
               }
             } else {
-              res.push(new RefreshToken({refreshDelay: 0, fromInit: true}));
+              res.push(new InitComplete());
             }
-          } catch (e) {
-            res.push(new InitComplete());
-          }
-        } else {
-          res.push(new InitComplete());
-        }
-        return res;
-      })
-    ));
+            return res;
+          })));
 
   constructor(
-    private _actions$: Actions,
-    private _authService: AuthService,
-    private _jwtHelperService: JwtHelperService,
-    private _userInteractionsService: AuthUserInteractionsService,
-    private _router: Router,
-    private _ts: TranslateService,
-    @Inject(AUTH_OPTIONS) private _config: AuthOptions
-  ) {}
+      private _actions$: Actions, private _authService: AuthService,
+      private _jwtHelperService: JwtHelperService,
+      private _userInteractionsService: AuthUserInteractionsService, private _router: Router,
+      private _ts: TranslateService, @Inject(AUTH_OPTIONS) private _config: AuthOptions) {}
 
   ngrxOnInitEffects(): Init {
     return new Init();

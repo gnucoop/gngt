@@ -1,15 +1,11 @@
-import {CalendarModule} from '@gngt/ionic/calendar';
 import {NgModule} from '@angular/core';
+import {CalendarModule} from '@gngt/ionic/calendar';
 
 import {IonicCalendarSimpleExample} from './calendar-simple/calendar-simple-example';
 
-export {
-  IonicCalendarSimpleExample
-};
+export {IonicCalendarSimpleExample};
 
-const EXAMPLES = [
-  IonicCalendarSimpleExample
-];
+const EXAMPLES = [IonicCalendarSimpleExample];
 
 @NgModule({
   imports: [

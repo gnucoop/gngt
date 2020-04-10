@@ -1,15 +1,11 @@
-import {CalendarModule} from '@gngt/material/calendar';
 import {NgModule} from '@angular/core';
+import {CalendarModule} from '@gngt/material/calendar';
 
 import {MaterialCalendarSimpleExample} from './calendar-simple/calendar-simple-example';
 
-export {
-  MaterialCalendarSimpleExample
-};
+export {MaterialCalendarSimpleExample};
 
-const EXAMPLES = [
-  MaterialCalendarSimpleExample
-];
+const EXAMPLES = [MaterialCalendarSimpleExample];
 
 @NgModule({
   imports: [

@@ -19,11 +19,11 @@
  *
  */
 
-import {EventEmitter} from '@angular/core';
 import {CollectionViewer, DataSource} from '@angular/cdk/collections';
+import {EventEmitter} from '@angular/core';
 import {MatPaginator, PageEvent} from '@angular/material/paginator';
 import {MatSort, Sort} from '@angular/material/sort';
-import {Model, ModelListParams, ModelQueryParams, mergeQueryParams} from '@gngt/core/common';
+import {mergeQueryParams, Model, ModelListParams, ModelQueryParams} from '@gngt/core/common';
 import {ModelActionTypes, ModelService, State as ModelState} from '@gngt/core/model';
 import {BehaviorSubject, combineLatest, Observable, of as obsOf, Subscription} from 'rxjs';
 import {debounceTime, map, startWith, switchMap, tap} from 'rxjs/operators';
@@ -31,72 +31,83 @@ import {debounceTime, map, startWith, switchMap, tap} from 'rxjs/operators';
 import {ModelDataSourceFilters} from './model-data-source-filters';
 
 type DataStreamType = [
-  PageEvent|null, Sort|null, string, string[], ModelDataSourceFilters,
-  void, Partial<ModelQueryParams>|null
+  PageEvent | null, Sort | null, string, string[], ModelDataSourceFilters, void,
+  Partial<ModelQueryParams>| null
 ];
 
-export class ModelDataSource<
-      T extends Model,
-      S extends ModelState<T> = ModelState<T>,
-      A extends ModelActionTypes = ModelActionTypes,
-      MS extends ModelService<T, S, A> = ModelService<T, S, A>
-    > extends DataSource<T> {
+export class ModelDataSource<T extends Model, S extends ModelState<T> = ModelState<T>, A extends
+                                 ModelActionTypes = ModelActionTypes,
+                                 MS extends ModelService<T, S, A> = ModelService<T, S, A>> extends
+    DataSource<T> {
   constructor(private _service: MS, private _baseParams: ModelListParams = {}) {
     super();
   }
 
-  get sort(): MatSort | null { return this._sort; }
-  set sort(sort: MatSort | null) {
+  get sort(): MatSort|null {
+    return this._sort;
+  }
+  set sort(sort: MatSort|null) {
     this._sort = sort;
     this._updateSort();
   }
-  private _sort: MatSort | null = null;
+  private _sort: MatSort|null = null;
 
-  get filter(): string { return this._filter.value; }
+  get filter(): string {
+    return this._filter.value;
+  }
   set filter(filter: string) {
     this._filter.next(filter);
   }
   private _filter: BehaviorSubject<string> = new BehaviorSubject<string>('');
 
-  get baseQueryParams(): Partial<ModelQueryParams> | null { return this._baseQueryParams.value; }
-  set baseQueryParams(params: Partial<ModelQueryParams | null>) {
+  get baseQueryParams(): Partial<ModelQueryParams>|null {
+    return this._baseQueryParams.value;
+  }
+  set baseQueryParams(params: Partial<ModelQueryParams|null>) {
     this._baseQueryParams.next(params);
   }
-  private _baseQueryParams = new BehaviorSubject<Partial<ModelQueryParams> | null>(null);
+  private _baseQueryParams = new BehaviorSubject<Partial<ModelQueryParams>|null>(null);
 
   private _freeTextSearchFields: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
-  get freeTextSearchFields(): string[] { return this._freeTextSearchFields.value; }
+  get freeTextSearchFields(): string[] {
+    return this._freeTextSearchFields.value;
+  }
   set freeTextSearchFields(freeTextSearchFields: string[]) {
     this._freeTextSearchFields.next([...freeTextSearchFields]);
   }
 
   get filters(): ModelDataSourceFilters {
-    return this._filters.value; }
+    return this._filters.value;
+  }
   set filters(filters: ModelDataSourceFilters) {
     this._filters.next(filters);
   }
-  private _filters: BehaviorSubject<ModelDataSourceFilters>
-    = new BehaviorSubject<ModelDataSourceFilters>({});
+  private _filters: BehaviorSubject<ModelDataSourceFilters> =
+      new BehaviorSubject<ModelDataSourceFilters>({});
 
-  get paginator(): MatPaginator | null { return this._paginator; }
+  get paginator(): MatPaginator|null {
+    return this._paginator;
+  }
   set paginator(paginator: MatPaginator|null) {
     this._paginator = paginator;
     this._updatePaginator();
   }
-  private _paginator: MatPaginator | null = null;
+  private _paginator: MatPaginator|null = null;
 
   private _data: BehaviorSubject<T[]> = new BehaviorSubject<T[]>([]);
-  get data(): T[] { return this._data.value; }
+  get data(): T[] {
+    return this._data.value;
+  }
 
   private _dataModifier: (data: T[]) => Observable<T[]>;
   set dataModifier(dataModifier: (data: T[]) => Observable<T[]>) {
     this._dataModifier = dataModifier;
   }
 
-  private _sortParams: BehaviorSubject<Sort | null> = new BehaviorSubject<Sort | null>(null);
+  private _sortParams: BehaviorSubject<Sort|null> = new BehaviorSubject<Sort|null>(null);
   private _sortSubscription: Subscription = Subscription.EMPTY;
-  private _paginatorParams: BehaviorSubject<PageEvent | null> =
-    new BehaviorSubject<PageEvent | null>(null);
+  private _paginatorParams: BehaviorSubject<PageEvent|null> =
+      new BehaviorSubject<PageEvent|null>(null);
   private _paginatorSubscription: Subscription = Subscription.EMPTY;
   private _dataSubscription: Subscription = Subscription.EMPTY;
   private _refreshEvent: EventEmitter<void> = new EventEmitter<void>();
@@ -121,79 +132,77 @@ export class ModelDataSource<
 
   private _initData(): void {
     const baseStream = combineLatest<DataStreamType>(
-      this._paginatorParams, this._sortParams, this._filter, this._freeTextSearchFields,
-      this._filters, this._refreshEvent, this._baseQueryParams
-    );
+        this._paginatorParams, this._sortParams, this._filter, this._freeTextSearchFields,
+        this._filters, this._refreshEvent, this._baseQueryParams);
     const startValue = [null, null, '', [], {}, undefined, null] as DataStreamType;
-    this._dataSubscription = baseStream.pipe(
-      startWith(startValue),
-      debounceTime(10),
-      switchMap(p => {
-        const pagination = p[0];
-        const sort = p[1];
-        const filter = p[2];
-        const freeTextSearchFields = p[3];
-        const filters = p[4];
-        const freeTextSel: {[key: string]: any} = {};
-        const filterWord = (filter || '').trim();
-        const baseParams = p[6];
-        if (
-          filter != null && freeTextSearchFields != null
-          && filterWord.length > 0 && freeTextSearchFields.length > 0
-        ) {
-          freeTextSel['$or'] = freeTextSearchFields.map(key => {
-            const keySel: {[key: string]: {'$regex': string}} = {};
-            keySel[key] = {'$regex': filterWord};
-            return keySel;
-          });
-        }
-        const params: ModelQueryParams = {...this._baseParams, selector: {
-          ...filters,
-          ...freeTextSel,
-        }};
-        if (pagination != null) {
-          const pag = pagination as PageEvent;
-          params.limit = pag.pageSize;
-          params.start = pag.pageIndex * pag.pageSize;
-        }
-        if (sort != null) {
-          const so = sort as Sort;
-          const direction: 'asc' | 'desc' = so.direction === '' ? 'asc' : so.direction;
-          params.sort = {[so.active]: direction};
-        }
-        return this._service.query(mergeQueryParams(params, baseParams || {}));
-      }),
-      tap(o => {
-        const paginator = this.paginator;
-        if (paginator != null) {
-          paginator.length = o && o.count ? o.count : 0;
-        }
-      }),
-      map(o => o && o.results ? o.results : []),
-      switchMap(data => {
-        if (this._dataModifier != null) {
-          return this._dataModifier(data);
-        }
-        return obsOf(data);
-      })
-    ).subscribe(data => {
-      this._data.next(data);
-    });
+    this._dataSubscription =
+        baseStream
+            .pipe(
+                startWith(startValue), debounceTime(10), switchMap(p => {
+                  const pagination = p[0];
+                  const sort = p[1];
+                  const filter = p[2];
+                  const freeTextSearchFields = p[3];
+                  const filters = p[4];
+                  const freeTextSel: {[key: string]: any} = {};
+                  const filterWord = (filter || '').trim();
+                  const baseParams = p[6];
+                  if (filter != null && freeTextSearchFields != null && filterWord.length > 0 &&
+                      freeTextSearchFields.length > 0) {
+                    freeTextSel['$or'] = freeTextSearchFields.map(key => {
+                      const keySel: {[key: string]: {'$regex': string}} = {};
+                      keySel[key] = {'$regex': filterWord};
+                      return keySel;
+                    });
+                  }
+                  const params: ModelQueryParams = {
+                    ...this._baseParams,
+                    selector: {
+                      ...filters,
+                      ...freeTextSel,
+                    }
+                  };
+                  if (pagination != null) {
+                    const pag = pagination as PageEvent;
+                    params.limit = pag.pageSize;
+                    params.start = pag.pageIndex * pag.pageSize;
+                  }
+                  if (sort != null) {
+                    const so = sort as Sort;
+                    const direction: 'asc'|'desc' = so.direction === '' ? 'asc' : so.direction;
+                    params.sort = {[so.active]: direction};
+                  }
+                  return this._service.query(mergeQueryParams(params, baseParams || {}));
+                }),
+                tap(o => {
+                  const paginator = this.paginator;
+                  if (paginator != null) {
+                    paginator.length = o && o.count ? o.count : 0;
+                  }
+                }),
+                map(o => o && o.results ? o.results : []), switchMap(data => {
+                  if (this._dataModifier != null) {
+                    return this._dataModifier(data);
+                  }
+                  return obsOf(data);
+                }))
+            .subscribe(data => {
+              this._data.next(data);
+            });
 
     this._refreshEvent.next();
   }
 
   private _updateSort(): void {
     this._sortSubscription.unsubscribe();
-    this._sortSubscription = this._sort != null ?
-      this._sort.sortChange.subscribe(this._sortParams) :
-      Subscription.EMPTY;
+    this._sortSubscription =
+        this._sort != null ? this._sort.sortChange.subscribe(this._sortParams) : Subscription.EMPTY;
   }
 
   private _updatePaginator(): void {
     this._paginatorSubscription.unsubscribe();
     this._paginatorSubscription = this._paginator != null ?
-      this._paginator.page.subscribe(this._paginatorParams) :
-      Subscription.EMPTY;
+        this._paginator.page.subscribe(this._paginatorParams) :
+        Subscription.EMPTY;
   }
 }

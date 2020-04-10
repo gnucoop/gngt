@@ -19,17 +19,17 @@
  *
  */
 
-import {AuthApiActionsUnion, AuthApiActionTypes} from './auth-api-actions';
 import {
-  AuthActionTypes,
   AuthActionsUnion,
+  AuthActionTypes,
 } from './auth-actions';
+import {AuthApiActionsUnion, AuthApiActionTypes} from './auth-api-actions';
 import {User} from './user';
 
 export interface State {
   init: boolean;
-  user: User | null;
-  token: string | null;
+  user: User|null;
+  token: string|null;
 }
 
 export const initialState: State = {
@@ -38,10 +38,7 @@ export const initialState: State = {
   token: null
 };
 
-export function reducer(
-  state = initialState,
-  action: AuthApiActionsUnion | AuthActionsUnion
-): State {
+export function reducer(state = initialState, action: AuthApiActionsUnion|AuthActionsUnion): State {
   switch (action.type) {
     case AuthApiActionTypes.LoginSuccess: {
       return {
@@ -58,18 +55,11 @@ export function reducer(
     }
 
     case AuthActionTypes.InitUserComplete: {
-      return {
-        ...state,
-        init: true,
-        user: action.payload.user
-      };
+      return {...state, init: true, user: action.payload.user};
     }
 
     case AuthActionTypes.InitComplete: {
-      return {
-        ...state,
-        init: true
-      };
+      return {...state, init: true};
     }
 
     default: {

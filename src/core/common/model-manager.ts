@@ -21,5 +21,5 @@
 
 export class ModelManager {
   readonly endPoint: string;
-  constructor(..._args: any[]) { }
+  constructor(..._args: any[]) {}
 }

@@ -21,7 +21,6 @@
 
 import {HttpClient} from '@angular/common/http';
 import {Inject, Injectable} from '@angular/core';
-
 import {Observable} from 'rxjs';
 
 import {AuthOptions} from './auth-options';
@@ -56,15 +55,11 @@ export class AuthService {
     return this._http.get<User>(url);
   }
 
-  getLoggedInUser(): number | null {
-    return this._config.loggedInUserGetter
-      ? this._config.loggedInUserGetter()
-      : null;
+  getLoggedInUser(): number|null {
+    return this._config.loggedInUserGetter ? this._config.loggedInUserGetter() : null;
   }
 
-  getMe(): User | null {
-    return this._config.meGetter
-      ? this._config.meGetter()
-      : null;
+  getMe(): User|null {
+    return this._config.meGetter ? this._config.meGetter() : null;
   }
 }

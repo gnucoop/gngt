@@ -30,47 +30,62 @@ import {AdminListHeader} from './list-header';
 
 @Directive()
 export abstract class AdminListComponent<
-  T extends Model = Model,
-  S extends ModelState<T> = ModelState<T>,
-  A extends ModelActionTypes = ModelActionTypes,
-  MS extends ModelService<T, S, A> = ModelService<T, S, A>> implements OnDestroy {
-  get title(): string { return this._title; }
-  @Input() set title(title: string) {
+    T extends Model = Model, S extends ModelState<T> = ModelState<T>,
+                                       A extends ModelActionTypes = ModelActionTypes, MS extends
+        ModelService<T, S, A> = ModelService<T, S, A>> implements OnDestroy {
+  get title(): string {
+    return this._title;
+  }
+  @Input()
+  set title(title: string) {
     this._title = title;
     this._cdr.markForCheck();
   }
   private _title: string;
 
-  get headers(): AdminListHeader[] { return this._headers; }
-  @Input() set headers(headers: AdminListHeader[]) {
+  get headers(): AdminListHeader[] {
+    return this._headers;
+  }
+  @Input()
+  set headers(headers: AdminListHeader[]) {
     this._headers = headers;
     this._cdr.markForCheck();
   }
   private _headers: AdminListHeader[] = [];
 
-  get displayedColumns(): string[] { return this._displayedColumns; }
-  @Input() set displayedColumns(displayedColumns: string[]) {
+  get displayedColumns(): string[] {
+    return this._displayedColumns;
+  }
+  @Input()
+  set displayedColumns(displayedColumns: string[]) {
     this._displayedColumns = ['select', ...displayedColumns];
     this._cdr.markForCheck();
   }
   private _displayedColumns: string[] = [];
 
-  get baseEditUrl(): string { return this._baseEditUrl; }
-  @Input() set baseEditUrl(baseEditUrl: string) {
+  get baseEditUrl(): string {
+    return this._baseEditUrl;
+  }
+  @Input()
+  set baseEditUrl(baseEditUrl: string) {
     this._baseEditUrl = baseEditUrl;
     this._cdr.markForCheck();
   }
   private _baseEditUrl = '';
 
-  get newItemPath(): string { return this._newItemPath; }
-  @Input() set newItemPath(newItemPath: string) {
+  get newItemPath(): string {
+    return this._newItemPath;
+  }
+  @Input()
+  set newItemPath(newItemPath: string) {
     this._newItemPath = newItemPath;
     this._cdr.markForCheck();
   }
   private _newItemPath = 'new';
 
   protected _service: MS;
-  @Input() set service(service: MS) {
+  @Input()
+  set service(service: MS) {
     this._service = service;
     this._initService();
   }
@@ -81,7 +96,7 @@ export abstract class AdminListComponent<
   private _deletionEvt: EventEmitter<T[]> = new EventEmitter<T[]>();
   private _deletionSub: Subscription = Subscription.EMPTY;
 
-  constructor(protected _cdr: ChangeDetectorRef, private _aui: AdminUserInteractionsService) { }
+  constructor(protected _cdr: ChangeDetectorRef, private _aui: AdminUserInteractionsService) {}
 
   abstract getSelection(): T[];
   abstract getItems(): T[];
@@ -117,9 +132,13 @@ export abstract class AdminListComponent<
   }
 
   processDeleteAction(selected: T[]): void {
-    if (this._service == null) { return; }
+    if (this._service == null) {
+      return;
+    }
     const s = this._aui.askDeleteConfirm().subscribe(res => {
-      if (s) { s.unsubscribe(); }
+      if (s) {
+        s.unsubscribe();
+      }
       if (res) {
         if (selected.length === 1) {
           this._service.delete(selected[0]);
@@ -133,7 +152,9 @@ export abstract class AdminListComponent<
     });
   }
 
-  protected _getService(): MS { return this._service; }
+  protected _getService(): MS {
+    return this._service;
+  }
 
   private _getActionHandler(action: string): string {
     action = action.charAt(0).toUpperCase() + action.substring(1);
@@ -142,25 +163,30 @@ export abstract class AdminListComponent<
 
   private _initService(): void {
     this._deletionSub.unsubscribe();
-    this._deletionSub = this._deletionEvt.pipe(
-      switchMap(selected => this._aui.askDeleteConfirm().pipe(
-        map(res => ({res, selected})),
-      )),
-      switchMap(({res, selected}): Observable<T | T[] | null> => {
-        if (res) {
-          if (selected.length === 1) {
-            return this._service.delete(selected[0]);
-          }
-          return this._service.deleteAll(selected);
-        }
-        return obsOf(null);
-      }),
-      filter(r => r != null),
-      take(1),
-    ).subscribe(() => {
-      this._actionProcessed.emit('delete');
-      this.clearSelection();
-      this.refreshList();
-    });
+    this._deletionSub = this._deletionEvt
+                            .pipe(
+                                switchMap(
+                                    selected => this._aui.askDeleteConfirm().pipe(
+                                        map(res => ({res, selected})),
+                                        )),
+                                switchMap(
+                                    ({res, selected}):
+                                        Observable<T|T[]|null> => {
+                                          if (res) {
+                                            if (selected.length === 1) {
+                                              return this._service.delete(selected[0]);
+                                            }
+                                            return this._service.deleteAll(selected);
+                                          }
+                                          return obsOf(null);
+                                        }),
+                                filter(r => r != null),
+                                take(1),
+                                )
+                            .subscribe(() => {
+                              this._actionProcessed.emit('delete');
+                              this.clearSelection();
+                              this.refreshList();
+                            });
   }
 }

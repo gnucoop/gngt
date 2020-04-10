@@ -2,7 +2,7 @@ export declare const AUTH_OPTIONS: InjectionToken<AuthOptions>;
 
 export declare type AuthActionsUnion = Init | InitUser | InitUserComplete | InitComplete | Logout | LogoutConfirmation | LogoutConfirmationDismiss;
 
-export declare enum AuthActionTypes {
+export declare const enum AuthActionTypes {
     Init = "[Auth] Init",
     InitUser = "[Auth] Init user",
     InitUserComplete = "[Auth] Init user complete",
@@ -14,7 +14,7 @@ export declare enum AuthActionTypes {
 
 export declare type AuthApiActionsUnion = LoginSuccess | LoginFailure | LoginRedirect | RefreshToken;
 
-export declare enum AuthApiActionTypes {
+export declare const enum AuthApiActionTypes {
     LoginSuccess = "[Auth/API] Login Success",
     LoginFailure = "[Auth/API] Login Failure",
     LoginRedirect = "[Auth/API] Login Redirect",
@@ -38,7 +38,7 @@ export declare class AuthHelper {
 
 export declare class AuthModule {
     static ɵinj: i0.ɵɵInjectorDef<AuthModule>;
-    static ɵmod: i0.ɵɵNgModuleDefWithMeta<AuthModule, [typeof i1.LoginActionDirective, typeof i1.LoginPasswordDirective, typeof i1.LoginUsernameDirective], [typeof i2.StoreFeatureModule, typeof i3.EffectsFeatureModule], [typeof i1.LoginActionDirective, typeof i1.LoginPasswordDirective, typeof i1.LoginUsernameDirective]>;
+    static ɵmod: i0.ɵɵNgModuleDefWithMeta<AuthModule, [typeof i1.LoginActionDirective, typeof i1.LoginPasswordDirective, typeof i1.LoginUsernameDirective], [typeof i2.EffectsFeatureModule, typeof i3.StoreFeatureModule], [typeof i1.LoginActionDirective, typeof i1.LoginPasswordDirective, typeof i1.LoginUsernameDirective]>;
 }
 
 export interface AuthModuleOptions {

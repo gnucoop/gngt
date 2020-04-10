@@ -23,18 +23,19 @@ import {CommonModule} from '@angular/common';
 import {HTTP_INTERCEPTORS} from '@angular/common/http';
 import {ModuleWithProviders, NgModule} from '@angular/core';
 import {ReactiveFormsModule} from '@angular/forms';
-
-import {AlertController, IonicModule, ToastController} from '@ionic/angular';
-
-import {TranslateService} from '@ngx-translate/core';
-
-import {CommonModule as CoreCommonModule} from '@gngt/core/common';
 import {
-  AUTH_OPTIONS, AuthModule as CoreAuthModule, AuthModuleOptions,
+  AUTH_OPTIONS,
+  AuthModule as CoreAuthModule,
+  AuthModuleOptions,
   AuthUserInteractionsService as CoreAuthUserInteractionsService,
-  JWT_OPTIONS, JwtHelperService, JwtInterceptor
+  JWT_OPTIONS,
+  JwtHelperService,
+  JwtInterceptor
 } from '@gngt/core/auth';
+import {CommonModule as CoreCommonModule} from '@gngt/core/common';
 import {CommonModule as IonicCommonModule} from '@gngt/ionic/common';
+import {AlertController, IonicModule, ToastController} from '@ionic/angular';
+import {TranslateService} from '@ngx-translate/core';
 
 import {AuthUserInteractionsService} from './auth-user-interactions';
 import {LoginComponent} from './login';
@@ -42,48 +43,34 @@ import {LoginComponent} from './login';
 @NgModule({
   imports: [
     CommonModule,
-    ReactiveFormsModule,
-    IonicModule,
+    CoreAuthModule,
     CoreCommonModule,
     IonicCommonModule,
-    CoreAuthModule
+    IonicModule,
+    ReactiveFormsModule,
   ],
   declarations: [
     LoginComponent,
   ],
   exports: [
-    LoginComponent,
     CoreAuthModule,
+    LoginComponent,
   ],
-  providers: [
-    {
-      provide: CoreAuthUserInteractionsService,
-      useClass: AuthUserInteractionsService,
-      deps: [TranslateService, AlertController, ToastController]
-    }
-  ]
+  providers: [{
+    provide: CoreAuthUserInteractionsService,
+    useClass: AuthUserInteractionsService,
+    deps: [TranslateService, AlertController, ToastController]
+  }]
 })
 export class AuthModule {
   static forRoot(options: AuthModuleOptions): ModuleWithProviders {
     return {
       ngModule: AuthModule,
       providers: [
-        {
-          provide: HTTP_INTERCEPTORS,
-          useClass: JwtInterceptor,
-          multi: true
-        },
-        options.jwtOptionsProvider ||
-        {
-          provide: JWT_OPTIONS,
-          useValue: options.jwtConfig
-        },
-        options.authOptionsProvider ||
-        {
-          provide: AUTH_OPTIONS,
-          useValue: options.authConfig
-        },
-        JwtHelperService
+        JwtHelperService,
+        options.authOptionsProvider || {provide: AUTH_OPTIONS, useValue: options.authConfig},
+        options.jwtOptionsProvider || {provide: JWT_OPTIONS, useValue: options.jwtConfig},
+        {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
       ]
     };
   }

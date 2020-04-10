@@ -14,19 +14,18 @@ import {KitchenSinkRootServerModuleNgFactory} from './kitchen-sink-root.ngfactor
 const indexHtmlPath = require.resolve('./index.html');
 
 const result = renderModuleFactory(
-    KitchenSinkRootServerModuleNgFactory,
-    {document: readFileSync(indexHtmlPath, 'utf-8')});
+    KitchenSinkRootServerModuleNgFactory, {document: readFileSync(indexHtmlPath, 'utf-8')});
 
 result
-  .then(content => {
-    const filename = join(__dirname, 'index-prerendered.html');
+    .then(content => {
+      const filename = join(__dirname, 'index-prerendered.html');
 
-    console.log('Inspect pre-rendered page here:');
-    console.log(`file://${filename}`);
-    writeFileSync(filename, content, 'utf-8');
-    console.log('Prerender done.');
-  })
-  // If rendering the module factory fails, exit the process with an error code because otherwise
-  // the CI task will not recognize the failure and will show as "success". The error message
-  // will be printed automatically by the `renderModuleFactory` method.
-  .catch(() => process.exit(1));
+      console.log('Inspect pre-rendered page here:');
+      console.log(`file://${filename}`);
+      writeFileSync(filename, content, 'utf-8');
+      console.log('Prerender done.');
+    })
+    // If rendering the module factory fails, exit the process with an error code because otherwise
+    // the CI task will not recognize the failure and will show as "success". The error message
+    // will be printed automatically by the `renderModuleFactory` method.
+    .catch(() => process.exit(1));

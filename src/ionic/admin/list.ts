@@ -20,8 +20,14 @@
  */
 
 import {
-  ChangeDetectionStrategy, ChangeDetectorRef, Component,
-  Input, OnDestroy, OnInit, ViewChild, ViewEncapsulation
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+  ViewEncapsulation
 } from '@angular/core';
 import {AdminListComponent as BaseAdminListComponent} from '@gngt/core/admin';
 import {mergeQueryParams, Model, ModelQueryParams} from '@gngt/core/common';
@@ -39,21 +45,23 @@ import {AdminUserInteractionsService} from './admin-user-interactions';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
 })
-export class AdminListComponent<
-    T extends Model = Model,
-    S extends ModelState<T> = ModelState<T>,
-    A extends ModelActionTypes = ModelActionTypes,
-    MS extends ModelService<T, S, A> = ModelService<T, S, A>
-  > extends BaseAdminListComponent<T, S, A, MS>
-    implements OnDestroy, OnInit {
+export class AdminListComponent<T extends Model = Model, S extends ModelState<T> = ModelState<T>,
+                                                                   A extends
+                                    ModelActionTypes = ModelActionTypes, MS extends
+                                        ModelService<T, S, A> = ModelService<T, S, A>> extends
+    BaseAdminListComponent<T, S, A, MS> implements OnDestroy, OnInit {
   @Input() baseQueryParams: Partial<ModelQueryParams>;
   @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
 
   private _items: T[] = [];
-  get items(): T[] { return this._items; }
+  get items(): T[] {
+    return this._items;
+  }
 
   private _hasMore: boolean = true;
-  get hasMore(): boolean { return this._hasMore; }
+  get hasMore(): boolean {
+    return this._hasMore;
+  }
 
   private _querySub: Subscription = Subscription.EMPTY;
   private _queryParams: Partial<ModelQueryParams> = {start: 0, limit: 20, sort: {}};
@@ -70,16 +78,22 @@ export class AdminListComponent<
   ngOnInit(): void {
     const service = this._getService();
 
-    if (service == null) { return; }
+    if (service == null) {
+      return;
+    }
 
-    this._querySub = service.getListObjects().pipe(
-      filter(r => r != null),
-    ).subscribe(r => {
-      if (this.infiniteScroll) { (this.infiniteScroll as any).complete(); }
-      this._items = [...this._items, ...(r!.results || [])];
-      this._hasMore = r!.next != null;
-      this._cdr.markForCheck();
-    });
+    this._querySub = service.getListObjects()
+                         .pipe(
+                             filter(r => r != null),
+                             )
+                         .subscribe(r => {
+                           if (this.infiniteScroll) {
+                             (this.infiniteScroll as any).complete();
+                           }
+                           this._items = [...this._items, ...(r!.results || [])];
+                           this._hasMore = r!.next != null;
+                           this._cdr.markForCheck();
+                         });
 
     this._loadList();
   }
@@ -92,11 +106,9 @@ export class AdminListComponent<
     return [];
   }
 
-  clearSelection(): void {
-  }
+  clearSelection(): void {}
 
-  selectAll(): void {
-  }
+  selectAll(): void {}
 
   refreshList(): void {
     this._queryParams.start = 0;
@@ -110,7 +122,9 @@ export class AdminListComponent<
 
   private _loadList(): void {
     const service = this._getService();
-    if (service == null || !this._hasMore) { return; }
+    if (service == null || !this._hasMore) {
+      return;
+    }
     const queryParams = mergeQueryParams(this._queryParams, this.baseQueryParams || {});
     service.query(queryParams);
   }

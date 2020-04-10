@@ -24,5 +24,5 @@ import {Action} from '@ngrx/store';
 export class ModelGenericAction implements Action {
   type: string;
   uuid: string;
-  constructor(public payload: any) { }
+  constructor(public payload: any) {}
 }

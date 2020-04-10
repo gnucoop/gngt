@@ -20,6 +20,7 @@
  */
 
 import {Action} from '@ngrx/store';
+
 import {Credentials} from './credentials';
 
 export const enum LoginPageActionTypes {

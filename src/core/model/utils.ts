@@ -20,7 +20,6 @@
  */
 
 import {Action} from '@ngrx/store';
-
 import {v4} from 'uuid';
 
 import {ModelGenericAction} from './model-generic-action';

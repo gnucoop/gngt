@@ -20,7 +20,7 @@
  */
 
 export type ModelQuerySelector = {
-  [propName: string]: any | {
+  [propName: string]: any|{
     $lt?: any,
     $gt?: any,
     $lte?: any,

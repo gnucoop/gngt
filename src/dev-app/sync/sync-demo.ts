@@ -21,10 +21,8 @@
 
 import {HttpClient} from '@angular/common/http';
 import {Component} from '@angular/core';
-
-import {Observable} from 'rxjs';
-
 import {SyncService, SyncStatus} from '@gngt/core/sync';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'sync-demo',
@@ -44,8 +42,6 @@ export class SyncDemo {
   }
 
   list(): void {
-    this._httpClient.get('http://127.0.0.1:8000/category/1').subscribe(
-      r => console.log(r)
-    );
+    this._httpClient.get('http://127.0.0.1:8000/category/1').subscribe(r => console.log(r));
   }
 }

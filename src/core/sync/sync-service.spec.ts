@@ -1,10 +1,8 @@
 import {HttpClient, HttpClientModule} from '@angular/common/http';
 import {TestBed} from '@angular/core/testing';
-
+import * as PouchDB from 'pouchdb';
 import {Observable, of as obsOf, throwError} from 'rxjs';
 import {filter, skip} from 'rxjs/operators';
-
-import * as PouchDB from 'pouchdb';
 
 import {LocalDoc} from './local-doc';
 import {SyncEntry} from './sync-entry';
@@ -45,10 +43,10 @@ interface DbEntry {
   id: number;
   foo: string;
   counter: number;
-  related: number | DbRelatedEntry;
+  related: number|DbRelatedEntry;
 }
 
-const dbEntries: LocalDoc<DbEntry | DbRelatedEntry>[] = [
+const dbEntries: LocalDoc<DbEntry|DbRelatedEntry>[] = [
   {object_id: 1, table_name: 'table1', object: {id: 1, foo: 'bar', counter: 10, related: 1}},
   {object_id: 2, table_name: 'table1', object: {id: 2, foo: 'baz', counter: 222, related: 2}},
   {object_id: 3, table_name: 'table1', object: {id: 3, foo: 'qux', counter: 97, related: 3}},
@@ -82,14 +80,14 @@ class MockUpwardHttpClient {
   constructor() {
     let res: UpwardChangeResult[] = [];
 
-    for (let i = 1 ; i <= 10 ; i++) {
+    for (let i = 1; i <= 10; i++) {
       res.push({sequence: i, ok: true});
     }
     res.push({sequence: 11, ok: false, error: 'conflict', extra: {next_id: 12}});
     this._postRes.push(res);
 
     res = [];
-    for (let i = 12 ; i <= 71 ; i++) {
+    for (let i = 12; i <= 71; i++) {
       res.push({sequence: i, ok: true});
     }
     this._postRes.push(res);
@@ -118,12 +116,7 @@ describe('SyncService', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [
-          SyncModule.forRoot({
-            baseUrl: 'http://remote/',
-            localDatabaseName: dbName
-          })
-        ],
+        imports: [SyncModule.forRoot({baseUrl: 'http://remote/', localDatabaseName: dbName})],
         providers: [
           {provide: HttpClient, useClass: MockDownwardHttpClient},
         ]
@@ -144,83 +137,91 @@ describe('SyncService', () => {
       httpClient.changes = changes;
       syncService.start();
 
-      return syncService.status.pipe(
-        filter(s => s.status === 'paused'),
-        skip(1),
-      ).subscribe(_ => {
-        syncService.stop();
+      return syncService.status
+          .pipe(
+              filter(s => s.status === 'paused'),
+              skip(1),
+              )
+          .subscribe(_ => {
+            syncService.stop();
 
-        const db = new pouchDBStatic<LocalDoc<any>>(dbName);
+            const db = new pouchDBStatic<LocalDoc<any>>(dbName);
 
-        db.allDocs({include_docs: true}).then(docs => {
-          const localDocs = docs.rows.filter(r => r.doc != null && r.doc!.object_id != null)
-            .map(r => r.doc as LocalDoc<any>);
+            db.allDocs({include_docs: true}).then(docs => {
+              const localDocs = docs.rows.filter(r => r.doc != null && r.doc!.object_id != null)
+                                    .map(r => r.doc as LocalDoc<any>);
 
-          expect(localDocs.length).toBe(2);
+              expect(localDocs.length).toBe(2);
 
-          const localDoc1 = localDocs.find(l => l.object_id === 1);
-          const localDoc2 = localDocs.find(l => l.object_id === 2);
+              const localDoc1 = localDocs.find(l => l.object_id === 1);
+              const localDoc2 = localDocs.find(l => l.object_id === 2);
 
-          expect(localDoc1).toBeDefined();
-          expect(localDoc2).toBeDefined();
-          expect(localDoc1!.object_id).toEqual(changes[2].object_id);
-          expect(localDoc1!.table_name).toEqual(changes[2].table_name);
-          expect(localDoc2!.object_id).toEqual(changes[1].object_id);
-          expect(localDoc2!.table_name).toEqual(changes[1].table_name);
-          expect(localDoc1!.object).toEqual(changes[2].object);
-          expect(localDoc2!.object).toEqual(changes[1].object);
+              expect(localDoc1).toBeDefined();
+              expect(localDoc2).toBeDefined();
+              expect(localDoc1!.object_id).toEqual(changes[2].object_id);
+              expect(localDoc1!.table_name).toEqual(changes[2].table_name);
+              expect(localDoc2!.object_id).toEqual(changes[1].object_id);
+              expect(localDoc2!.table_name).toEqual(changes[1].table_name);
+              expect(localDoc1!.object).toEqual(changes[2].object);
+              expect(localDoc2!.object).toEqual(changes[1].object);
 
-          done();
-        });
-      });
+              done();
+            });
+          });
     });
 
     it('should throw an exception when trying to insert twice the same object', done => {
       httpClient.changes = badInsertChanges;
       syncService.start();
 
-      return syncService.status.pipe(
-        filter(s => s.status === 'error'),
-      ).subscribe(status => {
-        syncService.stop();
+      return syncService.status
+          .pipe(
+              filter(s => s.status === 'error'),
+              )
+          .subscribe(status => {
+            syncService.stop();
 
-        const error = status as SyncStatusError;
-        expect(error.error).toBe('existing_doc');
+            const error = status as SyncStatusError;
+            expect(error.error).toBe('existing_doc');
 
-        done();
-      });
+            done();
+          });
     });
 
     it('should throw an exception when trying to update an unexisting object', done => {
       httpClient.changes = badUpdateChanges;
       syncService.start();
 
-      return syncService.status.pipe(
-        filter(s => s.status === 'error'),
-      ).subscribe(status => {
-        syncService.stop();
+      return syncService.status
+          .pipe(
+              filter(s => s.status === 'error'),
+              )
+          .subscribe(status => {
+            syncService.stop();
 
-        const error = status as SyncStatusError;
-        expect(error.error).toBe('unexisting_doc');
+            const error = status as SyncStatusError;
+            expect(error.error).toBe('unexisting_doc');
 
-        done();
-      });
+            done();
+          });
     });
 
     it('should throw an exception when trying to delete an unexisting object', done => {
       httpClient.changes = badDeleteChanges;
       syncService.start();
 
-      return syncService.status.pipe(
-        filter(s => s.status === 'error'),
-      ).subscribe(status => {
-        syncService.stop();
+      return syncService.status
+          .pipe(
+              filter(s => s.status === 'error'),
+              )
+          .subscribe(status => {
+            syncService.stop();
 
-        const error = status as SyncStatusError;
-        expect(error.error).toBe('unexisting_doc');
+            const error = status as SyncStatusError;
+            expect(error.error).toBe('unexisting_doc');
 
-        done();
-      });
+            done();
+          });
     });
   });
 
@@ -233,12 +234,7 @@ describe('SyncService', () => {
       jasmine.DEFAULT_TIMEOUT_INTERVAL = 200000;
 
       TestBed.configureTestingModule({
-        imports: [
-          SyncModule.forRoot({
-            baseUrl: 'http://remote',
-            localDatabaseName: dbName
-          })
-        ],
+        imports: [SyncModule.forRoot({baseUrl: 'http://remote', localDatabaseName: dbName})],
         providers: [
           {provide: HttpClient, useClass: MockUpwardHttpClient},
         ]
@@ -248,7 +244,7 @@ describe('SyncService', () => {
 
       // TODO(trik) only 20 docs because the other should need further
       // response from mock service
-      for (let i = 1 ; i <= 20 ; i++) {
+      for (let i = 1; i <= 20; i++) {
         await syncService.create('table1', {foo: `bar${i}`}).toPromise();
       }
     });
@@ -261,24 +257,26 @@ describe('SyncService', () => {
     it('should sync data from local database', done => {
       syncService.start();
 
-      syncService.status.pipe(
-        filter(s => s.status === 'paused'),
-        skip(1),
-      ).subscribe(_ => {
-        syncService.stop();
+      syncService.status
+          .pipe(
+              filter(s => s.status === 'paused'),
+              skip(1),
+              )
+          .subscribe(_ => {
+            syncService.stop();
 
-        syncService.list('table1', {limit: 100}).subscribe(res => {
-          expect(res.results.length).toEqual(10);
-          for (let i = 1 ; i <= 10 ; i++) {
-            expect(res.results.find((r: any) => r.id === i)).not.toBeDefined();
-          }
-          expect(res.results.find((r: any) => r.id === 11)).not.toBeDefined();
-          for (let i = 12 ; i <= 20 ; i++) {
-            expect(res.results.find((r: any) => r.id === i)).toBeDefined();
-          }
-          done();
-        });
-      });
+            syncService.list('table1', {limit: 100}).subscribe(res => {
+              expect(res.results.length).toEqual(10);
+              for (let i = 1; i <= 10; i++) {
+                expect(res.results.find((r: any) => r.id === i)).not.toBeDefined();
+              }
+              expect(res.results.find((r: any) => r.id === 11)).not.toBeDefined();
+              for (let i = 12; i <= 20; i++) {
+                expect(res.results.find((r: any) => r.id === i)).toBeDefined();
+              }
+              done();
+            });
+          });
     });
   });
 
@@ -289,17 +287,14 @@ describe('SyncService', () => {
       TestBed.configureTestingModule({
         imports: [
           HttpClientModule,
-          SyncModule.forRoot({
-            baseUrl: 'http://remote',
-            localDatabaseName: dbName
-          })
+          SyncModule.forRoot({baseUrl: 'http://remote', localDatabaseName: dbName})
         ]
       });
 
       syncService = TestBed.get(SyncService);
 
-      const db = new pouchDBStatic<LocalDoc<DbEntry | DbRelatedEntry>>(dbName);
-      for (let i = 0 ; i < dbEntries.length ; i++) {
+      const db = new pouchDBStatic<LocalDoc<DbEntry|DbRelatedEntry>>(dbName);
+      for (let i = 0; i < dbEntries.length; i++) {
         await db.post(dbEntries[i]);
       }
     });
@@ -313,20 +308,18 @@ describe('SyncService', () => {
       expectAsync(obj).toBeResolvedTo(dbEntries[0].object);
     });
 
-    it(
-      'should throw a not_found error when trying to get an unexisting object from local db',
-      () => {
-        const promise = syncService.get('table1', {id: 4}).toPromise();
-        expectAsync(promise).toBeRejectedWithError('not_found');
-      }
-    );
+    it('should throw a not_found error when trying to get an unexisting object from local db',
+       () => {
+         const promise = syncService.get('table1', {id: 4}).toPromise();
+         expectAsync(promise).toBeRejectedWithError('not_found');
+       });
 
     it('should get desired fields of an object from local database', async () => {
       const fields = ['id', 'counter'];
       const dbEntry = dbEntries[0];
       const obj = await syncService.get('table1', {id: 1, fields}).toPromise();
       expect(dbEntry.object).toEqual(jasmine.objectContaining(obj));
-      fields.forEach(field =>  expect(obj[field]).toBeDefined());
+      fields.forEach(field => expect(obj[field]).toBeDefined());
       const undefFields = Object.keys(dbEntry.object).filter(f => fields.indexOf(f) === -1);
       undefFields.forEach(field => expect(obj[field]).not.toBeDefined());
     });
@@ -375,15 +368,16 @@ describe('SyncService', () => {
       const joins = [{model: 'table2', property: 'related', fields: ['color']}];
       const objs = await syncService.list('table1', {joins}).toPromise();
       entries.forEach((entry, i) => {
-        const related = dbEntries.find(e =>
-          e.table_name === 'table2' && e.object_id === (entry.object as DbEntry).related);
+        const related = dbEntries.find(
+            e => e.table_name === 'table2' && e.object_id === (entry.object as DbEntry).related);
         expect(related!.object).toEqual(jasmine.objectContaining(objs.results[i].related));
       });
     });
 
     it('should support sort param in list', async () => {
-      const entries = dbEntries.filter(e => e.table_name === 'table1')
-        .sort((a, b) => (a.object as DbEntry).counter - (b.object as DbEntry).counter);
+      const entries =
+          dbEntries.filter(e => e.table_name === 'table1')
+              .sort((a, b) => (a.object as DbEntry).counter - (b.object as DbEntry).counter);
       const objs = await syncService.list('table1', {sort: {counter: 'asc'}}).toPromise();
       entries.forEach((entry, i) => {
         expect(entry.object).toEqual(objs.results[i]);
@@ -393,7 +387,9 @@ describe('SyncService', () => {
     it('should create an object and save it to the local database', () => {
       const newObj = {foo: '', counter: 0, related: 1};
       const expectedId = dbEntries.filter(e => e.table_name === 'table1')
-        .sort((a, b) => b.object_id - a.object_id)[0].object_id + 1;
+                             .sort((a, b) => b.object_id - a.object_id)[0]
+                             .object_id +
+          1;
       const res = syncService.create('table1', newObj).toPromise();
       const newObjWithId = {id: expectedId, ...newObj};
       expectAsync(res).toBeResolvedTo(newObjWithId);

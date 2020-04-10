@@ -21,7 +21,6 @@
 
 export * from './model-actions';
 export * from './reducers';
-
 export * from './model-error';
 export * from './model-effects';
 export * from './model-generic-action';

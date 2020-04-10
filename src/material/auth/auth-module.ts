@@ -21,19 +21,22 @@
 
 import {CommonModule} from '@angular/common';
 import {HTTP_INTERCEPTORS} from '@angular/common/http';
-import {NgModule, ModuleWithProviders} from '@angular/core';
+import {ModuleWithProviders, NgModule} from '@angular/core';
 import {ReactiveFormsModule} from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
-import {MatIconModule} from '@angular/material/icon';
 import {MatDialog, MatDialogModule} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatIconModule} from '@angular/material/icon';
 import {MatInputModule} from '@angular/material/input';
 import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
-
 import {
-  AUTH_OPTIONS, AuthModule as CoreAuthModule, AuthModuleOptions,
+  AUTH_OPTIONS,
+  AuthModule as CoreAuthModule,
+  AuthModuleOptions,
   AuthUserInteractionsService as CoreAuthUserInteractionsService,
-  JWT_OPTIONS, JwtHelperService, JwtInterceptor
+  JWT_OPTIONS,
+  JwtHelperService,
+  JwtInterceptor
 } from '@gngt/core/auth';
 import {CommonModule as GngtCommonModule} from '@gngt/core/common';
 
@@ -44,55 +47,41 @@ import {LogoutConfirmDialogComponent} from './logout-confirm-dialog';
 @NgModule({
   imports: [
     CommonModule,
-    ReactiveFormsModule,
+    CoreAuthModule,
+    GngtCommonModule,
     MatButtonModule,
     MatDialogModule,
     MatFormFieldModule,
     MatIconModule,
     MatInputModule,
     MatSnackBarModule,
-    CoreAuthModule,
-    GngtCommonModule
+    ReactiveFormsModule,
   ],
   declarations: [
     LoginComponent,
-    LogoutConfirmDialogComponent
+    LogoutConfirmDialogComponent,
   ],
   exports: [
-    LoginComponent
+    LoginComponent,
   ],
   entryComponents: [
-    LogoutConfirmDialogComponent
+    LogoutConfirmDialogComponent,
   ],
-  providers: [
-    {
-      provide: CoreAuthUserInteractionsService,
-      useClass: AuthUserInteractionsService,
-      deps: [MatDialog, MatSnackBar]
-    }
-  ]
+  providers: [{
+    provide: CoreAuthUserInteractionsService,
+    useClass: AuthUserInteractionsService,
+    deps: [MatDialog, MatSnackBar]
+  }]
 })
 export class AuthModule {
   static forRoot(options: AuthModuleOptions): ModuleWithProviders {
     return {
       ngModule: AuthModule,
       providers: [
-        {
-          provide: HTTP_INTERCEPTORS,
-          useClass: JwtInterceptor,
-          multi: true
-        },
-        options.jwtOptionsProvider ||
-        {
-          provide: JWT_OPTIONS,
-          useValue: options.jwtConfig
-        },
-        options.authOptionsProvider ||
-        {
-          provide: AUTH_OPTIONS,
-          useValue: options.authConfig
-        },
-        JwtHelperService
+        JwtHelperService,
+        options.authOptionsProvider || {provide: AUTH_OPTIONS, useValue: options.authConfig},
+        options.jwtOptionsProvider || {provide: JWT_OPTIONS, useValue: options.jwtConfig},
+        {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
       ]
     };
   }

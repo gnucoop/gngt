@@ -23,9 +23,7 @@ import {Pipe, PipeTransform} from '@angular/core';
 import {AdminEditFieldSubtype} from '@gngt/core/admin';
 import {TextFieldTypes} from '@ionic/core';
 
-const validTypes = [
-  'date', 'email', 'number', 'password', 'search', 'tel', 'text', 'url', 'time'
-];
+const validTypes = ['date', 'email', 'number', 'password', 'search', 'tel', 'text', 'url', 'time'];
 
 @Pipe({name: 'gngtInputType'})
 export class InputTypePipe implements PipeTransform {

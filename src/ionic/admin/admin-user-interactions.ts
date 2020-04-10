@@ -20,15 +20,11 @@
  */
 
 import {Injectable} from '@angular/core';
-
+import {AdminUserInteractionsService as CoreAdminUserInteractionsService} from '@gngt/core/admin';
+import {AlertController} from '@ionic/angular';
+import {TranslateService} from '@ngx-translate/core';
 import {from, Observable} from 'rxjs';
 import {map, mapTo, switchMap} from 'rxjs/operators';
-
-import {AlertController} from '@ionic/angular';
-
-import {TranslateService} from '@ngx-translate/core';
-
-import {AdminUserInteractionsService as CoreAdminUserInteractionsService} from '@gngt/core/admin';
 
 @Injectable()
 export class AdminUserInteractionsService extends CoreAdminUserInteractionsService {
@@ -37,19 +33,13 @@ export class AdminUserInteractionsService extends CoreAdminUserInteractionsServi
   }
 
   askDeleteConfirm(): Observable<boolean> {
-    const strings = [
-      'Are you sure you want to delete?',
-      'Cancel',
-      'Ok'
-    ];
+    const strings = ['Are you sure you want to delete?', 'Cancel', 'Ok'];
     return this._ts.get(strings).pipe(
-      switchMap(ts => from(this._alert.create({
-        message: ts[0],
-        buttons: [{text: ts[1], role: 'cancel'}, {text: ts[2], role: 'confirm'}]
-      }))),
-      switchMap(alert => from(alert.present()).pipe(mapTo(alert))),
-      switchMap(alert => from(alert.onDidDismiss())),
-      map((evt: any) => evt.role === 'confirm')
-    );
+        switchMap(ts => from(this._alert.create({
+                    message: ts[0],
+                    buttons: [{text: ts[1], role: 'cancel'}, {text: ts[2], role: 'confirm'}]
+                  }))),
+        switchMap(alert => from(alert.present()).pipe(mapTo(alert))),
+        switchMap(alert => from(alert.onDidDismiss())), map((evt: any) => evt.role === 'confirm'));
   }
 }

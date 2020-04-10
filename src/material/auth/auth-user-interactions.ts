@@ -21,10 +21,8 @@
 
 import {MatDialog} from '@angular/material/dialog';
 import {MatSnackBar} from '@angular/material/snack-bar';
-
-import {Observable} from 'rxjs';
-
 import {AuthUserInteractionsService as CoreAuthUserInteractionsService} from '@gngt/core/auth';
+import {Observable} from 'rxjs';
 
 import {LogoutConfirmDialogComponent} from './logout-confirm-dialog';
 

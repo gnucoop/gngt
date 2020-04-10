@@ -84,107 +84,155 @@ export function generateModelActionTypes(typeName: string): ModelActionTypes {
 export abstract class ModelBaseAction implements ModelGenericAction {
   abstract type: string;
   uuid: string;
-  constructor(public payload: any) { }
+  constructor(public payload: any) {}
 }
 
 export abstract class ModelGetAction extends ModelBaseAction {
-  constructor(public payload: {id: number}) { super(payload); }
+  constructor(public payload: {id: number}) {
+    super(payload);
+  }
 }
-export abstract class ModelGetSuccessAction<T extends Model> extends ModelBaseAction  {
-  constructor(public payload: {item: T}) { super(payload); }
+export abstract class ModelGetSuccessAction<T extends Model> extends ModelBaseAction {
+  constructor(public payload: {item: T}) {
+    super(payload);
+  }
 }
 export abstract class ModelGetFailureAction extends ModelBaseAction {
   abstract type: string;
-  constructor(public payload: {error: ModelError}) { super(payload); }
+  constructor(public payload: {error: ModelError}) {
+    super(payload);
+  }
 }
 
 export abstract class ModelListAction extends ModelBaseAction {
   abstract type: string;
-  constructor(public payload: {params: ModelListParams}) { super(payload); }
+  constructor(public payload: {params: ModelListParams}) {
+    super(payload);
+  }
 }
 export abstract class ModelListSuccessAction<T extends Model> extends ModelBaseAction {
   abstract type: string;
-  constructor(public payload: {result: ModelListResult<T>}) { super(payload); }
+  constructor(public payload: {result: ModelListResult<T>}) {
+    super(payload);
+  }
 }
 export abstract class ModelListFailureAction extends ModelBaseAction {
   abstract type: string;
-  constructor(public payload: {error: ModelError}) { super(payload); }
+  constructor(public payload: {error: ModelError}) {
+    super(payload);
+  }
 }
 
 export abstract class ModelCreateAction<T extends Model> extends ModelBaseAction {
   abstract type: string;
-  constructor(public payload: {item: T}) { super(payload); }
+  constructor(public payload: {item: T}) {
+    super(payload);
+  }
 }
 export abstract class ModelCreateSuccessAction<T extends Model> extends ModelBaseAction {
   abstract type: string;
-  constructor(public payload: {item: T}) { super(payload); }
+  constructor(public payload: {item: T}) {
+    super(payload);
+  }
 }
 export abstract class ModelCreateFailureAction extends ModelBaseAction {
   abstract type: string;
-  constructor(public payload: {error: ModelError}) { super(payload); }
+  constructor(public payload: {error: ModelError}) {
+    super(payload);
+  }
 }
 
 export abstract class ModelUpdateAction<T extends Model> extends ModelBaseAction {
   abstract type: string;
-  constructor(public payload: {item: T}) { super(payload); }
+  constructor(public payload: {item: T}) {
+    super(payload);
+  }
 }
 export abstract class ModelUpdateSuccessAction<T extends Model> extends ModelBaseAction {
   abstract type: string;
-  constructor(public payload: {item: T}) { super(payload); }
+  constructor(public payload: {item: T}) {
+    super(payload);
+  }
 }
 export abstract class ModelUpdateFailureAction extends ModelBaseAction {
   abstract type: string;
-  constructor(public payload: {error: ModelError}) { super(payload); }
+  constructor(public payload: {error: ModelError}) {
+    super(payload);
+  }
 }
 
 export abstract class ModelPatchAction<T extends Model> extends ModelBaseAction {
   abstract type: string;
-  constructor(public payload: {item: T}) { super(payload); }
+  constructor(public payload: {item: T}) {
+    super(payload);
+  }
 }
 export abstract class ModelPatchSuccessAction<T extends Model> extends ModelBaseAction {
   abstract type: string;
-  constructor(public payload: {item: T}) { super(payload); }
+  constructor(public payload: {item: T}) {
+    super(payload);
+  }
 }
 export abstract class ModelPatchFailureAction extends ModelBaseAction {
   abstract type: string;
-  constructor(public payload: {error: ModelError}) { super(payload); }
+  constructor(public payload: {error: ModelError}) {
+    super(payload);
+  }
 }
 
 export abstract class ModelDeleteAction<T extends Model> extends ModelBaseAction {
   abstract type: string;
-  constructor(public payload: {item: T}) { super(payload); }
+  constructor(public payload: {item: T}) {
+    super(payload);
+  }
 }
 export abstract class ModelDeleteSuccessAction<T extends Model> extends ModelBaseAction {
   abstract type: string;
-  constructor(public payload: {item: T}) { super(payload); }
+  constructor(public payload: {item: T}) {
+    super(payload);
+  }
 }
 export abstract class ModelDeleteFailureAction extends ModelBaseAction {
   abstract type: string;
-  constructor(public payload: {error: ModelError}) { super(payload); }
+  constructor(public payload: {error: ModelError}) {
+    super(payload);
+  }
 }
 
 export abstract class ModelDeleteAllAction<T extends Model> extends ModelBaseAction {
   abstract type: string;
-  constructor(public payload: {items: T[]}) { super(payload); }
+  constructor(public payload: {items: T[]}) {
+    super(payload);
+  }
 }
 export abstract class ModelDeleteAllSuccessAction<T extends Model> extends ModelBaseAction {
   abstract type: string;
-  constructor(public payload: {items: T[]}) { super(payload); }
+  constructor(public payload: {items: T[]}) {
+    super(payload);
+  }
 }
 export abstract class ModelDeleteAllFailureAction extends ModelBaseAction {
   abstract type: string;
-  constructor(public payload: {error: ModelError}) { super(payload); }
+  constructor(public payload: {error: ModelError}) {
+    super(payload);
+  }
 }
 
 export abstract class ModelQueryAction extends ModelBaseAction {
   abstract type: string;
-  constructor(public payload: {params: ModelQueryParams}) { super(payload); }
+  constructor(public payload: {params: ModelQueryParams}) {
+    super(payload);
+  }
 }
 export abstract class ModelQuerySuccessAction<T extends Model> extends ModelBaseAction {
   abstract type: string;
-  constructor(public payload: {result: ModelListResult<T>}) { super(payload); }
+  constructor(public payload: {result: ModelListResult<T>}) {
+    super(payload);
+  }
 }
 export abstract class ModelQueryFailureAction extends ModelBaseAction {
   abstract type: string;
-  constructor(public payload: {error: ModelError}) { super(payload); }
+  constructor(public payload: {error: ModelError}) {
+    super(payload);
+  }
 }

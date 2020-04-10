@@ -1,6 +1,6 @@
 export declare class AuthModule {
     static ɵinj: i0.ɵɵInjectorDef<AuthModule>;
-    static ɵmod: i0.ɵɵNgModuleDefWithMeta<AuthModule, [typeof i1.LoginComponent, typeof i2.LogoutConfirmDialogComponent], [typeof i3.CommonModule, typeof i4.ReactiveFormsModule, typeof i5.MatButtonModule, typeof i6.MatDialogModule, typeof i7.MatFormFieldModule, typeof i8.MatIconModule, typeof i9.MatInputModule, typeof i10.MatSnackBarModule, typeof i11.AuthModule, typeof i12.CommonModule], [typeof i1.LoginComponent]>;
+    static ɵmod: i0.ɵɵNgModuleDefWithMeta<AuthModule, [typeof i1.LoginComponent, typeof i2.LogoutConfirmDialogComponent], [typeof i3.CommonModule, typeof i4.AuthModule, typeof i5.CommonModule, typeof i6.MatButtonModule, typeof i7.MatDialogModule, typeof i8.MatFormFieldModule, typeof i9.MatIconModule, typeof i10.MatInputModule, typeof i11.MatSnackBarModule, typeof i12.ReactiveFormsModule], [typeof i1.LoginComponent]>;
     static forRoot(options: AuthModuleOptions): i0.ModuleWithProviders<AuthModule>;
 }
 

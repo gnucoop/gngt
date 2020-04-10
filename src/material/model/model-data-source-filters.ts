@@ -19,4 +19,6 @@
  *
  */
 
-export type ModelDataSourceFilters = {[key: string]: any};
+export type ModelDataSourceFilters = {
+  [key: string]: any
+};

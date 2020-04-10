@@ -24,10 +24,5 @@ import {InjectionToken} from '@angular/core';
 import {ModelOptions} from './model-options';
 
 
-export const MODEL_OPTIONS: InjectionToken<ModelOptions> =
-  new InjectionToken<ModelOptions>('MODEL_OPTIONS', {
-    providedIn: 'root',
-    factory: () => ({
-      baseApiUrl: '/'
-    })
-  });
+export const MODEL_OPTIONS: InjectionToken<ModelOptions> = new InjectionToken<ModelOptions>(
+    'MODEL_OPTIONS', {providedIn: 'root', factory: () => ({baseApiUrl: '/'})});
