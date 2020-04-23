@@ -1,62 +1,86 @@
 {
   "plugins": [
-    "./tools/stylelint/no-prefixes/index.js",
-    "./tools/stylelint/no-ampersand-beyond-selector-start.js",
-    "./tools/stylelint/selector-no-deep.js",
-    "./tools/stylelint/no-nested-mixin.js",
-    "./tools/stylelint/no-concrete-rules.js",
-    "./tools/stylelint/no-top-level-ampersand-in-mixin.js"
+    "./tools/stylelint/loader-rule.js",
+    "./tools/stylelint/no-prefixes/index.ts",
+    "./tools/stylelint/no-ampersand-beyond-selector-start.ts",
+    "./tools/stylelint/selector-no-deep.ts",
+    "./tools/stylelint/no-nested-mixin.ts",
+    "./tools/stylelint/no-concrete-rules.ts",
+    "./tools/stylelint/no-top-level-ampersand-in-mixin.ts"
   ],
   "rules": {
-    "material/no-prefixes": [true, {
-      "browsers": ["last 2 versions", "not ie <= 10", "not ie_mob <= 10"],
-      "filePattern": "**/!(*-example.css)"
-    }],
-    "material/selector-no-deep": true,
-    "material/no-nested-mixin": true,
-    "material/no-ampersand-beyond-selector-start": [true, {
-      "filePattern": "-theme\\.scss$"
-    }],
-    "material/no-concrete-rules": [true, {
-      "filePattern": "^_.*\\.scss$"
-    }],
-    "material/no-top-level-ampersand-in-mixin": [true, {
-      "filePattern": "-theme\\.scss$"
-    }],
-
+    "gngt/no-prefixes": [
+      true,
+      {
+        "browsers": [
+          "last 2 versions",
+          "not ie <= 10",
+          "not ie_mob <= 10"
+        ],
+        "filePattern": "**/!(*-example.css)"
+      }
+    ],
+    "gngt/selector-no-deep": true,
+    "gngt/no-nested-mixin": true,
+    "gngt/no-ampersand-beyond-selector-start": [
+      true,
+      {
+        "filePattern": "-theme\\.scss$"
+      }
+    ],
+    "gngt/no-concrete-rules": [
+      true,
+      {
+        "filePattern": "^_.*\\.scss$"
+      }
+    ],
+    "gngt/no-top-level-ampersand-in-mixin": [
+      true,
+      {
+        "filePattern": "-theme\\.scss$"
+      }
+    ],
     "color-hex-case": "lower",
     "color-no-invalid-hex": true,
-
     "function-calc-no-unspaced-operator": true,
     "function-comma-space-after": "always-single-line",
     "function-comma-space-before": "never",
     "function-name-case": "lower",
     "function-url-quotes": "always",
-    "function-url-scheme-blacklist": ["data"],
+    "function-url-scheme-blacklist": [
+      "data"
+    ],
     "function-whitespace-after": "always",
-
     "number-leading-zero": "always",
     "number-no-trailing-zeros": true,
     "length-zero-no-unit": true,
-
     "string-no-newline": true,
     "string-quotes": "single",
-
     "unit-case": "lower",
     "unit-no-unknown": true,
-    "unit-whitelist": ["px", "%", "deg", "ms", "em", "vh", "vw", "vmin"],
-
+    "unit-whitelist": [
+      "px",
+      "%",
+      "deg",
+      "ms",
+      "em",
+      "vh",
+      "vw",
+      "vmin"
+    ],
     "value-list-comma-space-after": "always-single-line",
     "value-list-comma-space-before": "never",
-
     "shorthand-property-no-redundant-values": true,
-
     "property-case": "lower",
     "no-duplicate-at-import-rules": true,
-
-    "declaration-block-no-duplicate-properties": [true, {
-      "ignore": ["consecutive-duplicates-with-different-values"]
-    }],
+    "declaration-block-no-duplicate-properties": [
+      true,
+      {
+        "ignore": [
+          "consecutive-duplicates-with-different-values"
+        ]
+      }
+    ],
     "declaration-block-trailing-semicolon": "always",
     "declaration-block-single-line-max-declarations": 1,
     "declaration-block-semicolon-space-before": "never",
@@ -64,15 +88,19 @@
     "declaration-block-semicolon-newline-before": "never-multi-line",
     "declaration-block-semicolon-newline-after": "always-multi-line",
     "declaration-property-value-blacklist": [
-        {"/.*/": ["initial"]},
-        {"message": "The `initial` value is not supported in IE."}
+      {
+        "/.*/": [
+          "initial"
+        ]
+      },
+      {
+        "message": "The `initial` value is not supported in IE."
+      }
     ],
-
     "block-closing-brace-newline-after": "always",
     "block-closing-brace-newline-before": "always-multi-line",
     "block-opening-brace-newline-after": "always-multi-line",
     "block-opening-brace-space-before": "always-multi-line",
-
     "selector-attribute-brackets-space-inside": "never",
     "selector-attribute-operator-space-after": "never",
     "selector-attribute-operator-space-before": "never",
@@ -89,8 +117,11 @@
     "no-eol-whitespace": true,
     "max-line-length": 100,
     "linebreaks": "unix",
-    "selector-class-pattern": ["^_?(dewco-|mat-|cdk-|example-|demo-|ng-|mdc-|map-)", {
-      "resolveNestedSelectors": true
-    }]
+    "selector-class-pattern": [
+      "^_?(dewco-|mat-|cdk-|example-|demo-|ng-|mdc-|map-)",
+      {
+        "resolveNestedSelectors": true
+      }
+    ]
   }
 }
