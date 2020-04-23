@@ -11,6 +11,7 @@ yarn check-rollup-globals $(yarn -s bazel info bazel-bin)/rollup_globals.json
 yarn -s bazel build //:entry_points_manifest
 yarn check-entry-point-setup $(yarn -s bazel info bazel-bin)/entry_points_manifest.json
 yarn -s lint
+yarn -s ts-circular-deps:check
 
 echo "API guard tests"
 yarn -s bazel test tools/public_api_guard/...
