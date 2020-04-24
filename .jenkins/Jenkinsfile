@@ -65,7 +65,8 @@ pipeline {
         sh 'yarn check-release-output'
         sh 'mkdir -p node_modules/@gngt'
         sh 'cp -R dist/releases/* node_modules/@gngt/'
-        sh 'yarn ngcc'
+        sh 'rm -f node_modules/__ngcc_entry_points__.json'
+        sh 'yarn ngcc --error-on-failed-entry-point --no-tsconfig'
         sh 'rm -Rf node_modules/@gngt'
       }
     }
