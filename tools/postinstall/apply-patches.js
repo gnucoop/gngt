@@ -12,7 +12,7 @@ const fs = require('fs');
  * Version of the post install patch. Needs to be incremented when
  * existing patches or edits have been modified.
  */
-const PATCH_VERSION = 4;
+const PATCH_VERSION = 5;
 
 /** Path to the project directory. */
 const projectDir = path.join(__dirname, '../..');
@@ -39,8 +39,7 @@ searchAndReplace(
 // Workaround for https://github.com/angular/angular/issues/32389. We need to ensure
 // that tsickle is available for esm5 output re-compilations.
 searchAndReplace(
-    '@npm//@bazel/typescript/bin:tsc_wrapped',
-    '@gc_gngt//tools:tsc_wrapped_with_tsickle',
+    '@npm//@bazel/typescript/bin:tsc_wrapped', '@gc_gngt//tools:tsc_wrapped_with_tsickle',
     'node_modules/@angular/bazel/src/esm5.bzl');
 
 // Workaround for: https://github.com/angular/angular/issues/32651. We just do not
@@ -83,8 +82,7 @@ searchAndReplace(
             if (ext.test(referringLibFileName)) {
                 fileName = fileName.replace('.ngfactory', '');
             }`,
-    'node_modules/@angular/compiler-cli/src/transformers/compiler_host.js'
-);
+    'node_modules/@angular/compiler-cli/src/transformers/compiler_host.js');
 // The three replacements below ensure that metadata files can be read by NGC and
 // that metadata files are collected as Bazel action inputs.
 searchAndReplace(
@@ -112,11 +110,14 @@ try {
   // Can be removed once @angular/bazel is updated here to include this patch.
   // try/catch needed for this the material CI tests to work in angular/repo
   applyPatch(path.join(__dirname, './@angular_bazel_ng_module.patch'));
-} catch (_) {}
+} catch (_) {
+}
 
 // Workaround for https://github.com/angular/angular/issues/33452:
-searchAndReplace(/angular_compiler_options = {/, `$&
-        "strictTemplates": True,`, 'node_modules/@angular/bazel/src/ng_module.bzl');
+searchAndReplace(
+    /angular_compiler_options = {/, `$&
+        "strictTemplates": True,`,
+    'node_modules/@angular/bazel/src/ng_module.bzl');
 
 // More info in https://github.com/angular/angular/pull/33786
 shelljs.rm('-rf', [
