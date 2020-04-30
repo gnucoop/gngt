@@ -17,7 +17,7 @@ pipeline {
       steps {
         restoreCache(cacheParams)
         sh 'cat .jenkins/bazelrc >> .bazelrc'
-        sh 'yarn install --non-interactive'
+        sh 'yarn install --frozen-lockfile --non-interactive'
       }
     }
     stage('Lint') {
