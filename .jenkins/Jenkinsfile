@@ -5,26 +5,18 @@ pipeline {
   environment {
     scmInfo = checkout scm
     gitBranch = scmInfo.GIT_BRANCH.replace("origin/", "")
+    cacheParams = getCacheParams()
   }
   stages {
-    stage('Restore cache') {
+    stage('Get cache') {
       steps {
-        script {
-          try {
-            sh 'gsutil cp gs://gngt-bazel-remote-cache/gngt-core-node-modules.tar.gz .'
-            sh 'tar xfz gngt-core-node-modules.tar.gz'
-            sh 'rm gngt-core-node-modules.tar.gz'
-            sh 'gsutil cp gs://gngt-bazel-remote-cache/gngt-core-bazel-repository.tar.gz .'
-            sh 'tar xfz gngt-core-bazel-repository.tar.gz -C /home/jenkins'
-            sh 'rm gngt-core-bazel-repository.tar.gz'
-          } catch (Exception e) {
-          }
-        }
-        sh 'cat .jenkins/bazelrc >> .bazelrc'
+        getCache(cacheParams)
       }
     }
     stage('Setup') {
       steps {
+        restoreCache(cacheParams)
+        sh 'cat .jenkins/bazelrc >> .bazelrc'
         sh 'yarn install --non-interactive'
       }
     }
@@ -43,15 +35,15 @@ pipeline {
         sh 'yarn -s bazel build src/... --build_tag_filters=-docs-package,-release-package'
       }
     }
-    stage('API guard tests') {
-      steps {
-        sh 'yarn -s bazel test tools/public_api_guard/...'
-      }
-    }
     stage('Unit tests') {
       steps {
         sh 'yarn -s bazel test src/... --build_tag_filters=-docs-package,-e2e --test_tag_filters=-e2e --config=view-engine --build_tests_only'
         sh 'yarn -s bazel test src/... --build_tag_filters=-e2e --test_tag_filters=-e2e --build_tests_only'
+      }
+    }
+    stage('API guard tests') {
+      steps {
+        sh 'yarn -s bazel test tools/public_api_guard/...'
       }
     }
     stage('Integration tests') {
@@ -72,13 +64,82 @@ pipeline {
     }
     stage('Save cache') {
       steps {
-        sh 'tar cfz gngt-core-node-modules.tar.gz node_modules'
-        sh 'gsutil cp gngt-core-node-modules.tar.gz gs://gngt-bazel-remote-cache/'
-        sh 'rm gngt-core-node-modules.tar.gz'
-        sh 'tar cfz gngt-core-bazel-repository.tar.gz -C /home/jenkins bazel_repository_cache'
-        sh 'gsutil cp gngt-core-bazel-repository.tar.gz gs://gngt-bazel-remote-cache/'
-        sh 'rm gngt-core-bazel-repository.tar.gz'
+        saveCache(cacheParams)
       }
     }
   }
+}
+
+void getCache(cacheParams) {
+  if (cacheParams["hasNodeModulesCache"]) {
+    sh "gsutil cp gs://gngt-bazel-remote-cache/${cacheParams["nodeModulesCache"]} ."
+  }
+  if (cacheParams["hasBazeliskCache"]) {
+    sh "gsutil cp gs://gngt-bazel-remote-cache/${cacheParams["hasBazeliskCache"]} ."
+  }
+  if (cacheParams["hasBazelRepositoryCache"]) {
+    sh "gsutil cp gs://gngt-bazel-remote-cache/${cacheParams["bazelRepositoryCache"]} ."
+  }
+}
+
+void restoreCache(cacheParams) {
+  sh "rm -Rf node_modules ~/.cache/bazelisk ~/bazel_repository_cache"
+  if (cacheParams["hasNodeModulesCache"]) {
+    sh "tar xfz ${cacheParams["nodeModulesCache"]}"
+  }
+  if (cacheParams["hasBazeliskCache"]) {
+    sh "mkdir -p /home/jenkins/.cache"
+    sh "tar xfz ${cacheParams["bazeliskCache"]} -C /home/jenkins/.cache"
+  }
+  if (cacheParams["hasBazelRepositoryCache"]) {
+    sh "tar xfz ${cacheParams["bazelRepositoryCache"]} -C /home/jenkins"
+  }
+}
+
+void saveCache(cacheParams) {
+  if (!cacheParams["hasNodeModulesCache"]) {
+    sh "tar cfz ${cacheParams["nodeModulesCache"]} node_modules"
+    sh "gsutil cp ${cacheParams["nodeModulesCache"]} gs://gngt-bazel-remote-cache/"
+  }
+  if (!cacheParams["hasBazeliskCache"]) {
+    sh "tar cfz ${cacheParams["bazeliskCache"]} -C /home/jenkins/.cache bazelisk"
+    sh "gsutil cp ${cacheParams["bazeliskCache"]} gs://gngt-bazel-remote-cache/"
+  }
+  if (!cacheParams["hasBazelRepositoryCache"]) {
+    sh "tar cfz ${cacheParams["bazelRepositoryCache"]} -C /home/jenkins bazel_repository_cache"
+    sh "gsutil cp ${cacheParams["bazelRepositoryCache"]} gs://gngt-bazel-remote-cache/"
+  }
+}
+
+Map getCacheParams() {
+  cacheKey = sh(script: "./scripts/jenkins/cache-key.sh", returnStdout: true).trim()
+  nodeModulesCache = "gngt-node-modules-${cacheKey}.tar.gz"
+  bazeliskCache = "gngt-bazelisk-${cacheKey}.tar.gz"
+  bazelRepositoryCache = "gngt-bazel-repository-${cacheKey}.tar.gz"
+  try {
+    sh "gsutil stat gs://gngt-bazel-remote-cache/${nodeModulesCache}"
+    hasNodeModulesCache = true
+  } catch (e) {
+    hasNodeModulesCache = false
+  }
+  try {
+    sh "gsutil stat gs://gngt-bazel-remote-cache/${bazeliskCache}"
+    hasBazeliskCache = true
+  } catch (e) {
+    hasBazeliskCache = false
+  }
+  try {
+    sh "gsutil stat gs://gngt-bazel-remote-cache/${bazelRepositoryCache}"
+    hasBazelRepositoryCache = true
+  } catch (e) {
+    hasBazelRepositoryCache = false
+  }
+  return [
+    "hasNodeModulesCache": hasNodeModulesCache,
+    "hasBazeliskCache": hasBazeliskCache,
+    "hasBazelRepositoryCache": hasBazelRepositoryCache,
+    "nodeModulesCache": nodeModulesCache,
+    "bazeliskCache": bazeliskCache,
+    "bazelRepositoryCache": bazelRepositoryCache
+  ]
 }
