@@ -87,7 +87,7 @@
     "@babel/preset-env": "^7.8.4",
     "@bazel/bazelisk": "^1.4.0",
     "@bazel/buildifier": "^2.2.1",
-    "@bazel/ibazel": "^0.12.3",
+    "@bazel/ibazel": "^0.13.0",
     "@bazel/jasmine": "^1.6.0",
     "@bazel/karma": "^1.6.0",
     "@bazel/protractor": "^1.6.0",
