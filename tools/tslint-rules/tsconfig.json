@@ -1,0 +1,12 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "module": "commonjs",
+    "baseUrl": ".",
+    "paths": {
+      "typescript": [
+        "../../node_modules/typescript-3.8"
+      ]
+    }
+  }
+}

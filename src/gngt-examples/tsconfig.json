@@ -8,6 +8,7 @@
     "baseUrl": ".",
     "paths": {
       "@gngt/core/*": ["../core/*"],
+      "@gngt/ionic/*": ["../ionic/*"],
       "@gngt/material/*": ["../material/*"]
     }
   },

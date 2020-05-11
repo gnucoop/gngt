@@ -12,10 +12,12 @@
     "noFallthroughCasesInSwitch": true,
     "noUnusedLocals": false,
     "strictNullChecks": true,
+    "noImplicitReturns": true,
     "strictFunctionTypes": true,
     "noImplicitAny": true,
     "noImplicitThis": true,
     "skipLibCheck": true,
+    "strictBindCallApply": true,
     "target": "es2015",
     "lib": ["es5", "es2015", "dom"],
     "types": ["jasmine"],
@@ -23,10 +25,10 @@
     "paths": {
       "@gngt/core": ["./src/core"],
       "@gngt/core/*": ["./src/core/*"],
+      "@gngt/gngt-examples": ["./src/packages/gngt-examples"],
+      "@gngt/gngt-examples/*": ["./src/packages/gngt-examples/*"],
       "@gngt/ionic/*": ["./src/ionic/*"],
-      "@gngt/ionic-examples": ["./src/packages/ionic-examples"],
-      "@gngt/material/*": ["./src/material/*"],
-      "@gngt/material-examples": ["./src/packages/material-examples"]
+      "@gngt/material/*": ["./src/material/*"]
     }
   },
   "include": [

@@ -11,6 +11,7 @@
       "@gngt/ionic/*": ["../ionic/*"],
       "@gngt/ionic": ["../ionic/public-api.ts"],
       "@gngt/gngt-examples": ["../../dist/packages/gngt-examples"],
+      "@gngt/gngt-examples/*": ["../../dist/packages/gngt-examples/*"],
       "@gngt/material/*": ["../material/*"],
       "@gngt/material": ["../material/public-api.ts"]
     }

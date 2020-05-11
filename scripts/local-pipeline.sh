@@ -13,18 +13,21 @@ yarn check-entry-point-setup $(yarn -s bazel info bazel-bin)/entry_points_manife
 yarn -s lint
 yarn -s ts-circular-deps:check
 
+echo "Build"
+yarn -s bazel build src/... --build_tag_filters=-docs-package,-release-package
+
 echo "API guard tests"
 yarn -s bazel test tools/public_api_guard/...
 
-echo "Build"
-yarn -s bazel build src/... --build_tag_filters=-docs-package,-release-package
+echo "Integration tests"
+yarn -s bazel test integration/... --build_tests_only --config=view-engine
 
 echo "Unit tests"
 yarn -s bazel test src/... --build_tag_filters=-docs-package,-e2e --test_tag_filters=-e2e --config=view-engine --build_tests_only
 yarn -s bazel test src/... --build_tag_filters=-e2e --test_tag_filters=-e2e --build_tests_only
 
 echo "Integration tests"
-yarn -s bazel test src/... --build_tag_filters=e2e --test_tag_filters=e2e
+yarn -s bazel test integration/... --build_tests_only --config=view-engine
 
 echo "Release output"
 yarn build

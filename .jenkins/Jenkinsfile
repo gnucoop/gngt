@@ -36,18 +36,23 @@ pipeline {
         sh 'yarn -s bazel build src/... --build_tag_filters=-docs-package,-release-package'
       }
     }
-    stage('Unit tests') {
-      steps {
-        sh 'yarn -s bazel test src/... --build_tag_filters=-docs-package,-e2e --test_tag_filters=-e2e --config=view-engine --build_tests_only'
-        sh 'yarn -s bazel test src/... --build_tag_filters=-e2e --test_tag_filters=-e2e --build_tests_only'
-      }
-    }
     stage('API guard tests') {
       steps {
         sh 'yarn -s bazel test tools/public_api_guard/...'
       }
     }
     stage('Integration tests') {
+      steps {
+        sh 'yarn -s bazel test integration/... --build_tests_only --config=view-engine'
+      }
+    }
+    stage('Unit tests') {
+      steps {
+        sh 'yarn -s bazel test src/... --build_tag_filters=-docs-package,-e2e --test_tag_filters=-e2e --config=view-engine --build_tests_only'
+        sh 'yarn -s bazel test src/... --build_tag_filters=-e2e --test_tag_filters=-e2e --build_tests_only'
+      }
+    }
+    stage('E2E tests') {
       steps {
         sh 'yarn -s bazel test src/... --build_tag_filters=e2e --test_tag_filters=e2e'
       }
