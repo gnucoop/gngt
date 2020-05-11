@@ -1,13 +1,13 @@
 # Each individual package uses a placeholder for the version of Angular to ensure they're
 # all in-sync. This map is passed to each ng_package rule to stamp out the appropriate
 # version for the placeholders.
-ANGULAR_PACKAGE_VERSION = "^9.0.0 || ^10.0.0"
-ANGULAR_MATERIAL_PACKAGE_VERSION = "^9.0.0 || ^10.0.0"
+ANGULAR_PACKAGE_VERSION = "^10.0.0 || ^11.0.0"
+ANGULAR_MATERIAL_PACKAGE_VERSION = "^10.0.0 || ^11.0.0"
 GIC_PACKAGE_VERSION = "^5.0.0"
 IONIC_PACKAGE_VERSION = "^5.0.0"
 NGRX_PACKAGE_VERSION = "^9.0.0-beta.1"
 NGXT_PACKAGE_VERSION = "^12.0.0"
-TSLIB_PACKAGE_VERSION = "^1.9.0"
+TSLIB_PACKAGE_VERSION = "^1.10.0"
 
 VERSION_PLACEHOLDER_REPLACEMENTS = {
     "0.0.0-ANGM": ANGULAR_MATERIAL_PACKAGE_VERSION,
