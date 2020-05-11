@@ -2,16 +2,17 @@ import chalk from 'chalk';
 import {existsSync} from 'fs';
 import {sync as glob} from 'glob';
 import {join} from 'path';
+
 import {Version} from '../version-name/parse-version';
 
 import {
-  checkPackageJsonFile,
   checkJavaScriptOutput,
+  checkPackageJsonFile,
   checkTypeDefinitionFile
 } from './output-validations';
 
 /** Glob that matches all JavaScript files within a release package. */
-const releaseJsFilesGlob = '+(fesm5|fesm2015|esm5|esm2015|bundles)/**/*.js';
+const releaseJsFilesGlob = '+(fesm2015|esm2015|bundles)/**/*.js';
 
 /** Glob that matches all TypeScript definition files within a release package. */
 const releaseTypeDefinitionsGlob = '**/*.d.ts';

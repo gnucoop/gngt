@@ -27,7 +27,7 @@ export declare type SyncEntryType = 'insert' | 'update' | 'delete';
 export declare class SyncModule {
     static ɵinj: i0.ɵɵInjectorDef<SyncModule>;
     static ɵmod: i0.ɵɵNgModuleDefWithMeta<SyncModule, never, never, never>;
-    static forRoot(opts: SyncOptions): i0.ModuleWithProviders<SyncModule>;
+    static forRoot(opts: SyncOptions): ModuleWithProviders<SyncModule>;
 }
 
 export interface SyncOptions {

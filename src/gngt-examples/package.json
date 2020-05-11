@@ -2,10 +2,6 @@
   "name": "@gngt/gngt-examples",
   "version": "0.0.0-PLACEHOLDER",
   "description": "Gngt Examples",
-  "main": "./bundles/gngt-examples.umd.js",
-  "module": "./esm5/gngt-examples.es5.js",
-  "es2015": "./esm2015/gngt-examples.js",
-  "typings": "./gngt-examples.d.ts",
   "private": true,
   "repository": {
     "type": "git",

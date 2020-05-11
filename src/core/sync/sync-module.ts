@@ -28,7 +28,7 @@ import {SyncService} from './sync-service';
 
 @NgModule({})
 export class SyncModule {
-  static forRoot(opts: SyncOptions): ModuleWithProviders {
+  static forRoot(opts: SyncOptions): ModuleWithProviders<SyncModule> {
     return {
       ngModule: SyncModule,
       providers: [
