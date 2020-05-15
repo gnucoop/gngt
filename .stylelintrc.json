@@ -6,7 +6,8 @@
     "./tools/stylelint/selector-no-deep.ts",
     "./tools/stylelint/no-nested-mixin.ts",
     "./tools/stylelint/no-concrete-rules.ts",
-    "./tools/stylelint/no-top-level-ampersand-in-mixin.ts"
+    "./tools/stylelint/no-top-level-ampersand-in-mixin.ts",
+    "./tools/stylelint/theme-mixin-api.ts"
   ],
   "rules": {
     "gngt/no-prefixes": [
@@ -20,6 +21,7 @@
         "filePattern": "**/!(*-example.css)"
       }
     ],
+    "gngt/theme-mixin-api": true,
     "gngt/selector-no-deep": true,
     "gngt/no-nested-mixin": true,
     "gngt/no-ampersand-beyond-selector-start": [
