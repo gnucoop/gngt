@@ -81,7 +81,7 @@ void getCache(cacheParams) {
     sh "gsutil cp gs://gngt-bazel-remote-cache/${cacheParams["nodeModulesCache"]} ."
   }
   if (cacheParams["hasBazeliskCache"]) {
-    sh "gsutil cp gs://gngt-bazel-remote-cache/${cacheParams["hasBazeliskCache"]} ."
+    sh "gsutil cp gs://gngt-bazel-remote-cache/${cacheParams["bazeliskCache"]} ."
   }
   if (cacheParams["hasBazelRepositoryCache"]) {
     sh "gsutil cp gs://gngt-bazel-remote-cache/${cacheParams["bazelRepositoryCache"]} ."
