@@ -282,6 +282,7 @@ describe('SyncService', () => {
 
   describe('Local database', () => {
     let syncService: SyncService;
+    let originalTimeout: number;
 
     beforeEach(async () => {
       TestBed.configureTestingModule({
@@ -297,9 +298,12 @@ describe('SyncService', () => {
       for (let i = 0; i < dbEntries.length; i++) {
         await db.post(dbEntries[i]);
       }
+      originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
+      jasmine.DEFAULT_TIMEOUT_INTERVAL = 200000;
     });
 
     afterEach(() => {
+      jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
       return new pouchDBStatic(dbName).destroy();
     });
 
