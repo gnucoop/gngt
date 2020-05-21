@@ -1,13 +1,11 @@
-import {ChoiceType, prompt, Separator} from 'inquirer';
+import {ListChoiceOptions, prompt, Separator, SeparatorOptions} from 'inquirer';
 import {createNewVersion, ReleaseType} from '../version-name/create-version';
 import {parseVersionName, Version} from '../version-name/parse-version';
 import {determineAllowedPrereleaseLabels} from './prerelease-labels';
 
 /** Answers that will be prompted for. */
 type VersionPromptAnswers = {
-  proposedVersion: string;
-  isPrerelease: boolean;
-  prereleaseLabel: string;
+  proposedVersion: string; isPrerelease: boolean; prereleaseLabel: string;
 };
 
 /**
@@ -16,13 +14,13 @@ type VersionPromptAnswers = {
  */
 export async function promptForNewVersion(currentVersion: Version): Promise<Version> {
   const allowedPrereleaseChoices = determineAllowedPrereleaseLabels(currentVersion);
-  const versionChoices: ChoiceType[] = [];
+  const versionChoices: (ListChoiceOptions|SeparatorOptions)[] = [];
   const currentVersionName = currentVersion.format();
 
   if (currentVersion.prereleaseLabel) {
     versionChoices.push(
-      createVersionChoice(currentVersion, 'stable-release', 'Stable release'),
-      createVersionChoice(currentVersion, 'bump-prerelease', 'Bump pre-release number'));
+        createVersionChoice(currentVersion, 'stable-release', 'Stable release'),
+        createVersionChoice(currentVersion, 'bump-prerelease', 'Bump pre-release number'));
 
     // Only add the option to change the prerelease label if the current version can be
     // changed to a new label. e.g. a version that is already marked as release candidate
@@ -35,40 +33,45 @@ export async function promptForNewVersion(currentVersion: Version): Promise<Vers
     }
   } else {
     versionChoices.push(
-      createVersionChoice(currentVersion, 'major', 'Major release'),
-      createVersionChoice(currentVersion, 'minor', 'Minor release'),
-      createVersionChoice(currentVersion, 'patch', 'Patch release'));
+        createVersionChoice(currentVersion, 'major', 'Major release'),
+        createVersionChoice(currentVersion, 'minor', 'Minor release'),
+        createVersionChoice(currentVersion, 'patch', 'Patch release'));
   }
 
   // We always want to provide the option to use the current version. This is useful
   // if the version got bumped manually before.
-  versionChoices.push(new Separator(),
-    {name: `Use current version (${currentVersionName})`, value: currentVersionName});
+  versionChoices.push(
+      new Separator(),
+      {name: `Use current version (${currentVersionName})`, value: currentVersionName});
 
-  const answers = await prompt<VersionPromptAnswers>([{
-    type: 'list',
-    name: 'proposedVersion',
-    message: `What's the type of the new release?`,
-    choices: versionChoices,
-  }, {
-    type: 'confirm',
-    name: 'isPrerelease',
-    message: 'Should this be a pre-release?',
-    // We don't want to prompt whether this should be a pre-release if the current version
-    // is already a pre-release or if the version has been already bumped manually.
-    when: ({proposedVersion}) =>
-      !currentVersion.prereleaseLabel && proposedVersion !== currentVersionName,
-    default: false,
-  }, {
-    type: 'list',
-    name: 'prereleaseLabel',
-    message: 'Please select a pre-release label:',
-    choices: allowedPrereleaseChoices!,
-    when: ({isPrerelease, proposedVersion}) =>
-      // Only prompt for selecting a pre-release label if the current release is a pre-release,
-      // or the existing pre-release label should be changed.
+  const answers = await prompt<VersionPromptAnswers>([
+    {
+      type: 'list',
+      name: 'proposedVersion',
+      message: `What's the type of the new release?`,
+      choices: versionChoices,
+    },
+    {
+      type: 'confirm',
+      name: 'isPrerelease',
+      message: 'Should this be a pre-release?',
+      // We don't want to prompt whether this should be a pre-release if the current version
+      // is already a pre-release or if the version has been already bumped manually.
+      when: ({proposedVersion}) =>
+          !currentVersion.prereleaseLabel && proposedVersion !== currentVersionName,
+      default: false,
+    },
+    {
+      type: 'list',
+      name: 'prereleaseLabel',
+      message: 'Please select a pre-release label:',
+      choices: allowedPrereleaseChoices!,
+      when: ({isPrerelease, proposedVersion}) =>
+          // Only prompt for selecting a pre-release label if the current release is a pre-release,
+          // or the existing pre-release label should be changed.
       isPrerelease || proposedVersion === 'new-prerelease-label',
-  }]);
+    }
+  ]);
 
   // In case the new version just changes the pre-release label, we base the new version
   // on top of the current version. Otherwise, we use the proposed version from the
@@ -89,8 +92,5 @@ export async function promptForNewVersion(currentVersion: Version): Promise<Vers
 function createVersionChoice(currentVersion: Version, releaseType: ReleaseType, message: string) {
   const versionName = createNewVersion(currentVersion, releaseType).format();
 
-  return {
-    value: versionName,
-    name: `${message} (${versionName})`
-  };
+  return {value: versionName, name: `${message} (${versionName})`};
 }
