@@ -2,7 +2,7 @@ import chalk from 'chalk';
 import {readFileSync} from 'fs';
 import {join, relative} from 'path';
 import * as tsutils from 'tsutils';
-import * as ts from 'typescript-3.8';  // TODO: switch back to `typescript` once 3.9 is out
+import * as ts from 'typescript';
 
 const projectRoot = process.cwd();
 
