@@ -65,7 +65,7 @@ applyPatch(path.join(__dirname, './flat_module_factory_resolution.patch'));
 searchAndReplace(
     /(TsCompilerAotCompilerTypeCheckHostAdapter\.prototype\.fromSummaryFileName = function \(fileName, referringLibFileName\) {)/,
     `$1
-            var ext = /@angular\\/material|@angular\\/cdk|@gic\\/angular|@ionic\\/angular/g;
+            var ext = /@angular\\/material|@angular\\/cdk|@gic\\/angular|@ionic\\/angular|ngx-color-picker/g;
             if (ext.test(referringLibFileName)) {
                 fileName = fileName.replace('.ngfactory', '');
             }`,
