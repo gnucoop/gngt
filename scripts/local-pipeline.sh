@@ -26,8 +26,8 @@ echo "Unit tests"
 yarn -s bazel test src/... --build_tag_filters=-docs-package,-e2e --test_tag_filters=-e2e --config=view-engine --build_tests_only
 yarn -s bazel test src/... --build_tag_filters=-e2e --test_tag_filters=-e2e --build_tests_only
 
-echo "Integration tests"
-yarn -s bazel test integration/... --build_tests_only --config=view-engine
+echo "E2E tests"
+yarn -s bazel test src/... --build_tag_filters=e2e --test_tag_filters=e2e
 
 echo "Release output"
 yarn build
