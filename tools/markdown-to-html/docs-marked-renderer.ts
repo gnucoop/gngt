@@ -2,11 +2,11 @@ import {Renderer, Slugger} from 'marked';
 import {basename, extname} from 'path';
 
 /** Regular expression that matches example comments. */
-const exampleCommentRegex = /<!--\W*example\(([^)]+)\)\W*-->/g;
+const exampleCommentRegex = /<!--\s*example\(([^)]+)\)\s*-->/g;
 
 /**
  * Custom renderer for marked that will be used to transform markdown files to HTML
- * files that can be used in the Dewco docs.
+ * files that can be used in the Gngt docs.
  */
 export class DocsMarkdownRenderer extends Renderer {
   /** Set of fragment links discovered in the currently rendered file. */
@@ -26,7 +26,6 @@ export class DocsMarkdownRenderer extends Renderer {
   heading(label: string, level: number, raw: string) {
     if (level === 3 || level === 4) {
       const headingId = this._slugger.slug(raw);
-
       return `
         <h${level} id="${headingId}" class="docs-header-link">
           <span header-link="${headingId}"></span>
@@ -47,19 +46,47 @@ export class DocsMarkdownRenderer extends Renderer {
       return super.link(`guide/${basename(href, extname(href))}`, title, text);
     }
 
+    // Keep track of all fragments discovered in a file.
+    if (href.startsWith('#')) {
+      this._referencedFragments.add(href.substr(1));
+    }
+
     return super.link(href, title, text);
   }
 
   /**
    * Method that will be called whenever inline HTML is processed by marked. In that case,
-   * we can easily transform the example comments into real HTML elements. For example:
+   * we can easily transform the example comments into real HTML elements.
+   * For example:
+   * (New API)
+   * `<!-- example(
+   *   {
+   *    "example": "exampleName",
+   *    "file": "example-html.html",
+   *    "region": "some-region",
+   *   }
+   *  ) -->`
+   *  turns into
+   *  `<div material-docs-example="exampleName"
+   *        file="example-html.html"
+   *        region="some-region"></div>`
    *
-   *  `<!-- example(name) -->` turns into `<div material-docs-example="name"></div>`
+   *  (old API)
+   *  `<!-- example(name) -->`
+   *  turns into
+   *  `<div material-docs-example="name"></div>`
    */
   html(html: string) {
-    html = html.replace(
-        exampleCommentRegex,
-        (_match: string, name: string) => `<div material-docs-example="${name}"></div>`);
+    html = html.replace(exampleCommentRegex, (_match: string, content: string) => {
+      if (content.startsWith('{')) {
+        const {example, file, region} = JSON.parse(content);
+        return `<div material-docs-example="${example}"
+                               file="${file}"
+                               region="${region}"></div>`;
+      } else {
+        return `<div material-docs-example="${content}"></div>`;
+      }
+    });
 
     return super.html(html);
   }
