@@ -2,7 +2,7 @@
 # yarn lockfile v1
 
 
-"@angular-devkit/core@10.0.0-rc.0", "@angular-devkit/core@^10.0.0-next.6":
+"@angular-devkit/core@10.0.0-rc.0", "@angular-devkit/core@^10.0.0-rc.0":
   version "10.0.0-rc.0"
   resolved "https://registry.yarnpkg.com/@angular-devkit/core/-/core-10.0.0-rc.0.tgz#de44330d2ac6810e958fc8df516b56171577f803"
   integrity sha512-3hHDdWEVhUPzJPHCwV7KyAwPiKBo0SR6nTRxiF6mgR8d87+X+DGhJwB8+g5a7cumRVm8b8CrziCxosQCOR7z+g==
@@ -13,7 +13,7 @@
     rxjs "6.5.5"
     source-map "0.7.3"
 
-"@angular-devkit/schematics@10.0.0-rc.0", "@angular-devkit/schematics@^10.0.0-next.6":
+"@angular-devkit/schematics@10.0.0-rc.0", "@angular-devkit/schematics@^10.0.0-rc.0":
   version "10.0.0-rc.0"
   resolved "https://registry.yarnpkg.com/@angular-devkit/schematics/-/schematics-10.0.0-rc.0.tgz#77f45a5511f285bcd00704b3e05b40dfb3f20c30"
   integrity sha512-7H8VsJkN4ySykCKgHhVp744V43FhSfJMf3+3MPDngZBOTVS7TNk6F8wxAvMCT3gqEOKPc8gN0JyDWLflzhTL4A==
@@ -1445,7 +1445,7 @@
     argparse "~1.0.9"
     colors "~1.2.1"
 
-"@schematics/angular@^10.0.0-next.6":
+"@schematics/angular@^10.0.0-rc.0":
   version "10.0.0-rc.0"
   resolved "https://registry.yarnpkg.com/@schematics/angular/-/angular-10.0.0-rc.0.tgz#eb63e123d54d8ce4c9ad665a20bcb914d5db9245"
   integrity sha512-ZclGbqbWb/ZpjfD/QgzA0lny8CU5eiJDm3Z+JT97MZ9bTCbfNPjk4A6UQV2ra8w47vSUuNYQgh1ecfN+E5OKXQ==
