@@ -23,38 +23,38 @@ pipeline {
     }
     stage('Lint') {
       steps {
-        sh 'yarn -s bazel build //:rollup_globals'
-        sh 'yarn -s check-rollup-globals $(yarn -s bazel info bazel-bin)/rollup_globals.json'
-        sh 'yarn -s bazel build //:entry_points_manifest'
-        sh 'yarn -s check-entry-point-setup $(yarn -s bazel info bazel-bin)/entry_points_manifest.json'
+        sh 'bazel build //:rollup_globals'
+        sh 'yarn -s check-rollup-globals $(bazel info bazel-bin)/rollup_globals.json'
+        sh 'bazel build //:entry_points_manifest'
+        sh 'yarn -s check-entry-point-setup $(bazel info bazel-bin)/entry_points_manifest.json'
         sh 'yarn -s lint'
         sh 'yarn -s ts-circular-deps:check'
       }
     }
     stage('Build') {
       steps {
-        sh 'yarn -s bazel build src/... --build_tag_filters=-docs-package,-release-package'
+        sh 'bazel build src/... --build_tag_filters=-docs-package,-release-package'
       }
     }
     stage('API guard tests') {
       steps {
-        sh 'yarn -s bazel test tools/public_api_guard/...'
+        sh 'bazel test tools/public_api_guard/...'
       }
     }
     stage('Integration tests') {
       steps {
-        sh 'yarn -s bazel test integration/... --build_tests_only --config=view-engine'
+        sh 'bazel test integration/... --build_tests_only --config=view-engine'
       }
     }
     stage('Unit tests') {
       steps {
-        sh 'yarn -s bazel test src/... --build_tag_filters=-docs-package,-e2e --test_tag_filters=-e2e --config=view-engine --build_tests_only'
-        sh 'yarn -s bazel test src/... --build_tag_filters=-e2e --test_tag_filters=-e2e --build_tests_only'
+        sh 'bazel test src/... --build_tag_filters=-docs-package,-e2e --test_tag_filters=-e2e --config=view-engine --build_tests_only'
+        sh 'bazel test src/... --build_tag_filters=-e2e --test_tag_filters=-e2e --build_tests_only'
       }
     }
     stage('E2E tests') {
       steps {
-        sh 'yarn -s bazel test src/... --build_tag_filters=e2e --test_tag_filters=e2e'
+        sh 'bazel test src/... --build_tag_filters=e2e --test_tag_filters=e2e'
       }
     }
     stage('Release output') {
