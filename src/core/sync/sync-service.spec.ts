@@ -114,7 +114,7 @@ describe('SyncService', () => {
     let httpClient: MockDownwardHttpClient;
     let originalTimeout: number;
 
-    beforeEach(() => {
+    beforeEach(async () => {
       TestBed.configureTestingModule({
         imports: [SyncModule.forRoot({baseUrl: 'http://remote/', localDatabaseName: dbName})],
         providers: [
@@ -122,13 +122,14 @@ describe('SyncService', () => {
         ]
       });
 
+      await TestBed.compileComponents();
       syncService = TestBed.get(SyncService);
       httpClient = TestBed.get(HttpClient);
       originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
       jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000;
     });
 
-    afterEach(() => {
+    afterEach(async () => {
       jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
       return new pouchDBStatic(dbName).destroy();
     });
@@ -249,7 +250,7 @@ describe('SyncService', () => {
       }
     });
 
-    afterEach(() => {
+    afterEach(async () => {
       jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
       return new pouchDBStatic(dbName).destroy();
     });
@@ -302,7 +303,7 @@ describe('SyncService', () => {
       jasmine.DEFAULT_TIMEOUT_INTERVAL = 200000;
     });
 
-    afterEach(() => {
+    afterEach(async () => {
       jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
       return new pouchDBStatic(dbName).destroy();
     });
