@@ -91,29 +91,41 @@ void getCache(cacheParams) {
 void restoreCache(cacheParams) {
   sh "rm -Rf node_modules ~/.cache/bazelisk ~/bazel_repository_cache"
   if (cacheParams["hasNodeModulesCache"]) {
-    sh "tar xfz ${cacheParams["nodeModulesCache"]}"
+    try {
+      sh "tar xfz ${cacheParams["nodeModulesCache"]}"
+    } catch (e) { }
   }
   if (cacheParams["hasBazeliskCache"]) {
-    sh "mkdir -p /home/jenkins/.cache"
-    sh "tar xfz ${cacheParams["bazeliskCache"]} -C /home/jenkins/.cache"
+    try {
+      sh "mkdir -p /home/jenkins/.cache"
+      sh "tar xfz ${cacheParams["bazeliskCache"]} -C /home/jenkins/.cache"
+    } catch (e) { }
   }
   if (cacheParams["hasBazelRepositoryCache"]) {
-    sh "tar xfz ${cacheParams["bazelRepositoryCache"]} -C /home/jenkins"
+    try {
+      sh "tar xfz ${cacheParams["bazelRepositoryCache"]} -C /home/jenkins"
+    } catch (e) { }
   }
 }
 
 void saveCache(cacheParams) {
   if (!cacheParams["hasNodeModulesCache"]) {
-    sh "tar cfz ${cacheParams["nodeModulesCache"]} node_modules"
-    sh "gsutil cp ${cacheParams["nodeModulesCache"]} gs://gngt-bazel-remote-cache/"
+    try {
+      sh "tar cfz ${cacheParams["nodeModulesCache"]} node_modules"
+      sh "gsutil cp ${cacheParams["nodeModulesCache"]} gs://gngt-bazel-remote-cache/"
+    } catch (e) { }
   }
   if (!cacheParams["hasBazeliskCache"]) {
-    sh "tar cfz ${cacheParams["bazeliskCache"]} -C /home/jenkins/.cache bazelisk"
-    sh "gsutil cp ${cacheParams["bazeliskCache"]} gs://gngt-bazel-remote-cache/"
+    try {
+      sh "tar cfz ${cacheParams["bazeliskCache"]} -C /home/jenkins/.cache bazelisk"
+      sh "gsutil cp ${cacheParams["bazeliskCache"]} gs://gngt-bazel-remote-cache/"
+    } catch (e) { }
   }
   if (!cacheParams["hasBazelRepositoryCache"]) {
-    sh "tar cfz ${cacheParams["bazelRepositoryCache"]} -C /home/jenkins bazel_repository_cache"
-    sh "gsutil cp ${cacheParams["bazelRepositoryCache"]} gs://gngt-bazel-remote-cache/"
+    try {
+      sh "tar cfz ${cacheParams["bazelRepositoryCache"]} -C /home/jenkins bazel_repository_cache"
+      sh "gsutil cp ${cacheParams["bazelRepositoryCache"]} gs://gngt-bazel-remote-cache/"
+    } catch (e) { }
   }
 }
 
