@@ -2,32 +2,34 @@
 
 set -e
 
+BAZEL_BINARY="./node_modules/.bin/bazel"
+
 echo "Setup"
 yarn install --non-interactive
 
 echo "Lint"
-yarn -s bazel build //:rollup_globals
-yarn check-rollup-globals $(yarn -s bazel info bazel-bin)/rollup_globals.json
-yarn -s bazel build //:entry_points_manifest
-yarn check-entry-point-setup $(yarn -s bazel info bazel-bin)/entry_points_manifest.json
+"${BAZEL_BINARY}" build //:rollup_globals
+yarn check-rollup-globals $("${BAZEL_BINARY}" info bazel-bin)/rollup_globals.json
+"${BAZEL_BINARY}" build //:entry_points_manifest
+yarn check-entry-point-setup $("${BAZEL_BINARY}" info bazel-bin)/entry_points_manifest.json
 yarn -s lint
 yarn -s ts-circular-deps:check
 
 echo "Build"
-yarn -s bazel build src/... --build_tag_filters=-docs-package,-release-package
+"${BAZEL_BINARY}" build src/... --build_tag_filters=-docs-package,-release-package
 
 echo "API guard tests"
-yarn -s bazel test tools/public_api_guard/...
+"${BAZEL_BINARY}" test tools/public_api_guard/...
 
 echo "Integration tests"
-yarn -s bazel test integration/... --build_tests_only --config=view-engine
+"${BAZEL_BINARY}" test integration/... --build_tests_only --config=view-engine
 
 echo "Unit tests"
-yarn -s bazel test src/... --build_tag_filters=-docs-package,-e2e --test_tag_filters=-e2e --config=view-engine --build_tests_only
-yarn -s bazel test src/... --build_tag_filters=-e2e --test_tag_filters=-e2e --build_tests_only
+"${BAZEL_BINARY}" test src/... --build_tag_filters=-docs-package,-e2e --test_tag_filters=-e2e --config=view-engine --build_tests_only
+"${BAZEL_BINARY}" test src/... --build_tag_filters=-e2e --test_tag_filters=-e2e --build_tests_only
 
 echo "E2E tests"
-yarn -s bazel test src/... --build_tag_filters=e2e --test_tag_filters=e2e
+"${BAZEL_BINARY}" test src/... --build_tag_filters=e2e --test_tag_filters=e2e
 
 echo "Release output"
 yarn build
