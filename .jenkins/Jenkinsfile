@@ -31,7 +31,22 @@ pipeline {
         sh 'yarn -s ts-circular-deps:check'
       }
     }
-    stage('Build') {
+    stage('Build - View Engine') {
+      steps {
+        sh 'bazel build src/... --build_tag_filters=-docs-package,-release-package --config=view-engine'
+      }
+    }
+    stage('Unit tests - View Engine') {
+      steps {
+        sh 'bazel test src/... --build_tag_filters=-docs-package,-e2e --test_tag_filters=-e2e --config=view-engine --build_tests_only'
+      }
+    }
+    stage('Integration tests') {
+      steps {
+        sh 'bazel test integration/... --build_tests_only --config=view-engine'
+      }
+    }
+    stage('Build - Ivy') {
       steps {
         sh 'bazel build src/... --build_tag_filters=-docs-package,-release-package'
       }
@@ -41,14 +56,8 @@ pipeline {
         sh 'bazel test tools/public_api_guard/...'
       }
     }
-    stage('Integration tests') {
+    stage('Unit tests - Ivy') {
       steps {
-        sh 'bazel test integration/... --build_tests_only --config=view-engine'
-      }
-    }
-    stage('Unit tests') {
-      steps {
-        sh 'bazel test src/... --build_tag_filters=-docs-package,-e2e --test_tag_filters=-e2e --config=view-engine --build_tests_only'
         sh 'bazel test src/... --build_tag_filters=-e2e --test_tag_filters=-e2e --build_tests_only'
       }
     }

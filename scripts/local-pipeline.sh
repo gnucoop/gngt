@@ -15,17 +15,22 @@ yarn check-entry-point-setup $("${BAZEL_BINARY}" info bazel-bin)/entry_points_ma
 yarn -s lint
 yarn -s ts-circular-deps:check
 
-echo "Build"
+echo "Build - View Engine"
+"${BAZEL_BINARY}" build src/... --build_tag_filters=-docs-package,-release-package --config=view-engine
+
+echo "Unit tests - View Engine"
+"${BAZEL_BINARY}" test src/... --build_tag_filters=-docs-package,-e2e --test_tag_filters=-e2e --config=view-engine --build_tests_only
+
+echo "Integration tests"
+"${BAZEL_BINARY}" test integration/... --build_tests_only --config=view-engine
+
+echo "Build - Ivy"
 "${BAZEL_BINARY}" build src/... --build_tag_filters=-docs-package,-release-package
 
 echo "API guard tests"
 "${BAZEL_BINARY}" test tools/public_api_guard/...
 
-echo "Integration tests"
-"${BAZEL_BINARY}" test integration/... --build_tests_only --config=view-engine
-
-echo "Unit tests"
-"${BAZEL_BINARY}" test src/... --build_tag_filters=-docs-package,-e2e --test_tag_filters=-e2e --config=view-engine --build_tests_only
+echo "Unit tests - Ivy"
 "${BAZEL_BINARY}" test src/... --build_tag_filters=-e2e --test_tag_filters=-e2e --build_tests_only
 
 echo "E2E tests"
