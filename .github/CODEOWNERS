@@ -69,6 +69,7 @@
 
 # Misc
 /*                                                 @trik
+/.ng-dev/**                                        @trik
 /.github/**                                        @trik
 /.vscode/**                                        @trik
 /src/*                                             @trik
