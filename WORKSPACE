@@ -89,7 +89,10 @@ web_test_repositories()
 load("@io_bazel_rules_webtesting//web/versioned:browsers-0.3.2.bzl", "browser_repositories")
 
 browser_repositories(
-    chromium = True,
+    # Chrome is brought in by `@npm_dev_infra_private` for better version control and
+    # RBE experience where individual browser archives per platform are provided.
+    # TODO: Do the same for Firefox (but it is not used for local development): DEV-114
+    chromium = False,
     firefox = True,
 )
 
@@ -130,3 +133,12 @@ rbe_autoconfig(
     # a specific Linux kernel that comes with "libx11" in order to run headless browser tests.
     repository = "google/rbe-ubuntu16-04-webtest",
 )
+
+# Load pinned rules_webtesting browser versions for tests.
+#
+# TODO(wagnermaciel): deduplicate browsers - this will load another version of chromium in the
+# repository. We probably want to use the chromium version loaded here (from dev-infra) as that
+# one has RBE improvements.
+load("@npm_angular_dev_infra_private//browsers:browser_repositories.bzl", _dev_infra_browser_repositories = "browser_repositories")
+
+_dev_infra_browser_repositories()

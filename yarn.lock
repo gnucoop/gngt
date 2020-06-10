@@ -101,9 +101,9 @@
   dependencies:
     tslib "^1.9.0"
 
-"@angular/dev-infra-private@https://github.com/angular/dev-infra-private-builds.git#2ac83eb462cb25c46a761d34dec030e360055016":
+"@angular/dev-infra-private@https://github.com/angular/dev-infra-private-builds.git#54a5865a219e89202d6ca128775e6a2489b9dac1":
   version "0.0.0"
-  resolved "https://github.com/angular/dev-infra-private-builds.git#2ac83eb462cb25c46a761d34dec030e360055016"
+  resolved "https://github.com/angular/dev-infra-private-builds.git#54a5865a219e89202d6ca128775e6a2489b9dac1"
   dependencies:
     "@octokit/graphql" "^4.3.1"
     chalk "^2.3.1"
@@ -112,6 +112,7 @@
     inquirer "^7.1.0"
     minimatch "^3.0.4"
     multimatch "^4.0.0"
+    node-uuid "1.4.8"
     semver "^6.3.0"
     shelljs "^0.8.3"
     typed-graphqlify "^2.3.0"
@@ -9157,6 +9158,11 @@ node-source-walk@^4.0.0, node-source-walk@^4.2.0:
   integrity sha512-hPs/QMe6zS94f5+jG3kk9E7TNm4P2SulrKiLWMzKszBfNZvL/V6wseHlTd7IvfW0NZWqPtK3+9yYNr+3USGteA==
   dependencies:
     "@babel/parser" "^7.0.0"
+
+node-uuid@1.4.8:
+  version "1.4.8"
+  resolved "https://registry.yarnpkg.com/node-uuid/-/node-uuid-1.4.8.tgz#b040eb0923968afabf8d32fb1f17f1167fdab907"
+  integrity sha1-sEDrCSOWivq/jTL7HxfxFn/auQc=
 
 "nopt@2 || 3", nopt@3.x:
   version "3.0.6"
