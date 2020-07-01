@@ -68,9 +68,12 @@
 /tools/**                                          @trik
 
 # Misc
-/*                                                 @trik
-/.ng-dev/**                                        @trik
 /.github/**                                        @trik
+/.github/CODEOWNERS                                @trik
+/.github/ISSUE_TEMPLATE/**                         @trik
 /.vscode/**                                        @trik
+/.ng-dev/**                                        @trik
+/goldens/size-test.yml                             @trik
+/goldens/**                                        @trik
 /src/*                                             @trik
-/goldens/ts-circular-deps.json                     @trik
+/*                                                 @trik
