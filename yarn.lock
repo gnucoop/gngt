@@ -1248,15 +1248,23 @@
     lodash.camelcase "^4.3.0"
     protobufjs "^6.8.6"
 
-"@ionic/angular@^5.0.0":
-  version "5.0.1"
-  resolved "https://registry.yarnpkg.com/@ionic/angular/-/angular-5.0.1.tgz#09b60263887dfde6b25d80eb2fac041ad7050afa"
-  integrity sha512-FhVLs0wxk/F9r6E7pv83b6L/0un1NwHvYTTGCG3QoNaqXJzqTNbTuqVVje2+KLeA4a/HdZkizg/qgMg1xkOzOg==
+"@ionic/angular@^5.2.2":
+  version "5.2.2"
+  resolved "https://registry.yarnpkg.com/@ionic/angular/-/angular-5.2.2.tgz#2e8a9684658cb5f3c27b5df83bf385abd0da4cff"
+  integrity sha512-l5C7MHd8uVgpD8ktXxvaShGoH2LgHQENHefOMBVYvpjQkmRDcDsnnVMSdrRKSWTHZO85OQz9OIRSbf0OPX+75A==
   dependencies:
-    "@ionic/core" "5.0.1"
+    "@ionic/core" "5.2.2"
     tslib "^1.9.3"
 
-"@ionic/core@5.0.1", "@ionic/core@^5.0.0":
+"@ionic/core@5.2.2":
+  version "5.2.2"
+  resolved "https://registry.yarnpkg.com/@ionic/core/-/core-5.2.2.tgz#f382b0df85158d98b4a64013d6bb52899b85bbea"
+  integrity sha512-KUGJIWTcKuMGmLhmVpmszeDHtGoDmDWpR9mXnw/J+GTlS9Ix/b5mIslPbhsrJyI/qR449lL+cAvjbeeoVRUjhg==
+  dependencies:
+    ionicons "^5.0.1"
+    tslib "^1.10.0"
+
+"@ionic/core@^5.0.0":
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/@ionic/core/-/core-5.0.1.tgz#20a8070b35bfe5943672506333d7abb07638aef0"
   integrity sha512-/Vk55ctiQNwvmJRoylM+gFYYzTeDt9OC5l+oRtxTxinWjzSvXrA21ZYxVvACHn1xNbHtHM4L6KJON/qhc6i7JA==
@@ -7099,6 +7107,11 @@ ionicons@^5.0.0:
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/ionicons/-/ionicons-5.0.0.tgz#a97c37af0ba48eaafe9c411299af87722ccbbedf"
   integrity sha512-tqKI5QyqCQOikbWYIA7teJPPXKfYZhEff8ARvbkOIh7PWbKI7sd0IBJcjhbw/mUilIA7U9Bcdm7qGBPhVWOCWg==
+
+ionicons@^5.0.1:
+  version "5.1.2"
+  resolved "https://registry.yarnpkg.com/ionicons/-/ionicons-5.1.2.tgz#f00f17d2f23be94e8a248c9ebbaea236a6132f0d"
+  integrity sha512-zO7ZgbBbXhpA7cXO2rDzTNdcCqErjg1Sprq/ossTvaiV0MriOjRE7JO3EGvYjDTPzF9YALGpvLXqCgsRT0tprA==
 
 ip-regex@^2.1.0:
   version "2.1.0"
