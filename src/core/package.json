@@ -22,9 +22,9 @@
     "@ngrx/store": "0.0.0-ANGRX",
     "@ngx-translate/core": "0.0.0-ANGXT",
     "date-fns": "0.0.0-DATEFNS",
-    "pouchdb": "~7.0.0",
-    "pouchdb-debug": "~7.0.0",
-    "pouchdb-find": "~7.0.0",
+    "pouchdb": "0.0.0-POUCHDB",
+    "pouchdb-debug": "0.0.0-POUCHDB",
+    "pouchdb-find": "0.0.0-POUCHDB",
     "url-parse": "0.0.0-URLPARSE",
     "uuid": "0.0.0-UUID"
   },
