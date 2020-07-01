@@ -120,7 +120,7 @@
     "max-line-length": 100,
     "linebreaks": "unix",
     "selector-class-pattern": [
-      "^_?(dewco-|mat-|cdk-|example-|demo-|ng-|mdc-|map-)",
+      "^_?(gngt-|mat-|cdk-|example-|demo-|ng-|mdc-|map-|ion-)",
       {
         "resolveNestedSelectors": true
       }
