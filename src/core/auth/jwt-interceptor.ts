@@ -34,8 +34,8 @@ export class JwtInterceptor implements HttpInterceptor {
   tokenGetter: (() => string | null)|undefined;
   headerName: string;
   authScheme: string;
-  whitelistedDomains: Array<string|RegExp>;
-  blacklistedRoutes: Array<string|RegExp>;
+  whitelistedDomains: (string|RegExp)[];
+  blacklistedRoutes: (string|RegExp)[];
   throwNoTokenError: boolean;
   skipWhenExpired: boolean;
 

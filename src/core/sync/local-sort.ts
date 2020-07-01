@@ -23,7 +23,7 @@ import {getObjectProperty} from '@gngt/core/common';
 
 export function localSort<T>(
     docs: PouchDB.Core.ExistingDocument<T>[],
-    sort: Array<string|{[key: string]: 'asc' | 'desc'}>): PouchDB.Core.ExistingDocument<T>[] {
+    sort: (string|{[key: string]: 'asc' | 'desc'})[]): PouchDB.Core.ExistingDocument<T>[] {
   const sortDirs = {} as {[key: string]: 'asc' | 'desc'};
   const sortKeys = sort.map(s => {
                          if (typeof s === 'string') {

@@ -1,4 +1,7 @@
 {
+  "extends": [
+    "rxjs-tslint-rules"
+  ],
   "rulesDirectory": [
     "./tools/tslint-rules/",
     "node_modules/vrsource-tslint-rules/rules",
@@ -129,6 +132,8 @@
     ],
     "no-duplicate-imports": true,
     "await-promise": true,
+    "array-type": [true, "array"],
+
     // Codelyzer
     "template-banana-in-box": true,
     "contextual-lifecycle": true,
@@ -136,6 +141,7 @@
     "no-output-on-prefix": true,
     "template-no-negated-async": true,
     "use-lifecycle-interface": true,
+
     // Custom Rules
     "ts-loader": true,
     "no-exposed-todo": true,
