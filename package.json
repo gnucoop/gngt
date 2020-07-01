@@ -190,7 +190,7 @@
     "tsickle": "0.38.1",
     "tslint": "^6.0.0",
     "tsutils": "^3.17.1",
-    "typescript": "3.9.2",
+    "typescript": "3.9.5",
     "typescript-3.6": "npm:typescript@~3.6.4",
     "typescript-3.7": "npm:typescript@~3.7.0",
     "typescript-3.8": "npm:typescript@~3.8.0",
@@ -200,7 +200,7 @@
     "yargs": "15.3.0"
   },
   "resolutions": {
-    "dgeni-packages/typescript": "3.9.2",
+    "dgeni-packages/typescript": "3.9.5",
     "leveldown": "5.4.1",
     "ltgt": "2.2.1",
     "**/graceful-fs": "4.2.2"
