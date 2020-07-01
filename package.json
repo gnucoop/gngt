@@ -61,7 +61,6 @@
     "core-js": "^2.6.11",
     "date-fns": "^2.14.0",
     "pouchdb": "~7.0.0",
-    "pouchdb-debug": "~7.0.0",
     "pouchdb-find": "~7.0.0",
     "rxjs": "^6.5.3",
     "systemjs": "0.19.47",

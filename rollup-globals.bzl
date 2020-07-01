@@ -56,7 +56,6 @@ ROLLUP_GLOBALS = {
     "@ngx-translate/core": "ngx.translate.core",
     "date-fns": "dateFns",
     "pouchdb": "pouchdb",
-    "pouchdb-debug": "pouchdb.debug",
     "pouchdb-find": "pouchdb.find",
     "rxjs": "rxjs",
     "rxjs/operators": "rxjs.operators",

@@ -30,7 +30,6 @@ import {
   ModelSort
 } from '@gngt/core/common';
 import * as PouchDB from 'pouchdb';
-import * as PouchDBDebug from 'pouchdb-debug';
 import * as PouchDBFind from 'pouchdb-find';
 import {
   BehaviorSubject,
@@ -946,7 +945,6 @@ export class SyncService {
 
   private _initLocalDatabase(): void {
     pouchDBStatic.plugin(pouchDBFindPlugin);
-    pouchDBStatic.plugin(PouchDBDebug);
     this._database = new pouchDBStatic(this._opts.localDatabaseName, {revs_limit: 1});
 
     this._database.createIndex(this._relationalModelIdx)

@@ -54,7 +54,6 @@ module.exports = config => {
       {pattern: 'node_modules/date-fns/date-fns.umd.js', included: false, watched: false},
       {pattern: 'node_modules/debug/debug.umd.js', included: false, watched: false},
       {pattern: 'node_modules/pouchdb/pouchdb.umd.js', included: false, watched: false},
-      {pattern: 'node_modules/pouchdb-debug/pouchdb-debug.umd.js', included: false, watched: false},
       {pattern: 'node_modules/pouchdb-find/pouchdb-find.umd.js', included: false, watched: false},
       {pattern: 'node_modules/rxjs/**/*', included: false, watched: false},
       {pattern: 'node_modules/url-parse/url-parse.umd.js', included: false, watched: false},

@@ -64,7 +64,6 @@ filegroup(
         "//tools/third-party-libs:ionic-core-bundle.js",
         "//tools/third-party-libs:ionic-core-loader-bundle.js",
         "//tools/third-party-libs:pouchdb-bundle.js",
-        "//tools/third-party-libs:pouchdb-debug-bundle.js",
         "//tools/third-party-libs:pouchdb-find-bundle.js",
         "//tools/third-party-libs:url-parse-bundle.js",
         "//tools/third-party-libs:uuid-bundle.js",

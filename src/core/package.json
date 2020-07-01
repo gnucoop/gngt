@@ -23,7 +23,6 @@
     "@ngx-translate/core": "0.0.0-ANGXT",
     "date-fns": "0.0.0-DATEFNS",
     "pouchdb": "0.0.0-POUCHDB",
-    "pouchdb-debug": "0.0.0-POUCHDB",
     "pouchdb-find": "0.0.0-POUCHDB",
     "url-parse": "0.0.0-URLPARSE",
     "uuid": "0.0.0-UUID"

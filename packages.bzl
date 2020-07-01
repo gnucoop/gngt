@@ -66,7 +66,6 @@ THIRD_PARTY_GEN_BUNDLES = [
     ("date-fns", "date-fns-bundle.js"),
     ("debug", "debug-bundle.js"),
     ("pouchdb", "pouchdb-bundle.js"),
-    ("pouchdb-debug", "pouchdb-debug-bundle.js"),
     ("pouchdb-find", "pouchdb-find-bundle.js"),
     ("uuid", "uuid-bundle.js"),
     ("url-parse", "url-parse-bundle.js"),
