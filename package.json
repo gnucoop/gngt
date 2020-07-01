@@ -52,7 +52,7 @@
     "@angular/forms": "^10.0.0",
     "@angular/material": "^10.0.0",
     "@angular/platform-browser": "^10.0.0",
-    "@gic/angular": "^5.0.2",
+    "@gic/angular": "^5.2.0",
     "@ionic/angular": "^5.2.2",
     "@ngrx/effects": "^9.1.2",
     "@ngrx/store": "^9.1.2",
