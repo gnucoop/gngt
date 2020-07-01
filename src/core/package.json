@@ -26,7 +26,7 @@
     "pouchdb-debug": "~7.0.0",
     "pouchdb-find": "~7.0.0",
     "url-parse": "0.0.0-URLPARSE",
-    "uuid": "^3.4.0"
+    "uuid": "0.0.0-UUID"
   },
   "dependencies": {
     "tslib": "0.0.0-TSLIB"

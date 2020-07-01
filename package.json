@@ -67,7 +67,7 @@
     "systemjs": "0.19.47",
     "tslib": "^2.0.0",
     "url-parse": "^1.4.7",
-    "uuid": "^7.0.1",
+    "uuid": "^8.2.0",
     "zone.js": "~0.10.2"
   },
   "devDependencies": {
@@ -121,7 +121,7 @@
     "@types/send": "^0.14.5",
     "@types/stylelint": "^9.10.1",
     "@types/url-parse": "^1.4.3",
-    "@types/uuid": "^3.4.7",
+    "@types/uuid": "^8.0.0",
     "@types/yaml": "^1.9.7",
     "autoprefixer": "^6.7.7",
     "axe-webdriverjs": "^1.1.5",
