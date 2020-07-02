@@ -103,7 +103,7 @@ third_party_bundle(
 
 third_party_bundle(
     name = "pouchdb-find",
-    entry_point = "@npm//:node_modules/pouchdb-find/lib/index.es.js",
+    entry_point = "@npm//:node_modules/pouchdb-find/lib/index.js",
     globals = {
         "pouchdb": "PouchDB",
     },
