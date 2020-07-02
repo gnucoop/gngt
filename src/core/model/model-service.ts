@@ -415,7 +415,7 @@ export abstract class ModelService<
     );
     return actResult.pipe(
         switchMap(() => this._store),
-        select(createSelector(this._modelState, (state) => state.get)),
+        select(s => createSelector(this._modelState, (state) => state.get)(s as object)),
         map(gets => gets.find(g => g.uuid === action.uuid)),
         filter(get => get != null),
         tap(get => {
@@ -439,7 +439,7 @@ export abstract class ModelService<
     );
     return actResult.pipe(
         switchMap(() => this._store),
-        select(createSelector(this._modelState, (state) => state.list)),
+        select(s => createSelector(this._modelState, (state) => state.list)(s as object)),
         map(lists => lists.find(l => l.uuid === action.uuid)),
         filter(list => list != null),
         tap(list => {
@@ -465,7 +465,7 @@ export abstract class ModelService<
     );
     return actResult.pipe(
         switchMap(() => this._store),
-        select(createSelector(this._modelState, (state) => state.create)),
+        select(s => createSelector(this._modelState, (state) => state.create)(s as object)),
         map(creates => creates.find(c => c.uuid === action.uuid)),
         filter(creates => creates != null),
         tap(create => {
@@ -491,7 +491,7 @@ export abstract class ModelService<
     );
     return actResult.pipe(
         switchMap(() => this._store),
-        select(createSelector(this._modelState, (state) => state.update)),
+        select(s => createSelector(this._modelState, (state) => state.update)(s as object)),
         map(updates => updates.find(u => u.uuid === action.uuid)),
         filter(updates => updates != null),
         tap(update => {
@@ -515,7 +515,7 @@ export abstract class ModelService<
     );
     return actResult.pipe(
         switchMap(() => this._store),
-        select(createSelector(this._modelState, (state) => state.patch)),
+        select(s => createSelector(this._modelState, (state) => state.patch)(s as object)),
         map(patches => patches.find(p => p.uuid === action.uuid)),
         filter(patches => patches != null),
         tap(patch => {
@@ -539,7 +539,7 @@ export abstract class ModelService<
     );
     return actResult.pipe(
         switchMap(() => this._store),
-        select(createSelector(this._modelState, (state) => state.delete)),
+        select(s => createSelector(this._modelState, (state) => state.delete)(s as object)),
         map(dels => dels.find(d => d.uuid === action.uuid)),
         filter(dels => dels != null),
         tap(del => {
@@ -563,7 +563,7 @@ export abstract class ModelService<
     );
     return actResult.pipe(
         switchMap(() => this._store),
-        select(createSelector(this._modelState, (state) => state.deleteAll)),
+        select(s => createSelector(this._modelState, (state) => state.deleteAll)(s as object)),
         map(deleteAlls => deleteAlls.find(d => d.uuid === action.uuid)),
         filter(deleteAlls => deleteAlls != null),
         tap(deleteAll => {
@@ -587,7 +587,7 @@ export abstract class ModelService<
     );
     return actResult.pipe(
         switchMap(() => this._store),
-        select(createSelector(this._modelState, (state) => state.query)),
+        select(s => createSelector(this._modelState, (state) => state.query)(s as object)),
         map(queries => queries.find(q => q.uuid === action.uuid)),
         filter(queries => queries != null),
         tap(query => {

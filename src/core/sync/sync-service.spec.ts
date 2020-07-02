@@ -1,5 +1,6 @@
 import {HttpClient, HttpClientModule} from '@angular/common/http';
 import {TestBed} from '@angular/core/testing';
+import {ModelListResult} from '@gngt/core/common';
 import * as PouchDB from 'pouchdb';
 import {Observable, of as obsOf, throwError} from 'rxjs';
 import {filter, skip} from 'rxjs/operators';
@@ -338,7 +339,7 @@ describe('SyncService', () => {
 
     it('should list objects from local database', async () => {
       const entries = dbEntries.filter(e => e.table_name === 'table1');
-      const objs = await syncService.list('table1', {}).toPromise();
+      const objs = (await syncService.list('table1', {}).toPromise()) as ModelListResult<any>;
       expect(entries.length).toEqual(objs.results.length);
       entries.forEach((entry, i) => {
         expect(entry.object).toEqual(objs.results[i]);
@@ -347,7 +348,8 @@ describe('SyncService', () => {
 
     it('should support start and limit params in list', async () => {
       const entries = dbEntries.filter(e => e.table_name === 'table1').slice(1, 3);
-      const objs = await syncService.list('table1', {start: 1, limit: 2}).toPromise();
+      const objs = (await syncService.list('table1', {start: 1, limit: 2}).toPromise()) as
+          ModelListResult<any>;
       expect(entries.length).toEqual(objs.results.length);
       entries.forEach((entry, i) => {
         expect(entry.object).toEqual(objs.results[i]);
@@ -357,7 +359,7 @@ describe('SyncService', () => {
     it('should support fields param in list', async () => {
       const fields = ['id', 'counter'];
       const entries = dbEntries.filter(e => e.table_name === 'table1');
-      const objs = await syncService.list('table1', {fields}).toPromise();
+      const objs = (await syncService.list('table1', {fields}).toPromise()) as ModelListResult<any>;
       const undefFields = Object.keys(entries[0].object).filter(f => fields.indexOf(f) === -1);
       expect(entries.length).toEqual(objs.results.length);
       entries.forEach((entry, i) => {
@@ -371,7 +373,7 @@ describe('SyncService', () => {
     it('should support joins param in list', async () => {
       const entries = dbEntries.filter(e => e.table_name === 'table1');
       const joins = [{model: 'table2', property: 'related', fields: ['color']}];
-      const objs = await syncService.list('table1', {joins}).toPromise();
+      const objs = (await syncService.list('table1', {joins}).toPromise()) as ModelListResult<any>;
       entries.forEach((entry, i) => {
         const related = dbEntries.find(
             e => e.table_name === 'table2' && e.object_id === (entry.object as DbEntry).related);
@@ -383,7 +385,8 @@ describe('SyncService', () => {
       const entries =
           dbEntries.filter(e => e.table_name === 'table1')
               .sort((a, b) => (a.object as DbEntry).counter - (b.object as DbEntry).counter);
-      const objs = await syncService.list('table1', {sort: {counter: 'asc'}}).toPromise();
+      const objs = (await syncService.list('table1', {sort: {counter: 'asc'}}).toPromise()) as
+          ModelListResult<any>;
       entries.forEach((entry, i) => {
         expect(entry.object).toEqual(objs.results[i]);
       });

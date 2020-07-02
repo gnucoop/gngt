@@ -44,10 +44,10 @@ export class AdminModelMockService {
 
   getListObjects(): Observable<ModelListResult<AdminModel>> {
     return this._listEvt.pipe(
-        switchMap(_ => {
-          return this._returnObjects();
-        }),
-    );
+               switchMap(() => {
+                 return this._returnObjects();
+               }),
+               ) as Observable<ModelListResult<AdminModel>>;
   }
 
   list(params: ModelListParams): void {

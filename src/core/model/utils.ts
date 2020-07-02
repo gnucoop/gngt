@@ -19,18 +19,18 @@
  *
  */
 
-import {Action} from '@ngrx/store';
 import {v4} from 'uuid';
 
 import {ModelGenericAction} from './model-generic-action';
 
-export function createAction<A extends Action>(params: {
+export function createAction<A extends ModelGenericAction>(params: {
   type: string,
   payload?: any,
   uuid?: string,
 }): A {
-  const action = new ModelGenericAction(params.payload);
-  action.type = params.type;
-  action.uuid = params.uuid || v4();
-  return action as any;
+  return {
+    type: params.type,
+    uuid: params.uuid || v4(),
+    payload: params.payload,
+  } as A;
 }

@@ -169,17 +169,16 @@ export abstract class AdminListComponent<
                                     selected => this._aui.askDeleteConfirm().pipe(
                                         map(res => ({res, selected})),
                                         )),
-                                switchMap(
-                                    ({res, selected}):
-                                        Observable<T|T[]|null> => {
-                                          if (res) {
-                                            if (selected.length === 1) {
-                                              return this._service.delete(selected[0]);
-                                            }
-                                            return this._service.deleteAll(selected);
-                                          }
-                                          return obsOf(null);
-                                        }),
+                                switchMap(r => {
+                                  const {res, selected} = r as {res: boolean, selected: T[]};
+                                  if (res) {
+                                    if (selected.length === 1) {
+                                      return this._service.delete(selected[0]);
+                                    }
+                                    return this._service.deleteAll(selected);
+                                  }
+                                  return obsOf(null);
+                                }),
                                 filter(r => r != null),
                                 take(1),
                                 )

@@ -20,8 +20,7 @@
  */
 
 import {Model, ModelListResult} from '@gngt/core/common';
-import {Actions, createEffect, ofType} from '@ngrx/effects';
-import {Action} from '@ngrx/store';
+import {Actions, createEffect, CreateEffectMetadata, ofType} from '@ngrx/effects';
 import {Observable, of as obsOf} from 'rxjs';
 import {catchError, map, mergeMap} from 'rxjs/operators';
 
@@ -36,6 +35,7 @@ import {
   ModelQueryAction,
   ModelUpdateAction,
 } from './model-actions';
+import {ModelGenericAction} from './model-generic-action';
 import {ModelManager} from './model-manager';
 import * as fromModel from './model-reducer';
 import {ModelService} from './model-service';
@@ -43,150 +43,191 @@ import {createAction} from './utils';
 
 export abstract class ModelEffects<
     M extends Model = Model, S extends fromModel.State<M> = fromModel.State<M>, A extends
-        Action = Action, AT extends ModelActionTypes = ModelActionTypes> {
-  protected readonly modelGet$: Observable<A> = createEffect(
-      () => this._actions.pipe(
-          ofType<ModelGetAction>(this._actionTypes.GET),
-          mergeMap(
-              action => this._manager.get(action.payload.id)
-                            .pipe(
-                                map((item: M) => createAction<A>({
-                                      type: this._actionTypes.GET_SUCCESS,
-                                      payload: {item},
-                                      uuid: action.uuid
-                                    })),
-                                catchError(error => obsOf(createAction<A>({
-                                             type: this._actionTypes.GET_FAILURE,
-                                             payload: {message: error.message, stack: error.stack},
-                                             uuid: action.uuid
-                                           }))),
-                                ))));
+        ModelGenericAction = ModelGenericAction, AT extends ModelActionTypes = ModelActionTypes> {
+  protected readonly modelGet$ =
+      createEffect(
+          () =>
+              this._actions.pipe(
+                  ofType<ModelGetAction>(this._actionTypes.GET),
+                  mergeMap(
+                      action => this._manager.get(action.payload.id)
+                                    .pipe(
+                                        map((item: M) => createAction({
+                                              type: this._actionTypes.GET_SUCCESS,
+                                              payload: {item},
+                                              uuid: action.uuid
+                                            })),
+                                        catchError(
+                                            error => obsOf(createAction({
+                                              type: this._actionTypes.GET_FAILURE,
+                                              payload: {message: error.message, stack: error.stack},
+                                              uuid: action.uuid
+                                            }))),
+                                        )),
+                  ) as Observable<ModelGenericAction>) as Observable<A>&
+      CreateEffectMetadata;
 
-  protected readonly modelList$: Observable<A> = createEffect(
-      () => this._actions.pipe(
-          ofType<ModelListAction>(this._actionTypes.LIST),
-          mergeMap(
-              action => this._manager.list(action.payload.params)
-                            .pipe(
-                                map((result: ModelListResult<M>) => createAction<A>({
-                                      type: this._actionTypes.LIST_SUCCESS,
-                                      payload: {result},
-                                      uuid: action.uuid
-                                    })),
-                                catchError(error => obsOf(createAction<A>({
-                                             type: this._actionTypes.LIST_FAILURE,
-                                             payload: {message: error.message, stack: error.stack},
-                                             uuid: action.uuid
-                                           }))),
-                                ))));
+  protected readonly modelList$ =
+      createEffect(
+          () =>
+              this._actions.pipe(
+                  ofType<ModelListAction>(this._actionTypes.LIST),
+                  mergeMap(
+                      action => this._manager.list(action.payload.params)
+                                    .pipe(
+                                        map((result: ModelListResult<M>) => createAction({
+                                              type: this._actionTypes.LIST_SUCCESS,
+                                              payload: {result},
+                                              uuid: action.uuid
+                                            })),
+                                        catchError(
+                                            error => obsOf(createAction({
+                                              type: this._actionTypes.LIST_FAILURE,
+                                              payload: {message: error.message, stack: error.stack},
+                                              uuid: action.uuid
+                                            }))),
+                                        )),
+                  ) as Observable<ModelGenericAction>) as Observable<A>&
+      CreateEffectMetadata;
 
-  protected readonly modelCreate$: Observable<A> = createEffect(
-      () => this._actions.pipe(
-          ofType<ModelCreateAction<M>>(this._actionTypes.CREATE),
-          mergeMap(
-              action => this._manager.create(action.payload.item)
-                            .pipe(
-                                map((item: M) => createAction<A>({
-                                      type: this._actionTypes.CREATE_SUCCESS,
-                                      payload: {item},
-                                      uuid: action.uuid
-                                    })),
-                                catchError(error => obsOf(createAction<A>({
-                                             type: this._actionTypes.CREATE_FAILURE,
-                                             payload: {message: error.message, stack: error.stack},
-                                             uuid: action.uuid
-                                           }))),
-                                ))));
+  protected readonly modelCreate$ =
+      createEffect(
+          () =>
+              this._actions.pipe(
+                  ofType<ModelCreateAction<M>>(this._actionTypes.CREATE),
+                  mergeMap(
+                      action => this._manager.create(action.payload.item)
+                                    .pipe(
+                                        map((item: M) => createAction({
+                                              type: this._actionTypes.CREATE_SUCCESS,
+                                              payload: {item},
+                                              uuid: action.uuid
+                                            })),
+                                        catchError(
+                                            error => obsOf(createAction({
+                                              type: this._actionTypes.CREATE_FAILURE,
+                                              payload: {message: error.message, stack: error.stack},
+                                              uuid: action.uuid
+                                            }))),
+                                        )),
+                  ) as Observable<ModelGenericAction>) as Observable<A>&
+      CreateEffectMetadata;
 
-  protected readonly modelUpdate$: Observable<A> = createEffect(
-      () => this._actions.pipe(
-          ofType<ModelUpdateAction<M>>(this._actionTypes.UPDATE),
-          mergeMap(
-              action => this._manager.update(action.payload.item.id, action.payload.item)
-                            .pipe(
-                                map((item: M) => createAction<A>({
-                                      type: this._actionTypes.UPDATE_SUCCESS,
-                                      payload: {item},
-                                      uuid: action.uuid
-                                    })),
-                                catchError(error => obsOf(createAction<A>({
-                                             type: this._actionTypes.CREATE_FAILURE,
-                                             payload: {message: error.message, stack: error.stack},
-                                             uuid: action.uuid
-                                           }))),
-                                ))));
+  protected readonly modelUpdate$ =
+      createEffect(
+          () =>
+              this._actions.pipe(
+                  ofType<ModelUpdateAction<M>>(this._actionTypes.UPDATE),
+                  mergeMap(
+                      action => this._manager.update(action.payload.item.id, action.payload.item)
+                                    .pipe(
+                                        map((item: M) => createAction({
+                                              type: this._actionTypes.UPDATE_SUCCESS,
+                                              payload: {item},
+                                              uuid: action.uuid
+                                            })),
+                                        catchError(
+                                            error => obsOf(createAction({
+                                              type: this._actionTypes.CREATE_FAILURE,
+                                              payload: {message: error.message, stack: error.stack},
+                                              uuid: action.uuid
+                                            }))),
+                                        )),
+                  ) as Observable<ModelGenericAction>) as Observable<A>&
+      CreateEffectMetadata;
 
-  protected readonly modelPatch$: Observable<A> = createEffect(
-      () => this._actions.pipe(
-          ofType<ModelPatchAction<M>>(this._actionTypes.PATCH),
-          mergeMap(
-              action => this._manager.patch(action.payload.item.id, action.payload.item)
-                            .pipe(
-                                map((item: M) => createAction<A>({
-                                      type: this._actionTypes.PATCH_SUCCESS,
-                                      payload: {item},
-                                      uuid: action.uuid
-                                    })),
-                                catchError(error => obsOf(createAction<A>({
-                                             type: this._actionTypes.PATCH_FAILURE,
-                                             payload: {message: error.message, stack: error.stack},
-                                             uuid: action.uuid
-                                           }))),
-                                ))));
+  protected readonly modelPatch$ =
+      createEffect(
+          () =>
+              this._actions.pipe(
+                  ofType<ModelPatchAction<M>>(this._actionTypes.PATCH),
+                  mergeMap(
+                      action => this._manager.patch(action.payload.item.id, action.payload.item)
+                                    .pipe(
+                                        map((item: M) => createAction({
+                                              type: this._actionTypes.PATCH_SUCCESS,
+                                              payload: {item},
+                                              uuid: action.uuid
+                                            })),
+                                        catchError(
+                                            error => obsOf(createAction({
+                                              type: this._actionTypes.PATCH_FAILURE,
+                                              payload: {message: error.message, stack: error.stack},
+                                              uuid: action.uuid
+                                            }))),
+                                        )),
+                  ) as Observable<ModelGenericAction>) as Observable<A>&
+      CreateEffectMetadata;
 
-  protected readonly modelDelete$: Observable<A> = createEffect(
-      () => this._actions.pipe(
-          ofType<ModelDeleteAction<M>>(this._actionTypes.DELETE),
-          mergeMap(
-              action => this._manager.delete(action.payload.item.id)
-                            .pipe(
-                                map(() => createAction<A>({
-                                      type: this._actionTypes.DELETE_SUCCESS,
-                                      payload: {item: action.payload.item},
-                                      uuid: action.uuid
-                                    })),
-                                catchError(error => obsOf(createAction<A>({
-                                             type: this._actionTypes.DELETE_FAILURE,
-                                             payload: {message: error.message, stack: error.stack},
-                                             uuid: action.uuid
-                                           }))),
-                                ))));
+  protected readonly modelDelete$ =
+      createEffect(
+          () =>
+              this._actions.pipe(
+                  ofType<ModelDeleteAction<M>>(this._actionTypes.DELETE),
+                  mergeMap(
+                      action => this._manager.delete(action.payload.item.id)
+                                    .pipe(
+                                        map(() => createAction({
+                                              type: this._actionTypes.DELETE_SUCCESS,
+                                              payload: {item: action.payload.item},
+                                              uuid: action.uuid
+                                            })),
+                                        catchError(
+                                            error => obsOf(createAction({
+                                              type: this._actionTypes.DELETE_FAILURE,
+                                              payload: {message: error.message, stack: error.stack},
+                                              uuid: action.uuid
+                                            }))),
+                                        )),
+                  ) as Observable<ModelGenericAction>) as Observable<A>&
+      CreateEffectMetadata;
 
-  protected readonly modelDeleteAll$: Observable<A> = createEffect(
-      () => this._actions.pipe(
-          ofType<ModelDeleteAllAction<M>>(this._actionTypes.DELETE_ALL),
-          mergeMap(
-              action => this._manager.deleteAll(action.payload.items.map(i => i.id))
-                            .pipe(
-                                map(() => createAction<A>({
-                                      type: this._actionTypes.DELETE_ALL_SUCCESS,
-                                      payload: {items: action.payload.items},
-                                      uuid: action.uuid
-                                    })),
-                                catchError(error => obsOf(createAction<A>({
-                                             type: this._actionTypes.DELETE_ALL_FAILURE,
-                                             payload: {message: error.message, stack: error.stack},
-                                             uuid: action.uuid
-                                           }))),
-                                ))));
+  protected readonly modelDeleteAll$ =
+      createEffect(
+          () =>
+              this._actions.pipe(
+                  ofType<ModelDeleteAllAction<M>>(this._actionTypes.DELETE_ALL),
+                  mergeMap(
+                      action => this._manager.deleteAll(action.payload.items.map(i => i.id))
+                                    .pipe(
+                                        map(() => createAction({
+                                              type: this._actionTypes.DELETE_ALL_SUCCESS,
+                                              payload: {items: action.payload.items},
+                                              uuid: action.uuid
+                                            })),
+                                        catchError(
+                                            error => obsOf(createAction({
+                                              type: this._actionTypes.DELETE_ALL_FAILURE,
+                                              payload: {message: error.message, stack: error.stack},
+                                              uuid: action.uuid
+                                            }))),
+                                        )),
+                  ) as Observable<ModelGenericAction>) as Observable<A>&
+      CreateEffectMetadata;
 
-  protected readonly modelQuery$: Observable<A> = createEffect(
-      () => this._actions.pipe(
-          ofType<ModelQueryAction>(this._actionTypes.QUERY),
-          mergeMap(
-              action => this._manager.query(action.payload.params)
-                            .pipe(
-                                map((result: ModelListResult<M>) => createAction<A>({
-                                      type: this._actionTypes.QUERY_SUCCESS,
-                                      payload: {result},
-                                      uuid: action.uuid
-                                    })),
-                                catchError(error => obsOf(createAction<A>({
-                                             type: this._actionTypes.QUERY_FAILURE,
-                                             payload: {message: error.message, stack: error.stack},
-                                             uuid: action.uuid
-                                           }))),
-                                ))));
+  protected readonly modelQuery$ =
+      createEffect(
+          () =>
+              this._actions.pipe(
+                  ofType<ModelQueryAction>(this._actionTypes.QUERY),
+                  mergeMap(
+                      action => this._manager.query(action.payload.params)
+                                    .pipe(
+                                        map((result: ModelListResult<M>) => createAction({
+                                              type: this._actionTypes.QUERY_SUCCESS,
+                                              payload: {result},
+                                              uuid: action.uuid
+                                            })),
+                                        catchError(
+                                            error => obsOf(createAction({
+                                              type: this._actionTypes.QUERY_FAILURE,
+                                              payload: {message: error.message, stack: error.stack},
+                                              uuid: action.uuid
+                                            }))),
+                                        ),
+                      ),
+                  ) as Observable<ModelGenericAction>) as Observable<A>&
+      CreateEffectMetadata;
 
   constructor(
       protected _actions: Actions,

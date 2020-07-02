@@ -40,15 +40,17 @@ export class OfflineInterceptor implements HttpInterceptor {
   constructor(private _syncService: SyncService) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    return next.handle(req).pipe(catchError((e: HttpErrorResponse) => {
-      if (e.status === 0) {
-        const models = this._checkOfflineRequest(req);
-        if (models.length > 0) {
-          return this._doOfflineRequest(req, models[0], e);
-        }
-      }
-      return throwError(e);
-    }));
+    return next.handle(req).pipe(
+               catchError((e: HttpErrorResponse) => {
+                 if (e.status === 0) {
+                   const models = this._checkOfflineRequest(req);
+                   if (models.length > 0) {
+                     return this._doOfflineRequest(req, models[0], e);
+                   }
+                 }
+                 return throwError(e);
+               }),
+               ) as Observable<HttpEvent<any>>;
   }
 
   private _doOfflineRequest(

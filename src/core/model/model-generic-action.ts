@@ -21,8 +21,8 @@
 
 import {Action} from '@ngrx/store';
 
-export class ModelGenericAction implements Action {
-  type: string;
-  uuid: string;
-  constructor(public payload: any) {}
+export interface ModelGenericAction extends Action {
+  readonly type: string;
+  readonly uuid: string;
+  payload: any;
 }

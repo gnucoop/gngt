@@ -182,13 +182,16 @@ export abstract class AdminEditComponent<
 
     const objObs = combineLatest(this._service, this._id)
                        .pipe(
-                           filter(([s, i]) => s != null && i != null), switchMap(([s, i]) => {
+                           filter(([s, i]) => s != null && i != null),
+                           map(([s, i]) => [s, i] as [ModelService<T, S, A>, number | 'new']),
+                           switchMap(([s, i]) => {
                              if (i === 'new') {
                                return obsOf({});
                              }
-                             return s!.get(i!);
+                             return s.get(i);
                            }),
-                           filter(o => o != null), switchMap(o => {
+                           filter(o => o != null),
+                           switchMap(o => {
                              if (this._processObject) {
                                if (this._processObject instanceof Observable) {
                                  return this._processObject.pipe(
@@ -201,7 +204,8 @@ export abstract class AdminEditComponent<
                              }
                              return obsOf(o);
                            }),
-                           shareReplay(1));
+                           shareReplay(1),
+                       );
 
     this.form = combineLatest(objObs, this._updateFormEvt)
                     .pipe(
@@ -223,8 +227,9 @@ export abstract class AdminEditComponent<
         this._saveEvt
             .pipe(
                 withLatestFrom(this.form, serviceObs, this._id),
-                filter(([_, form, service, __]) => form != null && service != null && form.valid),
-                switchMap(([_, form, service, id]) => {
+                map(r => r.slice(1) as [FormGroup, ModelService<T, S, A>, number | 'new']),
+                filter(([form, service, _id]) => form != null && service != null && form.valid),
+                switchMap(([form, service, id]) => {
                   const formValue = {...form.value};
                   this._defaultProcessData(formValue);
                   if (this._processFormData) {
@@ -239,20 +244,22 @@ export abstract class AdminEditComponent<
                       this._processFormData(formValue);
                     }
                   }
-                  return obsOf(
-                      [formValue, service, id] as [any, ModelService<T, S, A>, number | 'new']);
+                  return obsOf<[any, ModelService<T, S, A>, number | 'new']>(
+                      [formValue, service, id]);
                 }),
-                tap<[any, ModelService<T, S, A>, number | 'new']>(() => this._loading.next(true)),
-                switchMap(
-                    ([formValue, service, id]: [any, ModelService<T, S, A>, number|'new']) => {
-                      if (id === 'new') {
-                        delete formValue['id'];
-                        return service!.create(formValue);
-                      }
-                      return service!.patch(formValue);
-                    }),
+                tap(r => this._loading.next(true)),
+                switchMap(r => {
+                  const [formValue, service, id] =
+                      r as [any, ModelService<T, S, A>, number | 'new'];
+                  if (id === 'new') {
+                    delete formValue['id'];
+                    return service!.create(formValue);
+                  }
+                  return service!.patch(formValue);
+                }),
+                map(obj => obj as T),
                 take(1),
-                switchMap((r: T) => {
+                switchMap(r => {
                   if (this._postSaveHook == null) {
                     return obsOf(r);
                   }

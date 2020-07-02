@@ -21,6 +21,7 @@
 
 import {AuthUserInteractionsService as CoreAuthUserInteractionsService} from '@gngt/core/auth';
 import {AlertController, ToastController} from '@ionic/angular';
+import {OverlayEventDetail} from '@ionic/core';
 import {TranslateService} from '@ngx-translate/core';
 import {from, Observable} from 'rxjs';
 import {map, mapTo, switchMap} from 'rxjs/operators';
@@ -39,8 +40,10 @@ export class AuthUserInteractionsService extends CoreAuthUserInteractionsService
                     message: ts[0],
                     buttons: [{text: ts[1], role: 'cancel'}, {text: ts[2], role: 'confirm'}]
                   }))),
-        switchMap(alert => from(alert.present()).pipe(mapTo(alert))),
-        switchMap(alert => from(alert.onDidDismiss())), map(evt => evt.role === 'confirm'));
+        switchMap(alert => from((alert as HTMLIonAlertElement).present()).pipe(mapTo(alert))),
+        switchMap(alert => from((alert as HTMLIonAlertElement).onDidDismiss())),
+        map(evt => (evt as OverlayEventDetail<any>).role === 'confirm'),
+    );
   }
 
   showLoginError(error: string): void {

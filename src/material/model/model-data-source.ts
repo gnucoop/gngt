@@ -23,7 +23,13 @@ import {CollectionViewer, DataSource} from '@angular/cdk/collections';
 import {EventEmitter} from '@angular/core';
 import {MatPaginator, PageEvent} from '@angular/material/paginator';
 import {MatSort, Sort} from '@angular/material/sort';
-import {mergeQueryParams, Model, ModelListParams, ModelQueryParams} from '@gngt/core/common';
+import {
+  mergeQueryParams,
+  Model,
+  ModelListParams,
+  ModelListResult,
+  ModelQueryParams,
+} from '@gngt/core/common';
 import {ModelActionTypes, ModelService, State as ModelState} from '@gngt/core/model';
 import {BehaviorSubject, combineLatest, Observable, of as obsOf, Subscription} from 'rxjs';
 import {debounceTime, map, startWith, switchMap, tap} from 'rxjs/operators';
@@ -138,7 +144,9 @@ export class ModelDataSource<T extends Model, S extends ModelState<T> = ModelSta
     this._dataSubscription =
         baseStream
             .pipe(
-                startWith(startValue), debounceTime(10), switchMap(p => {
+                startWith(startValue),
+                debounceTime(10),
+                switchMap(p => {
                   const pagination = p[0];
                   const sort = p[1];
                   const filter = p[2];
@@ -175,19 +183,25 @@ export class ModelDataSource<T extends Model, S extends ModelState<T> = ModelSta
                   return this._service.query(mergeQueryParams(params, baseParams || {}));
                 }),
                 tap(o => {
+                  const list = o as ModelListResult<T>;
                   const paginator = this.paginator;
                   if (paginator != null) {
-                    paginator.length = o && o.count ? o.count : 0;
+                    paginator.length = list && list.count ? list.count : 0;
                   }
                 }),
-                map(o => o && o.results ? o.results : []), switchMap(data => {
+                map(o => {
+                  const list = o as ModelListResult<T>;
+                  return list && list.results ? list.results : [];
+                }),
+                switchMap(data => {
                   if (this._dataModifier != null) {
                     return this._dataModifier(data);
                   }
                   return obsOf(data);
-                }))
+                }),
+                )
             .subscribe(data => {
-              this._data.next(data);
+              this._data.next(data as T[]);
             });
 
     this._refreshEvent.next();
