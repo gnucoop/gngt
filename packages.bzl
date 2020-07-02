@@ -5,7 +5,7 @@ ANGULAR_PACKAGE_VERSION = "^10.0.0 || ^11.0.0"
 ANGULAR_MATERIAL_PACKAGE_VERSION = "^10.0.0 || ^11.0.0"
 GIC_PACKAGE_VERSION = "^5.2.0"
 IONIC_PACKAGE_VERSION = "^5.2.0"
-NGRX_PACKAGE_VERSION = "^9.0.0-beta.1"
+NGRX_PACKAGE_VERSION = "^10.0.0-0"
 NGXT_PACKAGE_VERSION = "^12.0.0"
 TSLIB_PACKAGE_VERSION = "^2.0.0"
 
@@ -42,8 +42,8 @@ ANGULAR_NGCC_BUNDLES = [
 THIRD_PARTY_NGCC_BUNDLES = [
     ("@gic/angular", "gic-angular.umd.js"),
     ("@ionic/angular", "ionic-angular.umd.js"),
-    ("@ngrx/effects", "effects.umd.js"),
-    ("@ngrx/store", "store.umd.js"),
+    ("@ngrx/effects", "ngrx-effects.umd.js"),
+    ("@ngrx/store", "ngrx-store.umd.js"),
     ("@ngx-translate/core", "ngx-translate-core.umd.js"),
 ]
 
