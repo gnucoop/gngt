@@ -20,7 +20,6 @@
     // TSLint now shows warnings if types for properties are inferred. This rule needs to be
     // disabled because all properties need to have explicit types set to work for Dgeni.
     "no-inferrable-types": false,
-    "class-name": true,
     "comment-format": [
       true,
       "check-space"
@@ -184,12 +183,10 @@
       "HostBinding",
       "HostListener"
     ],
-    "member-naming": [
-      true,
-      {
-        "private": "^_"
-      }
-    ],
+    "member-naming": [true, {
+      "private": "^_"
+    }],
+    "symbol-naming": [true, "^_?[A-Z][a-zA-Z0-9]*$"],
     "validate-decorators": [
       true,
       {
