@@ -1363,20 +1363,20 @@
   resolved "https://registry.yarnpkg.com/@firebase/app-types/-/app-types-0.5.1.tgz#8add41d10c533759a80a376d09d24af0a1009343"
   integrity sha512-fhe4KxEoRLD596tuIkvBXVHedVByI5ALzf5nMraOXsnBxLY0gKcMSXQGwwPxZyeUt/S1VM8DRVXOg9shegEO7g==
 
-"@gic/angular@^5.2.0":
-  version "5.2.0"
-  resolved "https://registry.yarnpkg.com/@gic/angular/-/angular-5.2.0.tgz#f2e5ffe307513829316936dfce40a570836760d6"
-  integrity sha512-f4ev3fS73lvsdKCPZ6zndtjjhNExe0Fw38vHmP/5q7QMz/y8FcvBHVBobRv6gv6CTr/8tNb8Z0J5H+O9YHBloA==
+"@gic/angular@^5.3.0":
+  version "5.3.0"
+  resolved "https://registry.yarnpkg.com/@gic/angular/-/angular-5.3.0.tgz#1a17813519de7fbcb42b46414e83d483a8693a14"
+  integrity sha512-kaAYhomTg7hgs5z3X4ExspkNuBw9YLs0ow/1dLsyBmU/pFWvCO/EL5rX9oS0GoowhQYfz/H6wugHiPwEyY40XQ==
   dependencies:
-    "@gic/core" "5.2.0"
+    "@gic/core" "5.3.0"
     tslib "^1.9.3"
 
-"@gic/core@5.2.0":
-  version "5.2.0"
-  resolved "https://registry.yarnpkg.com/@gic/core/-/core-5.2.0.tgz#760715510d9a99f62e13272c36f09f2e9d1fa6c8"
-  integrity sha512-ceN9pj/nOM3q35Q/8yErTQBHxclnrjLE/yWqzeNsHf2GfQhKTqIuIqCk11X8q3AgwgTd7z9HvSGOvtaCzg3OWg==
+"@gic/core@5.3.0":
+  version "5.3.0"
+  resolved "https://registry.yarnpkg.com/@gic/core/-/core-5.3.0.tgz#2bf568339d8300f693755cb60431fb5fd6f70193"
+  integrity sha512-PCV6dwDUsT+QQ4cuME3Kgun5XQGyE7UQFWaDNCVi15C3/mOkezrg4XhVm6QK1sjY/ylmsvvexeNe2hCnLm0Jcg==
   dependencies:
-    "@ionic/core" "^5.2.0"
+    "@ionic/core" "^5.3.0"
     tslib "^1.10.0"
 
 "@google-cloud/paginator@^2.0.0":
@@ -1438,20 +1438,20 @@
     lodash.camelcase "^4.3.0"
     protobufjs "^6.8.6"
 
-"@ionic/angular@^5.2.2":
-  version "5.2.2"
-  resolved "https://registry.yarnpkg.com/@ionic/angular/-/angular-5.2.2.tgz#2e8a9684658cb5f3c27b5df83bf385abd0da4cff"
-  integrity sha512-l5C7MHd8uVgpD8ktXxvaShGoH2LgHQENHefOMBVYvpjQkmRDcDsnnVMSdrRKSWTHZO85OQz9OIRSbf0OPX+75A==
+"@ionic/angular@^5.3.1":
+  version "5.3.1"
+  resolved "https://registry.yarnpkg.com/@ionic/angular/-/angular-5.3.1.tgz#219db8fd359f0656394dff323badeb2f855651b1"
+  integrity sha512-gD54UXrRe5nxL6REJjxPpzxBGC1J1JsV6BhIRA/RjueY3Fu78P0wnow7HOlcDonlqcsV385eKVN0M8vDEI33hQ==
   dependencies:
-    "@ionic/core" "5.2.2"
+    "@ionic/core" "5.3.1"
     tslib "^1.9.3"
 
-"@ionic/core@5.2.2", "@ionic/core@^5.2.0":
-  version "5.2.2"
-  resolved "https://registry.yarnpkg.com/@ionic/core/-/core-5.2.2.tgz#f382b0df85158d98b4a64013d6bb52899b85bbea"
-  integrity sha512-KUGJIWTcKuMGmLhmVpmszeDHtGoDmDWpR9mXnw/J+GTlS9Ix/b5mIslPbhsrJyI/qR449lL+cAvjbeeoVRUjhg==
+"@ionic/core@5.3.1", "@ionic/core@^5.3.0":
+  version "5.3.1"
+  resolved "https://registry.yarnpkg.com/@ionic/core/-/core-5.3.1.tgz#0b5852b0977063ab0c2a4d3da799fae7ff3d6228"
+  integrity sha512-psOiYZbpL5uGKi7MZ9BXCfQIdJVVVW1n8AvrWAiifFE/ebI1x0wbO+D5QLmF2Mc2t/d0nbk4N1V8XyF2bjjiLg==
   dependencies:
-    ionicons "^5.0.1"
+    ionicons "^5.1.2"
     tslib "^1.10.0"
 
 "@microsoft/api-extractor-model@7.8.0":
@@ -7373,7 +7373,7 @@ invert-kv@^2.0.0:
   resolved "https://registry.yarnpkg.com/invert-kv/-/invert-kv-2.0.0.tgz#7393f5afa59ec9ff5f67a27620d11c226e3eec02"
   integrity sha512-wPVv/y/QQ/Uiirj/vh3oP+1Ww+AWehmi1g5fFWGPF6IpCBCDVrhgHRMvrLfdYcwDh3QJbGXDW4JAuzxElLSqKA==
 
-ionicons@^5.0.1:
+ionicons@^5.1.2:
   version "5.1.2"
   resolved "https://registry.yarnpkg.com/ionicons/-/ionicons-5.1.2.tgz#f00f17d2f23be94e8a248c9ebbaea236a6132f0d"
   integrity sha512-zO7ZgbBbXhpA7cXO2rDzTNdcCqErjg1Sprq/ossTvaiV0MriOjRE7JO3EGvYjDTPzF9YALGpvLXqCgsRT0tprA==
