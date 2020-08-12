@@ -1,4 +1,4 @@
-export declare function createAction<A extends Action>(params: {
+export declare function createAction<A extends ModelGenericAction>(params: {
     type: string;
     payload?: any;
     uuid?: string;
@@ -157,18 +157,18 @@ export declare abstract class ModelDeleteSuccessAction<T extends Model> extends 
     });
 }
 
-export declare abstract class ModelEffects<M extends Model = Model, S extends fromModel.State<M> = fromModel.State<M>, A extends Action = Action, AT extends ModelActionTypes = ModelActionTypes> {
+export declare abstract class ModelEffects<M extends Model = Model, S extends fromModel.State<M> = fromModel.State<M>, A extends ModelGenericAction = ModelGenericAction, AT extends ModelActionTypes = ModelActionTypes> {
     protected _actions: Actions;
     protected _manager: ModelManager<M>;
     protected _service: ModelService<M, S, AT>;
-    protected readonly modelCreate$: Observable<A>;
-    protected readonly modelDelete$: Observable<A>;
-    protected readonly modelDeleteAll$: Observable<A>;
-    protected readonly modelGet$: Observable<A>;
-    protected readonly modelList$: Observable<A>;
-    protected readonly modelPatch$: Observable<A>;
-    protected readonly modelQuery$: Observable<A>;
-    protected readonly modelUpdate$: Observable<A>;
+    protected readonly modelCreate$: Observable<A> & CreateEffectMetadata;
+    protected readonly modelDelete$: Observable<A> & CreateEffectMetadata;
+    protected readonly modelDeleteAll$: Observable<A> & CreateEffectMetadata;
+    protected readonly modelGet$: Observable<A> & CreateEffectMetadata;
+    protected readonly modelList$: Observable<A> & CreateEffectMetadata;
+    protected readonly modelPatch$: Observable<A> & CreateEffectMetadata;
+    protected readonly modelQuery$: Observable<A> & CreateEffectMetadata;
+    protected readonly modelUpdate$: Observable<A> & CreateEffectMetadata;
     constructor(_actions: Actions, _service: ModelService<M, S, AT>, _manager: ModelManager<M>, _actionTypes: AT);
 }
 
@@ -177,11 +177,10 @@ export interface ModelError {
     stack: string;
 }
 
-export declare class ModelGenericAction implements Action {
+export interface ModelGenericAction extends Action {
     payload: any;
-    type: string;
-    uuid: string;
-    constructor(payload: any);
+    readonly type: string;
+    readonly uuid: string;
 }
 
 export declare abstract class ModelGetAction extends ModelBaseAction {

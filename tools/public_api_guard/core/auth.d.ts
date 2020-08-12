@@ -142,13 +142,13 @@ export declare class JwtHelperService {
 
 export declare class JwtInterceptor implements HttpInterceptor {
     authScheme: string;
-    blacklistedRoutes: Array<string | RegExp>;
+    blacklistedRoutes: (string | RegExp)[];
     headerName: string;
     jwtHelper: JwtHelperService;
     skipWhenExpired: boolean;
     throwNoTokenError: boolean;
     tokenGetter: (() => string | null) | undefined;
-    whitelistedDomains: Array<string | RegExp>;
+    whitelistedDomains: (string | RegExp)[];
     constructor(config: JwtOptions, jwtHelper: JwtHelperService);
     handleInterception(token: string | null, request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>>;
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>>;
