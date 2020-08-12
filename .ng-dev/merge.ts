@@ -26,6 +26,7 @@ export const merge = (): MergeConfig => {
     claSignedLabel: 'cla: yes',
     mergeReadyLabel: 'merge ready',
     commitMessageFixupLabel: 'commit message fixup',
+    caretakerNoteLabel: 'caretaker note',
     labels: [
       {
         pattern: 'target: patch',
