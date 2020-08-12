@@ -1,6 +1,9 @@
 import {existsSync, readFileSync} from 'fs';
 import {dirname, isAbsolute, join} from 'path';
+import * as semver from 'semver';
 import * as ts from 'typescript';
+
+import {Version} from '../version-name/parse-version';
 
 /** RegExp that matches Angular component inline styles that contain a sourcemap reference. */
 const inlineStylesSourcemapRegex = /styles: ?\[["'].*sourceMappingURL=.*["']/;
@@ -41,11 +44,11 @@ export function checkJavaScriptOutput(filePath: string): string[] {
 }
 
 /**
- * Checks a "package.json" file by ensuring that common fields which are
+ * Checks an entry-point "package.json" file by ensuring that common fields which are
  * specified in the Angular package format are present. Those fields which
  * resolve to paths are checked so that they do not refer to non-existent files.
  */
-export function checkPackageJsonFile(filePath: string): string[] {
+export function checkEntryPointPackageJsonFile(filePath: string): string[] {
   const fileContent = readFileSync(filePath, 'utf8');
   const parsed = JSON.parse(fileContent);
   const packageJsonDir = dirname(filePath);
@@ -103,5 +106,77 @@ export function checkTypeDefinitionFile(filePath: string): string[] {
     nodeQueue.push(...node.getChildren());
   }
 
+  return failures;
+}
+
+/**
+ * Checks the primary `package.json` file of a release package. Currently we ensure
+ * that the version and migrations are set up correctly.
+ */
+export function checkPrimaryPackageJson(
+    packageJsonPath: string, currentVersion: Version): string[] {
+  const expectedVersion = currentVersion.format();
+  const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf8'));
+  const failures: string[] = [];
+
+  if (!packageJson.version) {
+    failures.push(`No version set. Expected: ${expectedVersion}`);
+  } else if (packageJson.version !== expectedVersion) {
+    failures.push(
+        `Unexpected package version. Expected: ${expectedVersion} but got: ${packageJson.version}`);
+  }
+
+  if (packageJson['ng-update'] && packageJson['ng-update'].migrations) {
+    failures.push(...checkMigrationCollection(
+        packageJson['ng-update'].migrations, dirname(packageJsonPath), currentVersion));
+  }
+
+  return failures;
+}
+
+/**
+ * Checks the ng-update migration setup for the specified "package.json"
+ * file if present.
+ */
+export function checkPackageJsonMigrations(
+    packageJsonPath: string, currentVersion: Version): string[] {
+  const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf8'));
+
+  if (packageJson['ng-update'] && packageJson['ng-update'].migrations) {
+    return checkMigrationCollection(
+        packageJson['ng-update'].migrations, dirname(packageJsonPath), currentVersion);
+  }
+  return [];
+}
+
+/**
+ * Checks if the migration collected referenced in the specified "package.json"
+ * has a migration set up for the given target version.
+ */
+function checkMigrationCollection(
+    collectionPath: string, packagePath: string, targetVersion: Version): string[] {
+  const collection = JSON.parse(readFileSync(join(packagePath, collectionPath), 'utf8'));
+  if (!collection.schematics) {
+    return ['No schematics found in migration collection.'];
+  }
+
+  const failures: string[] = [];
+  const lowerBoundaryVersion = `${targetVersion.major}.0.0-0`;
+  const schematics = collection.schematics;
+  const targetSchematics = Object.keys(schematics).filter(name => {
+    const schematicVersion = schematics[name].version;
+    try {
+      return schematicVersion && semver.gte(schematicVersion, lowerBoundaryVersion) &&
+          semver.lte(schematicVersion, targetVersion.format());
+    } catch {
+      failures.push(`Could not parse version for migration: ${name}`);
+    }
+  });
+
+  if (targetSchematics.length === 0) {
+    failures.push(`No migration configured that handles versions: ^${lowerBoundaryVersion}`);
+  } else if (targetSchematics.length > 1) {
+    failures.push(`Multiple migrations targeting the same major version: ${targetVersion.major}`);
+  }
   return failures;
 }
