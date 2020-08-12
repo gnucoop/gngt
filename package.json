@@ -39,7 +39,10 @@
     "ts-circular-deps:check": "yarn -s ts-circular-deps check --config ./src/circular-deps-test.conf.js",
     "ts-circular-deps:approve": "yarn -s ts-circular-deps approve --config ./src/circular-deps-test.conf.js",
     "merge": "ng-dev pr merge",
-    "approve-api": "node ./scripts/approve-api-golden.js"
+    "approve-api": "node ./scripts/approve-api-golden.js",
+    "integration-tests": "bazel test --test_tag_filters=-view-engine-only --build_tests_only -- //integration/... -//integration/size-test/...",
+    "integration-tests:view-engine": "bazel test --test_tag_filters=view-engine-only --build_tests_only -- //integration/... -//integration/size-test/...",
+    "integration-tests:size-test": "bazel test //integration/size-test/..."
   },
   "version": "10.0.0-next.0",
   "dependencies": {

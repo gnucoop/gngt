@@ -22,7 +22,7 @@ echo "Unit tests - View Engine"
 "${BAZEL_BINARY}" test src/... --build_tag_filters=-docs-package,-e2e --test_tag_filters=-e2e --config=view-engine --build_tests_only
 
 echo "Integration tests"
-"${BAZEL_BINARY}" test integration/... --build_tests_only --config=view-engine
+yarn integration-tests:view-engine
 
 echo "Build - Ivy"
 "${BAZEL_BINARY}" build src/... --build_tag_filters=-docs-package,-release-package

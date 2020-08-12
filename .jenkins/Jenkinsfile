@@ -43,7 +43,7 @@ pipeline {
     }
     stage('Integration tests') {
       steps {
-        sh 'bazel test integration/... --build_tests_only --config=view-engine'
+        sh 'yarn integration-tests:view-engine'
       }
     }
     stage('Build - Ivy') {
