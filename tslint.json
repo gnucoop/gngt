@@ -158,17 +158,17 @@
     "class-list-signatures": true,
     "no-nested-ternary": true,
     "prefer-const-enum": true,
-    "no-lifecycle-invocation": [
+    "no-lifecycle-invocation": [true, "**/!(*.spec).ts"],
+    "lightweight-tokens": [
       true,
-      "**/!(*.spec).ts"
+      ["src/**/!(*.spec).ts"],
+      // Directionality is always used in Angular Material and therefore does not
+      // need a lightweight token. Date Adapter is not very significant and does not
+      // need a dedicated token.
+      ["Directionality", "DateAdapter"]
     ],
-    "coercion-types": [
-      true,
-      [
-        "coerceBooleanProperty",
-        "coerceCssPixelValue",
-        "coerceNumberProperty"
-      ],
+    "coercion-types": [true,
+      ["coerceBooleanProperty", "coerceCssPixelValue", "coerceNumberProperty"],
       {
         "CanDisable": [
           "disabled"
