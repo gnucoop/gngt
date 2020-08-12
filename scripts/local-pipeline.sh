@@ -38,7 +38,9 @@ echo "E2E tests"
 
 echo "Release output"
 yarn build
-yarn check-release-output
+pkg_json_version=$(node -pe "require('./package.json').version")
+expected_version="${pkg_json_version}-sha-$(git rev-parse --short HEAD)"
+yarn check-release-output ${expected_version}
 mkdir -p node_modules/@gngt
 cp -R dist/releases/* node_modules/@gngt/
 rm -f node_modules/__ngcc_entry_points__.json
