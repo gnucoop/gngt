@@ -101,7 +101,7 @@ module.exports = config => {
     browserDisconnectTolerance: 1,
     browserNoActivityTimeout: 300000,
 
-    browsers: ['Chrome'],
+    browsers: [],
     singleRun: false,
 
     // Try Websocket for a faster transmission first. Fallback to polling if necessary.
