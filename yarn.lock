@@ -3783,6 +3783,11 @@ ccount@^1.0.0, ccount@^1.0.3:
   resolved "https://registry.yarnpkg.com/ccount/-/ccount-1.0.5.tgz#ac82a944905a65ce204eb03023157edf29425c17"
   integrity sha512-MOli1W+nfbPLlKEhInaxhRdp7KVLFxLN5ykwzHgLsLI3H3gs5jjFAK4Eoj3OzzcxCtumDaI8onoVDeQyWaNTkw==
 
+ccount@^1.0.3:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/ccount/-/ccount-1.0.5.tgz#ac82a944905a65ce204eb03023157edf29425c17"
+  integrity sha512-MOli1W+nfbPLlKEhInaxhRdp7KVLFxLN5ykwzHgLsLI3H3gs5jjFAK4Eoj3OzzcxCtumDaI8onoVDeQyWaNTkw==
+
 chainsaw@~0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/chainsaw/-/chainsaw-0.1.0.tgz#5eab50b28afe58074d0d58291388828b5e5fbc98"
@@ -5091,10 +5096,10 @@ dev-ip@^1.0.1:
   resolved "https://registry.yarnpkg.com/dev-ip/-/dev-ip-1.0.1.tgz#a76a3ed1855be7a012bb8ac16cb80f3c00dc28f0"
   integrity sha1-p2o+0YVb56ASu4rBbLgPPADcKPA=
 
-dgeni-packages@^0.28.2:
-  version "0.28.3"
-  resolved "https://registry.yarnpkg.com/dgeni-packages/-/dgeni-packages-0.28.3.tgz#2e1e55f341c389b67ebb28933ce1e7e9ad05c49b"
-  integrity sha512-WyVzY3Q4ylfnc2677le5G7a7WqkF88rBSjU9IrAofqro71yzZeWLoEdr/gJY+lJZ0PrDyuRW05pFvIbvX8N0PQ==
+dgeni-packages@^0.28.4:
+  version "0.28.4"
+  resolved "https://registry.yarnpkg.com/dgeni-packages/-/dgeni-packages-0.28.4.tgz#53a3e6700b8d8f6be168cadcc9fdb36e1d7011d3"
+  integrity sha512-7AUG3pKpWtn69c3v2Mzgh+i5gd+L0AxFfYGWGzBdlJqMlQfaQPQjaS54iYCvnOlK9rXBn9j39yO6EU70gDZuFw==
   dependencies:
     canonical-path "^1.0.0"
     catharsis "^0.8.1"
