@@ -71,7 +71,6 @@
 /.github/**                                        @trik
 /.github/CODEOWNERS                                @trik
 /.github/ISSUE_TEMPLATE/**                         @trik
-/.dependabot/**                                    @trik
 /.vscode/**                                        @trik
 /.ng-dev/**                                        @trik
 /goldens/size-test.yml                             @trik
