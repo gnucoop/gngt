@@ -60,16 +60,8 @@
     "string-quotes": "single",
     "unit-case": "lower",
     "unit-no-unknown": true,
-    "unit-whitelist": [
-      "px",
-      "%",
-      "deg",
-      "ms",
-      "em",
-      "vh",
-      "vw",
-      "vmin"
-    ],
+    "unit-allowed-list": ["px", "%", "deg", "s", "ms", "em", "vh", "vw", "vmin"],
+
     "value-list-comma-space-after": "always-single-line",
     "value-list-comma-space-before": "never",
     "shorthand-property-no-redundant-values": true,
