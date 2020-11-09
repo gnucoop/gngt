@@ -91,7 +91,7 @@ export abstract class AdminListComponent<
   }
 
   protected _actionProcessed: EventEmitter<string> = new EventEmitter<string>();
-  readonly actionProcessed: Observable<string> = this._actionProcessed.asObservable();
+  readonly actionProcessed: Observable<string> = this._actionProcessed as Observable<string>;
 
   private _deletionEvt: EventEmitter<T[]> = new EventEmitter<T[]>();
   private _deletionSub: Subscription = Subscription.EMPTY;

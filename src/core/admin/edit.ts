@@ -163,7 +163,7 @@ export abstract class AdminEditComponent<
   readonly form: Observable<FormGroup>;
 
   private _loading: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  readonly loading: Observable<boolean> = this._loading.asObservable();
+  readonly loading: Observable<boolean> = this._loading as Observable<boolean>;
 
   private _updateFormEvt: EventEmitter<void> = new EventEmitter<void>();
   private _saveEvt: EventEmitter<void> = new EventEmitter<void>();

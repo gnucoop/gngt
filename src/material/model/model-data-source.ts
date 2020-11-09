@@ -120,7 +120,7 @@ export class ModelDataSource<T extends Model, S extends ModelState<T> = ModelSta
 
   connect(_: CollectionViewer): Observable<T[]> {
     this._initData();
-    return this._data.asObservable();
+    return this._data as Observable<T[]>;
   }
 
   disconnect(_: CollectionViewer): void {

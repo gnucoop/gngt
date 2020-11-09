@@ -230,7 +230,7 @@ export abstract class Calendar implements AfterContentInit, ControlValueAccessor
   private _change: EventEmitter<CalendarChange> = new EventEmitter<CalendarChange>();
   @Output()
   get change(): Observable<CalendarChange> {
-    return this._change.asObservable();
+    return this._change as Observable<CalendarChange>;
   }
 
   private _selectedPeriod: CalendarPeriod|null;

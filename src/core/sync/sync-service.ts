@@ -76,7 +76,7 @@ const pouchDBFindPlugin: PouchDB.Plugin = (<any>PouchDBFind).default || PouchDBF
 export class SyncService {
   private _status: BehaviorSubject<SyncStatus> =
       new BehaviorSubject<SyncStatus>({status: 'initializing'});
-  readonly status: Observable<SyncStatus> = this._status.asObservable();
+  readonly status: Observable<SyncStatus> = this._status as Observable<SyncStatus>;
 
   private _timerSub: Subscription = Subscription.EMPTY;
   private _syncing = false;
