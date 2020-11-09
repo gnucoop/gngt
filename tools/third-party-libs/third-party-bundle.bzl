@@ -1,4 +1,4 @@
-load("@npm_bazel_rollup//:index.bzl", "rollup_bundle")
+load("@npm//@bazel/rollup:index.bzl", "rollup_bundle")
 load("//tools:expand_template.bzl", "expand_template")
 
 _BASE_ROLLUP_DEPS = [

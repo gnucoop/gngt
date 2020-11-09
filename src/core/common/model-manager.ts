@@ -20,6 +20,9 @@
  */
 
 export class ModelManager {
-  readonly endPoint: string;
+  protected _endPoint: string;
+  get endPoint(): string {
+    return this._endPoint;
+  }
   constructor(..._args: any[]) {}
 }

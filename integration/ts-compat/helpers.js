@@ -1,6 +1,6 @@
 
 const {relative, sep, join} = require('path');
-const {readdirSync, readFileSync, existsSync} = require('fs');
+const {readdirSync, readFileSync, existsSync, unlinkSync} = require('fs');
 const {set, ln, rm, mkdir} = require('shelljs');
 const {fork} = require('child_process');
 const runfiles = require(process.env.BAZEL_NODE_RUNFILES_HELPER);
@@ -31,7 +31,7 @@ exports.runTypeScriptCompatibilityTest = async (tscBinPath) => {
     // be compiled without path mappings (simulating a real project).
     for (const {name, pkgPath} of npmPackages) {
       console.info(`Linking "@gngt/${name}" into node modules..`);
-      ln('-s', pkgPath, join(gngtDir, name));
+      ln('-sf', pkgPath, join(gngtDir, name));
     }
 
     const tscArgs = [
@@ -48,7 +48,8 @@ exports.runTypeScriptCompatibilityTest = async (tscBinPath) => {
       // Remove symlinks to keep a clean repository state.
       for (const {name} of npmPackages) {
         console.info(`Removing link for "@gngt/${name}"..`);
-        rm(join(gngtDir, name));
+        unlinkSync(join(gngtDir, name));
+        rm('-rf', join(gngtDir, name));
       }
       exitCode === 0 ? resolve() : reject();
     });

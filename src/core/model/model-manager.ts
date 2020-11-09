@@ -35,10 +35,6 @@ import {ModelOptions} from './model-options';
 
 
 export abstract class ModelManager<M extends Model = Model> extends BaseModelManager {
-  get endPoint(): string {
-    return this._endPoint;
-  }
-
   private _baseUrl: string;
   get baseUrl(): string {
     return this._baseUrl;
@@ -48,11 +44,12 @@ export abstract class ModelManager<M extends Model = Model> extends BaseModelMan
 
   constructor(
       config: ModelOptions,
-      private _endPoint: string,
+      endPoint: string,
       protected _http: HttpClient,
       @Optional() syncService?: SyncService,
   ) {
     super();
+    this._endPoint = endPoint;
     this._baseUrl = `${config.baseApiUrl}${this._endPoint}`;
     this._useTrailingSlash = config.addTrailingSlash != null ? config.addTrailingSlash : false;
     if (syncService != null && config.syncModel) {

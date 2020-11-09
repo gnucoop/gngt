@@ -1,4 +1,4 @@
-load("@npm_bazel_typescript//:index.bzl", "ts_devserver")
+load("@npm//@bazel/typescript:index.bzl", "ts_devserver")
 load("//:packages.bzl", "getAngularUmdTargets")
 load("//tools:defaults.bzl", "ng_module")
 
@@ -64,7 +64,6 @@ ts_devserver(
     static_files = [
         "@npm//zone.js",
         "@npm//core-js",
-        "@npm//hammerjs",
         "@npm//@angular/material",
         "@npm//@ngx-translate/core",
         ":index.html",
