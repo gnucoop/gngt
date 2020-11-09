@@ -57,7 +57,8 @@ export interface ModelListResult<M extends Model> {
 }
 
 export declare class ModelManager {
-    readonly endPoint: string;
+    protected _endPoint: string;
+    get endPoint(): string;
     constructor(..._args: any[]);
 }
 

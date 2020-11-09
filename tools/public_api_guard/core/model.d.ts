@@ -261,8 +261,7 @@ export declare abstract class ModelListSuccessAction<T extends Model> extends Mo
 export declare abstract class ModelManager<M extends Model = Model> extends BaseModelManager {
     protected _http: HttpClient;
     get baseUrl(): string;
-    get endPoint(): string;
-    constructor(config: ModelOptions, _endPoint: string, _http: HttpClient, syncService?: SyncService);
+    constructor(config: ModelOptions, endPoint: string, _http: HttpClient, syncService?: SyncService);
     create(data: M): Observable<M>;
     delete(id: number): Observable<M>;
     deleteAll(ids: number[]): Observable<M>;

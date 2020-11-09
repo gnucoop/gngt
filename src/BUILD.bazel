@@ -1,4 +1,4 @@
-load("@npm_bazel_typescript//:index.bzl", "ts_config")
+load("@npm//@bazel/typescript:index.bzl", "ts_config")
 load("//src/core:config.bzl", "CORE_ENTRYPOINTS")
 load("//src/ionic:config.bzl", "IONIC_ENTRYPOINTS", "IONIC_TESTING_ENTRYPOINTS")
 load("//src/material:config.bzl", "MATERIAL_ENTRYPOINTS", "MATERIAL_TESTING_ENTRYPOINTS")
