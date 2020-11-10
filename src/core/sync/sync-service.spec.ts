@@ -2,8 +2,8 @@ import {HttpClient, HttpClientModule} from '@angular/common/http';
 import {TestBed} from '@angular/core/testing';
 import {ModelListResult} from '@gngt/core/common';
 import * as PouchDB from 'pouchdb';
-import {Observable, of as obsOf, throwError} from 'rxjs';
-import {filter, skip} from 'rxjs/operators';
+import {Observable, of as obsOf, throwError, timer} from 'rxjs';
+import {filter, skip, take} from 'rxjs/operators';
 
 import {LocalDoc} from './local-doc';
 import {SyncEntry} from './sync-entry';
@@ -252,7 +252,7 @@ describe('SyncService', () => {
 
     afterEach(async () => {
       jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
-      return new pouchDBStatic(dbName).destroy();
+      return await new pouchDBStatic(dbName).destroy();
     });
 
     it('should sync data from local database', done => {
@@ -263,8 +263,10 @@ describe('SyncService', () => {
               filter(s => s.status === 'paused'),
               skip(1),
               )
-          .subscribe(_ => {
+          .subscribe(async _ => {
             syncService.stop();
+
+            await timer(1000).pipe(take(1)).toPromise();
 
             syncService.list('table1', {limit: 100}).subscribe(res => {
               expect(res.results.length).toEqual(10);
@@ -305,7 +307,7 @@ describe('SyncService', () => {
 
     afterEach(async () => {
       jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
-      return new pouchDBStatic(dbName).destroy();
+      return await new pouchDBStatic(dbName).destroy();
     });
 
     it('should get an object from local database', () => {
