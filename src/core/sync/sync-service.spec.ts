@@ -112,20 +112,19 @@ class MockUpwardHttpClient {
 describe('SyncService', () => {
   describe('Downward sync', () => {
     let syncService: SyncService;
-    let httpClient: MockDownwardHttpClient;
+    let httpClient = new MockDownwardHttpClient();
     let originalTimeout: number;
 
     beforeEach(async () => {
       TestBed.configureTestingModule({
         imports: [SyncModule.forRoot({baseUrl: 'http://remote/', localDatabaseName: dbName})],
         providers: [
-          {provide: HttpClient, useClass: MockDownwardHttpClient},
+          {provide: HttpClient, useValue: httpClient},
         ]
       });
 
       await TestBed.compileComponents();
-      syncService = TestBed.get(SyncService);
-      httpClient = TestBed.get(HttpClient);
+      syncService = TestBed.inject(SyncService);
       originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
       jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000;
     });
@@ -242,7 +241,7 @@ describe('SyncService', () => {
         ]
       });
 
-      syncService = TestBed.get(SyncService);
+      syncService = TestBed.inject(SyncService);
 
       // TODO(trik) only 20 docs because the other should need further
       // response from mock service
@@ -294,7 +293,7 @@ describe('SyncService', () => {
         ]
       });
 
-      syncService = TestBed.get(SyncService);
+      syncService = TestBed.inject(SyncService);
 
       const db = new pouchDBStatic<LocalDoc<DbEntry|DbRelatedEntry>>(dbName);
       for (let i = 0; i < dbEntries.length; i++) {
