@@ -147,7 +147,7 @@
     "gulp-if": "^2.0.2",
     "gulp-rename": "^1.4.0",
     "gulp-sass": "^4.0.2",
-    "highlight.js": "^9.11.0",
+    "highlight.js": "^10.4.0",
     "http-rewrite-middleware": "^0.1.6",
     "husky": "^4.3.0",
     "inquirer": "^7.1.0",
