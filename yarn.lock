@@ -3,9 +3,9 @@
 
 
 "@angular-devkit/build-optimizer@^0.1100.0":
-  version "0.1100.0"
-  resolved "https://registry.yarnpkg.com/@angular-devkit/build-optimizer/-/build-optimizer-0.1100.0.tgz#fae70c407fa2ec26ef839f9f2706cb3be990121b"
-  integrity sha512-RitDB5JCNDUN2CoNqf/FwLCwdWruApjxb7nUVb9C/uQgGEnrBojyxS/Rv/jCioom86s0sfY9wo79jdxd6AercQ==
+  version "0.1100.3"
+  resolved "https://registry.yarnpkg.com/@angular-devkit/build-optimizer/-/build-optimizer-0.1100.3.tgz#4010c5439cca57f61badfcd98b898c131bc259c0"
+  integrity sha512-ACvi4W8iDqWJOqHZA7LLI1lldbjrouANxOb1wxgFyr6krKypU6kDXOF2ZWNdrsgDvW0zwJPKeDNFzYyvqQpe/w==
   dependencies:
     loader-utils "2.0.0"
     source-map "0.7.3"
