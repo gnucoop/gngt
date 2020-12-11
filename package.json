@@ -88,7 +88,7 @@
     "@babel/plugin-syntax-dynamic-import": "^7.8.3",
     "@babel/preset-env": "^7.11.0",
     "@bazel/bazelisk": "^1.4.0",
-    "@bazel/buildifier": "^2.2.1",
+    "@bazel/buildifier": "^3.5.0",
     "@bazel/ibazel": "^0.13.0",
     "@bazel/jasmine": "^2.2.0",
     "@bazel/karma": "^2.2.0",
