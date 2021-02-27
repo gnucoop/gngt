@@ -23,7 +23,6 @@ const {performNpmReleaseBuild} = require('../../scripts/build-packages-dist');
  * interaction/input through command line prompts.
  */
 class PublishReleaseTask extends BaseReleaseTask {
-
   /** Path to the project package JSON. */
   packageJsonPath: string;
 
@@ -39,11 +38,9 @@ class PublishReleaseTask extends BaseReleaseTask {
   /** Instance of a wrapper that can execute Git commands. */
   git: GitClient;
 
-  constructor(public projectDir: string,
-              public repositoryOwner: string,
-              public repositoryName: string) {
-    super(new GitClient(projectDir,
-      `https://github.com/${repositoryOwner}/${repositoryName}.git`));
+  constructor(
+      public projectDir: string, public repositoryOwner: string, public repositoryName: string) {
+    super(new GitClient(projectDir, `https://github.com/${repositoryOwner}/${repositoryName}.git`));
 
     this.packageJsonPath = join(projectDir, 'package.json');
     this.releaseOutputPath = join(projectDir, 'dist/releases');
@@ -53,8 +50,8 @@ class PublishReleaseTask extends BaseReleaseTask {
     const parsedVersion = parseVersionName(this.packageJson.version);
     if (!parsedVersion) {
       console.error(chalk.red(
-        `Cannot parse current version in ${chalk.italic('package.json')}. Please ` +
-        `make sure "${this.packageJson.version}" is a valid Semver version.`));
+          `Cannot parse current version in ${chalk.italic('package.json')}. Please ` +
+          `make sure "${this.packageJson.version}" is a valid Semver version.`));
       process.exit(1);
       return;
     }
@@ -97,8 +94,8 @@ class PublishReleaseTask extends BaseReleaseTask {
     checkReleaseOutput(this.releaseOutputPath, this.currentVersion.format());
 
     // Extract the release notes for the new version from the changelog file.
-    const extractedReleaseNotes = extractReleaseNotes(
-      join(this.projectDir, CHANGELOG_FILE_NAME), newVersionName);
+    const extractedReleaseNotes =
+        extractReleaseNotes(join(this.projectDir, CHANGELOG_FILE_NAME), newVersionName);
 
     if (!extractedReleaseNotes) {
       console.error(chalk.red(`  ✘   Could not find release notes in the changelog.`));
@@ -109,7 +106,7 @@ class PublishReleaseTask extends BaseReleaseTask {
     const {releaseNotes, releaseTitle} = extractedReleaseNotes;
 
     // Create and push the release tag before publishing to NPM.
-    this._createReleaseTag(newVersionName, releaseNotes);
+    this._createReleaseTag(`v${newVersionName}`, releaseNotes);
     this._pushReleaseTag(newVersionName, upstreamRemote);
 
     // Just in order to double-check that the user is sure to publish to NPM, we want
@@ -145,8 +142,9 @@ class PublishReleaseTask extends BaseReleaseTask {
    */
   private _verifyLastCommitFromStagingScript() {
     if (!/release: (bump version|update changelog for)/.test(this.git.getCommitTitle('HEAD'))) {
-      console.error(chalk.red(`  ✘   The latest commit of the current branch does not seem to be ` +
-        ` created by the release staging script.`));
+      console.error(chalk.red(
+          `  ✘   The latest commit of the current branch does not seem to be ` +
+          ` created by the release staging script.`));
       console.error(chalk.red(`      Please stage the release using the staging script.`));
       process.exit(1);
     }
@@ -158,7 +156,7 @@ class PublishReleaseTask extends BaseReleaseTask {
    */
   private async _promptStableVersionForNextTag() {
     if (!await this.promptConfirm(
-        'Are you sure that you want to release a stable version to the "next" tag?')) {
+            'Are you sure that you want to release a stable version to the "next" tag?')) {
       console.log();
       console.log(chalk.yellow('Aborting publish...'));
       process.exit(0);
@@ -200,8 +198,8 @@ class PublishReleaseTask extends BaseReleaseTask {
 
       if (this.git.getShaOfLocalTag(tagName) !== expectedSha) {
         console.error(chalk.red(
-          `  ✘   Tag "${tagName}" already exists locally, but does not refer ` +
-          `to the version bump commit. Please delete the tag if you want to proceed.`));
+            `  ✘   Tag "${tagName}" already exists locally, but does not refer ` +
+            `to the version bump commit. Please delete the tag if you want to proceed.`));
         process.exit(1);
       }
 
@@ -210,11 +208,10 @@ class PublishReleaseTask extends BaseReleaseTask {
       console.info(chalk.green(`  ✓   Created release tag: "${chalk.italic(tagName)}"`));
     } else {
       console.error(chalk.red(`  ✘   Could not create the "${tagName}" tag.`));
-      console.error(chalk.red(
-        `      Please make sure there is no existing tag with the same name.`));
+      console.error(
+          chalk.red(`      Please make sure there is no existing tag with the same name.`));
       process.exit(1);
     }
-
   }
 
   /** Pushes the release tag to the remote repository. */
@@ -226,22 +223,23 @@ class PublishReleaseTask extends BaseReleaseTask {
     if (remoteTagSha) {
       if (remoteTagSha !== expectedSha) {
         console.error(chalk.red(
-          `  ✘   Tag "${tagName}" already exists on the remote, but does not ` +
-          `refer to the version bump commit.`));
-        console.error(chalk.red(
-          `      Please delete the tag on the remote if you want to proceed.`));
+            `  ✘   Tag "${tagName}" already exists on the remote, but does not ` +
+            `refer to the version bump commit.`));
+        console.error(
+            chalk.red(`      Please delete the tag on the remote if you want to proceed.`));
         process.exit(1);
       }
 
-      console.info(chalk.green(
-        `  ✓   Release tag already exists remotely: "${chalk.italic(tagName)}"`));
+      console.info(
+          chalk.green(`  ✓   Release tag already exists remotely: "${chalk.italic(tagName)}"`));
       return;
     }
 
     if (!this.git.pushTagToRemote(tagName, upstreamRemote)) {
       console.error(chalk.red(`  ✘   Could not push the "${tagName}" tag upstream.`));
-      console.error(chalk.red(`      Please make sure you have permission to push to the ` +
-        `"${this.git.remoteGitUrl}" remote.`));
+      console.error(chalk.red(
+          `      Please make sure you have permission to push to the ` +
+          `"${this.git.remoteGitUrl}" remote.`));
       process.exit(1);
     }
 
@@ -254,10 +252,11 @@ class PublishReleaseTask extends BaseReleaseTask {
    */
   private async _getProjectUpstreamRemote() {
     const remoteName = this.git.hasRemote('upstream') ?
-        'upstream' : await promptForUpstreamRemote(this.git.getAvailableRemotes());
+        'upstream' :
+        await promptForUpstreamRemote(this.git.getAvailableRemotes());
 
-    console.info(chalk.green(
-      `  ✓   Using the "${remoteName}" remote for pushing changes upstream.`));
+    console.info(
+        chalk.green(`  ✓   Using the "${remoteName}" remote for pushing changes upstream.`));
     return remoteName;
   }
 }
@@ -266,4 +265,3 @@ class PublishReleaseTask extends BaseReleaseTask {
 if (require.main === module) {
   new PublishReleaseTask(join(__dirname, '../../'), 'gnucoop', 'gngt').run();
 }
-
