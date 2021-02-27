@@ -12140,7 +12140,7 @@ sax@>=0.6.0:
   resolved "https://registry.yarnpkg.com/sax/-/sax-1.2.4.tgz#2816234e2378bddc4e5354fab5caa895df7100d9"
   integrity sha512-NqVDv9TpANUjFm0N8uM5GxL36UgKi9/atZw+x7YFnQ8ckwFGKrl4xX4yWtrey3UJm5nP1kUbnYgLopqWNSRhWw==
 
-scss-bundle@^3.0.2:
+scss-bundle@^3.1.2:
   version "3.1.2"
   resolved "https://registry.yarnpkg.com/scss-bundle/-/scss-bundle-3.1.2.tgz#8919dd7603d01a84822e8aab5210e5b0b50c548b"
   integrity sha512-lvxTwCKDLgzmRWhGwJ834ggtnEhs0G9FxSJRWte+NwlshVvBcQ/kOHHkpAGDpCxIMNGz/Utl0yd/MWyQAOBhqg==
