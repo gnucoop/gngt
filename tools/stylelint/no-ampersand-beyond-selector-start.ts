@@ -1,4 +1,6 @@
 import {basename} from 'path';
+import {createPlugin, utils} from 'stylelint';
+
 import {Node} from './stylelint-postcss-types';
 
 const isStandardSyntaxRule = require('stylelint/lib/utils/isStandardSyntaxRule');
