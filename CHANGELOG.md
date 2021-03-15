@@ -1,3 +1,7 @@
+# 12.0.0-next.0 "tiny-sky" (2021-03-15)
+
+update to angular 12
+
 # 11.0.0 "daffy-pump" (2021-02-27)
 
 ### core
