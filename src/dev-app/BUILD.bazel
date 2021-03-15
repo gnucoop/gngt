@@ -58,7 +58,6 @@ filegroup(
         ":system-config",
         "//tools:system-rxjs-operators.js",
         "//tools/third-party-libs:date-fns-bundle.js",
-        "//tools/third-party-libs:debug-bundle.js",
         "//tools/third-party-libs:gic-core-bundle.js",
         "//tools/third-party-libs:gic-core-loader-bundle.js",
         "//tools/third-party-libs:ionic-core-bundle.js",

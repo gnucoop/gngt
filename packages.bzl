@@ -13,6 +13,9 @@ TSLIB_PACKAGE_VERSION = "^2.0.0"
 URL_PARSE_PACKAGE_VERSION = "^1.4.7"
 UUID_PACKAGE_VERSION = "^8.3.0"
 
+# Each placer holder is used to stamp versions during the build process, replacing the key with it's
+# value pair. These replacements occur during building of `npm_package` and `ng_package` stamping in
+# the peer dependencies and versions, primarily in `package.json`s.
 VERSION_PLACEHOLDER_REPLACEMENTS = {
     "0.0.0-ANGM": ANGULAR_MATERIAL_PACKAGE_VERSION,
     "0.0.0-ANGRX": NGRX_PACKAGE_VERSION,
@@ -25,6 +28,8 @@ VERSION_PLACEHOLDER_REPLACEMENTS = {
     "0.0.0-TSLIB": TSLIB_PACKAGE_VERSION,
     "0.0.0-URLPARSE": URL_PARSE_PACKAGE_VERSION,
     "0.0.0-UUID": UUID_PACKAGE_VERSION,
+    # Version of the local package being built, generated via the `--workspace_status_command` flag.
+    "0.0.0-PLACEHOLDER": "{BUILD_SCM_VERSION}",
 }
 
 # List of default Angular library UMD bundles which are not processed by ngcc.
@@ -64,7 +69,6 @@ THIRD_PARTY_GEN_BUNDLES = [
     ("@ionic/core", "ionic-core-bundle.js"),
     ("@ionic/core/loader", "ionic-core-loader-bundle.js"),
     ("date-fns", "date-fns-bundle.js"),
-    ("debug", "debug-bundle.js"),
     ("pouchdb", "pouchdb-bundle.js"),
     ("pouchdb-find", "pouchdb-find-bundle.js"),
     ("uuid", "uuid-bundle.js"),

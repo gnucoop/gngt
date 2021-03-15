@@ -124,7 +124,7 @@ export class JwtHelperService {
       throw new Error('Cannot decode the token.');
     }
 
-    return JSON.parse(decoded);
+    return JSON.parse(decoded) as JwtToken;
   }
 
   getTokenExpirationDate(token: string|null = this.tokenGetter()): Date|null {

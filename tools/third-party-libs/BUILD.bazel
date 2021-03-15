@@ -13,18 +13,7 @@ third_party_bundle(
     name = "date-fns",
     entry_point = "@npm//:node_modules/date-fns/esm/index.js",
     module_name = "date-fns",
-    deps = [
-        "@npm//date-fns",
-    ],
-)
-
-third_party_bundle(
-    name = "debug",
-    entry_point = "@npm//:node_modules/debug/src/browser.js",
-    module_name = "debug",
-    deps = [
-        "@npm//debug",
-    ],
+    deps = ["@npm//date-fns"],
 )
 
 third_party_bundle(
@@ -34,9 +23,7 @@ third_party_bundle(
         "tslib": "tslib",
     },
     module_name = "@gic/core",
-    deps = [
-        "@npm//@gic/core",
-    ],
+    deps = ["@npm//@gic"],
 )
 
 third_party_bundle(
@@ -46,9 +33,7 @@ third_party_bundle(
         "tslib": "tslib",
     },
     module_name = "@gic/core/loader",
-    deps = [
-        "@npm//@gic/core",
-    ],
+    deps = ["@npm//@gic"],
 )
 
 third_party_bundle(
@@ -58,9 +43,7 @@ third_party_bundle(
         "tslib": "tslib",
     },
     module_name = "@ionic/core",
-    deps = [
-        "@npm//@ionic/core",
-    ],
+    deps = ["@npm//@ionic"],
 )
 
 third_party_bundle(
@@ -70,9 +53,7 @@ third_party_bundle(
         "tslib": "tslib",
     },
     module_name = "@ionic/core/loader",
-    deps = [
-        "@npm//@ionic/core",
-    ],
+    deps = ["@npm//@ionic"],
 )
 
 third_party_bundle(
@@ -81,7 +62,6 @@ third_party_bundle(
     module_name = "pouchdb",
     template = "//tools/third-party-libs:pouchdb-rollup.config-tmpl.js",
     deps = [
-        "@npm//@rollup/plugin-json",
         "@npm//pouchdb",
         "@npm//rollup-plugin-node-globals",
         "@npm//rollup-plugin-node-polyfills",
@@ -97,7 +77,6 @@ third_party_bundle(
     module_name = "pouchdb-find",
     template = "//tools/third-party-libs:pouchdb-rollup.config-tmpl.js",
     deps = [
-        "@npm//@rollup/plugin-json",
         "@npm//pouchdb-find",
         "@npm//rollup-plugin-node-globals",
         "@npm//rollup-plugin-node-polyfills",
@@ -108,16 +87,12 @@ third_party_bundle(
     name = "uuid",
     entry_point = "@npm//:node_modules/uuid/dist/esm-browser/index.js",
     module_name = "uuid",
-    deps = [
-        "@npm//uuid",
-    ],
+    deps = ["@npm//uuid"],
 )
 
 third_party_bundle(
     name = "url-parse",
     entry_point = "@npm//:node_modules/url-parse/index.js",
     module_name = "url-parse",
-    deps = [
-        "@npm//url-parse",
-    ],
+    deps = ["@npm//url-parse"],
 )
