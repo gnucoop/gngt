@@ -3,7 +3,6 @@ import {readFileSync} from 'fs';
 import * as chalk from 'chalk';
 import * as ts from 'typescript';
 import * as tsutils from 'tsutils';
-import * as ts from 'typescript';
 
 const projectRoot = process.cwd();
 
