@@ -63,7 +63,7 @@ ts_devserver(
     # automatically served, but can be loaded manually through HTTP requests.
     static_files = [
         "@npm//zone.js",
-        "@npm//core-js",
+        "@npm//core-js-bundle",
         "@npm//@angular/material",
         "@npm//@ngx-translate/core",
         ":index.html",

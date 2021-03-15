@@ -64,7 +64,7 @@
     "@ngrx/store": "^11.0.1",
     "@ngx-translate/core": "^13.0.0",
     "@webcomponents/custom-elements": "^1.1.0",
-    "core-js": "^2.6.9",
+    "core-js-bundle": "^3.8.2",
     "date-fns": "^2.15.0",
     "pouchdb": "~7.0.0",
     "pouchdb-find": "~7.0.0",
