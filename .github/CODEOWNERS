@@ -69,6 +69,7 @@
 
 # Misc
 /.github/**                                        @trik
+/.husky/**                                         @trik
 /.github/CODEOWNERS                                @trik
 /.github/ISSUE_TEMPLATE/**                         @trik
 /.vscode/**                                        @trik
