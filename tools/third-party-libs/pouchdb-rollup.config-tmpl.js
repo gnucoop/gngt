@@ -1,8 +1,8 @@
-const commonjs = require('@rollup/plugin-commonjs');
-const json = require('@rollup/plugin-json');
-const {nodeResolve} = require('@rollup/plugin-node-resolve');
-const nodeGlobals = require('rollup-plugin-node-globals');
+const commonjs = require('rollup-plugin-commonjs');
+const json = require('rollup-plugin-json');
+const nodeResolve = require('rollup-plugin-node-resolve');
 const nodePolyfills = require('rollup-plugin-node-polyfills');
+const nodeGlobals = require('rollup-plugin-node-globals');
 const sourcemaps = require('rollup-plugin-sourcemaps');
 
 const EXPORTS = '$EXPORTS';

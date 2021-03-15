@@ -63,6 +63,7 @@ third_party_bundle(
     template = "//tools/third-party-libs:pouchdb-rollup.config-tmpl.js",
     deps = [
         "@npm//pouchdb",
+        "@npm//rollup-plugin-json",
         "@npm//rollup-plugin-node-globals",
         "@npm//rollup-plugin-node-polyfills",
     ],
@@ -78,6 +79,7 @@ third_party_bundle(
     template = "//tools/third-party-libs:pouchdb-rollup.config-tmpl.js",
     deps = [
         "@npm//pouchdb-find",
+        "@npm//rollup-plugin-json",
         "@npm//rollup-plugin-node-globals",
         "@npm//rollup-plugin-node-polyfills",
     ],

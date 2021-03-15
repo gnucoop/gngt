@@ -2,9 +2,8 @@ load("@npm//@bazel/rollup:index.bzl", "rollup_bundle")
 load("//tools:expand_template.bzl", "expand_template")
 
 _BASE_ROLLUP_DEPS = [
-    "@npm//@rollup/plugin-commonjs",
-    "@npm//@rollup/plugin-json",
-    "@npm//@rollup/plugin-node-resolve",
+    "@npm//rollup-plugin-commonjs",
+    "@npm//rollup-plugin-node-resolve",
     "@npm//rollup-plugin-sourcemaps",
 ]
 
