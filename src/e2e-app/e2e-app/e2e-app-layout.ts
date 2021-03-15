@@ -11,5 +11,10 @@ export class Home {
   encapsulation: ViewEncapsulation.None,
 })
 export class E2eAppLayout {
-  showLinks: boolean = false;
+  showLinks = false;
+
+  navLinks = [
+    {path: 'ion-calendar', title: 'Ionic - Calendar'},
+    {path: 'mat-calendar', title: 'Material - Calendar'},
+  ];
 }
