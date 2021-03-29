@@ -26,6 +26,7 @@ ng_module(
         "@npm//@angular/core",
         "@npm//@angular/platform-browser",
         "@npm//@ionic/angular",
+        "@npm//@ionic/core",
         "@npm//@ngx-translate/core",
     ],
 )

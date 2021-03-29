@@ -1590,7 +1590,7 @@
     "@gic/core" "5.6.0"
     tslib "^1.9.3"
 
-"@gic/core@5.6.0":
+"@gic/core@5.6.0", "@gic/core@^5.6.0":
   version "5.6.0"
   resolved "https://registry.yarnpkg.com/@gic/core/-/core-5.6.0.tgz#29a8202bc40a3497a2d6327bed61e117580d8e2e"
   integrity sha512-juJrOCeF0z5h234GF9Zmu+YurOyM6OCwNsZhCmuE/Lj43C5Hy5cywed6OJ6Z0NhwgOUXrIkTV0AIE9CtUsGfAQ==
@@ -1676,6 +1676,15 @@
     "@stencil/core" "^2.4.0"
     ionicons "^5.5.0"
     tslib "^1.10.0"
+
+"@ionic/core@^5.6.0":
+  version "5.6.3"
+  resolved "https://registry.yarnpkg.com/@ionic/core/-/core-5.6.3.tgz#8317059880b96466ea5b441479ff39b1c747ecb7"
+  integrity sha512-RPugxDcCwB5rgEh6yR2QDTzblT8BRBktsW6y+VBt62yHRzgEAENEfVyvkADz+CkGAsmZuPmC8OQC2jJrx/fJFA==
+  dependencies:
+    "@stencil/core" "^2.4.0"
+    ionicons "^5.5.1"
+    tslib "^2.1.0"
 
 "@istanbuljs/schema@^0.1.2":
   version "0.1.2"
@@ -2098,6 +2107,11 @@
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/@stencil/core/-/core-2.4.0.tgz#17b45629c8986e35dcbce3f7dab7d64beede83f2"
   integrity sha512-gU6+Yyd6O0KrCSS/O6j8KKqmRo+/Dcs2fI0+APCpbAWK+nqhwDISpdnSEfGDCLMoAC08XOZCycBRk2K1VGnEcg==
+
+"@stencil/core@^2.5.0":
+  version "2.5.1"
+  resolved "https://registry.yarnpkg.com/@stencil/core/-/core-2.5.1.tgz#d997c1dda992f975200968995c13a4da7bf60ad9"
+  integrity sha512-SHVX/XaMYEzZJr7ttFSU9a1GmZRMUS9l7f/hbWnKYRn4S9zl1CqGf2iR/ofJ7B+vKaHLjapCAVrzCrkciVIpXA==
 
 "@stylelint/postcss-css-in-js@^0.37.2":
   version "0.37.2"
@@ -7795,6 +7809,13 @@ ionicons@^5.5.0:
   integrity sha512-0DUHTeoIrGSY+KNyNDaQW7v5+mDstjSkjx8dzT925kXKYBDrN3sGs8kUcSSQbTK132U4CbgDEZkn7FDUa9x8Qw==
   dependencies:
     "@stencil/core" "^2.4.0"
+
+ionicons@^5.5.1:
+  version "5.5.1"
+  resolved "https://registry.yarnpkg.com/ionicons/-/ionicons-5.5.1.tgz#c337b2a0871c18910dea5c72384b0f0a393abf15"
+  integrity sha512-1auVisfaXmkmxINer8Q3kJGHP1vSxk86hf7By95eJ+Av9+oBcNuAEBfSe3jaMaGRVxVw8U/2j23MFq7R3c0HPg==
+  dependencies:
+    "@stencil/core" "^2.5.0"
 
 ip-regex@^2.1.0:
   version "2.1.0"

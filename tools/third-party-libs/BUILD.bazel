@@ -1,100 +1,11 @@
-load(":third-party-bundle.bzl", "third_party_bundle")
-
 package(default_visibility = ["//visibility:public"])
 
-exports_files([
-    "pouchdb-rollup.config-tmpl.js",
-    "pouchdb-rollup.config-tmpl.js",
-    "pouchdb-stream.config-tmpl.js",
-    "rollup.config-tmpl.js",
-])
+exports_files(["npm_umd_bundle.patch"])
 
-third_party_bundle(
-    name = "date-fns",
-    entry_point = "@npm//:node_modules/date-fns/esm/index.js",
-    module_name = "date-fns",
-    deps = ["@npm//date-fns"],
-)
-
-third_party_bundle(
-    name = "gic-core",
-    entry_point = "@npm//:node_modules/@gic/core/dist/index.js",
-    globals = {
-        "tslib": "tslib",
-    },
-    module_name = "@gic/core",
-    deps = ["@npm//@gic"],
-)
-
-third_party_bundle(
-    name = "gic-core-loader",
-    entry_point = "@npm//:node_modules/@gic/core/loader/index.cjs.js",
-    globals = {
-        "tslib": "tslib",
-    },
-    module_name = "@gic/core/loader",
-    deps = ["@npm//@gic"],
-)
-
-third_party_bundle(
-    name = "ionic-core",
-    entry_point = "@npm//:node_modules/@ionic/core/dist/index.js",
-    globals = {
-        "tslib": "tslib",
-    },
-    module_name = "@ionic/core",
-    deps = ["@npm//@ionic"],
-)
-
-third_party_bundle(
-    name = "ionic-core-loader",
-    entry_point = "@npm//:node_modules/@ionic/core/loader/index.cjs.js",
-    globals = {
-        "tslib": "tslib",
-    },
-    module_name = "@ionic/core/loader",
-    deps = ["@npm//@ionic"],
-)
-
-third_party_bundle(
-    name = "pouchdb",
-    entry_point = "@npm//:node_modules/pouchdb/lib/index.es.js",
-    module_name = "pouchdb",
-    template = "//tools/third-party-libs:pouchdb-rollup.config-tmpl.js",
-    deps = [
-        "@npm//pouchdb",
-        "@npm//rollup-plugin-json",
-        "@npm//rollup-plugin-node-globals",
-        "@npm//rollup-plugin-node-polyfills",
+filegroup(
+    name = "pdfmake_umd_module",
+    srcs = [
+        ":pdfmake_shims.js",
+        "@npm//pdfmake:pdfmake__umd",
     ],
-)
-
-third_party_bundle(
-    name = "pouchdb-find",
-    entry_point = "@npm//:node_modules/pouchdb-find/lib/index.js",
-    globals = {
-        "pouchdb": "PouchDB",
-    },
-    module_name = "pouchdb-find",
-    template = "//tools/third-party-libs:pouchdb-rollup.config-tmpl.js",
-    deps = [
-        "@npm//pouchdb-find",
-        "@npm//rollup-plugin-json",
-        "@npm//rollup-plugin-node-globals",
-        "@npm//rollup-plugin-node-polyfills",
-    ],
-)
-
-third_party_bundle(
-    name = "uuid",
-    entry_point = "@npm//:node_modules/uuid/dist/esm-browser/index.js",
-    module_name = "uuid",
-    deps = ["@npm//uuid"],
-)
-
-third_party_bundle(
-    name = "url-parse",
-    entry_point = "@npm//:node_modules/url-parse/index.js",
-    module_name = "url-parse",
-    deps = ["@npm//url-parse"],
 )

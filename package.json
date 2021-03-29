@@ -13,7 +13,7 @@
     "yarn": ">= 1.19.1"
   },
   "scripts": {
-    "postinstall": "rm -Rf node_modules/@ngrx/effects/esm2015/src node_modules/@ngrx/store/esm2015/src && husky install && node tools/postinstall/apply-patches.js && ngcc --properties main --create-ivy-entry-points && node tools/postinstall/update-ngcc-main-fields.js",
+    "postinstall": "rm -Rf node_modules/@ngrx/effects/esm2015/src node_modules/@ngrx/store/esm2015/src && husky install && node tools/postinstall/apply-patches.js && ngcc --properties main --create-ivy-entry-points && node tools/postinstall/update-ngcc-main-fields.js && node tools/postinstall/patch-packages.js",
     "build": "node ./scripts/build-packages-dist.js",
     "build-docs-content": "node ./scripts/build-docs-content.js",
     "dev-app": "ibazel run //src/dev-app:devserver",
@@ -59,7 +59,9 @@
     "@angular/material": "^12.0.0-next.4",
     "@angular/platform-browser": "^12.0.0-next.5",
     "@gic/angular": "^5.6.0",
+    "@gic/core": "^5.6.0",
     "@ionic/angular": "^5.6.0",
+    "@ionic/core": "^5.6.0",
     "@ngrx/effects": "^11.0.1",
     "@ngrx/store": "^11.0.1",
     "@ngx-translate/core": "^13.0.0",
