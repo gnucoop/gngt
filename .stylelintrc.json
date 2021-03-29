@@ -8,41 +8,30 @@
     "./tools/stylelint/no-nested-mixin.ts",
     "./tools/stylelint/no-concrete-rules.ts",
     "./tools/stylelint/no-top-level-ampersand-in-mixin.ts",
-    "./tools/stylelint/theme-mixin-api.ts"
+    "./tools/stylelint/theme-mixin-api.ts",
+    "./tools/stylelint/no-import.ts"
   ],
   "rules": {
-    "gngt/no-prefixes": [
-      true,
-      {
-        "browsers": [
-          "last 2 versions",
-          "not ie <= 10",
-          "not ie_mob <= 10"
-        ],
-        "filePattern": "**/!(*-example.css)"
-      }
-    ],
+    "gngt/no-prefixes": [true, {
+      "browsers": ["last 2 versions", "not ie <= 10", "not ie_mob <= 10"],
+      "filePattern": "**/!(*-example.css)"
+    }],
     "gngt/theme-mixin-api": true,
     "gngt/selector-no-deep": true,
     "gngt/no-nested-mixin": true,
-    "gngt/no-ampersand-beyond-selector-start": [
-      true,
-      {
-        "filePattern": "-theme\\.scss$"
-      }
-    ],
-    "gngt/no-concrete-rules": [
-      true,
-      {
-        "filePattern": "^_.*\\.scss$"
-      }
-    ],
-    "gngt/no-top-level-ampersand-in-mixin": [
-      true,
-      {
-        "filePattern": "-theme\\.scss$"
-      }
-    ],
+    "gngt/no-import": [true, {
+      "exclude": "\\.import\\.scss$"
+    }],
+    "gngt/no-ampersand-beyond-selector-start": [true, {
+      "filePattern": "-theme\\.scss$"
+    }],
+    "gngt/no-concrete-rules": [true, {
+      "filePattern": "^_.*\\.scss$"
+    }],
+    "gngt/no-top-level-ampersand-in-mixin": [true, {
+      "filePattern": "-theme\\.scss$"
+    }],
+
     "color-hex-case": "lower",
     "color-no-invalid-hex": true,
     "function-calc-no-unspaced-operator": true,
@@ -82,8 +71,8 @@
     "declaration-block-semicolon-newline-after": "always-multi-line",
     "declaration-colon-space-after": "always-single-line",
     "declaration-property-value-disallowed-list": [
-        {"/.*/": ["initial"]},
-        {"message": "The `initial` value is not supported in IE."}
+      {"/.*/": ["initial"]},
+      {"message": "The `initial` value is not supported in IE."}
     ],
     "block-closing-brace-newline-after": "always",
     "block-closing-brace-newline-before": "always-multi-line",
