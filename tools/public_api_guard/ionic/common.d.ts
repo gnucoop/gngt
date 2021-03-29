@@ -1,4 +1,5 @@
 export declare class CommonModule {
+    static ɵfac: i0.ɵɵFactoryDef<CommonModule, never>;
     static ɵinj: i0.ɵɵInjectorDef<CommonModule>;
     static ɵmod: i0.ɵɵNgModuleDefWithMeta<CommonModule, [typeof i1.InputAriaLabelDirective], never, [typeof i1.InputAriaLabelDirective]>;
 }

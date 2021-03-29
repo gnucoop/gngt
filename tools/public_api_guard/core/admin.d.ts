@@ -128,6 +128,7 @@ export declare class ChoicesPipe implements PipeTransform {
 }
 
 export declare class GngtAdminModule {
+    static ɵfac: i0.ɵɵFactoryDef<GngtAdminModule, never>;
     static ɵinj: i0.ɵɵInjectorDef<GngtAdminModule>;
     static ɵmod: i0.ɵɵNgModuleDefWithMeta<GngtAdminModule, [typeof i1.ChoicesPipe], never, [typeof i1.ChoicesPipe]>;
 }

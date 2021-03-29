@@ -37,6 +37,7 @@ export declare class AuthHelper {
 }
 
 export declare class AuthModule {
+    static ɵfac: i0.ɵɵFactoryDef<AuthModule, never>;
     static ɵinj: i0.ɵɵInjectorDef<AuthModule>;
     static ɵmod: i0.ɵɵNgModuleDefWithMeta<AuthModule, [typeof i1.LoginActionDirective, typeof i1.LoginPasswordDirective, typeof i1.LoginUsernameDirective], [typeof i2.EffectsFeatureModule, typeof i3.StoreFeatureModule], [typeof i1.LoginActionDirective, typeof i1.LoginPasswordDirective, typeof i1.LoginUsernameDirective]>;
 }

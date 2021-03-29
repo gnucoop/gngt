@@ -5,6 +5,7 @@ export declare class CalendarComponent extends Calendar {
 }
 
 export declare class CalendarModule {
+    static ɵfac: i0.ɵɵFactoryDef<CalendarModule, never>;
     static ɵinj: i0.ɵɵInjectorDef<CalendarModule>;
     static ɵmod: i0.ɵɵNgModuleDefWithMeta<CalendarModule, [typeof i1.CalendarComponent], [typeof i2.CommonModule, typeof i3.FormsModule, typeof i4.IonicModule, typeof i5.TranslateModule], [typeof i1.CalendarComponent]>;
 }

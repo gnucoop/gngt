@@ -26,6 +26,7 @@ export declare class AdminListComponent<T extends Model = Model, S extends Model
 }
 
 export declare class AdminModule {
+    static ɵfac: i0.ɵɵFactoryDef<AdminModule, never>;
     static ɵinj: i0.ɵɵInjectorDef<AdminModule>;
     static ɵmod: i0.ɵɵNgModuleDefWithMeta<AdminModule, [typeof i1.AdminEditComponent, typeof i2.AdminListComponent, typeof i3.InputTypePipe], [typeof i4.CommonModule, typeof i5.GngtAdminModule, typeof i6.GicModule, typeof i7.CommonModule, typeof i8.IonicModule, typeof i9.ReactiveFormsModule, typeof i10.RouterModule, typeof i11.TranslateModule], [typeof i1.AdminEditComponent, typeof i2.AdminListComponent]>;
 }

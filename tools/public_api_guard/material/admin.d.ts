@@ -44,6 +44,7 @@ export declare class AdminListComponent<T extends Model = Model, S extends Model
 }
 
 export declare class AdminModule {
+    static ɵfac: i0.ɵɵFactoryDef<AdminModule, never>;
     static ɵinj: i0.ɵɵInjectorDef<AdminModule>;
     static ɵmod: i0.ɵɵNgModuleDefWithMeta<AdminModule, [typeof i1.AdminDeleteConfirmDialogComponent, typeof i2.AdminEditComponent, typeof i3.AdminListCellDirective, typeof i4.AdminListComponent], [typeof i5.CommonModule, typeof i6.GngtAdminModule, typeof i7.CommonModule, typeof i8.MatAutocompleteModule, typeof i9.MatButtonModule, typeof i10.MatCardModule, typeof i11.MatCheckboxModule, typeof i12.MatDialogModule, typeof i13.MatFormFieldModule, typeof i14.MatIconModule, typeof i15.MatInputModule, typeof i16.MatPaginatorModule, typeof i17.MatProgressBarModule, typeof i18.MatRadioModule, typeof i19.MatSelectModule, typeof i20.MatSortModule, typeof i21.MatTableModule, typeof i22.MatToolbarModule, typeof i23.ReactiveFormsModule, typeof i24.RouterModule, typeof i25.TranslateModule], [typeof i2.AdminEditComponent, typeof i3.AdminListCellDirective, typeof i4.AdminListComponent]>;
 }
