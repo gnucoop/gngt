@@ -142,7 +142,7 @@
     "glob": "^7.1.2",
     "gulp": "^4.0.2",
     "gulp-cli": "^2.3.0",
-    "gulp-sass": "^4.0.2",
+    "gulp-dart-sass": "^1.0.2",
     "highlight.js": "^10.4.0",
     "http-rewrite-middleware": "^0.1.6",
     "husky": "5.1.3",
