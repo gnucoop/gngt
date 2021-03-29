@@ -39,7 +39,10 @@ ng_module(
         "//src/dev-app/mat-calendar",
         "//src/dev-app/mat-login",
         "//src/dev-app/sync",
+        "@npm//@angular/cdk",
+        "@npm//@angular/material",
         "@npm//@angular/router",
+        "@npm//@ngx-translate/core",
     ],
 )
 

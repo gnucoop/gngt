@@ -20,6 +20,6 @@
  */
 
 import {platformBrowser} from '@angular/platform-browser';
-import {MainModule} from './main-module';
+import {MainModuleNgFactory} from './main-module.ngfactory';
 
-platformBrowser().bootstrapModule(MainModule);
+platformBrowser().bootstrapModuleFactory(MainModuleNgFactory);

@@ -13,7 +13,6 @@ ng_module(
         "@npm//@angular/cdk",
         "@npm//@angular/material",
         "@npm//@angular/router",
-        "@npm//@ngx-translate/core",
     ],
 )
 
