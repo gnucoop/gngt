@@ -1,7 +1,7 @@
 export declare class CommonModule {
-    static ɵfac: i0.ɵɵFactoryDef<CommonModule, never>;
-    static ɵinj: i0.ɵɵInjectorDef<CommonModule>;
-    static ɵmod: i0.ɵɵNgModuleDefWithMeta<CommonModule, [typeof i1.FormDisabledDirective, typeof i2.GetObjectProperty], never, [typeof i1.FormDisabledDirective, typeof i2.GetObjectProperty]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<CommonModule, never>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<CommonModule>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<CommonModule, [typeof i1.FormDisabledDirective, typeof i2.GetObjectProperty], never, [typeof i1.FormDisabledDirective, typeof i2.GetObjectProperty]>;
 }
 
 export declare function forceBooleanProp(value: any): boolean;
@@ -10,16 +10,16 @@ export declare class FormDisabledDirective {
     set disabled(disabled: boolean);
     readonly fgd: FormGroupDirective;
     constructor(fgd: FormGroupDirective);
-    static ɵdir: i0.ɵɵDirectiveDefWithMeta<FormDisabledDirective, "[gngtFormDisabled]", never, { "disabled": "gngtFormDisabled"; }, {}, never>;
-    static ɵfac: i0.ɵɵFactoryDef<FormDisabledDirective, [{ host: true; self: true; }]>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<FormDisabledDirective, "[gngtFormDisabled]", never, { "disabled": "gngtFormDisabled"; }, {}, never>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<FormDisabledDirective, [{ host: true; self: true; }]>;
 }
 
 export declare function getObjectProperty(value: any, prop: string): any;
 
 export declare class GetObjectProperty implements PipeTransform {
     transform(value: any, prop: string): any;
-    static ɵfac: i0.ɵɵFactoryDef<GetObjectProperty, never>;
-    static ɵpipe: i0.ɵɵPipeDefWithMeta<GetObjectProperty, "gngtGetObjectProperty">;
+    static ɵfac: i0.ɵɵFactoryDeclaration<GetObjectProperty, never>;
+    static ɵpipe: i0.ɵɵPipeDeclaration<GetObjectProperty, "gngtGetObjectProperty">;
 }
 
 export declare function mergeQueryParams(win: Partial<ModelQueryParams>, loose: Partial<ModelQueryParams>): ModelQueryParams;

@@ -8,7 +8,7 @@ export interface LocalDoc<T extends Model> {
 export declare class OfflineInterceptor implements HttpInterceptor {
     constructor(_syncService: SyncService);
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>>;
-    static ɵfac: i0.ɵɵFactoryDef<OfflineInterceptor, never>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<OfflineInterceptor, never>;
     static ɵprov: i0.ɵɵInjectableDef<OfflineInterceptor>;
 }
 
@@ -25,9 +25,9 @@ export interface SyncEntry {
 export declare type SyncEntryType = 'insert' | 'update' | 'delete';
 
 export declare class SyncModule {
-    static ɵfac: i0.ɵɵFactoryDef<SyncModule, never>;
-    static ɵinj: i0.ɵɵInjectorDef<SyncModule>;
-    static ɵmod: i0.ɵɵNgModuleDefWithMeta<SyncModule, never, never, never>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<SyncModule, never>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<SyncModule>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<SyncModule, never, never, never>;
     static forRoot(opts: SyncOptions): ModuleWithProviders<SyncModule>;
 }
 
@@ -53,7 +53,7 @@ export declare class SyncService {
     start(immediate?: boolean): void;
     stop(): void;
     update(tableName: string, id: number, object: any): Observable<any>;
-    static ɵfac: i0.ɵɵFactoryDef<SyncService, never>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<SyncService, never>;
     static ɵprov: i0.ɵɵInjectableDef<SyncService>;
 }
 

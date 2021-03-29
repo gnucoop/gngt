@@ -34,8 +34,8 @@ export declare abstract class Calendar implements AfterContentInit, ControlValue
     registerOnTouched(fn: any): void;
     selectEntry(entry: CalendarEntry): void;
     writeValue(value: any): void;
-    static ɵdir: i0.ɵɵDirectiveDefWithMeta<Calendar, never, never, { "viewDate": "viewDate"; "disabled": "disabled"; "dateOnlyForDay": "dateOnlyForDay"; "viewMode": "viewMode"; "selectionMode": "selectionMode"; "startOfWeekDay": "startOfWeekDay"; "isoMode": "isoMode"; "minDate": "minDate"; "maxDate": "maxDate"; "selectedPeriod": "selectedPeriod"; }, { "change": "change"; }, never>;
-    static ɵfac: i0.ɵɵFactoryDef<Calendar, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<Calendar, never, never, { "viewDate": "viewDate"; "disabled": "disabled"; "dateOnlyForDay": "dateOnlyForDay"; "viewMode": "viewMode"; "selectionMode": "selectionMode"; "startOfWeekDay": "startOfWeekDay"; "isoMode": "isoMode"; "minDate": "minDate"; "maxDate": "maxDate"; "selectedPeriod": "selectedPeriod"; }, { "change": "change"; }, never>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<Calendar, never>;
 }
 
 export declare const CALENDAR_CONTROL_VALUE_ACCESSOR: any;
