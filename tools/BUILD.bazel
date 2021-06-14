@@ -4,6 +4,7 @@ exports_files([
     "monaco-lib-tmpl.js",
     "system-config-tmpl.js",
     "system-rxjs-operators.js",
+    "rbe_cross_platform_workaround.patch",
 ])
 
 # Workaround for https://github.com/bazelbuild/bazel-toolchains/issues/356. We need the
