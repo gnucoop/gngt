@@ -47,7 +47,6 @@ ANGULAR_NGCC_BUNDLES = [
     ("@angular/common", ["common-http-testing.umd.js", "common-http.umd.js", "common-testing.umd.js", "common.umd.js"]),
     ("@angular/compiler", ["compiler-testing.umd.js"]),
     ("@angular/core", ["core-testing.umd.js", "core.umd.js"]),
-    ("@angular/elements", ["elements.umd.js"]),
     ("@angular/forms", ["forms.umd.js"]),
     ("@angular/material", ["material-autocomplete.umd.js", "material-button.umd.js", "material-button-toggle.umd.js", "material-card.umd.js", "material-checkbox.umd.js", "material-chips.umd.js", "material-core.umd.js", "material-dialog.umd.js", "material-divider.umd.js", "material-expansion.umd.js", "material-form-field.umd.js", "material-grid-list.umd.js", "material-icon.umd.js", "material-input.umd.js", "material-list.umd.js", "material-menu.umd.js", "material-paginator.umd.js", "material-progress-bar.umd.js", "material-radio.umd.js", "material-select.umd.js", "material-sidenav.umd.js", "material-slide-toggle.umd.js", "material-slider.umd.js", "material-snack-bar.umd.js", "material-sort.umd.js", "material-table.umd.js", "material-tabs.umd.js", "material-toolbar.umd.js", "material-tooltip.umd.js"]),
     ("@angular/platform-browser-dynamic", ["platform-browser-dynamic-testing.umd.js", "platform-browser-dynamic.umd.js"]),

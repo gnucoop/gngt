@@ -9,7 +9,6 @@ ng_module(
         "//src/gngt-examples",
         "//src/gngt-examples/private",
         "@npm//@angular/cdk",
-        "@npm//@angular/elements",
         "@npm//@angular/material",
     ],
 )

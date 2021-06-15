@@ -30,7 +30,6 @@ ng_module(
         "//src/material/calendar",
         "@npm//@angular/common",
         "@npm//@angular/core",
-        "@npm//@angular/elements",
         "@npm//@angular/forms",
         "@npm//@angular/platform-browser",
         "@npm//@angular/router",
