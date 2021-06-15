@@ -16,25 +16,28 @@ yarn -s lint
 yarn -s ts-circular-deps:check
 
 echo "Build - View Engine"
-"${BAZEL_BINARY}" build src/... --build_tag_filters=-docs-package,-release-package --config=view-engine
+"${BAZEL_BINARY}" build --build_tag_filters=-docs-package,-release-package --config=view-engine -- src/... -//src/e2e-app:devserver_with_linked_declarations.MF
 
 echo "Unit tests - View Engine"
-"${BAZEL_BINARY}" test src/... --build_tag_filters=-docs-package,-e2e --test_tag_filters=-e2e --config=view-engine --build_tests_only
+"${BAZEL_BINARY}" test --build_tag_filters=-docs-package,-e2e --test_tag_filters=-e2e --config=view-engine --build_tests_only -- src/... -//src/e2e-app:devserver_with_linked_declarations.MF
 
-echo "Integration tests"
+echo "Integration tests - View Engine"
 yarn integration-tests:view-engine
 
+echo "E2E tests"
+"${BAZEL_BINARY}" test src/... --build_tag_filters=e2e --test_tag_filters=e2e --build_tests_only
+
 echo "Build - Ivy"
-"${BAZEL_BINARY}" build src/... --build_tag_filters=-docs-package,-release-package
+"${BAZEL_BINARY}" build --build_tag_filters=-docs-package,-release-package -- src/... -//src/e2e-app:devserver_with_linked_declarations.MF
 
 echo "API guard tests"
 "${BAZEL_BINARY}" test tools/public_api_guard/...
 
 echo "Unit tests - Ivy"
-"${BAZEL_BINARY}" test src/... --build_tag_filters=-e2e --test_tag_filters=-e2e --build_tests_only
+"${BAZEL_BINARY}" test --build_tag_filters=-e2e --test_tag_filters=-e2e --build_tests_only -- src/... -//src/e2e-app:devserver_with_linked_declarations.MF
 
-echo "E2E tests"
-"${BAZEL_BINARY}" test src/... --build_tag_filters=e2e --test_tag_filters=e2e
+echo "Integration tests - Ivy"
+yarn integration-tests:partial-ivy
 
 echo "Release output"
 yarn build

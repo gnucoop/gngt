@@ -1,6 +1,6 @@
 const {buildOptimizer} = require('@angular-devkit/build-optimizer/src/build-optimizer/build-optimizer');
 const node = require('rollup-plugin-node-resolve');
-const {ivyEnabled} = require('angular_material/tools/angular_ivy_enabled');
+const {ivyEnabled} = require('gc_gngt/tools/angular_ivy_enabled');
 
 console.info(`Processing rollup bundle in ${ivyEnabled ? 'Ivy' : 'View Engine'} mode.`);
 

@@ -33,22 +33,32 @@ pipeline {
     }
     stage('Build - View Engine') {
       steps {
-        sh 'bazel build src/... --build_tag_filters=-docs-package,-release-package --config=view-engine'
+        sh 'bazel build --build_tag_filters=-docs-package,-release-package --config=view-engine -- src/... -//src/e2e-app:devserver_with_linked_declarations.MF'
       }
     }
     stage('Unit tests - View Engine') {
       steps {
-        sh 'bazel test src/... --build_tag_filters=-docs-package,-e2e --test_tag_filters=-e2e --config=view-engine --build_tests_only'
+        sh 'bazel test --build_tag_filters=-docs-package,-e2e --test_tag_filters=-e2e --config=view-engine --build_tests_only -- src/... -//src/e2e-app:devserver_with_linked_declarations.MF'
       }
     }
-    stage('Integration tests') {
+    stage('JSON schema tests') {
       steps {
-        sh 'yarn integration-tests:view-engine'
+        sh 'yarn -s bazel test tools/model-schema/...'
+      }
+    }
+    stage('Integration tests - View Engine') {
+      steps {
+        sh 'yarn -s integration-tests:view-engine'
+      }
+    }
+    stage('E2E tests') {
+      steps {
+        sh 'bazel test src/... --build_tag_filters=e2e --test_tag_filters=e2e'
       }
     }
     stage('Build - Ivy') {
       steps {
-        sh 'bazel build src/... --build_tag_filters=-docs-package,-release-package'
+        sh 'bazel build --build_tag_filters=-docs-package,-release-package -- src/... -//src/e2e-app:devserver_with_linked_declarations.MF'
       }
     }
     stage('API guard tests') {
@@ -58,17 +68,17 @@ pipeline {
     }
     stage('Unit tests - Ivy') {
       steps {
-        sh 'bazel test src/... --build_tag_filters=-e2e --test_tag_filters=-e2e --build_tests_only'
+        sh 'bazel test --build_tag_filters=-e2e --test_tag_filters=-e2e --build_tests_only -- src/... -//src/e2e-app:devserver_with_linked_declarations.MF'
       }
     }
-    stage('E2E tests') {
+    stage('Integration tests - Ivy') {
       steps {
-        sh 'bazel test src/... --build_tag_filters=e2e --test_tag_filters=e2e'
+        sh 'yarn -s integration-tests:partial-ivy'
       }
     }
     stage('Release output') {
       steps {
-        sh 'yarn build'
+        sh 'yarn -s build'
         script {
           env.pkg_json_version = sh(script: 'node -pe "require(\\\"./package.json\\\").version"', returnStdout: true).trim()
           env.expected_version = sh(script: 'echo "${pkg_json_version}-sha-$(git rev-parse --short HEAD)"', returnStdout: true).trim()
@@ -78,7 +88,7 @@ pipeline {
         sh 'mkdir -p node_modules/@gngt'
         sh 'cp -R dist/releases/* node_modules/@gngt/'
         sh 'rm -f node_modules/__ngcc_entry_points__.json'
-        sh 'yarn ngcc --error-on-failed-entry-point --no-tsconfig'
+        sh 'yarn -s ngcc --error-on-failed-entry-point --no-tsconfig'
         sh 'rm -Rf node_modules/@gngt'
       }
     }

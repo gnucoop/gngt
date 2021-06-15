@@ -39,7 +39,6 @@ module.exports = config => {
       {pattern: 'node_modules/zone.js/dist/jasmine-patch.min.js', included: true, watched: false},
       {pattern: 'node_modules/zone.js/dist/async-test.js', included: true, watched: false},
       {pattern: 'node_modules/zone.js/dist/fake-async-test.js', included: true, watched: false},
-      {pattern: 'node_modules/hammerjs/hammer.min.js', included: true, watched: false},
 
       // Include all Gngt dependencies
       {pattern: 'node_modules/@angular/**/*', included: false, watched: false},
