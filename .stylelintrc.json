@@ -10,7 +10,8 @@
     "./tools/stylelint/no-top-level-ampersand-in-mixin.ts",
     "./tools/stylelint/theme-mixin-api.ts",
     "./tools/stylelint/no-import.ts",
-    "./tools/stylelint/single-line-comment-only.ts"
+    "./tools/stylelint/single-line-comment-only.ts",
+    "./tools/stylelint/no-unused-import.ts"
   ],
   "rules": {
     "gngt/no-prefixes": [true, {
@@ -20,6 +21,7 @@
     "gngt/theme-mixin-api": true,
     "gngt/selector-no-deep": true,
     "gngt/no-nested-mixin": true,
+    "gngt/no-unused-import": true,
     "gngt/single-line-comment-only": [true, {
       "filePattern": "\\.scss$"
     }],
