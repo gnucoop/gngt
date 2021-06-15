@@ -9,7 +9,7 @@ export declare class OfflineInterceptor implements HttpInterceptor {
     constructor(_syncService: SyncService);
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>>;
     static ɵfac: i0.ɵɵFactoryDeclaration<OfflineInterceptor, never>;
-    static ɵprov: i0.ɵɵInjectableDef<OfflineInterceptor>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<OfflineInterceptor>;
 }
 
 export declare const SYNC_OPTIONS: InjectionToken<SyncOptions>;
@@ -54,7 +54,7 @@ export declare class SyncService {
     stop(): void;
     update(tableName: string, id: number, object: any): Observable<any>;
     static ɵfac: i0.ɵɵFactoryDeclaration<SyncService, never>;
-    static ɵprov: i0.ɵɵInjectableDef<SyncService>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<SyncService>;
 }
 
 export declare type SyncStatus = SyncStatusInitializing | SyncStatusPaused | SyncStatusSyncing | SyncStatusError;

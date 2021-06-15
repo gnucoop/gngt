@@ -26,14 +26,14 @@ export declare class AuthGuard implements CanActivate, CanActivateChild {
     canActivate(): Observable<boolean>;
     canActivateChild(_cr: ActivatedRouteSnapshot, _state: RouterStateSnapshot): Observable<boolean>;
     static ɵfac: i0.ɵɵFactoryDeclaration<AuthGuard, never>;
-    static ɵprov: i0.ɵɵInjectableDef<AuthGuard>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<AuthGuard>;
 }
 
 export declare class AuthHelper {
     constructor(_store: Store<State>, _actions: Actions);
     logout(requestConfirmation?: boolean): Observable<boolean>;
     static ɵfac: i0.ɵɵFactoryDeclaration<AuthHelper, never>;
-    static ɵprov: i0.ɵɵInjectableDef<AuthHelper>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<AuthHelper>;
 }
 
 export declare class AuthModule {
@@ -75,7 +75,7 @@ export declare class AuthService {
     logout(): Observable<null>;
     refreshToken(refreshToken: string): Observable<RefreshTokenResponse>;
     static ɵfac: i0.ɵɵFactoryDeclaration<AuthService, never>;
-    static ɵprov: i0.ɵɵInjectableDef<AuthService>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<AuthService>;
 }
 
 export interface AuthState {
@@ -138,7 +138,7 @@ export declare class JwtHelperService {
     isTokenExpired(token?: string | null, offsetSeconds?: number): boolean;
     urlBase64Decode(str: string): string;
     static ɵfac: i0.ɵɵFactoryDeclaration<JwtHelperService, never>;
-    static ɵprov: i0.ɵɵInjectableDef<JwtHelperService>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<JwtHelperService>;
 }
 
 export declare class JwtInterceptor implements HttpInterceptor {
@@ -156,7 +156,7 @@ export declare class JwtInterceptor implements HttpInterceptor {
     isBlacklistedRoute(request: HttpRequest<any>): boolean;
     isWhitelistedDomain(request: HttpRequest<any>): boolean;
     static ɵfac: i0.ɵɵFactoryDeclaration<JwtInterceptor, never>;
-    static ɵprov: i0.ɵɵInjectableDef<JwtInterceptor>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<JwtInterceptor>;
 }
 
 export interface JwtOptions {

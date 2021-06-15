@@ -53,5 +53,5 @@ export declare class AdminUserInteractionsService extends CoreAdminUserInteracti
     constructor(_dialog: MatDialog);
     askDeleteConfirm(): Observable<boolean>;
     static ɵfac: i0.ɵɵFactoryDeclaration<AdminUserInteractionsService, never>;
-    static ɵprov: i0.ɵɵInjectableDef<AdminUserInteractionsService>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<AdminUserInteractionsService>;
 }
