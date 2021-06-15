@@ -7,6 +7,7 @@
 import * as chalk from 'chalk';
 import {readFileSync, statSync, writeFileSync} from 'fs';
 import {parse, stringify} from 'yaml';
+import {runfiles} from '@bazel/runfiles';
 
 /**
  * Absolute byte deviation from the expected value that is allowed. If the
@@ -27,8 +28,8 @@ const PERCENTAGE_DEVIATION_THRESHOLD = 1;
  *                 with the actual measured size.
  */
 const [testId, testFileRootpath, isApprove] = process.argv.slice(2);
-const testFilePath = require.resolve(`angular_material/${testFileRootpath}`);
-const goldenFilePath = require.resolve('../../goldens/size-test.yaml');
+const testFilePath = runfiles.resolveWorkspaceRelative(testFileRootpath);
+const goldenFilePath = runfiles.resolveWorkspaceRelative('goldens/size-test.yaml');
 
 const golden = parse(readFileSync(goldenFilePath, 'utf8')) || {};
 const fileStat = statSync(testFilePath);
