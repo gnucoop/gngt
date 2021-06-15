@@ -13,7 +13,7 @@
     "yarn": ">= 1.0.0"
   },
   "scripts": {
-    "postinstall": "rm -Rf node_modules/@ngrx/effects/esm2015/src node_modules/@ngrx/store/esm2015/src && husky install && node tools/postinstall/apply-patches.js && ngcc --properties main --create-ivy-entry-points && node tools/postinstall/update-ngcc-main-fields.js && node tools/postinstall/patch-packages.js",
+    "postinstall": "rm -Rf node_modules/@ngrx/effects/esm2015/src node_modules/@ngrx/store/esm2015/src && node tools/postinstall/apply-patches.js && ngcc --properties main --create-ivy-entry-points && node tools/postinstall/update-ngcc-main-fields.js && node tools/postinstall/patch-packages.js",
     "build": "node ./scripts/build-packages-dist.js",
     "build-docs-content": "node ./scripts/build-docs-content.js",
     "dev-app": "ibazel run //src/dev-app:devserver",
@@ -45,7 +45,8 @@
     "integration-tests": "bazel test --test_tag_filters=-view-engine-only --build_tests_only -- //integration/... -//integration/size-test/...",
     "integration-tests:view-engine": "bazel test --test_tag_filters=view-engine-only --build_tests_only -- //integration/... -//integration/size-test/...",
     "integration-tests:size-test": "bazel test //integration/size-test/...",
-    "check-tools": "yarn tsc --project tools/tsconfig-ci.json"
+    "check-tools": "yarn tsc --project tools/tsconfig-ci.json",
+    "prepare": "husky install"
   },
   "version": "12.0.0-next.0",
   "dependencies": {
@@ -146,7 +147,7 @@
     "gulp-dart-sass": "^1.0.2",
     "highlight.js": "^10.4.0",
     "http-rewrite-middleware": "^0.1.6",
-    "husky": "5.2.0",
+    "husky": "6.0.0",
     "inquirer": "^8.0.0",
     "jasmine": "^3.6.0",
     "jasmine-core": "^3.6.0",
