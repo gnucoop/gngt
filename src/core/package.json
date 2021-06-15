@@ -24,6 +24,7 @@
     "date-fns": "0.0.0-DATEFNS",
     "pouchdb": "0.0.0-POUCHDB",
     "pouchdb-find": "0.0.0-POUCHDB",
+    "rxjs": "0.0.0-RXJS",
     "url-parse": "0.0.0-URLPARSE",
     "uuid": "0.0.0-UUID"
   },

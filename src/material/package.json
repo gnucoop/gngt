@@ -19,7 +19,8 @@
     "@angular/common": "0.0.0-NG",
     "@angular/router": "0.0.0-NG",
     "@angular/material": "0.0.0-ANGM",
-    "@gngt/core": "0.0.0-PLACEHOLDER"
+    "@gngt/core": "0.0.0-PLACEHOLDER",
+    "rxjs": "0.0.0-RXJS"
   },
   "dependencies": {
     "tslib": "0.0.0-TSLIB"

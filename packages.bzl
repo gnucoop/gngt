@@ -9,6 +9,7 @@ IONIC_PACKAGE_VERSION = "^5.3.0"
 NGRX_PACKAGE_VERSION = "^11.0.0"
 NGXT_PACKAGE_VERSION = "^13.0.0"
 POUCHDB_PACKAGE_VERSION = "~7.0.0"
+RXJS_PACKAGE_VERSION = "^6.5.3"
 TSLIB_PACKAGE_VERSION = "^2.1.0"
 URL_PARSE_PACKAGE_VERSION = "^1.4.7"
 UUID_PACKAGE_VERSION = "^8.3.0"
@@ -30,6 +31,8 @@ VERSION_PLACEHOLDER_REPLACEMENTS = {
     "0.0.0-UUID": UUID_PACKAGE_VERSION,
     # Version of the local package being built, generated via the `--workspace_status_command` flag.
     "0.0.0-PLACEHOLDER": "{BUILD_SCM_VERSION}",
+    # Version of `rxjs`
+    "0.0.0-RXJS": RXJS_PACKAGE_VERSION,
 }
 
 # List of default Angular library UMD bundles which are not processed by ngcc.
