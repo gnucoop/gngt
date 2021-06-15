@@ -28,6 +28,7 @@ typescript_version_packages = [
             "//src/core:npm_package",
             "//src/ionic:npm_package",
             "//src/material:npm_package",
+            "@npm//@bazel/runfiles",
             "@npm//shelljs",
             "@npm//%s" % ts_pkg_name,
             "@npm//@types/node",
