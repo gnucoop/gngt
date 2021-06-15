@@ -6,7 +6,9 @@ import {NeedsPrefix} from './needs-prefix';
 const parseSelector = require('stylelint/lib/utils/parseSelector');
 const ruleName = 'gngt/no-prefixes';
 const messages = utils.ruleMessages(ruleName, {
-  property: property => `Unprefixed property "${property}".`,
+  property: (property: string, browsers: string[]) => {
+    return `Unprefixed property "${property}" needs a prefix for browsers ${browsers.join(', ')}.`;
+  },
   value: (property, value) => `Unprefixed value in "${property}: ${value}".`,
   atRule: name => `Unprefixed @rule "${name}".`,
   mediaFeature: value => `Unprefixed media feature "${value}".`,
@@ -39,11 +41,13 @@ const plugin = createPlugin(ruleName, (isEnabled: boolean, _options?) => {
 
     // Check all of the `property: value` pairs.
     root.walkDecls(decl => {
-      if (needsPrefix.property(decl.prop)) {
+      const propertyPrefixes = needsPrefix.property(decl.prop, decl.value);
+
+      if (propertyPrefixes.length) {
         utils.report({
           result,
           ruleName,
-          message: messages.property(decl.prop),
+          message: messages.property(decl.prop, propertyPrefixes),
           node: decl,
           index: (decl.raws.before || '').length
         });
