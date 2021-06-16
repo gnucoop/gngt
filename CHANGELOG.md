@@ -1,3 +1,12 @@
+# 12.0.0 "broad-hall" (2021-06-16)
+
+### core
+
+|            |                       |
+| ---------- | --------------------- |
+| bug fix |  **sync:** SyncService get was not correctly executed with joins ([5f65a0de825b2e1ac274023d1718931bc2482be1](https://github.com/gnucoop/gngt/commit/5f65a0de825b2e1ac274023d1718931bc2482be1)) |
+
+
 # 12.0.0-next.0 "tiny-sky" (2021-03-15)
 
 update to angular 12
