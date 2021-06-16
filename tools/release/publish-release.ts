@@ -105,9 +105,10 @@ class PublishReleaseTask extends BaseReleaseTask {
 
     const {releaseNotes, releaseTitle} = extractedReleaseNotes;
 
+    const tagName = `v${newVersionName}`;
     // Create and push the release tag before publishing to NPM.
-    this._createReleaseTag(`v${newVersionName}`, releaseNotes);
-    this._pushReleaseTag(newVersionName, upstreamRemote);
+    this._createReleaseTag(tagName, releaseNotes);
+    this._pushReleaseTag(tagName, upstreamRemote);
 
     // Just in order to double-check that the user is sure to publish to NPM, we want
     // the user to interactively confirm that the script should continue.
@@ -120,7 +121,7 @@ class PublishReleaseTask extends BaseReleaseTask {
     const newReleaseUrl = getGithubNewReleaseUrl({
       owner: this.repositoryOwner,
       repository: this.repositoryName,
-      tagName: newVersionName,
+      tagName: tagName,
       releaseTitle: releaseTitle,
       // TODO: we cannot insert the real changelog here since the URL would become
       // way too large and Github would consider this as a malformed page request.
