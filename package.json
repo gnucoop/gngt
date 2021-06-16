@@ -69,7 +69,7 @@
     "core-js-bundle": "^3.8.2",
     "date-fns": "^2.15.0",
     "pouchdb": "~7.0.0",
-    "pouchdb-find": "~7.0.0",
+    "pouchdb-find": "~7.2.2",
     "rxjs": "^6.5.3",
     "rxjs-tslint-rules": "^4.33.1",
     "systemjs": "0.19.43",
