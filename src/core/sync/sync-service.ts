@@ -135,14 +135,15 @@ export class SyncService {
     const db = this._getLocalDocsDb();
     return this._databaseIsInit.pipe(
         exhaustMap(_ => this._relationalModelIdxObs()),
-        exhaustMap(
-            rmi => from(db.find(this._modelGetFindRequest(
-                            tableName, params,
-                            rmi as PouchDB.Find.CreateIndexResponse<LocalDoc<any>>)))
-                       .pipe(
-                           take(1),
-                           map(res => ({res, rmi})),
-                           )),
+        exhaustMap(rmi => {
+          const findPromise = db.find(this._modelGetFindRequest(
+              tableName, params, rmi as PouchDB.Find.CreateIndexResponse<LocalDoc<any>>));
+          return from(findPromise)
+              .pipe(
+                  take(1),
+                  map(res => ({res, rmi})),
+              );
+        }),
         switchMap(r => {
           const {res, rmi} = r as {
             res: PouchDB.Find.FindResponse<LocalDoc<any>>,
@@ -151,27 +152,23 @@ export class SyncService {
           if (res.docs.length === 1) {
             let obj = this._subObject(res.docs[0].object, params.fields);
             if (params.joins != null) {
-              return zip(...params.joins.map(
-                             join => from(db.find(this._modelGetFindRequest(
-                                              join.model,
-                                              {id: obj[join.property], fields: join.fields}, rmi)))
-                                         .pipe(
-                                             take(1),
-                                             map(relRes => {
-                                               const related = relRes as
-                                                   PouchDB.Find.FindResponse<LocalDoc<any>>;
-                                               return related.docs.length === 1 ?
-                                                   related.docs[0].object :
-                                                   null;
-                                             }),
-                                             map(related => ({join, related})),
-                                             )))
+              const observables = params.joins.map(join => {
+                const findPromise = db.find(this._modelGetFindRequest(
+                    join.model, {id: obj[join.property], fields: join.fields}, rmi));
+                return from(findPromise)
+                    .pipe(
+                        take(1),
+                        map(relRes => {
+                          const related = relRes as PouchDB.Find.FindResponse<LocalDoc<any>>;
+                          return related.docs.length === 1 ? related.docs[0].object : null;
+                        }),
+                        map(related => ({join, related})),
+                    );
+              });
+              return zip(...observables)
                   .pipe(
                       map(joins => {
-                        (joins as {
-                          join: ModelJoin;
-                          related: any;
-                        }[]).forEach(joinEntry => {
+                        joins.forEach(joinEntry => {
                           obj[joinEntry.join.property] = joinEntry.related;
                         });
                         return obj;
