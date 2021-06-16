@@ -41,11 +41,6 @@ pipeline {
         sh 'bazel test --build_tag_filters=-docs-package,-e2e --test_tag_filters=-e2e --config=view-engine --build_tests_only -- src/... -//src/e2e-app:devserver_with_linked_declarations.MF'
       }
     }
-    stage('JSON schema tests') {
-      steps {
-        sh 'yarn -s bazel test tools/model-schema/...'
-      }
-    }
     stage('Integration tests - View Engine') {
       steps {
         sh 'yarn -s integration-tests:view-engine'
