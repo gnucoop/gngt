@@ -1,3 +1,12 @@
+# 12.1.0-next.0 "blue-rain" (2021-06-16)
+
+### core
+
+|            |                       |
+| ---------- | --------------------- |
+| bug fix |  **sync:** SyncService get was not correctly executed with joins ([82811ee012d824ac081bcfc74d445997b60d8f2e](https://github.com/gnucoop/gngt/commit/82811ee012d824ac081bcfc74d445997b60d8f2e)) |
+
+
 # 12.0.0-next.0 "tiny-sky" (2021-03-15)
 
 update to angular 12
