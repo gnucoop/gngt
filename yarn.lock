@@ -1837,10 +1837,10 @@
   dependencies:
     "@types/unist" "*"
 
-"@types/merge2@^0.3.30":
-  version "0.3.30"
-  resolved "https://registry.yarnpkg.com/@types/merge2/-/merge2-0.3.30.tgz#9e39d04f6fe4f36fa7477566cad1faf80b2a671f"
-  integrity sha1-njnQT2/k82+nR3VmytH6+AsqZx8=
+"@types/merge2@^1.3.1":
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/@types/merge2/-/merge2-1.3.1.tgz#e7c0b9d583581328e780a55cc847997f3f092686"
+  integrity sha512-aDA8WfZHU/J1OeQmrP+DfGrl1tb0cwNIuiiIqK3+S21gQ+aWg2n4OIvmFHpd2A4yQdZfjikC4XIYVNtX+b9qgg==
   dependencies:
     "@types/node" "*"
 
