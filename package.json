@@ -172,7 +172,7 @@
     "request": "^2.88.0",
     "requirejs": "^2.3.6",
     "resolve-bin": "^0.4.0",
-    "rollup": "~2.42.2",
+    "rollup": "~2.54.0",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-json": "^4.0.0",
     "rollup-plugin-node-globals": "^1.4.0",
