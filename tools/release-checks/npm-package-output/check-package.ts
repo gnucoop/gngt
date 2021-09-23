@@ -1,3 +1,4 @@
+import {error} from '@angular/dev-infra-private/utils/console';
 import * as chalk from 'chalk';
 import {existsSync} from 'fs';
 import {sync as glob} from 'glob';
@@ -32,8 +33,7 @@ type PackageFailures = Map<string, string[]>;
  * @returns Whether the package passed all checks or not.
  */
 export function checkReleasePackage(
-    releasesPath: string, packageName: string, expectedVersion: string): boolean {
-  const packagePath = join(releasesPath, packageName);
+    packagePath: string, packageName: string, expectedVersion: string): boolean {
   const failures = new Map() as PackageFailures;
   const addFailure = (message: string, filePath?: string) => {
     const filePaths = failures.get(message) || [];
@@ -87,17 +87,17 @@ export function checkReleasePackage(
 
 /** Prints the grouped failures for a specified package. */
 function printGroupedFailures(packageName: string, failures: PackageFailures) {
-  console.error(chalk.red(chalk.bold(`  ⚠   Package: "${packageName}" has failures:`)));
+  error(chalk.red(chalk.bold(`  ⚠   Package: "${packageName}" has failures:`)));
   failures.forEach((affectedFiles, failureMessage) => {
-    console.error(chalk.yellow(`  ⮑   ${failureMessage}`));
+    error(chalk.yellow(`  ⮑   ${failureMessage}`));
 
     if (affectedFiles.length) {
       affectedFiles.forEach(affectedFile => {
-        console.error(chalk.yellow(`        ${affectedFile}`));
+        error(chalk.yellow(`        ${affectedFile}`));
       });
     }
 
     // Add an extra line so that subsequent failure message groups are clearly separated.
-    console.error();
+    error();
   });
 }
