@@ -79,7 +79,7 @@ pipeline {
           env.expected_version = sh(script: 'echo "${pkg_json_version}-sha-$(git rev-parse --short HEAD)"', returnStdout: true).trim()
           sh 'yarn check-release-output ${expected_version}'
         }
-        sh 'yarn -s check-tools'
+        sh 'yarn -s check-tooling-setup'
         sh 'mkdir -p node_modules/@gngt'
         sh 'cp -R dist/releases/* node_modules/@gngt/'
         sh 'rm -f node_modules/__ngcc_entry_points__.json'
