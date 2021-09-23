@@ -125,7 +125,7 @@
     "@types/pouchdb-find": "^6.3.5",
     "@types/semver": "^7.3.4",
     "@types/send": "^0.14.5",
-    "@types/stylelint": "^9.10.1",
+    "@types/stylelint": "^13.13.2",
     "@types/url-parse": "^1.4.3",
     "@types/uuid": "^8.0.0",
     "@types/yaml": "^1.9.7",
