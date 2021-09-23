@@ -1,6 +1,6 @@
 pipeline {
   agent {
-    label 'bazel-build-node14'
+    label 'bazel-build-node16'
   }
   environment {
     scmInfo = checkout scm
@@ -15,25 +15,11 @@ pipeline {
     }
     stage('Setup') {
       steps {
+        sh 'rm -Rf /home/jenkins/.cache/bazelisk /home/jenkins/bazel_repository_cache'
         restoreCache(cacheParams)
         sh 'cat .jenkins/bazelrc >> .bazelrc'
         sh 'yarn install --frozen-lockfile --non-interactive'
         sh './scripts/circleci/setup_bazel_binary.sh'
-      }
-    }
-    stage('Lint') {
-      steps {
-        sh 'bazel build //:rollup_globals'
-        sh 'yarn -s check-rollup-globals $(bazel info bazel-bin)/rollup_globals.json'
-        sh 'bazel build //:entry_points_manifest'
-        sh 'yarn -s check-entry-point-setup $(bazel info bazel-bin)/entry_points_manifest.json'
-        sh 'yarn -s lint'
-        sh 'yarn -s ts-circular-deps:check'
-      }
-    }
-    stage('Build - View Engine') {
-      steps {
-        sh 'bazel build --build_tag_filters=-docs-package,-release-package --config=view-engine -- src/...'
       }
     }
     stage('Unit tests - View Engine') {
@@ -41,50 +27,80 @@ pipeline {
         sh 'bazel test --build_tag_filters=-docs-package,-e2e --test_tag_filters=-e2e --config=view-engine --build_tests_only -- src/...'
       }
     }
-    stage('Integration tests - View Engine') {
+    stage('Build - View Engine') {
       steps {
-        sh 'yarn -s integration-tests:view-engine'
+        sh 'bazel build --build_tag_filters=-docs-package,-release-package --config=view-engine -- src/...'
       }
     }
-    stage('E2E tests') {
-      steps {
-        sh 'bazel test src/... --build_tag_filters=e2e --test_tag_filters=e2e'
-      }
-    }
-    stage('Build - Ivy') {
-      steps {
-        sh 'bazel build --build_tag_filters=-docs-package,-release-package -- src/...'
-      }
-    }
-    stage('API guard tests') {
-      steps {
-        sh 'bazel test tools/public_api_guard/...'
-      }
-    }
-    stage('Unit tests - Ivy') {
+    stage('Test local browsers') {
       steps {
         sh 'bazel test --build_tag_filters=-e2e --test_tag_filters=-e2e --build_tests_only -- src/...'
       }
     }
-    stage('Integration tests - Ivy') {
+    stage('Lint') {
       steps {
-        sh 'yarn -s integration-tests:partial-ivy'
+        sh 'bazel build //:rollup_globals'
+        sh 'yarn check-rollup-globals $(bazel info bazel-bin)/rollup_globals.json'
+        sh 'bazel build //:entry_points_manifest'
+        sh 'yarn check-entry-point-setup $(bazel info bazel-bin)/entry_points_manifest.json'
+        sh 'yarn -s lint'
+        sh 'yarn -s ts-circular-deps:check'
       }
     }
-    stage('Release output') {
+    stage('Integration tests - Partial Ivy') {
       steps {
-        sh 'yarn -s build'
-        script {
-          env.pkg_json_version = sh(script: 'node -pe "require(\\\"./package.json\\\").version"', returnStdout: true).trim()
-          env.expected_version = sh(script: 'echo "${pkg_json_version}-sha-$(git rev-parse --short HEAD)"', returnStdout: true).trim()
-          sh 'yarn check-release-output ${expected_version}'
-        }
-        sh 'yarn -s check-tooling-setup'
+        sh 'yarn integration-tests:partial-ivy'
+      }
+    }
+    stage('Integration tests - View Engine') {
+      steps {
+        sh 'yarn integration-tests:view-engine'
+      }
+    }
+    stage('E2E tests') {
+      steps {
+        sh 'yarn e2e --flaky_test_attempts=2'
+      }
+    }
+    stage('Build release packages') {
+      steps {
+        sh 'yarn build-and-check-release-output'
+        sh 'yarn check-tooling-setup'
+        sh './scripts/jenkins/create-build-artifacts.js'
+        archiveArtifacts 'dist/releases/**/*.tgz'
+      }
+    }
+    stage('Ngcc compatibility check') {
+      steps {
         sh 'mkdir -p node_modules/@gngt'
         sh 'cp -R dist/releases/* node_modules/@gngt/'
-        sh 'rm -f node_modules/__ngcc_entry_points__.json'
-        sh 'yarn -s ngcc --error-on-failed-entry-point --no-tsconfig'
+        sh 'mv node_modules/__ngcc_entry_points__.json node_modules/__ngcc_entry_points__.json.back'
+        sh 'yarn ngcc --error-on-failed-entry-point --no-tsconfig'
+        sh 'mv node_modules/__ngcc_entry_points__.json.back node_modules/__ngcc_entry_points__.json'
         sh 'rm -Rf node_modules/@gngt'
+      }
+    }
+    stage('Publish snapshots') {
+      when {
+        expression {
+          return gitBranch == 'master'
+        }
+      }
+      steps {
+        sh 'bazel build src/gngt-examples:npm_package --config=release'
+        sh 'yarn build-docs-content'
+        sh './scripts/circleci/publish-snapshots.sh'
+        sh 'node ./scripts/deploy-dev-app.js'
+      }
+    }
+    stage('Build') {
+      steps {
+        sh 'bazel build --build_tag_filters=-docs-package,-release-package -- src/...'
+      }
+    }
+    stage('API golden checks') {
+      steps {
+        sh 'bazel test tools/public_api_guard/...'
       }
     }
     stage('Save cache') {
