@@ -10,8 +10,8 @@ http_archive(
     name = "build_bazel_rules_nodejs",
     patch_args = ["-p1"],
     patches = ["//tools/third-party-libs:npm_umd_bundle.patch"],
-    sha256 = "5c40083120eadec50a3497084f99bc75a85400ea727e82e0b2f422720573130f",
-    urls = ["https://github.com/bazelbuild/rules_nodejs/releases/download/4.0.0-beta.0/rules_nodejs-4.0.0-beta.0.tar.gz"],
+    sha256 = "8a7c981217239085f78acc9898a1f7ba99af887c1996ceb3b4504655383a2c3c",
+    urls = ["https://github.com/bazelbuild/rules_nodejs/releases/download/4.0.0/rules_nodejs-4.0.0.tar.gz"],
 )
 
 # Add sass rules
@@ -46,7 +46,7 @@ load("@build_bazel_rules_nodejs//:index.bzl", "check_bazel_version", "node_repos
 check_bazel_version("4.0.0")
 
 node_repositories(
-    node_version = "14.16.1",
+    node_version = "16.6.0",
     package_json = ["//:package.json"],
 )
 
@@ -98,3 +98,7 @@ load(
 )
 
 _dev_infra_browser_repositories()
+
+load("@build_bazel_rules_nodejs//toolchains/esbuild:esbuild_repositories.bzl", "esbuild_repositories")
+
+esbuild_repositories()
