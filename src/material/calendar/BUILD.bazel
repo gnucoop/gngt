@@ -19,7 +19,6 @@ ng_module(
         exclude = ["**/*.spec.ts"],
     ),
     assets = [":calendar.css"] + glob(["**/*.html"]),
-    module_name = "@gngt/material/calendar",
     deps = [
         "//src/core/calendar",
         "@npm//@angular/common",

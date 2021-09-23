@@ -21,7 +21,6 @@ ng_module(
         ":edit.css",
         ":list.css",
     ] + glob(["**/*.html"]),
-    module_name = "@gngt/material/admin",
     deps = [
         "//src/core/admin",
         "//src/core/common",

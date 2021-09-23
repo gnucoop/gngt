@@ -15,7 +15,6 @@ ALL_EXAMPLES = [
 ng_module(
     name = "gngt-examples",
     srcs = glob(["*.ts"]) + [":example-module.ts"],
-    module_name = "@gngt/gngt-examples",
     deps = ALL_EXAMPLES,
 )
 

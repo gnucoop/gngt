@@ -15,7 +15,6 @@ ng_module(
         ["**/*.ts"],
         exclude = ["**/*.spec.ts"],
     ),
-    module_name = "@gngt/ionic/common",
     deps = [
         "@npm//@angular/core",
         "@npm//@ionic/angular",

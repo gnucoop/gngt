@@ -48,7 +48,6 @@ export declare abstract class ModelCreateAction<T extends Model> extends ModelBa
     payload: {
         item: T;
     };
-    abstract type: string;
     constructor(payload: {
         item: T;
     });
@@ -58,7 +57,6 @@ export declare abstract class ModelCreateFailureAction extends ModelBaseAction {
     payload: {
         error: ModelError;
     };
-    abstract type: string;
     constructor(payload: {
         error: ModelError;
     });
@@ -75,7 +73,6 @@ export declare abstract class ModelCreateSuccessAction<T extends Model> extends 
     payload: {
         item: T;
     };
-    abstract type: string;
     constructor(payload: {
         item: T;
     });
@@ -85,7 +82,6 @@ export declare abstract class ModelDeleteAction<T extends Model> extends ModelBa
     payload: {
         item: T;
     };
-    abstract type: string;
     constructor(payload: {
         item: T;
     });
@@ -95,7 +91,6 @@ export declare abstract class ModelDeleteAllAction<T extends Model> extends Mode
     payload: {
         items: T[];
     };
-    abstract type: string;
     constructor(payload: {
         items: T[];
     });
@@ -105,7 +100,6 @@ export declare abstract class ModelDeleteAllFailureAction extends ModelBaseActio
     payload: {
         error: ModelError;
     };
-    abstract type: string;
     constructor(payload: {
         error: ModelError;
     });
@@ -123,7 +117,6 @@ export declare abstract class ModelDeleteAllSuccessAction<T extends Model> exten
     payload: {
         items: T[];
     };
-    abstract type: string;
     constructor(payload: {
         items: T[];
     });
@@ -133,7 +126,6 @@ export declare abstract class ModelDeleteFailureAction extends ModelBaseAction {
     payload: {
         error: ModelError;
     };
-    abstract type: string;
     constructor(payload: {
         error: ModelError;
     });
@@ -151,7 +143,6 @@ export declare abstract class ModelDeleteSuccessAction<T extends Model> extends 
     payload: {
         item: T;
     };
-    abstract type: string;
     constructor(payload: {
         item: T;
     });
@@ -196,7 +187,6 @@ export declare abstract class ModelGetFailureAction extends ModelBaseAction {
     payload: {
         error: ModelError;
     };
-    abstract type: string;
     constructor(payload: {
         error: ModelError;
     });
@@ -224,7 +214,6 @@ export declare abstract class ModelListAction extends ModelBaseAction {
     payload: {
         params: ModelListParams;
     };
-    abstract type: string;
     constructor(payload: {
         params: ModelListParams;
     });
@@ -234,7 +223,6 @@ export declare abstract class ModelListFailureAction extends ModelBaseAction {
     payload: {
         error: ModelError;
     };
-    abstract type: string;
     constructor(payload: {
         error: ModelError;
     });
@@ -252,7 +240,6 @@ export declare abstract class ModelListSuccessAction<T extends Model> extends Mo
     payload: {
         result: ModelListResult<T>;
     };
-    abstract type: string;
     constructor(payload: {
         result: ModelListResult<T>;
     });
@@ -287,7 +274,6 @@ export declare abstract class ModelPatchAction<T extends Model> extends ModelBas
     payload: {
         item: T;
     };
-    abstract type: string;
     constructor(payload: {
         item: T;
     });
@@ -297,7 +283,6 @@ export declare abstract class ModelPatchFailureAction extends ModelBaseAction {
     payload: {
         error: ModelError;
     };
-    abstract type: string;
     constructor(payload: {
         error: ModelError;
     });
@@ -315,7 +300,6 @@ export declare abstract class ModelPatchSuccessAction<T extends Model> extends M
     payload: {
         item: T;
     };
-    abstract type: string;
     constructor(payload: {
         item: T;
     });
@@ -325,7 +309,6 @@ export declare abstract class ModelQueryAction extends ModelBaseAction {
     payload: {
         params: ModelQueryParams;
     };
-    abstract type: string;
     constructor(payload: {
         params: ModelQueryParams;
     });
@@ -335,7 +318,6 @@ export declare abstract class ModelQueryFailureAction extends ModelBaseAction {
     payload: {
         error: ModelError;
     };
-    abstract type: string;
     constructor(payload: {
         error: ModelError;
     });
@@ -353,7 +335,6 @@ export declare abstract class ModelQuerySuccessAction<T extends Model> extends M
     payload: {
         result: ModelListResult<T>;
     };
-    abstract type: string;
     constructor(payload: {
         result: ModelListResult<T>;
     });
@@ -421,7 +402,6 @@ export declare abstract class ModelUpdateAction<T extends Model> extends ModelBa
     payload: {
         item: T;
     };
-    abstract type: string;
     constructor(payload: {
         item: T;
     });
@@ -431,7 +411,6 @@ export declare abstract class ModelUpdateFailureAction extends ModelBaseAction {
     payload: {
         error: ModelError;
     };
-    abstract type: string;
     constructor(payload: {
         error: ModelError;
     });
@@ -449,7 +428,6 @@ export declare abstract class ModelUpdateSuccessAction<T extends Model> extends 
     payload: {
         item: T;
     };
-    abstract type: string;
     constructor(payload: {
         item: T;
     });

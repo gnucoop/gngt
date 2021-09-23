@@ -20,7 +20,6 @@ ng_module(
         ":login.css",
         ":logout-confirm-dialog.css",
     ] + glob(["**/*.html"]),
-    module_name = "@gngt/material/auth",
     deps = [
         "//src/core/auth",
         "//src/core/common",

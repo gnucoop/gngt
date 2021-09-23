@@ -17,7 +17,6 @@ ng_module(
         exclude = ["**/*.spec.ts"],
     ),
     assets = [":login.css"] + glob(["**/*.html"]),
-    module_name = "@gngt/ionic/auth",
     deps = [
         "//src/core/auth",
         "//src/core/common",

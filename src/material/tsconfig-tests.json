@@ -4,7 +4,13 @@
 {
   
   "extends": "../bazel-tsconfig-build.json",
+  "references": [
+    {
+      "path": "../core/tsconfig-tests.json"
+    }
+  ],
   "compilerOptions": {
+    "composite": true,
     "baseUrl": ".",
     "outDir": "../../dist/packages/material",
     "rootDir": ".",
@@ -25,8 +31,7 @@
     }
   },
   "include": [
-    "./*/index.ts",
-    "**/*.spec.ts"
+    "**/*.ts"
   ],
   "exclude": [
     "**/schematics/**/*.ts",

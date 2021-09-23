@@ -9,7 +9,6 @@ ng_module(
         "**/*.html",
         "**/*.css",
     ]),
-    module_name = "@gngt/gngt-examples/material/calendar",
     deps = [
         "//src/material/calendar",
     ],

@@ -33,12 +33,12 @@ pipeline {
     }
     stage('Build - View Engine') {
       steps {
-        sh 'bazel build --build_tag_filters=-docs-package,-release-package --config=view-engine -- src/... -//src/e2e-app:devserver_with_linked_declarations.MF'
+        sh 'bazel build --build_tag_filters=-docs-package,-release-package --config=view-engine -- src/...'
       }
     }
     stage('Unit tests - View Engine') {
       steps {
-        sh 'bazel test --build_tag_filters=-docs-package,-e2e --test_tag_filters=-e2e --config=view-engine --build_tests_only -- src/... -//src/e2e-app:devserver_with_linked_declarations.MF'
+        sh 'bazel test --build_tag_filters=-docs-package,-e2e --test_tag_filters=-e2e --config=view-engine --build_tests_only -- src/...'
       }
     }
     stage('Integration tests - View Engine') {
@@ -53,7 +53,7 @@ pipeline {
     }
     stage('Build - Ivy') {
       steps {
-        sh 'bazel build --build_tag_filters=-docs-package,-release-package -- src/... -//src/e2e-app:devserver_with_linked_declarations.MF'
+        sh 'bazel build --build_tag_filters=-docs-package,-release-package -- src/...'
       }
     }
     stage('API guard tests') {
@@ -63,7 +63,7 @@ pipeline {
     }
     stage('Unit tests - Ivy') {
       steps {
-        sh 'bazel test --build_tag_filters=-e2e --test_tag_filters=-e2e --build_tests_only -- src/... -//src/e2e-app:devserver_with_linked_declarations.MF'
+        sh 'bazel test --build_tag_filters=-e2e --test_tag_filters=-e2e --build_tests_only -- src/...'
       }
     }
     stage('Integration tests - Ivy') {
