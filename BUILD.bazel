@@ -7,7 +7,7 @@ package(default_visibility = ["//visibility:public"])
 
 exports_files([
     "LICENSE",
-    "scss-bundle.config.json",
+    "package.json",
 ])
 
 genrule(

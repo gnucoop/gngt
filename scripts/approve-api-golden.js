@@ -21,4 +21,4 @@ if (!packageNameGuess.result) {
 // ShellJS should exit if any command fails.
 shelljs.set('-e');
 shelljs.cd(projectDir);
-shelljs.exec(`yarn bazel run //tools/public_api_guard:${packageNameGuess.result}.d.ts_api.accept`);
+shelljs.exec(`yarn bazel run //tools/public_api_guard:${packageNameGuess.result}.md_api.accept`);
