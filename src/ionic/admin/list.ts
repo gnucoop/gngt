@@ -70,7 +70,7 @@ export class AdminListComponent<T extends Model = Model, S extends ModelState<T>
     super(cdr, aui);
   }
 
-  ngOnDestroy(): void {
+  override ngOnDestroy(): void {
     super.ngOnDestroy();
     this._querySub.unsubscribe();
   }

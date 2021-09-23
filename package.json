@@ -47,6 +47,7 @@
     "integration-tests:partial-ivy": "bazel test --//tools:partial_compilation=True --test_tag_filters=partial-compilation-integration --build_tests_only -- //integration/... //src/...",
     "integration-tests:size-test": "bazel test //integration/size-test/...",
     "check-tools": "yarn tsc --project tools/tsconfig-ci.json",
+    "tsc": "node ./node_modules/typescript/bin/tsc",
     "prepare": "husky install"
   },
   "version": "12.1.0-next.0",
