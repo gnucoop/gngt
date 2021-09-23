@@ -1,9 +1,9 @@
 load("@npm//@angular/dev-infra-private/bazel:extract_js_module_output.bzl", "extract_js_module_output")
 load("@build_bazel_rules_nodejs//:index.bzl", "pkg_web")
-load("//:packages.bzl", "getThirdPartyUmdTargets")
 load("//tools:create-system-config.bzl", "create_system_config")
-load("//tools:defaults.bzl", "ng_module")
+load("//tools:defaults.bzl", "ng_module", "ts_library")
 load("//tools/dev-server:index.bzl", "dev_server")
+load("//tools/third-party-libs:index.bzl", "get_amd_bundles")
 
 package(default_visibility = ["//visibility:public"])
 
@@ -68,14 +68,13 @@ filegroup(
         "@npm//:node_modules/systemjs/dist/system.js",
         "@npm//:node_modules/tslib/tslib.js",
         "@npm//:node_modules/zone.js/dist/zone.js",
-    ] + getThirdPartyUmdTargets(),
+    ] + get_amd_bundles(),
 )
 
 dev_server(
     name = "devserver",
     srcs = [":dev_app_static_files"],
     additional_root_paths = [
-        "npm",
         "npm/node_modules",
         # Needed for compatibility with "pkg_web" which always uses the tree
         # artifact output as workspace root.

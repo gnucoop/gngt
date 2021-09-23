@@ -32,7 +32,6 @@ var frameworkPackages = $ANGULAR_PACKAGE_BUNDLES;
 
 /** Map of third party packages and their bundle names. */
 var thirdPartyPackages = $THIRD_PARTY_PACKAGE_BUNDLES;
-var thirdPartyNoNgccPackages = $THIRD_PARTY_NO_NGCC_PACKAGE_BUNDLES;
 
 /** Whether Ivy is enabled. */
 var isRunningWithIvy = 'TMPL_angular_ivy_enabled'.toString() === 'True';
@@ -74,7 +73,6 @@ setupFrameworkPackages();
 
 // Configure third party packages.
 setupThirdPartyPackages();
-setupThirdPartyNoNgccPackages();
 
 // Configure Angular components packages/entry-points.
 setupLocalReleasePackages();
@@ -146,21 +144,6 @@ function setupThirdPartyPackages() {
       bundlePath = '__ivy_ngcc__/' + bundlePath;
     }
     packagesConfig[moduleName] = {main: bundlePath};
-  });
-}
-
-function setupThirdPartyNoNgccPackages() {
-  Object.keys(thirdPartyNoNgccPackages).forEach(function(moduleName) {
-    // Ensures that imports to the framework package are resolved
-    // to the configured node modules directory.
-    var shims = thirdPartyNoNgccPackages[moduleName];
-    var bundlePath = moduleName.split('/');
-    var bundleName = bundlePath.pop() + '.umd.js';
-    pathMapping[moduleName] = moduleName + '/' + bundlePath.join('/');
-    packagesConfig[moduleName] = {main: bundleName};
-    shims.forEach(shim => {
-      pathMapping[shim] = 'tools/third-party-libs/' + moduleName + '_shims.js';
-    });
   });
 }
 

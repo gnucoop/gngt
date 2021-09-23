@@ -1,11 +1,75 @@
+load("//tools/esbuild:index.bzl", "esbuild_amd")
+
 package(default_visibility = ["//visibility:public"])
 
-exports_files(["npm_umd_bundle.patch"])
+esbuild_amd(
+    name = "amd_date_fns",
+    testonly = True,
+    entry_point = "@npm//:node_modules/date-fns/esm/index.js",
+    module_name = "date-fns",
+    deps = ["@npm//date-fns"],
+)
 
-filegroup(
-    name = "pdfmake_umd_module",
-    srcs = [
-        ":pdfmake_shims.js",
-        "@npm//pdfmake:pdfmake__umd",
-    ],
+esbuild_amd(
+    name = "amd_gic_core",
+    testonly = True,
+    entry_point = "@npm//:node_modules/@gic/core/dist/index.cjs.js",
+    module_name = "@gic/core",
+    deps = ["@npm//@gic/core"],
+)
+
+esbuild_amd(
+    name = "amd_gic_core_loader",
+    testonly = True,
+    entry_point = "@npm//:node_modules/@gic/core/loader/index.cjs.js",
+    module_name = "@gic/core/loader",
+    deps = ["@npm//@gic/core"],
+)
+
+esbuild_amd(
+    name = "amd_ionic_core",
+    testonly = True,
+    entry_point = "@npm//:node_modules/@ionic/core/dist/index.cjs.js",
+    module_name = "@ionic/core",
+    deps = ["@npm//@ionic/core"],
+)
+
+esbuild_amd(
+    name = "amd_ionic_core_loader",
+    testonly = True,
+    entry_point = "@npm//:node_modules/@ionic/core/loader/index.cjs.js",
+    module_name = "@ionic/core/loader",
+    deps = ["@npm//@ionic/core"],
+)
+
+esbuild_amd(
+    name = "amd_pouchdb",
+    testonly = True,
+    entry_point = "@npm//:node_modules/pouchdb/dist/pouchdb.js",
+    module_name = "pouchdb",
+    deps = ["@npm//pouchdb"],
+)
+
+esbuild_amd(
+    name = "amd_pouchdb_find",
+    testonly = True,
+    entry_point = "@npm//:node_modules/pouchdb/dist/pouchdb.find.js",
+    module_name = "pouchdb-find",
+    deps = ["@npm//pouchdb"],
+)
+
+esbuild_amd(
+    name = "amd_url_parse",
+    testonly = True,
+    entry_point = "@npm//:node_modules/url-parse/dist/url-parse.js",
+    module_name = "url-parse",
+    deps = ["@npm//url-parse"],
+)
+
+esbuild_amd(
+    name = "amd_uuid",
+    testonly = True,
+    entry_point = "@npm//:node_modules/uuid/dist/esm-browser/index.js",
+    module_name = "uuid",
+    deps = ["@npm//uuid"],
 )

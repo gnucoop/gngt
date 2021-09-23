@@ -1,6 +1,7 @@
 load("@npm//@bazel/concatjs:index.bzl", "concatjs_devserver")
 load("//:packages.bzl", "getAngularUmdTargets")
 load("//tools:defaults.bzl", "ng_module")
+load("//tools/third-party-libs:index.bzl", "get_amd_bundles")
 
 package(default_visibility = ["//visibility:public"])
 
@@ -61,7 +62,7 @@ concatjs_devserver(
         ":devserver-configure.js",
         "//tools/rxjs:rxjs_umd_modules",
         "@npm//:node_modules/tslib/tslib.js",
-    ] + getAngularUmdTargets(),
+    ] + getAngularUmdTargets() + get_amd_bundles(),
     # Name of the generated `concatjs` bundle that is built based on the labels in `deps` and `scripts`.
     serving_path = "/bundle.js",
     static_files = devserverIndexHtmlDependencies,

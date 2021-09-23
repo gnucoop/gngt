@@ -40,10 +40,7 @@ echo "Integration tests - Ivy"
 yarn integration-tests:partial-ivy
 
 echo "Release output"
-yarn build
-pkg_json_version=$(node -pe "require('./package.json').version")
-expected_version="${pkg_json_version}-sha-$(git rev-parse --short HEAD)"
-yarn check-release-output ${expected_version}
+yarn build-and-check-release-output
 yarn -s check-tooling-setup
 mkdir -p node_modules/@gngt
 cp -R dist/releases/* node_modules/@gngt/

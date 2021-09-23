@@ -1,5 +1,5 @@
 import {readFileSync, writeFileSync} from 'fs';
-import {join} from 'path';
+import {extname, join} from 'path';
 
 // These imports to `@angular/compiler-cli` need to explicitly specify the `.js` extension as
 // otherwise the Bazel NodeJS module resolution would end up resolving the ESM2015 `.mjs` files.
@@ -51,7 +51,7 @@ function isNgDeclareCallExpression(nodePath: NodePath): boolean {
   // Expect the `ngDeclare` identifier to be used as part of a property access that
   // is invoked within a call expression. e.g. `i0.ɵɵngDeclare<>`.
   return nodePath.parentPath?.type === 'MemberExpression' &&
-         nodePath.parentPath.parentPath?.type === 'CallExpression';
+      nodePath.parentPath.parentPath?.type === 'CallExpression';
 }
 
 /** Gets the AMD module name for a given Bazel manifest path */
@@ -81,6 +81,14 @@ function generateAmdModuleMappingFile(mappings: Map<string, string>): string {
 
 /** Processes the given file with the Angular linker plugin. */
 function processFileWithLinker(diskFilePath: string, fileContent: string): string {
+  const fileExtension = extname(diskFilePath);
+
+  // If the input file is not a JavaScript file, do not process it with the linker
+  // Babel plugin and return the original file content.
+  if (fileExtension !== '.js' && fileExtension !== '.mjs') {
+    return fileContent;
+  }
+
   // We run the linker with JIT mode so that the processed Angular declarations could be
   // run within unit tests that rely on JIT information to be available.
   const linkerPlugin = createEs2015LinkerPlugin({fileSystem, logger, linkerJitMode: true});
@@ -97,7 +105,7 @@ function processFileWithLinker(diskFilePath: string, fileContent: string): strin
     Identifier: (astPath: NodePath) => {
       if (isNgDeclareCallExpression(astPath)) {
         throw astPath.buildCodeFrameError(
-          'Found Angular declaration that has not been linked.', Error);
+            'Found Angular declaration that has not been linked.', Error);
       }
     }
   });

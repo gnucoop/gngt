@@ -73,12 +73,7 @@ pipeline {
     }
     stage('Release output') {
       steps {
-        sh 'yarn -s build'
-        script {
-          env.pkg_json_version = sh(script: 'node -pe "require(\\\"./package.json\\\").version"', returnStdout: true).trim()
-          env.expected_version = sh(script: 'echo "${pkg_json_version}-sha-$(git rev-parse --short HEAD)"', returnStdout: true).trim()
-          sh 'yarn check-release-output ${expected_version}'
-        }
+        sh 'yarn build-and-check-release-output'
         sh 'yarn -s check-tooling-setup'
         sh 'mkdir -p node_modules/@gngt'
         sh 'cp -R dist/releases/* node_modules/@gngt/'

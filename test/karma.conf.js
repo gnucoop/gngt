@@ -41,23 +41,16 @@ module.exports = config => {
       {pattern: 'node_modules/zone.js/dist/async-test.js', included: true, watched: false},
       {pattern: 'node_modules/zone.js/dist/fake-async-test.js', included: true, watched: false},
 
-      // Include all Gngt dependencies
-      {pattern: 'node_modules/@angular/**/*', included: false, watched: false},
-      {pattern: 'node_modules/@gic/angular/angular.umd.js', included: false, watched: false},
-      {pattern: 'node_modules/@gic/core/core.umd.js', included: false, watched: false},
-      {pattern: 'node_modules/@gic/core/core-loader.umd.js', included: false, watched: false},
-      {pattern: 'node_modules/@ionic/angular/angular.umd.js', included: false, watched: false},
-      {pattern: 'node_modules/@ionic/core/core.umd.js', included: false, watched: false},
-      {pattern: 'node_modules/@ionic/core/core-loader.umd.js', included: false, watched: false},
-      {pattern: 'node_modules/@ngrx/**/*', included: false, watched: false},
-      {pattern: 'node_modules/@ngx-translate/**/*', included: false, watched: false},
-      {pattern: 'node_modules/date-fns/date-fns.umd.js', included: false, watched: false},
-      {pattern: 'node_modules/debug/debug.umd.js', included: false, watched: false},
-      {pattern: 'node_modules/pouchdb/pouchdb.umd.js', included: false, watched: false},
-      {pattern: 'node_modules/pouchdb-find/pouchdb-find.umd.js', included: false, watched: false},
-      {pattern: 'node_modules/rxjs/**/*', included: false, watched: false},
-      {pattern: 'node_modules/url-parse/url-parse.umd.js', included: false, watched: false},
-      {pattern: 'node_modules/uuid/uuid.umd.js', included: false, watched: false},
+      // Third party AMD bundles
+      {pattern: 'dist/amd_date_fns.js', included: false, watched: false},
+      {pattern: 'dist/amd_gic_core.js', included: false, watched: false},
+      {pattern: 'dist/amd_gic_core_loader.js', included: false, watched: false},
+      {pattern: 'dist/amd_ionic_core.js', included: false, watched: false},
+      {pattern: 'dist/amd_ionic_core_loader.js', included: false, watched: false},
+      {pattern: 'dist/amd_pouchdb.js', included: false, watched: false},
+      {pattern: 'dist/amd_pouchdb_find.js', included: false, watched: false},
+      {pattern: 'dist/amd_url_parse.js', included: false, watched: false},
+      {pattern: 'dist/amd_uuid.js', included: false, watched: false},
 
       // The Karma system configuration is built by Bazel. The built System config
       // is copied into the "dist/" folder so that the Karma config can use it.
