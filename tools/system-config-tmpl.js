@@ -35,7 +35,7 @@ var thirdPartyPackages = $THIRD_PARTY_PACKAGE_BUNDLES;
 var thirdPartyNoNgccPackages = $THIRD_PARTY_NO_NGCC_PACKAGE_BUNDLES;
 
 /** Whether Ivy is enabled. */
-var isRunningWithIvy = '$ANGULAR_IVY_ENABLED_TMPL'.toString() === 'True';
+var isRunningWithIvy = 'TMPL_angular_ivy_enabled'.toString() === 'True';
 
 /** Path that relatively resolves to the directory that contains all packages. */
 var packagesPath = '$PACKAGES_DIR';
@@ -185,6 +185,14 @@ function setupLocalReleasePackages() {
 
   // Private secondary entry-points.
   configureEntryPoint('gngt-examples', 'private');
+}
+
+/** Sets up the MDC packages by linking to their UMD bundles. */
+function setupMdcPackages() {
+  Object.keys(mdcPackageUmdBundles).forEach(pkgName => {
+    // Replace the `@npm//:node_modules/` Bazel target prefix with the `node:*` SystemJS alias.
+    pathMapping[pkgName] = mdcPackageUmdBundles[pkgName].replace('@npm//:node_modules/', 'node:')
+  });
 }
 
 /** Configures the specified package, its entry-point and its examples. */

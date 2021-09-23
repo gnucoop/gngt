@@ -238,7 +238,13 @@ def karma_web_test_suite(name, **kwargs):
     web_test_args = {}
     test_deps = ["//tools/rxjs:rxjs_umd_modules"] + kwargs.get("deps", [])
 
-    kwargs["srcs"] = ["@npm//:node_modules/tslib/tslib.js"] + getAngularUmdTargets() + kwargs.get("srcs", [])
+    # Note: Ideally we would not add all Angular and MDC UMD files to a test because
+    # some might be unused. This would require some custom tooling to resolve the
+    # correct named AMD files from transitive dependencies and is not worth the effort
+    # given the UMD files being small and most of the packages being used anyway.
+    # TODO(devversion): reconsider this if `rules_nodejs` can recognize named AMD files.
+    kwargs["srcs"] = ["@npm//:node_modules/tslib/tslib.js"] + getAngularUmdTargets() + \
+                     kwargs.get("srcs", [])
     kwargs["tags"] = ["partial-compilation-integration"] + kwargs.get("tags", [])
     kwargs["deps"] = select({
         # Based on whether partial compilation is enabled, use the linker processed dependencies.

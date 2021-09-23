@@ -64,7 +64,7 @@ ROLLUP_GLOBALS = {
 }
 
 # Converts a string from dash-case to lower camel case.
-def to_camel_case(input):
+def to_lower_camel_case(input):
     segments = input.split("-")
     return segments[0] + "".join([x.title() for x in segments[1:]])
 
@@ -72,7 +72,7 @@ def to_camel_case(input):
 # e.g. "snack-bar/testing" will become "snackBar.testing".
 def to_umd_name(name):
     segments = name.split("/")
-    return ".".join([to_camel_case(x) for x in segments])
+    return ".".join([to_lower_camel_case(x) for x in segments])
 
 # Creates globals for a given package and its entry-points.
 def create_globals(packageName, entryPoints):

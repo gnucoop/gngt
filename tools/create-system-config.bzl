@@ -1,8 +1,8 @@
+load("@npm//@angular/dev-infra-private/bazel:expand_template.bzl", "expand_template")
 load("//:packages.bzl", "ANGULAR_PACKAGE_BUNDLES", "THIRD_PARTY_NO_NGCC_PACKAGE_BUNDLES", "THIRD_PARTY_PACKAGE_BUNDLES")
 load("//src/core:config.bzl", "CORE_ENTRYPOINTS")
 load("//src/ionic:config.bzl", "IONIC_ENTRYPOINTS", "IONIC_TESTING_ENTRYPOINTS")
 load("//src/material:config.bzl", "MATERIAL_ENTRYPOINTS", "MATERIAL_TESTING_ENTRYPOINTS")
-load("//tools:expand_template.bzl", "expand_template")
 
 """
   Macro that builds a SystemJS configuration for all packages and entry-points
