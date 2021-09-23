@@ -1,3 +1,4 @@
+import {createPlugin, Plugin, utils} from 'stylelint';
 import {basename, join} from 'path';
 import {Result, Root} from 'postcss';
 
