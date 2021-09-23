@@ -96,6 +96,14 @@ function applyPatches() {
                   fileName = fileName.replace('.ngfactory', '');
               }`,
       'node_modules/@angular/compiler-cli/src/transformers/compiler_host.js');
+  searchAndReplace(
+    `    function getReleaseTagForVersion(version) {
+      return version.format();
+    }`,
+    `    function getReleaseTagForVersion(version) {
+      return 'v' + version.format();
+    }`,
+    'node_modules/@angular/dev-infra-private/ng-dev/cli-bundle.js');
   // The three replacements below ensure that metadata files can be read by NGC and
   // that metadata files are collected as Bazel action inputs.
   searchAndReplace(
