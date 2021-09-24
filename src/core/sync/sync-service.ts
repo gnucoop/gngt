@@ -1075,7 +1075,12 @@ export class SyncService {
 
   private _initLocalDatabase(): void {
     pouchDBStatic.plugin(pouchDBFindPlugin);
-    this._database = new pouchDBStatic(this._opts.localDatabaseName, {revs_limit: 1});
+    const plugins = this._opts.plugins || [];
+    plugins.forEach(plugin => pouchDBStatic.plugin(plugin));
+    this._database = new pouchDBStatic(this._opts.localDatabaseName, {
+      revs_limit: 1,
+      adapter: this._opts.adapter,
+    });
 
     this._database.createIndex(this._relationalModelIdx)
         .then(_ => {

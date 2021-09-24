@@ -28,6 +28,8 @@ export interface SyncOptions {
   localDatabaseName: string;
   syncInterval?: number;
   changesBatchSize?: number;
+  adapter?: string;
+  plugins?: PouchDB.Plugin[];
 }
 
 export const SYNC_OPTIONS = new InjectionToken<SyncOptions>('SYNC_OPTIONS');
