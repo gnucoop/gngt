@@ -1,5 +1,6 @@
 DATA_DEPS = [
     "//tools/third-party-libs:amd_pouchdb",
+    "//tools/third-party-libs:amd_pouchdb_adapter_memory",
     "//tools/third-party-libs:amd_pouchdb_find",
     "//tools/third-party-libs:amd_uuid",
 ]

@@ -51,6 +51,14 @@ esbuild_amd(
 )
 
 esbuild_amd(
+    name = "amd_pouchdb_adapter_memory",
+    testonly = True,
+    entry_point = "@npm//:node_modules/pouchdb/dist/pouchdb.memory.js",
+    module_name = "pouchdb-adapter-memory",
+    deps = ["@npm//pouchdb"],
+)
+
+esbuild_amd(
     name = "amd_pouchdb_find",
     testonly = True,
     entry_point = "@npm//:node_modules/pouchdb/dist/pouchdb.find.js",

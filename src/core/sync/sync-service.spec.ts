@@ -2,6 +2,7 @@ import {HttpClient, HttpClientModule} from '@angular/common/http';
 import {TestBed, waitForAsync} from '@angular/core/testing';
 import {ModelListResult} from '@gngt/core/common';
 import * as PouchDB from 'pouchdb';
+import * as pouchdbAdapterMemory from 'pouchdb-adapter-memory';
 import {Observable, of as obsOf, throwError} from 'rxjs';
 import {filter, take} from 'rxjs/operators';
 
@@ -118,7 +119,14 @@ describe('SyncService', () => {
     beforeEach(waitForAsync(() => {
       curDbName = `${dbName}${new Date().getTime()}`;
       TestBed.configureTestingModule({
-        imports: [SyncModule.forRoot({baseUrl: 'http://remote/', localDatabaseName: curDbName})],
+        imports: [
+          SyncModule.forRoot({
+            baseUrl: 'http://remote/',
+            localDatabaseName: curDbName,
+            plugins: [pouchdbAdapterMemory],
+            adapter: 'memory',
+          }),
+        ],
         providers: [
           {provide: HttpClient, useValue: httpClient},
         ]
@@ -129,7 +137,7 @@ describe('SyncService', () => {
     }));
 
     afterEach(() => {
-      new pouchDBStatic(curDbName).destroy();
+      new pouchDBStatic(curDbName, {adapter: 'memory'}).destroy();
     });
 
     it('should sync data from remote server', async () => {
@@ -139,7 +147,7 @@ describe('SyncService', () => {
       syncService.start(true);
       await statusPaused.pipe(take(2)).toPromise();
       syncService.stop();
-      const db = new pouchDBStatic<LocalDoc<any>>(curDbName);
+      const db = new pouchDBStatic<LocalDoc<any>>(curDbName, {adapter: 'memory'});
       const docs = await db.allDocs({include_docs: true});
       const localDocs = docs.rows.filter(r => r.doc != null && r.doc!.object_id != null)
                             .map(r => r.doc as LocalDoc<any>);
@@ -199,7 +207,14 @@ describe('SyncService', () => {
     beforeEach(async () => {
       curDbName = `${dbName}${new Date().getTime()}`;
       TestBed.configureTestingModule({
-        imports: [SyncModule.forRoot({baseUrl: 'http://remote', localDatabaseName: curDbName})],
+        imports: [
+          SyncModule.forRoot({
+            baseUrl: 'http://remote',
+            localDatabaseName: curDbName,
+            plugins: [pouchdbAdapterMemory],
+            adapter: 'memory',
+          }),
+        ],
         providers: [
           {provide: HttpClient, useClass: MockUpwardHttpClient},
         ]
@@ -213,7 +228,7 @@ describe('SyncService', () => {
     });
 
     afterEach(() => {
-      new pouchDBStatic(curDbName).destroy();
+      new pouchDBStatic(curDbName, {adapter: 'memory'}).destroy();
     });
 
     it('should get data from local database', async () => {
@@ -242,20 +257,26 @@ describe('SyncService', () => {
       TestBed.configureTestingModule({
         imports: [
           HttpClientModule,
-          SyncModule.forRoot({baseUrl: 'http://remote', localDatabaseName: curDbName})
+          SyncModule.forRoot({
+            baseUrl: 'http://remote',
+            localDatabaseName: curDbName,
+            plugins: [pouchdbAdapterMemory],
+            adapter: 'memory',
+          }),
         ]
       });
 
       syncService = TestBed.inject(SyncService);
 
-      const db = new pouchDBStatic<LocalDoc<DbEntry|DbRelatedEntry>>(curDbName);
+      const db =
+          new pouchDBStatic<LocalDoc<DbEntry|DbRelatedEntry>>(curDbName, {adapter: 'memory'});
       for (let i = 0; i < dbEntries.length; i++) {
         await db.post(dbEntries[i]);
       }
     });
 
     afterEach(() => {
-      new pouchDBStatic(curDbName).destroy();
+      new pouchDBStatic(curDbName, {adapter: 'memory'}).destroy();
     });
 
     it('should get an object from local database', async () => {

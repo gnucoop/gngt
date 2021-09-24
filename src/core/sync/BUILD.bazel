@@ -41,6 +41,7 @@ ng_test_library(
         "@npm//@angular/common",
         "@npm//@angular/platform-browser",
         "@npm//@types/pouchdb",
+        "@npm//@types/pouchdb-adapter-memory",
         "@npm//rxjs",
     ],
 )
