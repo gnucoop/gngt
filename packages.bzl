@@ -69,6 +69,7 @@ THIRD_PARTY_NO_NGCC_BUNDLES = [
     ("@ionic/core/loader", []),
     ("date-fns", []),
     ("pouchdb", []),
+    ("pouchdb-adapter-memory", []),
     ("pouchdb-find", []),
     ("uuid", []),
     ("url-parse", []),
