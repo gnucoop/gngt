@@ -5,7 +5,7 @@
 ```ts
 
 import { ChangeDetectorRef } from '@angular/core';
-import { EventEmitter } from '@angular/core';
+import { EventEmitter as EventEmitter_2 } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { FormGroup } from '@angular/forms';
 import * as i0 from '@angular/core';
@@ -163,7 +163,7 @@ export abstract class AdminListComponent<T extends Model = Model, S extends Stat
     // (undocumented)
     readonly actionProcessed: Observable<string>;
     // (undocumented)
-    protected _actionProcessed: EventEmitter<string>;
+    protected _actionProcessed: EventEmitter_2<string>;
     // (undocumented)
     get baseEditUrl(): string;
     set baseEditUrl(baseEditUrl: string);

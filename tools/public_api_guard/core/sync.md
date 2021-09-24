@@ -4,6 +4,8 @@
 
 ```ts
 
+/// <reference types="pouchdb-core" />
+
 import { HttpClient } from '@angular/common/http';
 import { HttpEvent } from '@angular/common/http';
 import { HttpHandler } from '@angular/common/http';
@@ -77,6 +79,8 @@ export class SyncModule {
 // @public (undocumented)
 export interface SyncOptions {
     // (undocumented)
+    adapter?: string;
+    // (undocumented)
     baseUrl: string;
     // (undocumented)
     changesBatchSize?: number;
@@ -86,6 +90,8 @@ export interface SyncOptions {
     docsPath?: string;
     // (undocumented)
     localDatabaseName: string;
+    // (undocumented)
+    plugins?: PouchDB.Plugin[];
     // (undocumented)
     syncInterval?: number;
 }
