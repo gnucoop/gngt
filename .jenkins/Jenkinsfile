@@ -80,19 +80,6 @@ pipeline {
         sh 'rm -Rf node_modules/@gngt'
       }
     }
-    stage('Publish snapshots') {
-      when {
-        expression {
-          return gitBranch == 'master'
-        }
-      }
-      steps {
-        sh 'bazel build src/gngt-examples:npm_package --config=release'
-        sh 'yarn build-docs-content'
-        sh './scripts/circleci/publish-snapshots.sh'
-        sh 'node ./scripts/deploy-dev-app.js'
-      }
-    }
     stage('Build') {
       steps {
         sh 'bazel build --build_tag_filters=-docs-package,-release-package -- src/...'
