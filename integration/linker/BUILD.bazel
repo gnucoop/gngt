@@ -5,6 +5,7 @@ load("@build_bazel_rules_nodejs//:index.bzl", "nodejs_test")
 nodejs_test(
     name = "linker",
     data = [
+        "link-packages-test.mjs",
         "//integration:npm-packages-from-runfiles",
         "//src/core:npm_package",
         "//src/ionic:npm_package",
@@ -15,6 +16,6 @@ nodejs_test(
         "@npm//chalk",
         "@npm//glob",
     ],
-    entry_point = "link-packages-test.js",
+    entry_point = "link-packages-test.mjs",
     tags = ["partial-compilation-integration"],
 )
