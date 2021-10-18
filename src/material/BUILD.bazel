@@ -27,8 +27,6 @@ ng_package(
     ],
     data = [
     ] + MATERIAL_SCSS_LIBS,
-    entry_point = ":index.ts",
-    entry_point_name = "material",
     tags = ["release-package"],
     deps = MATERIAL_TARGETS + MATERIAL_TESTING_TARGETS,
 )

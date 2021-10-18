@@ -27,8 +27,6 @@ ng_package(
     ],
     data = [
     ] + IONIC_SCSS_LIBS,
-    entry_point = ":index.ts",
-    entry_point_name = "ionic",
     tags = ["release-package"],
     deps = IONIC_TARGETS + IONIC_TESTING_TARGETS,
 )

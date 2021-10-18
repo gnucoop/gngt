@@ -17,7 +17,6 @@ ng_package(
     name = "npm_package",
     srcs = ["package.json"],
     data = CORE_SCSS_LIBS,
-    entry_point = ":public-api.ts",
     tags = ["release-package"],
     deps = CORE_TARGETS,
 )
