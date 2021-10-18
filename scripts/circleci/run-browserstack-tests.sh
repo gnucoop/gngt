@@ -21,8 +21,11 @@ export BROWSER_STACK_ACCESS_KEY=`echo ${BROWSER_STACK_ACCESS_KEY} | rev`
 # by the Karma configuration script.
 export TEST_PLATFORM="browserstack"
 
-# Run the unit tests on Browserstack with Karma.
-yarn gulp ci:test
+# Build the legacy tests
+node ./scripts/create-legacy-tests-bundle.mjs
+
+# Run Karma
+yarn karma start ./test/karma.conf.js --single-run
 
 # Kill the Browserstack tunnel. This is necessary in order to avoid rate-limit
 # errors that cause the unit tests to be flaky.
