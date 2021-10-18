@@ -22,16 +22,6 @@ pipeline {
         sh './scripts/circleci/setup_bazel_binary.sh'
       }
     }
-    stage('Unit tests - View Engine') {
-      steps {
-        sh 'bazel test --build_tag_filters=-docs-package,-e2e --test_tag_filters=-e2e --config=view-engine --build_tests_only -- src/...'
-      }
-    }
-    stage('Build - View Engine') {
-      steps {
-        sh 'bazel build --build_tag_filters=-docs-package,-release-package --config=view-engine -- src/...'
-      }
-    }
     stage('Test local browsers') {
       steps {
         sh 'bazel test --build_tag_filters=-e2e --test_tag_filters=-e2e --build_tests_only -- src/...'
@@ -50,11 +40,6 @@ pipeline {
     stage('Integration tests - Partial Ivy') {
       steps {
         sh 'yarn integration-tests:partial-ivy'
-      }
-    }
-    stage('Integration tests - View Engine') {
-      steps {
-        sh 'yarn integration-tests:view-engine'
       }
     }
     stage('E2E tests') {
