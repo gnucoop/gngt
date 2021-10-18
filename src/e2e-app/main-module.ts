@@ -6,7 +6,7 @@ import {IonicModule} from '@ionic/angular';
 import {TranslateModule} from '@ngx-translate/core';
 import {E2eApp} from './e2e-app';
 import {E2eAppModule} from './e2e-app/e2e-app-module';
-import {E2E_APP_ROUTES} from './e2e-app/routes';
+import {E2E_APP_ROUTES} from './routes';
 import {IonicCalendarE2eModule} from './ion-calendar/calendar-e2e-module';
 import {MaterialCalendarE2eModule} from './mat-calendar/calendar-e2e-module';
 

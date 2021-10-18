@@ -35,7 +35,7 @@ import {TranslateModule} from '@ngx-translate/core';
 import {DevAppComponent} from './dev-app';
 import {DevAppDirectionality} from './dev-app/dev-app-directionality';
 import {DevAppModule} from './dev-app/dev-app-module';
-import {DEV_APP_ROUTES} from './dev-app/routes';
+import {DEV_APP_ROUTES} from './routes';
 
 @NgModule({
   imports: [

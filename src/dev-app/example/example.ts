@@ -20,9 +20,16 @@
  */
 
 import {BooleanInput, coerceBooleanProperty} from '@angular/cdk/coercion';
-import {Component, Injector, Input, OnInit, ViewContainerRef} from '@angular/core';
-import {EXAMPLE_COMPONENTS} from '@gngt/gngt-examples';
-import {loadExampleFactory} from '@gngt/gngt-examples/private';
+import {EXAMPLE_COMPONENTS} from '@angular/components-examples';
+import {loadExample} from '@angular/components-examples/private';
+import {
+  ChangeDetectorRef,
+  Component,
+  Injector,
+  Input,
+  OnInit,
+  ViewContainerRef
+} from '@angular/core';
 
 @Component({
   selector: 'gngt-example',
@@ -72,11 +79,16 @@ export class Example implements OnInit {
 
   title: string;
 
-  constructor(private _injector: Injector, private _viewContainerRef: ViewContainerRef) {}
+  constructor(private _injector: Injector,
+              private _viewContainerRef: ViewContainerRef,
+              private _changeDetectorRef: ChangeDetectorRef) {}
 
   async ngOnInit() {
     this.title = EXAMPLE_COMPONENTS[this.id].title;
-    this._viewContainerRef.createComponent(await loadExampleFactory(this.id, this._injector));
+
+    const example = await loadExample(this.id, this._injector);
+    this._viewContainerRef.createComponent(example.component, {injector: example.injector});
+    this._changeDetectorRef.detectChanges();
   }
 
   static ngAcceptInputType_showLabel: BooleanInput;

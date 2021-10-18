@@ -19,7 +19,11 @@
  *
  */
 
-import {platformBrowser} from '@angular/platform-browser';
-import {MainModule} from './main-module';
+import {customResolvePlugin} from '../../tools/esbuild/custom_resolve_esbuild_plugin.mjs';
 
-platformBrowser().bootstrapModule(MainModule);
+export default {
+  resolveExtensions: ['.js'],
+  format: 'esm',
+  plugins: [customResolvePlugin],
+};
+ 
