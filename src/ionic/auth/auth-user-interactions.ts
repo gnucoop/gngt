@@ -22,28 +22,31 @@
 import {AuthUserInteractionsService as CoreAuthUserInteractionsService} from '@gngt/core/auth';
 import {AlertController, ToastController} from '@ionic/angular';
 import {OverlayEventDetail} from '@ionic/core';
-import {TranslateService} from '@ngx-translate/core';
+import {TranslocoService} from '@ngneat/transloco';
 import {from, Observable} from 'rxjs';
 import {map, mapTo, switchMap} from 'rxjs/operators';
 
 export class AuthUserInteractionsService extends CoreAuthUserInteractionsService {
   constructor(
-      private _ts: TranslateService, private _alert: AlertController,
+      private _ts: TranslocoService, private _alert: AlertController,
       private _toast: ToastController) {
     super();
   }
 
   askLogoutConfirm(): Observable<boolean> {
     const strings = ['Are you sure you want to logout?', 'Cancel', 'Ok'];
-    return this._ts.get(strings).pipe(
-        switchMap(ts => from(this._alert.create({
-                    message: ts[0],
-                    buttons: [{text: ts[1], role: 'cancel'}, {text: ts[2], role: 'confirm'}]
-                  }))),
-        switchMap(alert => from((alert as HTMLIonAlertElement).present()).pipe(mapTo(alert))),
-        switchMap(alert => from((alert as HTMLIonAlertElement).onDidDismiss())),
-        map(evt => (evt as OverlayEventDetail<any>).role === 'confirm'),
-    );
+    return from(this._alert.create({
+             message: this._ts.translate(strings[0]),
+             buttons: [
+               {text: this._ts.translate(strings[1]), role: 'cancel'},
+               {text: this._ts.translate(strings[2]), role: 'confirm'}
+             ],
+           }))
+        .pipe(
+            switchMap(alert => from((alert as HTMLIonAlertElement).present()).pipe(mapTo(alert))),
+            switchMap(alert => from((alert as HTMLIonAlertElement).onDidDismiss())),
+            map(evt => (evt as OverlayEventDetail<any>).role === 'confirm'),
+        );
   }
 
   showLoginError(error: string): void {

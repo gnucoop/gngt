@@ -5,8 +5,8 @@
 ```ts
 
 import * as i0 from '@angular/core';
-import { MissingTranslationHandler as MissingTranslationHandler_2 } from '@ngx-translate/core';
-import { MissingTranslationHandlerParams } from '@ngx-translate/core';
+import { MissingTranslationHandler as MissingTranslationHandler_2 } from 'import {TranslocoModule} from '@ngneat/transloco';';
+import { MissingTranslationHandlerParams } from 'import {TranslocoModule} from '@ngneat/transloco';';
 
 // @public (undocumented)
 export class MissingTranslationHandler extends MissingTranslationHandler_2 {

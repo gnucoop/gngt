@@ -22,8 +22,8 @@
 import {HttpErrorResponse} from '@angular/common/http';
 import {Inject, Injectable} from '@angular/core';
 import {Router} from '@angular/router';
+import {TranslocoService} from '@ngneat/transloco';
 import {Actions, createEffect, ofType, OnInitEffects} from '@ngrx/effects';
-import {TranslateService} from '@ngx-translate/core';
 import {Observable, of as obsOf, timer, zip} from 'rxjs';
 import {catchError, delayWhen, exhaustMap, map, mergeMap, switchMap, tap} from 'rxjs/operators';
 
@@ -91,7 +91,7 @@ export class AuthEffects implements OnInitEffects {
                         } else {
                           errors.push(err.error.message);
                         }
-                        return zip(...errors.map(e => <Observable<string>>this._ts.get(e)))
+                        return zip(...errors.map(e => <Observable<string>>this._ts.translate(e)))
                             .pipe(
                                 map(error => new LoginFailure({error})),
                             );
@@ -221,7 +221,7 @@ export class AuthEffects implements OnInitEffects {
       private _actions$: Actions, private _authService: AuthService,
       private _jwtHelperService: JwtHelperService,
       private _userInteractionsService: AuthUserInteractionsService, private _router: Router,
-      private _ts: TranslateService, @Inject(AUTH_OPTIONS) private _config: AuthOptions) {}
+      private _ts: TranslocoService, @Inject(AUTH_OPTIONS) private _config: AuthOptions) {}
 
   ngrxOnInitEffects(): Init {
     return new Init();

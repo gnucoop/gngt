@@ -40,7 +40,7 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {RouterModule} from '@angular/router';
 import {GngtAdminModule as CoreModule} from '@gngt/core/admin';
 import {CommonModule as GngtCommonModule} from '@gngt/core/common';
-import {TranslateModule} from '@ngx-translate/core';
+import {TranslocoModule} from '@ngneat/transloco';
 
 import {AdminUserInteractionsService} from './admin-user-interactions';
 import {AdminDeleteConfirmDialogComponent} from './delete-confirm';
@@ -55,7 +55,7 @@ import {AdminListCellDirective} from './list-cell';
     MatFormFieldModule,   MatIconModule,    MatInputModule,      MatPaginatorModule,
     MatProgressBarModule, MatRadioModule,   MatSelectModule,     MatSortModule,
     MatTableModule,       MatToolbarModule, ReactiveFormsModule, RouterModule,
-    TranslateModule,
+    TranslocoModule,
   ],
   declarations: [
     AdminDeleteConfirmDialogComponent,

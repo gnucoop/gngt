@@ -35,7 +35,7 @@ import {
 import {CommonModule as CoreCommonModule} from '@gngt/core/common';
 import {CommonModule as IonicCommonModule} from '@gngt/ionic/common';
 import {AlertController, IonicModule, ToastController} from '@ionic/angular';
-import {TranslateService} from '@ngx-translate/core';
+import {TranslocoService} from '@ngneat/transloco';
 
 import {AuthUserInteractionsService} from './auth-user-interactions';
 import {LoginComponent} from './login';
@@ -59,7 +59,7 @@ import {LoginComponent} from './login';
   providers: [{
     provide: CoreAuthUserInteractionsService,
     useClass: AuthUserInteractionsService,
-    deps: [TranslateService, AlertController, ToastController]
+    deps: [TranslocoService, AlertController, ToastController]
   }]
 })
 export class AuthModule {

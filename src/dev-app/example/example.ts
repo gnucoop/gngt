@@ -20,8 +20,8 @@
  */
 
 import {BooleanInput, coerceBooleanProperty} from '@angular/cdk/coercion';
-import {EXAMPLE_COMPONENTS} from '@angular/components-examples';
-import {loadExample} from '@angular/components-examples/private';
+import {EXAMPLE_COMPONENTS} from '@gngt/gngt-examples';
+import {loadExample} from '@gngt/gngt-examples/private';
 import {
   ChangeDetectorRef,
   Component,

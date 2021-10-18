@@ -28,10 +28,11 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {RouterModule} from '@angular/router';
 import {GicModule} from '@gic/angular';
 import {SyncModule} from '@gngt/core/sync';
+import {TranslationsModule} from '@gngt/core/translations';
 import {IonicModule} from '@ionic/angular';
 import {EffectsModule} from '@ngrx/effects';
 import {StoreModule} from '@ngrx/store';
-import {TranslateModule} from '@ngx-translate/core';
+
 import {DevAppComponent} from './dev-app';
 import {DevAppDirectionality} from './dev-app/dev-app-directionality';
 import {DevAppModule} from './dev-app/dev-app-module';
@@ -49,7 +50,7 @@ import {DEV_APP_ROUTES} from './routes';
     RouterModule.forRoot(DEV_APP_ROUTES),
     StoreModule.forRoot({}),
     SyncModule.forRoot({baseUrl: '/', localDatabaseName: 'gngt_demo_db'}),
-    TranslateModule.forRoot(),
+    TranslationsModule,
   ],
   declarations: [
     DevAppComponent,

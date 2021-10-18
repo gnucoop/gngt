@@ -25,7 +25,7 @@ ng_module(
         "@npm//@angular/core",
         "@npm//@angular/forms",
         "@npm//@angular/material",
-        "@npm//@ngx-translate/core",
+        "@npm//@ngneat/transloco",
     ],
 )
 
@@ -57,7 +57,6 @@ ng_web_test_suite(
     name = "unit_tests",
     deps = [
         ":unit_test_sources",
-        "//tools/third-party-libs:amd_date_fns",
     ],
 )
 

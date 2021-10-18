@@ -10,7 +10,7 @@
 // is generated and can end up in arbitrary Bazel packages.
 import {
   createLinkerEsbuildPlugin
-} from 'angular_material/tools/angular/create_linker_esbuild_plugin.mjs';
+} from 'gc_gngt/tools/angular/create_linker_esbuild_plugin.mjs';
 
 // Conditionally, based on whether partial compilation is enabled, we run the
 // linker on all files part of the test.

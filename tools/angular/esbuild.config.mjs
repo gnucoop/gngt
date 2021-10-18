@@ -12,8 +12,8 @@ export default {
   resolveExtensions: ['.mjs', '.js'],
   format: 'esm',
   plugins: [
-    // Only run the linker on `fesm2020/` bundles. This should not have an effect on
+    // Only run the linker on `fesm2020/` and `fesm2015/` bundles. This should not have an effect on
     // the bundle output, but helps speeding up ESBuild when it visits other modules.
-    await createLinkerEsbuildPlugin(/fesm2020/)
+    await createLinkerEsbuildPlugin(/fesm2015|fesm2020/)
   ]
 };

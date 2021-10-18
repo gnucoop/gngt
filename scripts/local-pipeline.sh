@@ -11,8 +11,8 @@ echo "Test local browsers"
 "${BAZEL_BINARY}" test --build_tag_filters=-e2e --test_tag_filters=-e2e --build_tests_only -- src/...
 
 echo "Lint"
-"${BAZEL_BINARY}" build //:rollup_globals
-yarn check-rollup-globals $("${BAZEL_BINARY}" info bazel-bin)/rollup_globals.json
+"${BAZEL_BINARY}" build //:package_externals
+yarn check-package-externals $("${BAZEL_BINARY}" info bazel-bin)/package_externals.json
 "${BAZEL_BINARY}" build //:entry_points_manifest
 yarn check-entry-point-setup $("${BAZEL_BINARY}" info bazel-bin)/entry_points_manifest.json
 yarn -s lint

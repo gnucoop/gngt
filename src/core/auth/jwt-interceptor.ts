@@ -22,7 +22,7 @@
 import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
 import {Inject, Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
-import * as URLParse from 'url-parse';
+import URLParse from 'url-parse';
 
 import {JwtHelperService} from './jwt-helper';
 import {JwtOptions} from './jwt-options';

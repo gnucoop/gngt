@@ -29,8 +29,8 @@ pipeline {
     }
     stage('Lint') {
       steps {
-        sh 'bazel build //:rollup_globals'
-        sh 'yarn check-rollup-globals $(bazel info bazel-bin)/rollup_globals.json'
+        sh 'bazel build //:package_externals'
+        sh 'yarn check-package-externals $(bazel info bazel-bin)/package_externals.json'
         sh 'bazel build //:entry_points_manifest'
         sh 'yarn check-entry-point-setup $(bazel info bazel-bin)/entry_points_manifest.json'
         sh 'yarn -s lint'

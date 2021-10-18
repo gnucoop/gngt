@@ -11,38 +11,38 @@
           <ng-container [ngSwitch]="field.type">
             <mat-form-field *ngSwitchCase="'input'">
               <input matInput [formControlName]="field.name" [type]="field.subtype || 'text'"
-                  [placeholder]="field.label | translate" [readonly]="field.readonly">
+                  [placeholder]="field.label | transloco" [readonly]="field.readonly">
             </mat-form-field>
             <mat-form-field *ngSwitchCase="'textarea'">
-              <textarea matInput [formControlName]="field.name" [placeholder]="field.label | translate"></textarea>
+              <textarea matInput [formControlName]="field.name" [placeholder]="field.label | transloco"></textarea>
             </mat-form-field>
             <div *ngSwitchCase="'checkbox'">
-              <mat-checkbox [formControlName]="field.name">{{ field.label | translate }}</mat-checkbox>
+              <mat-checkbox [formControlName]="field.name">{{ field.label | transloco }}</mat-checkbox>
             </div>
             <mat-radio-group *ngSwitchCase="'radio'" [formControlName]="field.name">
-              <label class="mat-form-field-label">{{ field.label | translate }}</label>
+              <label class="mat-form-field-label">{{ field.label | transloco }}</label>
               <mat-radio-button *ngFor="let choice of field.choices|gngtChoices"
-                  [value]="choice.value">{{ choice.label | translate }}</mat-radio-button>
+                  [value]="choice.value">{{ choice.label | transloco }}</mat-radio-button>
             </mat-radio-group>
             <mat-form-field *ngSwitchCase="'select'">
-              <mat-select [placeholder]="field.label | translate" [formControlName]="field.name">
+              <mat-select [placeholder]="field.label | transloco" [formControlName]="field.name">
                 <mat-option *ngFor="let choice of field.choices|gngtChoices"
-                    [value]="choice.value">{{ choice.label | translate }}</mat-option>
+                    [value]="choice.value">{{ choice.label | transloco }}</mat-option>
               </mat-select>
             </mat-form-field>
             <mat-form-field *ngSwitchCase="'multipleselect'">
-              <mat-select [placeholder]="field.label | translate" [formControlName]="field.name" multiple>
+              <mat-select [placeholder]="field.label | transloco" [formControlName]="field.name" multiple>
                 <mat-option *ngFor="let choice of field.choices|gngtChoices"
-                    [value]="choice.value">{{ choice.label | translate }}</mat-option>
+                    [value]="choice.value">{{ choice.label | transloco }}</mat-option>
               </mat-select>
             </mat-form-field>
             <mat-form-field *ngSwitchCase="'autocomplete'">
               <input matInput [formControlName]="field.name" type="text"
-                  [placeholder]="field.label | translate" [readonly]="field.readonly"
+                  [placeholder]="field.label | transloco" [readonly]="field.readonly"
                   [matAutocomplete]="auto">
               <mat-autocomplete #auto="matAutocomplete">
                 <mat-option *ngFor="let option of field.choices|gngtChoices"
-                    [value]="option.value">{{ option.label | translate }}</mat-option>
+                    [value]="option.value">{{ option.label | transloco }}</mat-option>
               </mat-autocomplete>
             </mat-form-field>
           </ng-container>
@@ -53,8 +53,8 @@
   </mat-card-content>
   <mat-card-actions>
     <button *ngIf="!hideSaveButton" (click)="save()" [disabled]="(canSave === false) || !(editForm!.valid)"
-        mat-raised-button color="primary">{{ saveLabel | translate }}</button>
-    <button (click)="goBack()" mat-raised-button color="warn">{{ cancelLabel | translate }}</button>
+        mat-raised-button color="primary">{{ saveLabel | transloco }}</button>
+    <button (click)="goBack()" mat-raised-button color="warn">{{ cancelLabel | transloco }}</button>
   </mat-card-actions>
   <mat-card-footer>
     <mat-progress-bar *ngIf="loading|async" mode="indeterminate"></mat-progress-bar>

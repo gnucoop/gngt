@@ -27,7 +27,7 @@ import * as i21 from '@angular/material/table';
 import * as i22 from '@angular/material/toolbar';
 import * as i23 from '@angular/forms';
 import * as i24 from '@angular/router';
-import * as i25 from '@ngx-translate/core';
+import * as i25 from 'import {TranslocoModule} from '@ngneat/transloco';';
 import * as i5 from '@angular/common';
 import * as i6 from '@gngt/core/admin';
 import * as i7 from '@gngt/core/common';

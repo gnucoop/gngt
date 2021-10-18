@@ -91,7 +91,7 @@ def spec_bundle(name, platform, deps, **kwargs):
 
     is_browser_test = platform == "browser"
     package_name = native.package_name()
-    workspace = "angular_material"
+    workspace = "gc_gngt"
 
     _spec_entrypoint(
         name = "%s_spec_entrypoint" % name,

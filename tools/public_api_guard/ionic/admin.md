@@ -14,7 +14,7 @@ import { ChangeDetectorRef } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import * as i0 from '@angular/core';
 import * as i10 from '@angular/router';
-import * as i11 from '@ngx-translate/core';
+import * as i11 from 'import {TranslocoModule} from '@ngneat/transloco';';
 import * as i4 from '@angular/common';
 import * as i5 from '@gngt/core/admin';
 import * as i6 from '@gic/angular';
@@ -33,7 +33,7 @@ import { PipeTransform } from '@angular/core';
 import { Router } from '@angular/router';
 import { State } from '@gngt/core/model';
 import { TextFieldTypes } from '@ionic/core';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateService } from 'import {TranslocoModule} from '@ngneat/transloco';';
 
 // @public (undocumented)
 export class AdminEditComponent<T extends Model = Model, S extends State<T> = State<T>, A extends ModelActionTypes = ModelActionTypes> extends AdminEditComponent_2<T, S, A> {

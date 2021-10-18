@@ -7,7 +7,6 @@ load(
     "sass_binary",
     "sass_library",
 )
-load("//tools/third-party-libs:index.bzl", "DATA_DEPS")
 
 package(default_visibility = ["//visibility:public"])
 
@@ -31,7 +30,7 @@ ng_module(
         "@npm//@angular/forms",
         "@npm//@angular/material",
         "@npm//@angular/router",
-        "@npm//@ngx-translate/core",
+        "@npm//@ngneat/transloco",
     ],
 )
 
@@ -73,7 +72,7 @@ ng_test_library(
 
 ng_web_test_suite(
     name = "unit_tests",
-    deps = [":unit_test_sources"] + DATA_DEPS,
+    deps = [":unit_test_sources"],
 )
 
 markdown_to_html(

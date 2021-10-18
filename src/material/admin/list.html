@@ -8,12 +8,12 @@
   <mat-card-content>
     <mat-toolbar>
       <div class="gngt-actions">
-        <mat-select #actionSel [disabled]="!selection.hasValue()" [placeholder]="'Action' | translate">
-          <mat-option value="delete">{{ 'Delete' | translate }}</mat-option>
+        <mat-select #actionSel [disabled]="!selection.hasValue()" [placeholder]="'Action' | transloco">
+          <mat-option value="delete">{{ 'Delete' | transloco }}</mat-option>
         </mat-select>
         <span class="gngt-spacer"></span>
         <button mat-raised-button [disabled]="!actionSel.value"
-            (click)="processAction(actionSel.value)">{{ 'Apply' | translate }}</button>
+            (click)="processAction(actionSel.value)">{{ 'Apply' | transloco }}</button>
       </div>
       <span class="gngt-filler"></span>
       <mat-paginator [pageSizeOptions]="[20, 50, 100]" showFirstLastButtons></mat-paginator>
@@ -39,7 +39,7 @@
             <th mat-header-cell *matHeaderCellDef mat-sort-header>
               <ng-container *ngTemplateOutlet="cellTemplatesMap[header.label] ?
                 cellTemplatesMap[header.label] : defaultHeaderCellTemplate;
-                context: {$implicit: header.label | translate}">
+                context: {$implicit: header.label | transloco}">
               </ng-container>
             </th>
           </ng-container>
@@ -47,12 +47,12 @@
             <th mat-header-cell *matHeaderCellDef>
               <ng-container *ngTemplateOutlet="cellTemplatesMap[header.label] ?
                 cellTemplatesMap[header.label] : defaultHeaderCellTemplate;
-                context: {$implicit: header.label | translate}">
+                context: {$implicit: header.label | transloco}">
               </ng-container>
             </th>
           </ng-template>
           <ng-template #defaultHeaderCellTemplate>
-            {{ header.label | translate }}
+            {{ header.label | transloco }}
           </ng-template>
         <td [routerLink]="baseEditUrl + element.id" mat-cell *matCellDef="let element">
           <ng-container *ngTemplateOutlet="cellTemplatesMap[header.column] ?

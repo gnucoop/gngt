@@ -25,7 +25,7 @@ ng_module(
         "@npm//@angular/router",
         "@npm//@ngrx/effects",
         "@npm//@ngrx/store",
-        "@npm//@ngx-translate/core",
+        "@npm//@ngneat/transloco",
         "@npm//@types/url-parse",
         "@npm//url-parse",
     ],

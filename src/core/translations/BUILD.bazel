@@ -17,7 +17,7 @@ ng_module(
     ),
     deps = [
         "@npm//@angular/core",
-        "@npm//@ngx-translate/core",
+        "@npm//@ngneat/transloco",
     ],
 )
 
@@ -37,8 +37,7 @@ ng_test_library(
         ":translations",
         "@npm//@angular/common",
         "@npm//@angular/platform-browser",
-        "@npm//@ngx-translate/core",
-        "@npm//@ngx-translate/http-loader",
+        "@npm//@ngneat/transloco",
     ],
 )
 

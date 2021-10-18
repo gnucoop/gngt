@@ -1,5 +1,5 @@
 load("@build_bazel_rules_nodejs//:index.bzl", "pkg_web")
-load("//tools:defaults.bzl", "ng_module", "sass_binary")
+load("//tools:defaults.bzl", "ng_module", "ts_library")
 load("//tools/dev-server:index.bzl", "dev_server")
 load("//tools/esbuild:index.bzl", "esbuild", "esbuild_config")
 load("//src/gngt-examples:config.bzl", "ALL_EXAMPLES")
@@ -29,6 +29,7 @@ ng_module(
         "routes.ts",
     ],
     deps = [
+        "//src/core/translations",
         "//src/dev-app/dev-app",
         "//src/dev-app/example",
         "//src/dev-app/examples-page",
@@ -43,7 +44,6 @@ ng_module(
         "@npm//@angular/cdk",
         "@npm//@angular/material",
         "@npm//@angular/router",
-        "@npm//@ngx-translate/core",
     ],
 )
 
@@ -71,8 +71,6 @@ esbuild(
     ],
 )
 
-)
-
 # File group for all static files which are needed to serve the dev-app. These files are
 # used in the devserver as runfiles and will be copied into the static web package that can
 # be deployed on static hosting services (like firebase).
@@ -82,7 +80,6 @@ filegroup(
         "favicon.ico",
         "index.html",
         "@npm//:node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
-        "@npm//:node_modules/@ionic/angular/css/ionic.bundle.css",
         "@npm//:node_modules/core-js-bundle/index.js",
         "@npm//:node_modules/rxjs/bundles/rxjs.umd.min.js",
         "@npm//:node_modules/zone.js/dist/zone.js",

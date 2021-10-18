@@ -33,10 +33,18 @@ def esbuild_amd(name, entry_point, module_name, testonly = False, config = None,
         data = [config] if config else None,
     )
 
+    native.genrule(
+        name = "%s_config_plugin" % name,
+        outs = ["custom_resolve_esbuild_plugin.mjs"],
+        srcs = ["//tools/esbuild:custom_resolve_esbuild_plugin.mjs"],
+        cmd = "cp $< $@",
+    )
+
     _esbuild_config(
         name = "%s_config_lib" % name,
         testonly = testonly,
         config_file = "%s_config" % name,
+        srcs = ["%s_config_plugin" % name],
         # Adds the user configuration and its deps as dependency of the AMD ESBuild config.
         # https://github.com/bazelbuild/rules_nodejs/blob/a892caf5a040bae5eeec174a3cf6250f02caf364/packages/esbuild/esbuild_config.bzl#L23.
         deps = [config, "%s_deps" % config] if config else None,

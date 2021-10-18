@@ -929,24 +929,37 @@
   resolved "https://registry.yarnpkg.com/@microsoft/tsdoc/-/tsdoc-0.13.2.tgz#3b0efb6d3903bd49edb073696f60e90df08efb26"
   integrity sha512-WrHvO8PDL8wd8T2+zBGKrMwVL5IyzR3ryWUsl0PXgEV0QHup4mTLi0QcATefGI6Gx9Anu7vthPyyyLpY0EpiQg==
 
-"@ngrx/effects@^12.1.0":
-  version "12.4.0"
-  resolved "https://registry.yarnpkg.com/@ngrx/effects/-/effects-12.4.0.tgz#b96a5cd397ee00e4d52e476ba13f4be2affb90f1"
-  integrity sha512-9N6c+Oj3Rghoi4JnVxqgZ581BYNCLxHK20CVX3WiiEkMXL1cyYNuXVB9+hQHJ6OSME0Jo5YoXzjsIrzFsnMZCw==
+"@ngneat/transloco-utils@3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@ngneat/transloco-utils/-/transloco-utils-3.0.0.tgz#4265a345634489ed423b97f36e5ea482e8a98034"
+  integrity sha512-kEBoaJdY2orKhPH5eAHQpos1NiOnQoPMKUBINXObSe3SjjWNnGVrqytJRD+ruOFnBJlhXS2sRIiruQru/U/QuQ==
+  dependencies:
+    cosmiconfig "^7.0.0"
+    tslib "^2.3.0"
+
+"@ngneat/transloco@^3.0.6":
+  version "3.0.6"
+  resolved "https://registry.yarnpkg.com/@ngneat/transloco/-/transloco-3.0.6.tgz#474a4b8ce2d0aa4f50e864d80a88617c3bc8f223"
+  integrity sha512-0VevLTUsaRvhLDAH6wFOt5kvhgd/Z2vAPYyhqBWkvi2L8JMoIhKJArXFILWNN3oqcKsBnWpBNg9tMu971694iA==
+  dependencies:
+    "@ngneat/transloco-utils" "3.0.0"
+    flat "5.0.2"
+    lodash.kebabcase "^4.1.1"
+    ora "^5.4.1"
+    replace-in-file "^6.2.0"
+    tslib "^2.2.0"
+
+"@ngrx/effects@^12.5.0":
+  version "12.5.0"
+  resolved "https://registry.yarnpkg.com/@ngrx/effects/-/effects-12.5.0.tgz#afed5f5c8dc1e00a5906f231060d6a74fd5fcff6"
+  integrity sha512-6+8HR9+3QReFlvL6kTHZ2gVgRbKYePnOVDspmR5EOpYHU/Yb8qKEBPihh2Tu05NuOJeNpZY7lTX9Lx9DJ1mnUg==
   dependencies:
     tslib "^2.0.0"
 
-"@ngrx/store@^12.1.0":
-  version "12.4.0"
-  resolved "https://registry.yarnpkg.com/@ngrx/store/-/store-12.4.0.tgz#5c3fb2d6fcc600db6914e955deff01a5bb9f934b"
-  integrity sha512-+kC2Ro2BmsxghHQhq4u+9HGE4BPy739werimspuqz37yUG1G3CdxMp0wuoD2M5371spUTFsXOtjKzpifOYbWbg==
-  dependencies:
-    tslib "^2.0.0"
-
-"@ngx-translate/core@^13.0.0":
-  version "13.0.0"
-  resolved "https://registry.yarnpkg.com/@ngx-translate/core/-/core-13.0.0.tgz#60547cb8a0845a2a0abfde6b0bf5ec6516a63fd6"
-  integrity sha512-+tzEp8wlqEnw0Gc7jtVRAJ6RteUjXw6JJR4O65KlnxOmJrCGPI0xjV/lKRnQeU0w4i96PQs/jtpL921Wrb7PWg==
+"@ngrx/store@^12.5.0":
+  version "12.5.0"
+  resolved "https://registry.yarnpkg.com/@ngrx/store/-/store-12.5.0.tgz#163bb73b16d8ec4d4e1a24a8cc399afdd2863aa3"
+  integrity sha512-+RnUz9n7WnTcw+7evXxvlnnbQhb+9SPP7F2vOCsC/2kNLjA75H1xzShdIs5iswv43YyfnOK6tNeakHPVp+B9Ng==
   dependencies:
     tslib "^2.0.0"
 
@@ -3337,7 +3350,7 @@ chalk@^3.0.0:
     ansi-styles "^4.1.0"
     supports-color "^7.1.0"
 
-chalk@^4.0.0, chalk@^4.1.0, chalk@^4.1.1, chalk@~4.1.0:
+chalk@^4.0.0, chalk@^4.1.0, chalk@^4.1.1, chalk@^4.1.2, chalk@~4.1.0:
   version "4.1.2"
   resolved "https://registry.yarnpkg.com/chalk/-/chalk-4.1.2.tgz#aac4e2b7734a740867aeb16bf02aad556a1e7a01"
   integrity sha512-oKnbhFyRIXpUuez8iBMmyEa4nbj4IOQyuhc/wy9kY7/WVPcwIO9VA668Pu8RkO7+0G76SLROeyw9CpQ061i4mA==
@@ -5959,6 +5972,11 @@ flat-cache@^3.0.4:
     flatted "^3.1.0"
     rimraf "^3.0.2"
 
+flat@5.0.2:
+  version "5.0.2"
+  resolved "https://registry.yarnpkg.com/flat/-/flat-5.0.2.tgz#8ca6fe332069ffa9d324c327198c598259ceb241"
+  integrity sha512-b6suED+5/3rTpUBdG1gupIl8MPFCAMA0QXwmljLhvCUKcUvdE4gWky9zpuGCcXHOsz4J9wPGNWq6OKpmIzz3hQ==
+
 flatted@^2.0.0:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/flatted/-/flatted-2.0.1.tgz#69e57caa8f0eacbc281d2e2cb458d46fdb449e08"
@@ -6380,7 +6398,7 @@ glob-slasher@^1.0.1:
     lodash.isobject "^2.4.1"
     toxic "^1.0.0"
 
-glob@7.2.0:
+glob@7.2.0, glob@^7.2.0:
   version "7.2.0"
   resolved "https://registry.yarnpkg.com/glob/-/glob-7.2.0.tgz#d15535af7732e02e948f4c41628bd910293f6023"
   integrity sha512-lmLf6gtyrPq8tTjSmrO94wBeQbFR3HbLHbuyD69wuyQkImp2hWqMGB47OX65FBkPffO641IP9jWa1z4ivqG26Q==
@@ -8451,6 +8469,11 @@ lodash.isstring@^4.0.1:
   resolved "https://registry.yarnpkg.com/lodash.isstring/-/lodash.isstring-4.0.1.tgz#d527dfb5456eca7cc9bb95d5daeaf88ba54a5451"
   integrity sha1-1SfftUVuynzJu5XV2ur4i6VKVFE=
 
+lodash.kebabcase@^4.1.1:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/lodash.kebabcase/-/lodash.kebabcase-4.1.1.tgz#8489b1cb0d29ff88195cceca448ff6d6cc295c36"
+  integrity sha1-hImxyw0p/4gZXM7KRI/21swpXDY=
+
 lodash.keys@~2.4.1:
   version "2.4.1"
   resolved "https://registry.yarnpkg.com/lodash.keys/-/lodash.keys-2.4.1.tgz#48dea46df8ff7632b10d706b8acb26591e2b3727"
@@ -9622,7 +9645,7 @@ optionator@^0.8.1:
     type-check "~0.3.2"
     word-wrap "~1.2.3"
 
-ora@5.4.1, ora@^5.1.0, ora@^5.3.0:
+ora@5.4.1, ora@^5.1.0, ora@^5.3.0, ora@^5.4.1:
   version "5.4.1"
   resolved "https://registry.yarnpkg.com/ora/-/ora-5.4.1.tgz#1b2678426af4ac4a509008e5e4ac9e9959db9e18"
   integrity sha512-5b6Y85tPxZZ7QytO+BQzysW31HJku27cRIlkbAXaNx+BdcVi+LlRFmVXzeF6a7JCwJpyw5c4b+YSVImQIrBpuQ==
@@ -10969,6 +10992,15 @@ replace-ext@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/replace-ext/-/replace-ext-1.0.0.tgz#de63128373fcbf7c3ccfa4de5a480c45a67958eb"
   integrity sha1-3mMSg3P8v3w8z6TeWkgMRaZ5WOs=
+
+replace-in-file@^6.2.0:
+  version "6.3.1"
+  resolved "https://registry.yarnpkg.com/replace-in-file/-/replace-in-file-6.3.1.tgz#9905e1392593fc4da2c5bd394f0c764bbe93d51d"
+  integrity sha512-zZhS5k/kM1RitWKZwED6MGbGJ2jqdRvkh9r/PTImSxxh21vnr3aTKANtkfchqLPva9VvJqqA6Npuuz7I/aADCQ==
+  dependencies:
+    chalk "^4.1.2"
+    glob "^7.2.0"
+    yargs "^17.2.1"
 
 request@^2.87.0, request@^2.88.0, request@^2.88.2:
   version "2.88.2"

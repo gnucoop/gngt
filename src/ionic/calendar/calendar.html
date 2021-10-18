@@ -1,13 +1,13 @@
 <div class="gngt-calendar-header">
   <ion-fab-button mini left [disabled]="disabled" (click)="prevPage()">&#8592;</ion-fab-button>
   <ion-button [disabled]="disabled" (click)="previousViewMode()" light class="gngt-calendar-header-title">
-    {{ viewHeader | translate }}
+    {{ viewHeader | transloco }}
   </ion-button>
   <ion-fab-button mini right [disabled]="disabled" (click)="nextPage()">&#8594;</ion-fab-button>
 </div>
 <div class="gngt-calendar-row" *ngIf="viewMode == 'month'">
   <div *ngFor="let weekDay of weekDays">
-    <div class="button-label">{{ weekDay | translate }}</div>
+    <div class="button-label">{{ weekDay | transloco }}</div>
   </div>
 </div>
 <div class="gngt-calendar-row" *ngFor="let row of calendarRows">

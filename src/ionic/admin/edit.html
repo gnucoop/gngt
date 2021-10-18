@@ -13,20 +13,20 @@
           <ng-container *ngIf="!field.hidden">
             <ng-container [ngSwitch]="field.type">
               <ion-item *ngSwitchCase="'input'">
-                <ion-label>{{ field.label | translate }}</ion-label>
+                <ion-label>{{ field.label | transloco }}</ion-label>
                 <ion-input [formControlName]="field.name" [type]="field.subtype|gngtInputType"
                     [readonly]="field.readonly === true"></ion-input>
               </ion-item>
               <ion-item *ngSwitchCase="'textarea'">
-                <ion-label>{{ field.label | translate }}</ion-label>
+                <ion-label>{{ field.label | transloco }}</ion-label>
                 <ion-textarea [formControlName]="field.name"></ion-textarea>
               </ion-item>
               <ion-item *ngSwitchCase="'checkbox'">
-                <ion-label>{{ field.label | translate }}</ion-label>
+                <ion-label>{{ field.label | transloco }}</ion-label>
                 <ion-checkbox slot="start" [formControlName]="field.name"></ion-checkbox>
               </ion-item>
               <ion-item *ngSwitchCase="'radio'">
-                <ion-label class="gngt-radio-label">{{ field.label | translate }}</ion-label>
+                <ion-label class="gngt-radio-label">{{ field.label | transloco }}</ion-label>
                 <div class="gngt-radio-container">
                   <ion-radio-group [formControlName]="field.name">
                     <div *ngFor="let choice of field.choices|gngtChoices">
@@ -37,21 +37,21 @@
                 </div>
               </ion-item>
               <ion-item *ngSwitchCase="'select'">
-                <ion-label>{{ field.label | translate }}</ion-label>
+                <ion-label>{{ field.label | transloco }}</ion-label>
                 <ion-select [formControlName]="field.name">
                   <ion-select-option *ngFor="let choice of field.choices|gngtChoices"
                       [value]="choice.value">{{ choice.label }}</ion-select-option>
                 </ion-select>
               </ion-item>
               <ion-item *ngSwitchCase="'multipleselect'">
-                <ion-label>{{ field.label | translate }}</ion-label>
+                <ion-label>{{ field.label | transloco }}</ion-label>
                 <ion-select [formControlName]="field.name" [multiple]="true">
                   <ion-select-option *ngFor="let choice of field.choices|gngtChoices"
                       [value]="choice.value">{{ choice.label }}</ion-select-option>
                 </ion-select>
               </ion-item>
               <ion-item *ngSwitchCase="'autocomplete'">
-                <ion-label>{{ field.label | translate }}</ion-label>
+                <ion-label>{{ field.label | transloco }}</ion-label>
                 <gic-autocomplete [formControlName]="field.name">
                   <gic-autocomplete-option
                       *ngFor="let choice of field.choices|gngtChoices">{{ choice.label }}</gic-autocomplete-option>
@@ -65,8 +65,8 @@
     </div>
     <div class="ion-actions">
       <ion-spinner *ngIf="loading|async"></ion-spinner>
-      <ion-button (click)="save()" [disabled]="(canSave === false) || !(editForm!.valid)">{{ saveLabel | translate }}</ion-button>
-      <ion-button (click)="goBack()" color="warning">{{ cancelLabel | translate }}</ion-button>
+      <ion-button (click)="save()" [disabled]="(canSave === false) || !(editForm!.valid)">{{ saveLabel | transloco }}</ion-button>
+      <ion-button (click)="goBack()" color="warning">{{ cancelLabel | transloco }}</ion-button>
     </div>
   </ion-card-content>
 </ion-card>

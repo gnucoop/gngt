@@ -10,7 +10,7 @@ import * as i0 from '@angular/core';
 import * as i2 from '@angular/common';
 import * as i3 from '@angular/forms';
 import * as i4 from '@ionic/angular';
-import * as i5 from '@ngx-translate/core';
+import * as i5 from 'import {TranslocoModule} from '@ngneat/transloco';';
 
 // @public (undocumented)
 export class CalendarComponent extends Calendar {

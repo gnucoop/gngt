@@ -19,14 +19,12 @@
  *
  */
 
-import {
-  MissingTranslationHandler as BaseMissingTranslationHandler,
-  MissingTranslationHandlerParams
-} from '@ngx-translate/core';
+import {Injectable} from '@angular/core';
+import {TranslocoConfig, TranslocoMissingHandler} from '@ngneat/transloco';
 
-
-export class MissingTranslationHandler extends BaseMissingTranslationHandler {
-  handle(params: MissingTranslationHandlerParams): any {
-    return params.key || '';
+@Injectable()
+export class MissingTranslationHandler implements TranslocoMissingHandler {
+  handle(key: string, _: TranslocoConfig) {
+    return key.substr(key.indexOf('.') + 1);
   }
 }

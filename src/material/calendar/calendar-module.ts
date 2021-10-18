@@ -23,7 +23,7 @@ import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
-import {TranslateModule} from '@ngx-translate/core';
+import {TranslocoModule} from '@ngneat/transloco';
 
 import {CalendarComponent} from './calendar';
 
@@ -32,7 +32,7 @@ import {CalendarComponent} from './calendar';
     CommonModule,
     FormsModule,
     MatButtonModule,
-    TranslateModule,
+    TranslocoModule,
   ],
   declarations: [
     CalendarComponent,

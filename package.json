@@ -14,7 +14,7 @@
     "npm": "Please use Yarn instead of NPM to install dependencies. See: https://yarnpkg.com/lang/en/docs/install/"
   },
   "scripts": {
-    "postinstall": "node tools/postinstall/patch-packages.js && node tools/postinstall/apply-patches.js",
+    "postinstall": "node tools/postinstall/patch-packages.js && node tools/postinstall/apply-patches.js && ngcc --properties module main --create-ivy-entry-points",
     "build": "ts-node --project scripts/tsconfig.json ./scripts/build-packages-dist.ts",
     "build-and-check-release-output": "ts-node --project scripts/tsconfig.json scripts/build-and-check-release-output.ts",
     "build-docs-content": "node ./scripts/build-docs-content.js",
@@ -59,9 +59,9 @@
     "@gic/core": "5.8.1",
     "@ionic/angular": "https://github.com/gnucoop/ionic/releases/download/5.8.1/ionic-angular-5.8.1-ng-12.tgz",
     "@ionic/core": "5.8.1",
-    "@ngrx/effects": "^12.1.0",
-    "@ngrx/store": "^12.1.0",
-    "@ngx-translate/core": "^13.0.0",
+    "@ngneat/transloco": "^3.0.6",
+    "@ngrx/effects": "^12.5.0",
+    "@ngrx/store": "^12.5.0",
     "core-js-bundle": "^3.8.2",
     "date-fns": "^2.15.0",
     "pouchdb": "~7.0.0",

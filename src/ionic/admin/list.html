@@ -23,12 +23,12 @@
   <mat-card-content>
     <mat-toolbar>
       <div class="gngt-actions">
-        <mat-select #actionSel [disabled]="!selection.hasValue()" [placeholder]="'Action' | translate">
-          <mat-option value="delete">{{ 'Delete' | translate }}</mat-option>
+        <mat-select #actionSel [disabled]="!selection.hasValue()" [placeholder]="'Action' | transloco">
+          <mat-option value="delete">{{ 'Delete' | transloco }}</mat-option>
         </mat-select>
         <span class="gngt-spacer"></span>
         <button mat-raised-button [disabled]="!actionSel.value"
-            (click)="processAction(actionSel.value)">{{ 'Apply' | translate }}</button>
+            (click)="processAction(actionSel.value)">{{ 'Apply' | transloco }}</button>
       </div>
       <span class="gngt-filler"></span>
       <mat-paginator [pageSizeOptions]="[20, 50, 100]" showFirstLastButtons></mat-paginator>
@@ -51,10 +51,10 @@
       <ng-container *ngFor="let header of headers"
           [matColumnDef]="header.column">
         <ng-container *ngIf="header.sortable; else notSortable">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ header.label | translate }}</th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ header.label | transloco }}</th>
         </ng-container>
         <ng-template #notSortable>
-          <th mat-header-cell *matHeaderCellDef>{{ header.label | translate }}</th>
+          <th mat-header-cell *matHeaderCellDef>{{ header.label | transloco }}</th>
         </ng-template>
         <td [routerLink]="baseEditUrl + element.id" mat-cell *matCellDef="let element">{{ element[header.column] }}</td>
       </ng-container>

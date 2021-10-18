@@ -20,14 +20,17 @@
  */
 
 import {NgModule} from '@angular/core';
-import {MissingTranslationHandler as BaseMissingTranslationHandler} from '@ngx-translate/core';
+import {TRANSLOCO_MISSING_HANDLER, TranslocoModule} from '@ngneat/transloco';
 
 import {MissingTranslationHandler} from './missing-translation-handler';
 
 @NgModule({
+  imports: [
+    TranslocoModule,
+  ],
   providers: [
-    {provide: BaseMissingTranslationHandler, useClass: MissingTranslationHandler},
-  ]
+    {provide: TRANSLOCO_MISSING_HANDLER, useClass: MissingTranslationHandler},
+  ],
 })
 export class TranslationsModule {
 }

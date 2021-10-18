@@ -7,7 +7,6 @@ load(
     "sass_binary",
     "sass_library",
 )
-load("//tools/third-party-libs:index.bzl", "IONIC_DEPS")
 
 package(default_visibility = ["//visibility:public"])
 
@@ -27,7 +26,7 @@ ng_module(
         "@npm//@angular/platform-browser",
         "@npm//@ionic/angular",
         "@npm//@ionic/core",
-        "@npm//@ngx-translate/core",
+        "@npm//@ngneat/transloco",
     ],
 )
 
@@ -59,8 +58,7 @@ ng_web_test_suite(
     name = "unit_tests",
     deps = [
         ":unit_test_sources",
-        "//tools/third-party-libs:amd_url_parse",
-    ] + IONIC_DEPS,
+    ],
 )
 
 markdown_to_html(

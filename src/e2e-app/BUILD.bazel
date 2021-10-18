@@ -37,6 +37,7 @@ ng_module(
     ),
     deps = [
         "//src/gngt-examples/private",
+        "//src/core/translations",
         "//src/ionic/calendar",
         "//src/material/calendar",
         "@npm//@angular/common",
@@ -45,7 +46,7 @@ ng_module(
         "@npm//@angular/platform-browser",
         "@npm//@angular/router",
         "@npm//@ionic/angular",
-        "@npm//@ngx-translate/core",
+        "@npm//@ngneat/transloco",
         "@npm//@ngx-translate/http-loader",
     ],
 )

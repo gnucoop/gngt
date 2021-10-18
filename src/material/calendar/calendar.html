@@ -1,13 +1,13 @@
 <div class="gngt-calendar-header">
     <button (click)="prevPage()" mat-mini-fab>&#8592;</button>
     <button (click)="previousViewMode()" mat-button class="gngt-calendar-header-title">
-      {{ viewHeader | translate }}
+      {{ viewHeader | transloco }}
     </button>
     <button (click)="nextPage()" mat-mini-fab>&#8594;</button>
 </div>
 <div class="gngt-calendar-row" *ngIf="viewMode == 'month'">
     <div *ngFor="let weekDay of weekDays">
-        {{ weekDay | translate }}
+        {{ weekDay | transloco }}
     </div>
 </div>
 <div class="gngt-calendar-row" *ngFor="let row of calendarRows">

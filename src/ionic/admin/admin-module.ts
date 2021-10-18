@@ -27,7 +27,7 @@ import {GicModule} from '@gic/angular';
 import {GngtAdminModule as CoreModule} from '@gngt/core/admin';
 import {CommonModule as GngtCommonModule} from '@gngt/core/common';
 import {IonicModule} from '@ionic/angular';
-import {TranslateModule} from '@ngx-translate/core';
+import {TranslocoModule} from '@ngneat/transloco';
 
 import {AdminUserInteractionsService} from './admin-user-interactions';
 import {AdminEditComponent} from './edit';
@@ -43,7 +43,7 @@ import {AdminListComponent} from './list';
     IonicModule,
     ReactiveFormsModule,
     RouterModule,
-    TranslateModule,
+    TranslocoModule,
   ],
   declarations: [
     AdminEditComponent,
