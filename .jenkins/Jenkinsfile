@@ -55,16 +55,6 @@ pipeline {
         archiveArtifacts 'dist/releases/**/*.tgz'
       }
     }
-    stage('Ngcc compatibility check') {
-      steps {
-        sh 'mkdir -p node_modules/@gngt'
-        sh 'cp -R dist/releases/* node_modules/@gngt/'
-        sh 'mv node_modules/__ngcc_entry_points__.json node_modules/__ngcc_entry_points__.json.back'
-        sh 'yarn ngcc --error-on-failed-entry-point --no-tsconfig'
-        sh 'mv node_modules/__ngcc_entry_points__.json.back node_modules/__ngcc_entry_points__.json'
-        sh 'rm -Rf node_modules/@gngt'
-      }
-    }
     stage('Build') {
       steps {
         sh 'bazel build --build_tag_filters=-docs-package,-release-package -- src/...'

@@ -28,15 +28,6 @@ echo "Build release packages"
 yarn build-and-check-release-output
 yarn check-tooling-setup
 
-echo "Ngcc compatibility check"
-rm -Rf node_modules/@gngt
-mkdir -p node_modules/@gngt
-cp -R dist/releases/* node_modules/@gngt/
-mv node_modules/__ngcc_entry_points__.json node_modules/__ngcc_entry_points__.json.back
-yarn ngcc --error-on-failed-entry-point --no-tsconfig
-mv node_modules/__ngcc_entry_points__.json.back node_modules/__ngcc_entry_points__.json
-rm -Rf node_modules/@gngt
-
 echo "Build"
 "${BAZEL_BINARY}" build --build_tag_filters=-docs-package,-release-package -- src/...
 
