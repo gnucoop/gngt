@@ -2,7 +2,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as ts from 'typescript';
 import * as Lint from 'tslint';
-import * as minimatch from 'minimatch';
+import minimatch from 'minimatch';
 
 const buildConfig = require('../../build-config');
 

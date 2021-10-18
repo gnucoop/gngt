@@ -1,6 +1,5 @@
-import * as minimatch from 'minimatch';
 import {createPlugin, utils} from 'stylelint';
-
+import minimatch from 'minimatch';
 import {NeedsPrefix} from './needs-prefix';
 
 const parseSelector = require('stylelint/lib/utils/parseSelector');

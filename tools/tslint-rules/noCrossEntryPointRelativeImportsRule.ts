@@ -1,5 +1,5 @@
-import {existsSync, realpathSync} from 'fs';
-import * as minimatch from 'minimatch';
+import {existsSync} from 'fs';
+import minimatch from 'minimatch';
 import {dirname, join, normalize, relative, resolve} from 'path';
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
