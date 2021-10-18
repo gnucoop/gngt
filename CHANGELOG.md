@@ -1,3 +1,18 @@
+<a name="13.0.0-next.1"></a>
+# 13.0.0-next.1 "easy-ox" (2021-10-18)
+### core
+| Commit | Type | Description |
+| -- | -- | -- |
+| [8e8fa554d](https://github.com/gnucoop/gngt/commit/8e8fa554d25d950cf77760d6b8cf8ed1e3c51e5e) | feat | **sync:** add pouchdb adapter and plugins in root module option |
+### multiple
+| Commit | Type | Description |
+| -- | -- | -- |
+| [342850bd1](https://github.com/gnucoop/gngt/commit/342850bd1ec08adffd202c4f550dd1bbf5d79531) | feat | add support for TypeScript 4.4 |
+## Special Thanks
+Marco Marche and trik
+
+<!-- CHANGELOG SPLIT MARKER -->
+
 <a name="13.0.0-next.0"></a>
 # 13.0.0-next.0 "holy-lake" (2021-09-23)
 
@@ -32,4 +47,3 @@ update to angular 12
 
 
 # 10.0.0-next.0 "red-violet" (2020-05-14)
-
