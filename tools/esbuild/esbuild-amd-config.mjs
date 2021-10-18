@@ -1,28 +1,24 @@
-import {readFileSync} from 'fs';
+import url from 'url';
+import path from 'path';
 
-const adapterMemorySearchStr = `guardedConsole('error', 'memory adapter plugin error: ' +\n`
-  + `    'Cannot find global "PouchDB" object! ' +\n`
-  + `    'Did you remember to include pouchdb.js?');`;
-const findSearchStr = `guardedConsole('error', 'pouchdb-find plugin error: ' +\n`
-    + `    'Cannot find global "PouchDB" object! ' +\n`
-    + `    'Did you remember to include pouchdb.js?');`;
-const pouchdDbPlugin = {
-  name: 'pouchdb',
-  setup(build) {
-    build.onLoad({filter: /pouchdb\.(find|memory)\.js/}, async (args) => {
-      let contents = await new Promise((resolve, reject) => {
-        const content = readFileSync(args.path, 'utf-8')
-          .replace(adapterMemorySearchStr, 'PouchDBPlugin = MemoryPouchPlugin;')
-          .replace(findSearchStr, 'PouchDBPlugin = plugin;');
-        resolve(`var PouchDBPlugin;\n${content}\nmodule.exports = PouchDBPlugin;`);
-      });
-      return {contents};
-    });
-  },
-};
+/** Path to the ESBuild configuration maintained by the user. */
+const userConfigExecPath = "TMPL_CONFIG_PATH"
+
+/** User ESBuild config. Empty if none is loaded. */
+let userConfig = {};
+
+if (userConfigExecPath !== '') {
+  const userConfigPath = path.join(process.cwd(), userConfigExecPath);
+  const userConfigUrl = url.pathToFileURL(userConfigPath);
+
+  // Load the user config, assuming it is set as `default` export.
+  userConfig = (await import(userConfigUrl)).default;
+}
 
 export default {
+  ...userConfig,
   globalName: "__exports",
+  format: 'iife',
   banner: {js: 'define("TMPL_MODULE_NAME", [], function() {'},
   footer: {js: 'return __exports;})'},
   plugins: [pouchdDbPlugin],
