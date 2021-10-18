@@ -87,7 +87,7 @@
     "@angular/platform-server": "13.0.0-next.15",
     "@angular/router": "13.0.0-next.15",
     "@axe-core/webdriverjs": "^4.1.0",
-    "@babel/core": "^7.13.10",
+    "@babel/core": "^7.15.8",
     "@babel/traverse": "^7.13.0",
     "@bazel/bazelisk": "1.10.1",
     "@bazel/buildifier": "4.2.1",
