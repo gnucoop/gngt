@@ -22,11 +22,6 @@ pipeline {
         sh './scripts/circleci/setup_bazel_binary.sh'
       }
     }
-    stage('Test local browsers') {
-      steps {
-        sh 'bazel test --build_tag_filters=-e2e --test_tag_filters=-e2e --build_tests_only -- src/...'
-      }
-    }
     stage('Lint') {
       steps {
         sh 'bazel build //:package_externals'
@@ -37,9 +32,29 @@ pipeline {
         sh 'yarn -s ts-circular-deps:check'
       }
     }
+    stage('Build') {
+      steps {
+        sh 'bazel build --build_tag_filters=-docs-package,-release-package -- src/...'
+      }
+    }
+    stage('API golden checks') {
+      steps {
+        sh 'bazel test tools/public_api_guard/...'
+      }
+    }
     stage('Integration tests - Partial Ivy') {
       steps {
         sh 'yarn integration-tests:partial-ivy'
+      }
+    }
+    stage('Integration tests') {
+      steps {
+        sh 'yarn integration-tests'
+      }
+    }
+    stage('Test local browsers') {
+      steps {
+        sh 'bazel test --build_tag_filters=-e2e --test_tag_filters=-e2e --build_tests_only -- src/...'
       }
     }
     stage('E2E tests') {
@@ -53,16 +68,6 @@ pipeline {
         sh 'yarn check-tooling-setup'
         sh './scripts/jenkins/create-build-artifacts.js'
         archiveArtifacts 'dist/releases/**/*.tgz'
-      }
-    }
-    stage('Build') {
-      steps {
-        sh 'bazel build --build_tag_filters=-docs-package,-release-package -- src/...'
-      }
-    }
-    stage('API golden checks') {
-      steps {
-        sh 'bazel test tools/public_api_guard/...'
       }
     }
     stage('Save cache') {

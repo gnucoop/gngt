@@ -213,7 +213,21 @@
   "linterOptions": {
     "exclude": [
       // Exclude the API golden files
-      "tools/public_api_guard/**/*.d.ts"
+      "tools/public_api_guard/**/*.d.ts",
+      // Exclude schematic template files and test cases that can't be linted.
+      "src/ionic/schematics/ng-generate/*/files/**/*",
+      "src/material/schematics/ng-generate/*/files/**/*",
+      "src/core/schematics/ng-generate/*/files/**/*",
+      "src/core/schematics/ng-update/test-cases/**/*_input.ts",
+      "src/core/schematics/ng-update/test-cases/**/*_expected_output.ts",
+      "src/ionic/schematics/ng-update/test-cases/**/*_input.ts",
+      "src/ionic/schematics/ng-update/test-cases/**/*_expected_output.ts",
+      "src/material/schematics/ng-update/test-cases/**/*_input.ts",
+      "src/material/schematics/ng-update/test-cases/**/*_expected_output.ts",
+      // These CLI-generated projects are not necessarily compliant with the lint
+      // rules and they should remain as unmodified as possible.
+      "integration/ng-add/**/*",
+      "integration/ng-update-v13/**/*"
     ]
   }
 }
