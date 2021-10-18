@@ -60,7 +60,16 @@ export async function createLinkerEsbuildPlugin(filter, ensureNoPartialDeclarati
     setup: (build) => {
       build.onLoad({filter}, async (args) => {
         const filePath = args.path;
-        const content = await fs.promises.readFile(filePath, 'utf8');
+        let content = await fs.promises.readFile(filePath, 'utf8');
+        if (filePath.match(/@angular\/cdk\/fesm2020\/overlay\.mjs/)) {
+          content = content.replace(
+              'ConnectedOverlayPositionChange = __decorate([\n' +
+              '    __param(1, Optional()),\n' +
+              '    __metadata("design:paramtypes", [ConnectionPositionPair,\n' +
+              '        ScrollingVisibility])\n' +
+              '], ConnectedOverlayPositionChange);\n',
+              '');
+        };
         const {ast, code} = await babel.transformAsync(content, {
           filename: filePath,
           filenameRelative: filePath,

@@ -10,7 +10,7 @@ import * as i0 from '@angular/core';
 import * as i2 from '@angular/common';
 import * as i3 from '@angular/forms';
 import * as i4 from '@ionic/angular';
-import * as i5 from 'import {TranslocoModule} from '@ngneat/transloco';';
+import * as i5 from '@ngneat/transloco';
 
 // @public (undocumented)
 export class CalendarComponent extends Calendar {
@@ -28,7 +28,7 @@ export class CalendarModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<CalendarModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<CalendarModule, [typeof i1.CalendarComponent], [typeof i2.CommonModule, typeof i3.FormsModule, typeof i4.IonicModule, typeof i5.TranslateModule], [typeof i1.CalendarComponent]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<CalendarModule, [typeof i1.CalendarComponent], [typeof i2.CommonModule, typeof i3.FormsModule, typeof i4.IonicModule, typeof i5.TranslocoModule], [typeof i1.CalendarComponent]>;
 }
 
 // (No @packageDocumentation comment for this package)

@@ -24,12 +24,8 @@ export class Rule extends Lint.Rules.AbstractRule {
  * with relative cross entry-point references.
  */
 function checkSourceFile(ctx: Lint.WalkContext<string[]>) {
-  // Since tslint resolved file names are lowercase when working on a case insensitive
-  // filesystem, we need to transform the current working directory and the source
-  // file name to the real native paths using fs.realpathSync.native function.
-  const cwd = realpathSync.native(process.cwd());
-  const filePath = realpathSync.native(ctx.sourceFile.fileName);
-  const relativeFilePath = relative(cwd, filePath);
+  const filePath = ctx.sourceFile.fileName;
+  const relativeFilePath = relative(process.cwd(), filePath);
 
   if (!ctx.options.every(o => minimatch(relativeFilePath, o))) {
     return;

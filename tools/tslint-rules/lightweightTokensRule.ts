@@ -38,14 +38,9 @@ export class Rule extends Lint.Rules.TypedRule {
  * for which lightweight tokens are suitable (for optimized tree shaking).
  */
 function checkSourceFileForLightweightTokens(ctx: Context, typeChecker: ts.TypeChecker): void {
-  // Since tslint resolved file names are lowercase when working on a case insensitive
-  // filesystem, we need to transform the current working directory and the source
-  // file name to the real native paths using fs.realpathSync.native function.
-  const cwd = fs.realpathSync.native(process.cwd());
-  const fileName = fs.realpathSync.native(ctx.sourceFile.fileName);
   // Relative path for the current TypeScript source file. This allows for
   // relative globs being used in the rule options.
-  const relativeFilePath = path.relative(cwd, fileName);
+  const relativeFilePath = path.relative(process.cwd(), ctx.sourceFile.fileName);
   const [enabledFilesGlobs] = ctx.options;
   const visitNode = (node: ts.Node) => {
     if (ts.isClassDeclaration(node)) {

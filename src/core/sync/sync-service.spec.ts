@@ -2,7 +2,7 @@ import {HttpClient, HttpClientModule} from '@angular/common/http';
 import {TestBed, waitForAsync} from '@angular/core/testing';
 import {ModelListResult} from '@gngt/core/common';
 import * as PouchDB from 'pouchdb';
-import * as pouchdbAdapterMemory from 'pouchdb-adapter-memory';
+import * as pam from 'pouchdb-adapter-memory';
 import {Observable, of as obsOf, throwError} from 'rxjs';
 import {filter, take} from 'rxjs/operators';
 
@@ -14,6 +14,7 @@ import {SyncStatusError} from './sync-status';
 import {UpwardChangeResult} from './upward-change-result';
 
 const pouchDBStatic: PouchDB.Static = (<any>PouchDB).default || PouchDB;
+const pouchdbAdapterMemory = (pam as any).default || pam;
 
 const dbName = 'testdb';
 let curDbName = '';

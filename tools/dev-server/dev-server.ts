@@ -19,7 +19,6 @@
  *
  */
 
-import {readFileSync, existsSync} from 'fs';
 import browserSync from 'browser-sync';
 import http from 'http';
 import path from 'path';

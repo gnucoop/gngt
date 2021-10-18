@@ -5,13 +5,18 @@
 ```ts
 
 import * as i0 from '@angular/core';
-import { MissingTranslationHandler as MissingTranslationHandler_2 } from 'import {TranslocoModule} from '@ngneat/transloco';';
-import { MissingTranslationHandlerParams } from 'import {TranslocoModule} from '@ngneat/transloco';';
+import * as i1 from '@ngneat/transloco';
+import { TranslocoConfig } from '@ngneat/transloco';
+import { TranslocoMissingHandler } from '@ngneat/transloco';
 
 // @public (undocumented)
-export class MissingTranslationHandler extends MissingTranslationHandler_2 {
+export class MissingTranslationHandler implements TranslocoMissingHandler {
     // (undocumented)
-    handle(params: MissingTranslationHandlerParams): any;
+    handle(key: string, _: TranslocoConfig): string;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<MissingTranslationHandler, never>;
+    // (undocumented)
+    static ɵprov: i0.ɵɵInjectableDeclaration<MissingTranslationHandler>;
 }
 
 // @public (undocumented)
@@ -21,7 +26,7 @@ export class TranslationsModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<TranslationsModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<TranslationsModule, never, never, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<TranslationsModule, never, [typeof i1.TranslocoModule], never>;
 }
 
 // (No @packageDocumentation comment for this package)

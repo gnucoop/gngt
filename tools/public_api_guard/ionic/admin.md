@@ -14,7 +14,7 @@ import { ChangeDetectorRef } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import * as i0 from '@angular/core';
 import * as i10 from '@angular/router';
-import * as i11 from 'import {TranslocoModule} from '@ngneat/transloco';';
+import * as i11 from '@ngneat/transloco';
 import * as i4 from '@angular/common';
 import * as i5 from '@gngt/core/admin';
 import * as i6 from '@gic/angular';
@@ -33,7 +33,7 @@ import { PipeTransform } from '@angular/core';
 import { Router } from '@angular/router';
 import { State } from '@gngt/core/model';
 import { TextFieldTypes } from '@ionic/core';
-import { TranslateService } from 'import {TranslocoModule} from '@ngneat/transloco';';
+import { TranslocoService } from '@ngneat/transloco';
 
 // @public (undocumented)
 export class AdminEditComponent<T extends Model = Model, S extends State<T> = State<T>, A extends ModelActionTypes = ModelActionTypes> extends AdminEditComponent_2<T, S, A> {
@@ -90,12 +90,12 @@ export class AdminModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<AdminModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<AdminModule, [typeof i1.AdminEditComponent, typeof i2.AdminListComponent, typeof i3.InputTypePipe], [typeof i4.CommonModule, typeof i5.GngtAdminModule, typeof i6.GicModule, typeof i7.CommonModule, typeof i8.IonicModule, typeof i9.ReactiveFormsModule, typeof i10.RouterModule, typeof i11.TranslateModule], [typeof i1.AdminEditComponent, typeof i2.AdminListComponent]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<AdminModule, [typeof i1.AdminEditComponent, typeof i2.AdminListComponent, typeof i3.InputTypePipe], [typeof i4.CommonModule, typeof i5.GngtAdminModule, typeof i6.GicModule, typeof i7.CommonModule, typeof i8.IonicModule, typeof i9.ReactiveFormsModule, typeof i10.RouterModule, typeof i11.TranslocoModule], [typeof i1.AdminEditComponent, typeof i2.AdminListComponent]>;
 }
 
 // @public (undocumented)
 export class AdminUserInteractionsService extends AdminUserInteractionsService_2 {
-    constructor(_alert: AlertController, _ts: TranslateService);
+    constructor(_alert: AlertController, _ts: TranslocoService);
     // (undocumented)
     askDeleteConfirm(): Observable<boolean>;
     // (undocumented)
