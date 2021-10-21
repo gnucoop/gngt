@@ -88,7 +88,10 @@ filegroup(
 
 dev_server(
     name = "devserver",
-    srcs = [":dev_app_static_files"],
+    srcs = [
+        ":dev_app_static_files",
+        "//src:source-files",
+    ],
     additional_root_paths = [
         "npm/node_modules",
         # Needed for compatibility with "pkg_web" which always uses the tree
