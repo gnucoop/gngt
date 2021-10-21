@@ -27,7 +27,6 @@ import {ExampleViewer} from './example-viewer';
 @NgModule({
   imports: [CommonModule],
   declarations: [ExampleViewer, ExampleListViewer],
-  exports: [ExampleViewer, ExampleListViewer]
+  exports: [ExampleViewer, ExampleListViewer],
 })
-export class ExampleViewerModule {
-}
+export class ExampleViewerModule {}

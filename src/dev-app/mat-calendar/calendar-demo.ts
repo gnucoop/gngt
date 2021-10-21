@@ -21,11 +21,9 @@
 
 import {Component} from '@angular/core';
 
-
 @Component({
   selector: 'calendar-demo',
   templateUrl: 'calendar-demo.html',
   styleUrls: ['calendar-demo.css'],
 })
-export class CalendarDemo {
-}
+export class CalendarDemo {}

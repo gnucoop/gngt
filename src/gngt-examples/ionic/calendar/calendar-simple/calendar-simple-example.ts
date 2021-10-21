@@ -8,5 +8,4 @@ import {Component} from '@angular/core';
   templateUrl: 'calendar-simple-example.html',
   styleUrls: ['calendar-simple-example.css'],
 })
-export class IonicCalendarSimpleExample {
-}
+export class IonicCalendarSimpleExample {}

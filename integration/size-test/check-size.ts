@@ -53,7 +53,7 @@ if (golden[testId] === undefined) {
 const expectedSize = Number(golden[testId]);
 const absoluteSizeDiff = Math.abs(actualSize - expectedSize);
 const deviatedByPercentage =
-    absoluteSizeDiff > (expectedSize * PERCENTAGE_DEVIATION_THRESHOLD / 100);
+  absoluteSizeDiff > (expectedSize * PERCENTAGE_DEVIATION_THRESHOLD) / 100;
 const deviatedByAbsoluteDiff = absoluteSizeDiff > ABSOLUTE_BYTE_THRESHOLD;
 
 // Always print the expected and actual size so that it's easier to find culprit

@@ -84,7 +84,7 @@ System.config({
   baseURL: '$BASE_URL',
   map: pathMapping,
   packages: packagesConfig,
-  paths: {'node:*': nodeModulesPath + '*'}
+  paths: {'node:*': nodeModulesPath + '*'},
 });
 
 /**
@@ -92,20 +92,21 @@ System.config({
  * them in SystemJS. Framework packages should always resolve to the UMD bundles.
  */
 function setupFrameworkPackages() {
-  Object.keys(frameworkPackages).forEach(function(moduleName) {
+  Object.keys(frameworkPackages).forEach(function (moduleName) {
     var primaryEntryPointSegments = moduleName.split('-');
     // Ensures that imports to the framework package are resolved
     // to the configured node modules directory.
     pathMapping[moduleName] = 'node:' + moduleName;
     // Configure each bundle for the current package.
-    frameworkPackages[moduleName].forEach(function(bundleName) {
+    frameworkPackages[moduleName].forEach(function (bundleName) {
       // Entry-point segments determined from the UMD bundle name. We split the
       // bundle into segments based on dashes. We omit the leading segments that
       // belong to the primary entry-point module name since we are only interested
       // in the segments that build up the secondary or tertiary entry-point name.
-      var segments = bundleName.substring(0, bundleName.length - '.umd.js'.length)
-                         .split('-')
-                         .slice(primaryEntryPointSegments.length);
+      var segments = bundleName
+        .substring(0, bundleName.length - '.umd.js'.length)
+        .split('-')
+        .slice(primaryEntryPointSegments.length);
       if (segments.length > 1 && segments.slice(-1)[0] !== 'testing') {
         segments = [segments.join('-')];
       }
@@ -120,12 +121,12 @@ function setupFrameworkPackages() {
         bundlePath = '__ivy_ngcc__/' + bundlePath;
       }
       packagesConfig[entryPointName] = {
-        main: segments
-                  .map(function() {
-                    return '../'
-                  })
-                  .join('') +
-            bundlePath
+        main:
+          segments
+            .map(function () {
+              return '../';
+            })
+            .join('') + bundlePath,
       };
     });
   });
@@ -136,7 +137,7 @@ function setupFrameworkPackages() {
  * them in SystemJS. Framework packages should always resolve to the UMD bundles.
  */
 function setupThirdPartyPackages() {
-  Object.keys(thirdPartyPackages).forEach(function(moduleName) {
+  Object.keys(thirdPartyPackages).forEach(function (moduleName) {
     // Ensures that imports to the framework package are resolved
     // to the configured node modules directory.
     pathMapping[moduleName] = 'node:' + moduleName;
@@ -150,7 +151,7 @@ function setupThirdPartyPackages() {
 }
 
 function setupThirdPartyNoNgccPackages() {
-  Object.keys(thirdPartyNoNgccPackages).forEach(function(moduleName) {
+  Object.keys(thirdPartyNoNgccPackages).forEach(function (moduleName) {
     // Ensures that imports to the framework package are resolved
     // to the configured node modules directory.
     var shims = thirdPartyNoNgccPackages[moduleName];
@@ -173,13 +174,13 @@ function setupLocalReleasePackages() {
   configureEntryPoint('material');
 
   // Configure all secondary entry-points.
-  CORE_PACKAGES.forEach(function(pkgName) {
+  CORE_PACKAGES.forEach(function (pkgName) {
     configureEntryPoint('core', pkgName);
   });
-  IONIC_PACKAGES.forEach(function(pkgName) {
+  IONIC_PACKAGES.forEach(function (pkgName) {
     configureEntryPoint('ionic', pkgName);
   });
-  MATERIAL_PACKAGES.forEach(function(pkgName) {
+  MATERIAL_PACKAGES.forEach(function (pkgName) {
     configureEntryPoint('material', pkgName);
   });
 
@@ -191,7 +192,7 @@ function setupLocalReleasePackages() {
 function setupMdcPackages() {
   Object.keys(mdcPackageUmdBundles).forEach(pkgName => {
     // Replace the `@npm//:node_modules/` Bazel target prefix with the `node:*` SystemJS alias.
-    pathMapping[pkgName] = mdcPackageUmdBundles[pkgName].replace('@npm//:node_modules/', 'node:')
+    pathMapping[pkgName] = mdcPackageUmdBundles[pkgName].replace('@npm//:node_modules/', 'node:');
   });
 }
 
@@ -205,6 +206,7 @@ function configureEntryPoint(pkgName, entryPoint) {
 
   // Ensure that imports which resolve to the entry-point directory are
   // redirected to the "index.js" file of the directory.
-  packagesConfig[packagesPath + '/' + name] =
-      packagesConfig[packagesPath + '/' + examplesName] = {main: 'index.js'};
+  packagesConfig[packagesPath + '/' + name] = packagesConfig[packagesPath + '/' + examplesName] = {
+    main: 'index.js',
+  };
 }

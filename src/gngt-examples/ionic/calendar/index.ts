@@ -8,11 +8,8 @@ export {IonicCalendarSimpleExample};
 const EXAMPLES = [IonicCalendarSimpleExample];
 
 @NgModule({
-  imports: [
-    CalendarModule,
-  ],
+  imports: [CalendarModule],
   declarations: EXAMPLES,
   exports: EXAMPLES,
 })
-export class CalendarExamplesModule {
-}
+export class CalendarExamplesModule {}

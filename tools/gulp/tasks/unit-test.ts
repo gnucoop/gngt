@@ -20,34 +20,43 @@ task(':test:build-system-config', done => {
 });
 
 /** Builds everything that is necessary for karma. */
-task(':test:build', series(
-  'clean',
-  'core:build-no-bundles',
-  'ionic:build-no-bundles',
-  'material:build-no-bundles',
-  ':test:build-system-config'
-));
+task(
+  ':test:build',
+  series(
+    'clean',
+    'core:build-no-bundles',
+    'ionic:build-no-bundles',
+    'material:build-no-bundles',
+    ':test:build-system-config',
+  ),
+);
 
 /**
  * Runs the unit tests. Does not watch for changes.
  * This task should be used when running tests on the CI server.
  */
-task('test:single-run', series(':test:build', done => {
-  // Load karma not outside. Karma pollutes Promise with a different implementation.
-  const karma = require('karma');
+task(
+  'test:single-run',
+  series(':test:build', done => {
+    // Load karma not outside. Karma pollutes Promise with a different implementation.
+    const karma = require('karma');
 
-  new karma.Server({
-    configFile: join(buildConfig.projectDir, 'test/karma.conf.js'),
-    autoWatch: false,
-    singleRun: true
-  }, (exitCode: number) => {
-    if (exitCode === 0) {
-      done();
-    } else {
-      // Immediately exit the process if Karma reported errors, because due to
-      // potential still running tunnel-browsers gulp won't exit properly.
-      done(new Error(`Karma exited with code ${exitCode}.`));
-      process.exit(exitCode);
-    }
-  }).start();
-}));
+    new karma.Server(
+      {
+        configFile: join(buildConfig.projectDir, 'test/karma.conf.js'),
+        autoWatch: false,
+        singleRun: true,
+      },
+      (exitCode: number) => {
+        if (exitCode === 0) {
+          done();
+        } else {
+          // Immediately exit the process if Karma reported errors, because due to
+          // potential still running tunnel-browsers gulp won't exit properly.
+          done(new Error(`Karma exited with code ${exitCode}.`));
+          process.exit(exitCode);
+        }
+      },
+    ).start();
+  }),
+);

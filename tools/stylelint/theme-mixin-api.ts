@@ -1,20 +1,12 @@
 import {createPlugin, Plugin, utils} from 'stylelint';
-import {
-  AtRule,
-  atRule,
-  decl,
-  Declaration,
-  Node,
-  Result,
-  Root
-} from 'postcss';
+import {AtRule, atRule, decl, Declaration, Node, Result, Root} from 'postcss';
 
 /** Name of this stylelint rule. */
 const ruleName = 'gngt/theme-mixin-api';
 
 /** Regular expression that matches all theme mixins. */
 const themeMixinRegex =
-    /^(?:(mat-.+)-(density)|(mat-.+)-(density|color|typography|theme))\((.*)\)$/;
+  /^(?:(mat-.+)-(density)|(mat-.+)-(density|color|typography|theme))\((.*)\)$/;
 
 /**
  * Stylelint plugin which ensures that theme mixins have a consistent API. Besides
@@ -36,8 +28,11 @@ const plugin = (isEnabled: boolean, _options: never, context: {fix: boolean}) =>
     }
 
     root.walkAtRules('mixin', node => {
-      if (node.params.startsWith('_') || node.params.startsWith('mat-private-') ||
-          node.params.startsWith('mat-mdc-private-')) {
+      if (
+        node.params.startsWith('_') ||
+        node.params.startsWith('mat-private-') ||
+        node.params.startsWith('mat-mdc-private-')
+      ) {
         // This is a private mixins that isn't intended to be consumed outside of our own code.
         return;
       }
@@ -77,11 +72,10 @@ const plugin = (isEnabled: boolean, _options: never, context: {fix: boolean}) =>
 
       const themePropName = `$theme`;
       const legacyColorExtractExpr = `mat-private-legacy-get-theme($theme-or-color-config)`;
-      const duplicateStylesCheckExpr =
-          `mat-private-check-duplicate-theme-styles(${themePropName}, '${componentName}')`;
+      const duplicateStylesCheckExpr = `mat-private-check-duplicate-theme-styles(${themePropName}, '${componentName}')`;
 
-      let legacyConfigDecl: Declaration|null = null;
-      let duplicateStylesCheck: AtRule|null = null;
+      let legacyConfigDecl: Declaration | null = null;
+      let duplicateStylesCheck: AtRule | null = null;
       let hasNodesOutsideDuplicationCheck = false;
       let isLegacyConfigRetrievalFirstStatement = false;
 
@@ -92,8 +86,10 @@ const plugin = (isEnabled: boolean, _options: never, context: {fix: boolean}) =>
             legacyConfigDecl = childNode;
             isLegacyConfigRetrievalFirstStatement = i === 0;
           } else if (
-              childNode.type === 'atrule' && childNode.name === 'include' &&
-              childNode.params === duplicateStylesCheckExpr) {
+            childNode.type === 'atrule' &&
+            childNode.name === 'include' &&
+            childNode.params === duplicateStylesCheckExpr
+          ) {
             duplicateStylesCheck = childNode;
           } else if (childNode.type !== 'comment') {
             hasNodesOutsideDuplicationCheck = true;
@@ -107,15 +103,18 @@ const plugin = (isEnabled: boolean, _options: never, context: {fix: boolean}) =>
           node.insertBefore(0, legacyConfigDecl);
         } else {
           reportError(
-              node,
-              `Legacy color API is not handled. Consumers could pass in a ` +
-                  `color configuration directly to the theme mixin. For backwards compatibility, ` +
-                  `use the following declaration to retrieve the theme object: ` +
-                  `${themePropName}: ${legacyColorExtractExpr}`);
+            node,
+            `Legacy color API is not handled. Consumers could pass in a ` +
+              `color configuration directly to the theme mixin. For backwards compatibility, ` +
+              `use the following declaration to retrieve the theme object: ` +
+              `${themePropName}: ${legacyColorExtractExpr}`,
+          );
         }
       } else if (legacyConfigDecl.prop !== themePropName) {
         reportError(
-            legacyConfigDecl, `For consistency, theme variable should be called: ${themePropName}`);
+          legacyConfigDecl,
+          `For consistency, theme variable should be called: ${themePropName}`,
+        );
       }
 
       if (!duplicateStylesCheck) {
@@ -124,22 +123,26 @@ const plugin = (isEnabled: boolean, _options: never, context: {fix: boolean}) =>
           node.insertBefore(1, duplicateStylesCheck);
         } else {
           reportError(
-              node,
-              `Missing check for duplicative theme styles. Please include the ` +
-                  `duplicate styles check mixin: ${duplicateStylesCheckExpr}`);
+            node,
+            `Missing check for duplicative theme styles. Please include the ` +
+              `duplicate styles check mixin: ${duplicateStylesCheckExpr}`,
+          );
         }
       }
 
       if (hasNodesOutsideDuplicationCheck) {
         reportError(
-            node,
-            `Expected nodes other than the "${legacyColorExtractExpr}" ` +
-                `declaration to be nested inside the duplicate styles check.`);
+          node,
+          `Expected nodes other than the "${legacyColorExtractExpr}" ` +
+            `declaration to be nested inside the duplicate styles check.`,
+        );
       }
 
       if (legacyConfigDecl !== null && !isLegacyConfigRetrievalFirstStatement) {
         reportError(
-            legacyConfigDecl, 'Legacy configuration should be retrieved first in theme mixin.');
+          legacyConfigDecl,
+          'Legacy configuration should be retrieved first in theme mixin.',
+        );
       }
     }
 
@@ -158,10 +161,10 @@ const plugin = (isEnabled: boolean, _options: never, context: {fix: boolean}) =>
       const expectedValues = [`mat-get-${type}-config($config-or-theme)`];
       if (type === 'typography') {
         expectedValues.unshift(
-            'mat-private-typography-normalized-config(mat-get-typography-config($config-or-theme))'
+          'mat-private-typography-normalized-config(mat-get-typography-config($config-or-theme))',
         );
       }
-      let configExtractionNode: Declaration|null = null;
+      let configExtractionNode: Declaration | null = null;
       let nonCommentNodeCount = 0;
 
       if (node.nodes) {
@@ -182,17 +185,19 @@ const plugin = (isEnabled: boolean, _options: never, context: {fix: boolean}) =>
           node.insertBefore(0, {prop: expectedProperty, value: expectedValues[0]});
         } else {
           reportError(
-              node,
-              `Config is not extracted. Consumers could pass a theme object. ` +
-                  `Extract the configuration by using one of the following:` +
-                  expectedValues.map(expectedValue => `${expectedProperty}: ${expectedValue}`)
-                      .join('\n'));
+            node,
+            `Config is not extracted. Consumers could pass a theme object. ` +
+              `Extract the configuration by using one of the following:` +
+              expectedValues
+                .map(expectedValue => `${expectedProperty}: ${expectedValue}`)
+                .join('\n'),
+          );
         }
       } else if (configExtractionNode && configExtractionNode.prop !== expectedProperty) {
         reportError(
-            configExtractionNode,
-            `For consistency, variable for configuration should ` +
-                `be called: ${expectedProperty}`);
+          configExtractionNode,
+          `For consistency, variable for configuration should ` + `be called: ${expectedProperty}`,
+        );
       }
     }
 

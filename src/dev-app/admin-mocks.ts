@@ -44,10 +44,10 @@ export class AdminModelMockService {
 
   getListObjects(): Observable<ModelListResult<AdminModel>> {
     return this._listEvt.pipe(
-               switchMap(() => {
-                 return this._returnObjects();
-               }),
-               ) as Observable<ModelListResult<AdminModel>>;
+      switchMap(() => {
+        return this._returnObjects();
+      }),
+    ) as Observable<ModelListResult<AdminModel>>;
   }
 
   list(params: ModelListParams): void {
@@ -75,7 +75,7 @@ export class AdminModelMockService {
       count: 200,
       results: objs,
       next: this._currentStart + this._currentLimit < 200 ? '' : null,
-      previous: this._currentStart === 0 ? null : ''
+      previous: this._currentStart === 0 ? null : '',
     };
     return obsOf(res);
   }

@@ -23,7 +23,7 @@ import {Component} from '@angular/core';
 import {
   AdminEditField,
   AdminEditFieldSubtype as fst,
-  AdminEditFieldType as ft
+  AdminEditFieldType as ft,
 } from '@gngt/core/admin';
 import {of as obsOf} from 'rxjs';
 

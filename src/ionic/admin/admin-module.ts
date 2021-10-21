@@ -45,18 +45,8 @@ import {AdminListComponent} from './list';
     RouterModule,
     TranslateModule,
   ],
-  declarations: [
-    AdminEditComponent,
-    AdminListComponent,
-    InputTypePipe,
-  ],
-  exports: [
-    AdminEditComponent,
-    AdminListComponent,
-  ],
-  providers: [
-    AdminUserInteractionsService,
-  ]
+  declarations: [AdminEditComponent, AdminListComponent, InputTypePipe],
+  exports: [AdminEditComponent, AdminListComponent],
+  providers: [AdminUserInteractionsService],
 })
-export class AdminModule {
-}
+export class AdminModule {}

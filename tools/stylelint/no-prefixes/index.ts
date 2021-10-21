@@ -12,7 +12,7 @@ const messages = utils.ruleMessages(ruleName, {
   value: (property, value) => `Unprefixed value in "${property}: ${value}".`,
   atRule: name => `Unprefixed @rule "${name}".`,
   mediaFeature: value => `Unprefixed media feature "${value}".`,
-  selector: selector => `Unprefixed selector "${selector}".`
+  selector: selector => `Unprefixed selector "${selector}".`,
 });
 
 /** Config options for the rule. */
@@ -49,7 +49,7 @@ const plugin = createPlugin(ruleName, (isEnabled: boolean, _options?) => {
           ruleName,
           message: messages.property(decl.prop, propertyPrefixes),
           node: decl,
-          index: (decl.raws.before || '').length
+          index: (decl.raws.before || '').length,
         });
       } else if (needsPrefix.value(decl.prop, decl.value)) {
         utils.report({
@@ -57,7 +57,7 @@ const plugin = createPlugin(ruleName, (isEnabled: boolean, _options?) => {
           ruleName,
           message: messages.value(decl.prop, decl.value),
           node: decl,
-          index: (decl.raws.before || '').length
+          index: (decl.raws.before || '').length,
         });
       }
     });
@@ -91,7 +91,6 @@ const plugin = createPlugin(ruleName, (isEnabled: boolean, _options?) => {
     });
   };
 });
-
 
 plugin.ruleName = ruleName;
 plugin.messages = messages;

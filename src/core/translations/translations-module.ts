@@ -25,9 +25,6 @@ import {MissingTranslationHandler as BaseMissingTranslationHandler} from '@ngx-t
 import {MissingTranslationHandler} from './missing-translation-handler';
 
 @NgModule({
-  providers: [
-    {provide: BaseMissingTranslationHandler, useClass: MissingTranslationHandler},
-  ]
+  providers: [{provide: BaseMissingTranslationHandler, useClass: MissingTranslationHandler}],
 })
-export class TranslationsModule {
-}
+export class TranslationsModule {}

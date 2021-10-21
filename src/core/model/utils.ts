@@ -24,9 +24,9 @@ import {v4} from 'uuid';
 import {ModelGenericAction} from './model-generic-action';
 
 export function createAction<A extends ModelGenericAction>(params: {
-  type: string,
-  payload?: any,
-  uuid?: string,
+  type: string;
+  payload?: any;
+  uuid?: string;
 }): A {
   return {
     type: params.type,

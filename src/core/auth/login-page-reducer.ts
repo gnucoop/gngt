@@ -23,7 +23,7 @@ import {AuthApiActionsUnion, AuthApiActionTypes} from './auth-api-actions';
 import {LoginPageActionsUnion, LoginPageActionTypes} from './login-page-actions';
 
 export interface State {
-  error: string|null;
+  error: string | null;
   pending: boolean;
 }
 
@@ -33,7 +33,9 @@ export const initialState: State = {
 };
 
 export function reducer(
-    state = initialState, action: AuthApiActionsUnion|LoginPageActionsUnion): State {
+  state = initialState,
+  action: AuthApiActionsUnion | LoginPageActionsUnion,
+): State {
   switch (action.type) {
     case LoginPageActionTypes.Login: {
       return {

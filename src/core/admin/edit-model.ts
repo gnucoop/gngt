@@ -24,6 +24,6 @@ import {Model} from '@gngt/core/common';
 import {AdminEditField} from './edit-field';
 
 export interface AdminEditModel<M extends Model> {
-  model: M|null;
+  model: M | null;
   fields: AdminEditField[];
 }

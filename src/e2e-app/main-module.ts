@@ -23,10 +23,7 @@ import {MaterialCalendarE2eModule} from './mat-calendar/calendar-e2e-module';
     IonicCalendarE2eModule,
     MaterialCalendarE2eModule,
   ],
-  declarations: [
-    E2eApp,
-  ],
+  declarations: [E2eApp],
   bootstrap: [E2eApp],
 })
-export class MainModule {
-}
+export class MainModule {}

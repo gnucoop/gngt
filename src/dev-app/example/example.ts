@@ -36,7 +36,8 @@ import {loadExampleFactory} from '@gngt/gngt-examples/private';
       Could not find example {{id}}
     </div>
   `,
-  styles: [`
+  styles: [
+    `
     .label {
       display: flex;
       justify-content: space-between;
@@ -55,7 +56,8 @@ import {loadExampleFactory} from '@gngt/gngt-examples/private';
       color: #666;
       white-space: pre;
     }
-  `]
+  `,
+  ],
 })
 export class Example implements OnInit {
   /** ID of the material example to display. */

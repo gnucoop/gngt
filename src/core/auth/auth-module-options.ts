@@ -30,5 +30,5 @@ export interface AuthModuleOptions {
   authOptionsProvider?: Provider;
   authConfig?: AuthOptions;
   loggedInUserGetter?: () => number | null;
-  loggedInUserSetter?: (id: number|null) => void;
+  loggedInUserSetter?: (id: number | null) => void;
 }

@@ -23,10 +23,15 @@ import {InjectionToken} from '@angular/core';
 
 import {AuthOptions} from './auth-options';
 
-
-export const AUTH_OPTIONS: InjectionToken<AuthOptions> = new InjectionToken<
-    AuthOptions>('AUTH_OPTIONS', {
-  providedIn: 'root',
-  factory: () =>
-      ({loginUrl: '/login', logoutUrl: '/logout', refreshTokenUrl: '/refresh_token', meUrl: '/me'})
-});
+export const AUTH_OPTIONS: InjectionToken<AuthOptions> = new InjectionToken<AuthOptions>(
+  'AUTH_OPTIONS',
+  {
+    providedIn: 'root',
+    factory: () => ({
+      loginUrl: '/login',
+      logoutUrl: '/logout',
+      refreshTokenUrl: '/refresh_token',
+      meUrl: '/me',
+    }),
+  },
+);

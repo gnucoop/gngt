@@ -27,20 +27,20 @@ export const DEV_APP_ROUTES: Routes = [
   {path: '', component: DevAppHome},
   {
     path: 'ion-admin-edit',
-    loadChildren: 'ion-admin-edit/admin-edit-demo-module#AdminEditDemoModule'
+    loadChildren: 'ion-admin-edit/admin-edit-demo-module#AdminEditDemoModule',
   },
   {
     path: 'ion-admin-list',
-    loadChildren: 'ion-admin-list/admin-list-demo-module#AdminListDemoModule'
+    loadChildren: 'ion-admin-list/admin-list-demo-module#AdminListDemoModule',
   },
   {path: 'ion-login', loadChildren: 'ion-login/login-demo-module#LoginDemoModule'},
   {
     path: 'mat-admin-edit',
-    loadChildren: 'mat-admin-edit/admin-edit-demo-module#AdminEditDemoModule'
+    loadChildren: 'mat-admin-edit/admin-edit-demo-module#AdminEditDemoModule',
   },
   {
     path: 'mat-admin-list',
-    loadChildren: 'mat-admin-list/admin-list-demo-module#AdminListDemoModule'
+    loadChildren: 'mat-admin-list/admin-list-demo-module#AdminListDemoModule',
   },
   {path: 'mat-calendar', loadChildren: 'mat-calendar/calendar-demo-module#CalendarDemoModule'},
   {path: 'mat-login', loadChildren: 'mat-login/login-demo-module#LoginDemoModule'},

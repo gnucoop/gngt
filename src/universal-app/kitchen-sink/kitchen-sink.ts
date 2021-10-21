@@ -4,12 +4,10 @@ import {Component, NgModule} from '@angular/core';
   selector: 'kitchen-sink',
   templateUrl: './kitchen-sink.html',
 })
-export class KitchenSink {
-}
+export class KitchenSink {}
 
 @NgModule({
   declarations: [KitchenSink],
   exports: [KitchenSink],
 })
-export class KitchenSinkModule {
-}
+export class KitchenSinkModule {}

@@ -13,21 +13,22 @@ import {KitchenSinkRootServerModuleNgFactory} from './kitchen-sink-root.ngfactor
 // Resolve the path to the "index.html" through Bazel runfile resolution.
 const indexHtmlPath = require.resolve('./index.html');
 
-const result = renderModuleFactory(
-    KitchenSinkRootServerModuleNgFactory, {document: readFileSync(indexHtmlPath, 'utf-8')});
+const result = renderModuleFactory(KitchenSinkRootServerModuleNgFactory, {
+  document: readFileSync(indexHtmlPath, 'utf-8'),
+});
 
 result
-    .then(content => {
-      const filename = join(__dirname, 'index-prerendered.html');
+  .then(content => {
+    const filename = join(__dirname, 'index-prerendered.html');
 
-      console.log('Inspect pre-rendered page here:');
-      console.log(`file://${filename}`);
-      writeFileSync(filename, content, 'utf-8');
-      console.log('Prerender done.');
-    })
-    // If rendering the module factory fails, print the error and exit the process
-    // with a non-zero exit code.
-    .catch(error => {
-      console.error(error);
-      process.exit(1);
-    });
+    console.log('Inspect pre-rendered page here:');
+    console.log(`file://${filename}`);
+    writeFileSync(filename, content, 'utf-8');
+    console.log('Prerender done.');
+  })
+  // If rendering the module factory fails, print the error and exit the process
+  // with a non-zero exit code.
+  .catch(error => {
+    console.error(error);
+    process.exit(1);
+  });

@@ -10,8 +10,7 @@ import {KitchenSinkModule} from './kitchen-sink/kitchen-sink';
     <kitchen-sink></kitchen-sink>
   `,
 })
-export class KitchenSinkRoot {
-}
+export class KitchenSinkRoot {}
 
 @NgModule({
   imports: [BrowserModule.withServerTransition({appId: 'kitchen-sink'}), KitchenSinkModule],
@@ -19,12 +18,10 @@ export class KitchenSinkRoot {
   exports: [KitchenSinkRoot],
   bootstrap: [KitchenSinkRoot],
 })
-export class KitchenSinkRootModule {
-}
+export class KitchenSinkRootModule {}
 
 @NgModule({
   imports: [KitchenSinkRootModule, ServerModule],
   bootstrap: [KitchenSinkRoot],
 })
-export class KitchenSinkRootServerModule {
-}
+export class KitchenSinkRootServerModule {}

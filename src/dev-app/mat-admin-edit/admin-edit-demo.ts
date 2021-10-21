@@ -23,7 +23,7 @@ import {Component} from '@angular/core';
 import {
   AdminEditField,
   AdminEditFieldSubtype as fst,
-  AdminEditFieldType as ft
+  AdminEditFieldType as ft,
 } from '@gngt/core/admin';
 import {of as obsOf} from 'rxjs';
 
@@ -49,7 +49,7 @@ export class AdminEditDemo {
     {name: 'baz', label: 'Baz', type: ft.Input, subtype: fst.Number},
     {name: 'bat', label: 'Bat', type: ft.Select, choices},
     {name: 'qux', label: 'Qux', type: ft.Radio, choices},
-    {name: 'quux', label: 'Quux', type: ft.CheckBox}
+    {name: 'quux', label: 'Quux', type: ft.CheckBox},
   ];
 
   processFormData(value: any): void {

@@ -28,21 +28,30 @@ import {map, mapTo, switchMap} from 'rxjs/operators';
 
 export class AuthUserInteractionsService extends CoreAuthUserInteractionsService {
   constructor(
-      private _ts: TranslateService, private _alert: AlertController,
-      private _toast: ToastController) {
+    private _ts: TranslateService,
+    private _alert: AlertController,
+    private _toast: ToastController,
+  ) {
     super();
   }
 
   askLogoutConfirm(): Observable<boolean> {
     const strings = ['Are you sure you want to logout?', 'Cancel', 'Ok'];
     return this._ts.get(strings).pipe(
-        switchMap(ts => from(this._alert.create({
-                    message: ts[0],
-                    buttons: [{text: ts[1], role: 'cancel'}, {text: ts[2], role: 'confirm'}]
-                  }))),
-        switchMap(alert => from((alert as HTMLIonAlertElement).present()).pipe(mapTo(alert))),
-        switchMap(alert => from((alert as HTMLIonAlertElement).onDidDismiss())),
-        map(evt => (evt as OverlayEventDetail<any>).role === 'confirm'),
+      switchMap(ts =>
+        from(
+          this._alert.create({
+            message: ts[0],
+            buttons: [
+              {text: ts[1], role: 'cancel'},
+              {text: ts[2], role: 'confirm'},
+            ],
+          }),
+        ),
+      ),
+      switchMap(alert => from((alert as HTMLIonAlertElement).present()).pipe(mapTo(alert))),
+      switchMap(alert => from((alert as HTMLIonAlertElement).onDidDismiss())),
+      map(evt => (evt as OverlayEventDetail<any>).role === 'confirm'),
     );
   }
 

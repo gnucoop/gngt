@@ -27,7 +27,7 @@ const validTypes = ['date', 'email', 'number', 'password', 'search', 'tel', 'tex
 
 @Pipe({name: 'gngtInputType'})
 export class InputTypePipe implements PipeTransform {
-  transform(value: AdminEditFieldSubtype|undefined): TextFieldTypes {
+  transform(value: AdminEditFieldSubtype | undefined): TextFieldTypes {
     if (value != null && validTypes.indexOf(value) > -1) {
       return value as TextFieldTypes;
     }

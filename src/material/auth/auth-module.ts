@@ -36,7 +36,7 @@ import {
   AuthUserInteractionsService as CoreAuthUserInteractionsService,
   JWT_OPTIONS,
   JwtHelperService,
-  JwtInterceptor
+  JwtInterceptor,
 } from '@gngt/core/auth';
 import {CommonModule as GngtCommonModule} from '@gngt/core/common';
 
@@ -57,21 +57,16 @@ import {LogoutConfirmDialogComponent} from './logout-confirm-dialog';
     MatSnackBarModule,
     ReactiveFormsModule,
   ],
-  declarations: [
-    LoginComponent,
-    LogoutConfirmDialogComponent,
+  declarations: [LoginComponent, LogoutConfirmDialogComponent],
+  exports: [LoginComponent],
+  entryComponents: [LogoutConfirmDialogComponent],
+  providers: [
+    {
+      provide: CoreAuthUserInteractionsService,
+      useClass: AuthUserInteractionsService,
+      deps: [MatDialog, MatSnackBar],
+    },
   ],
-  exports: [
-    LoginComponent,
-  ],
-  entryComponents: [
-    LogoutConfirmDialogComponent,
-  ],
-  providers: [{
-    provide: CoreAuthUserInteractionsService,
-    useClass: AuthUserInteractionsService,
-    deps: [MatDialog, MatSnackBar]
-  }]
 })
 export class AuthModule {
   static forRoot(options: AuthModuleOptions): ModuleWithProviders<AuthModule> {
@@ -82,7 +77,7 @@ export class AuthModule {
         options.authOptionsProvider || {provide: AUTH_OPTIONS, useValue: options.authConfig},
         options.jwtOptionsProvider || {provide: JWT_OPTIONS, useValue: options.jwtConfig},
         {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
-      ]
+      ],
     };
   }
 }

@@ -25,7 +25,7 @@ import {
   HttpHandler,
   HttpInterceptor,
   HttpRequest,
-  HttpResponse
+  HttpResponse,
 } from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Observable, throwError} from 'rxjs';
@@ -41,21 +41,23 @@ export class OfflineInterceptor implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(req).pipe(
-               catchError((e: HttpErrorResponse) => {
-                 if (e.status === 0) {
-                   const models = this._checkOfflineRequest(req);
-                   if (models.length > 0) {
-                     return this._doOfflineRequest(req, models[0], e);
-                   }
-                 }
-                 return throwError(e);
-               }),
-               ) as Observable<HttpEvent<any>>;
+      catchError((e: HttpErrorResponse) => {
+        if (e.status === 0) {
+          const models = this._checkOfflineRequest(req);
+          if (models.length > 0) {
+            return this._doOfflineRequest(req, models[0], e);
+          }
+        }
+        return throwError(e);
+      }),
+    ) as Observable<HttpEvent<any>>;
   }
 
   private _doOfflineRequest(
-      req: HttpRequest<any>, model: RegisteredModel,
-      reqError: HttpErrorResponse): Observable<HttpEvent<any>> {
+    req: HttpRequest<any>,
+    model: RegisteredModel,
+    reqError: HttpErrorResponse,
+  ): Observable<HttpEvent<any>> {
     const method = req.method.toLowerCase();
     const {exactMatch, relativeUrl} = this._analyzeRequestUrl(req, model);
     if (exactMatch) {
@@ -65,19 +67,16 @@ export class OfflineInterceptor implements HttpInterceptor {
         const sort = <any>req.params.get('sort');
         const fields = <any>req.params.get('fields');
         const joins = <any>req.params.get('joins');
-        return this._syncService.list(model.tableName, {limit, start, sort, fields, joins})
-            .pipe(
-                catchError(_ => throwError(reqError)),
-                map(res =>
-                        new HttpResponse({status: 200, statusText: 'OK', url: req.url, body: res})),
-            );
+        return this._syncService.list(model.tableName, {limit, start, sort, fields, joins}).pipe(
+          catchError(_ => throwError(reqError)),
+          map(res => new HttpResponse({status: 200, statusText: 'OK', url: req.url, body: res})),
+        );
       } else if (method === 'post') {
         const obj = req.body;
-        return this._syncService.create(model.tableName, obj)
-            .pipe(
-                catchError(_ => throwError(reqError)),
-                map(res => new HttpResponse(
-                        {status: 201, statusText: 'OK', url: req.url, body: res})));
+        return this._syncService.create(model.tableName, obj).pipe(
+          catchError(_ => throwError(reqError)),
+          map(res => new HttpResponse({status: 201, statusText: 'OK', url: req.url, body: res})),
+        );
       }
     } else {
       if (relativeUrl.length === 1) {
@@ -85,23 +84,23 @@ export class OfflineInterceptor implements HttpInterceptor {
         if (lastUrlPart === 'delete_all') {
           const ids = req.body.ids;
           if (ids != null && ids instanceof Array && ids.length > 0) {
-            return this._syncService.deleteAll(model.tableName, ids)
-                .pipe(
-                    catchError(_ => throwError(reqError)),
-                    map(res => new HttpResponse(
-                            {status: 200, statusText: 'OK', url: req.url, body: res})));
+            return this._syncService.deleteAll(model.tableName, ids).pipe(
+              catchError(_ => throwError(reqError)),
+              map(
+                res => new HttpResponse({status: 200, statusText: 'OK', url: req.url, body: res}),
+              ),
+            );
           }
         } else if (lastUrlPart === 'query') {
           const params = req.body;
-          return this._syncService.query(model.tableName, params)
-              .pipe(
-                  catchError(_ => throwError(reqError)),
-                  map(res => new HttpResponse(
-                          {status: 200, statusText: 'OK', url: req.url, body: res})));
+          return this._syncService.query(model.tableName, params).pipe(
+            catchError(_ => throwError(reqError)),
+            map(res => new HttpResponse({status: 200, statusText: 'OK', url: req.url, body: res})),
+          );
         } else {
           const id = parseInt(lastUrlPart, 10);
           if (!isNaN(id) && id > 0) {
-            let op: Observable<any>|null = null;
+            let op: Observable<any> | null = null;
             let successStatus: number = 200;
             const obj = req.body;
             if (method === 'get') {
@@ -114,9 +113,16 @@ export class OfflineInterceptor implements HttpInterceptor {
             }
             if (op != null) {
               return op.pipe(
-                  catchError(_ => throwError(reqError)),
-                  map(res => new HttpResponse(
-                          {status: successStatus, statusText: 'OK', url: req.url, body: res})),
+                catchError(_ => throwError(reqError)),
+                map(
+                  res =>
+                    new HttpResponse({
+                      status: successStatus,
+                      statusText: 'OK',
+                      url: req.url,
+                      body: res,
+                    }),
+                ),
               );
             }
           }
@@ -126,8 +132,10 @@ export class OfflineInterceptor implements HttpInterceptor {
     return throwError(reqError);
   }
 
-  private _analyzeRequestUrl(req: HttpRequest<any>, model: RegisteredModel):
-      {exactMatch: boolean, relativeUrl: string[]} {
+  private _analyzeRequestUrl(
+    req: HttpRequest<any>,
+    model: RegisteredModel,
+  ): {exactMatch: boolean; relativeUrl: string[]} {
     const exactMatch = new RegExp('^' + model.endpoint + '$').test(req.url);
     if (exactMatch) {
       return {exactMatch, relativeUrl: []};

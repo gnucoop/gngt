@@ -23,7 +23,7 @@ import {Model} from './model';
 
 export interface ModelListResult<M extends Model> {
   count: number;
-  next: string|null;
-  previous: string|null;
+  next: string | null;
+  previous: string | null;
   results: M[];
 }

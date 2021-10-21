@@ -87,8 +87,11 @@ export function checkTypeDefinitionFile(filePath: string): string[] {
     // Check all dynamic type imports and ensure that the import path is valid within the release
     // output. Note that we don't want to enforce that there are no dynamic type imports because
     // type inference is heavily used within the schematics and is useful in some situations.
-    if (ts.isImportTypeNode(node) && ts.isLiteralTypeNode(node.argument) &&
-        ts.isStringLiteral(node.argument.literal)) {
+    if (
+      ts.isImportTypeNode(node) &&
+      ts.isLiteralTypeNode(node.argument) &&
+      ts.isStringLiteral(node.argument.literal)
+    ) {
       const importPath = node.argument.literal.text;
 
       // In case the type import path starts with a dot, we know that this is a relative path
@@ -112,7 +115,9 @@ export function checkTypeDefinitionFile(filePath: string): string[] {
  * that the version and migrations are set up correctly.
  */
 export function checkPrimaryPackageJson(
-    packageJsonPath: string, expectedVersion: string): string[] {
+  packageJsonPath: string,
+  expectedVersion: string,
+): string[] {
   const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf8'));
   const failures: string[] = [];
 
@@ -120,7 +125,8 @@ export function checkPrimaryPackageJson(
     failures.push(`No version set. Expected: ${expectedVersion}`);
   } else if (packageJson.version !== expectedVersion) {
     failures.push(
-        `Unexpected package version. Expected: ${expectedVersion} but got: ${packageJson.version}`);
+      `Unexpected package version. Expected: ${expectedVersion} but got: ${packageJson.version}`,
+    );
   } else if (semver.valid(expectedVersion) === null) {
     failures.push(`Version does not satisfy SemVer specification: ${packageJson.version}`);
   }

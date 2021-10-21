@@ -26,7 +26,7 @@ export const enum AuthApiActionTypes {
   LoginSuccess = '[Auth/API] Login Success',
   LoginFailure = '[Auth/API] Login Failure',
   LoginRedirect = '[Auth/API] Login Redirect',
-  RefreshToken = '[Auth/API] Refresh token'
+  RefreshToken = '[Auth/API] Refresh token',
 }
 
 export class LoginSuccess implements Action {
@@ -48,7 +48,7 @@ export class LoginRedirect implements Action {
 export class RefreshToken implements Action {
   readonly type = AuthApiActionTypes.RefreshToken;
 
-  constructor(public payload: {refreshDelay: number, fromInit?: boolean}) {}
+  constructor(public payload: {refreshDelay: number; fromInit?: boolean}) {}
 }
 
-export type AuthApiActionsUnion = LoginSuccess|LoginFailure|LoginRedirect|RefreshToken;
+export type AuthApiActionsUnion = LoginSuccess | LoginFailure | LoginRedirect | RefreshToken;

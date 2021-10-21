@@ -28,14 +28,13 @@ import {JwtHelperService} from './jwt-helper';
 import {JwtOptions} from './jwt-options';
 import {JWT_OPTIONS} from './jwt-options-token';
 
-
 @Injectable({providedIn: 'root'})
 export class JwtInterceptor implements HttpInterceptor {
-  tokenGetter: (() => string | null)|undefined;
+  tokenGetter: (() => string | null) | undefined;
   headerName: string;
   authScheme: string;
-  whitelistedDomains: (string|RegExp)[];
-  blacklistedRoutes: (string|RegExp)[];
+  whitelistedDomains: (string | RegExp)[];
+  blacklistedRoutes: (string | RegExp)[];
   throwNoTokenError: boolean;
   skipWhenExpired: boolean;
 
@@ -52,26 +51,31 @@ export class JwtInterceptor implements HttpInterceptor {
   isWhitelistedDomain(request: HttpRequest<any>): boolean {
     const requestUrl = new URLParse(request.url);
 
-    return (requestUrl.host === null || this.whitelistedDomains.findIndex(domain => {
-      if (typeof domain === 'string') {
-        return domain === requestUrl.host;
-      }
-      return domain instanceof RegExp ? domain.test(requestUrl.host) : false;
-    }) > -1);
+    return (
+      requestUrl.host === null ||
+      this.whitelistedDomains.findIndex(domain => {
+        if (typeof domain === 'string') {
+          return domain === requestUrl.host;
+        }
+        return domain instanceof RegExp ? domain.test(requestUrl.host) : false;
+      }) > -1
+    );
   }
 
   isBlacklistedRoute(request: HttpRequest<any>): boolean {
     const url = request.url;
 
-    return (this.blacklistedRoutes.findIndex(route => {
-      if (typeof route === 'string') {
-        return route === url;
-      }
-      return route instanceof RegExp ? route.test(url) : false;
-    }) > -1);
+    return (
+      this.blacklistedRoutes.findIndex(route => {
+        if (typeof route === 'string') {
+          return route === url;
+        }
+        return route instanceof RegExp ? route.test(url) : false;
+      }) > -1
+    );
   }
 
-  handleInterception(token: string|null, request: HttpRequest<any>, next: HttpHandler) {
+  handleInterception(token: string | null, request: HttpRequest<any>, next: HttpHandler) {
     let tokenIsExpired = false;
 
     if (!token && this.throwNoTokenError) {

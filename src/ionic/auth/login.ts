@@ -24,7 +24,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ViewEncapsulation
+  ViewEncapsulation,
 } from '@angular/core';
 import {FormBuilder} from '@angular/forms';
 import {LoginComponent as CoreLoginComponent, State as AuthState} from '@gngt/core/auth';

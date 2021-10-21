@@ -33,21 +33,9 @@ import {LoginActionDirective, LoginPasswordDirective, LoginUsernameDirective} fr
 import {reducers} from './reducers';
 
 @NgModule({
-  imports: [
-    EffectsModule.forFeature([AuthEffects]),
-    StoreModule.forFeature('auth', reducers),
-  ],
-  declarations: [
-    LoginActionDirective,
-    LoginPasswordDirective,
-    LoginUsernameDirective,
-  ],
-  exports: [
-    LoginActionDirective,
-    LoginPasswordDirective,
-    LoginUsernameDirective,
-  ],
-  providers: [AuthEffects, AuthGuard, AuthHelper, AuthService, JwtHelperService, JwtInterceptor]
+  imports: [EffectsModule.forFeature([AuthEffects]), StoreModule.forFeature('auth', reducers)],
+  declarations: [LoginActionDirective, LoginPasswordDirective, LoginUsernameDirective],
+  exports: [LoginActionDirective, LoginPasswordDirective, LoginUsernameDirective],
+  providers: [AuthEffects, AuthGuard, AuthHelper, AuthService, JwtHelperService, JwtInterceptor],
 })
-export class AuthModule {
-}
+export class AuthModule {}

@@ -25,14 +25,7 @@ import {FormDisabledDirective} from './form-disabled';
 import {GetObjectProperty} from './get-object-property';
 
 @NgModule({
-  declarations: [
-    FormDisabledDirective,
-    GetObjectProperty,
-  ],
-  exports: [
-    FormDisabledDirective,
-    GetObjectProperty,
-  ]
+  declarations: [FormDisabledDirective, GetObjectProperty],
+  exports: [FormDisabledDirective, GetObjectProperty],
 })
-export class CommonModule {
-}
+export class CommonModule {}

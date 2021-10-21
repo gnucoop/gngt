@@ -50,11 +50,26 @@ import {AdminListCellDirective} from './list-cell';
 
 @NgModule({
   imports: [
-    CommonModule,         CoreModule,       GngtCommonModule,    MatAutocompleteModule,
-    MatButtonModule,      MatCardModule,    MatCheckboxModule,   MatDialogModule,
-    MatFormFieldModule,   MatIconModule,    MatInputModule,      MatPaginatorModule,
-    MatProgressBarModule, MatRadioModule,   MatSelectModule,     MatSortModule,
-    MatTableModule,       MatToolbarModule, ReactiveFormsModule, RouterModule,
+    CommonModule,
+    CoreModule,
+    GngtCommonModule,
+    MatAutocompleteModule,
+    MatButtonModule,
+    MatCardModule,
+    MatCheckboxModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatInputModule,
+    MatPaginatorModule,
+    MatProgressBarModule,
+    MatRadioModule,
+    MatSelectModule,
+    MatSortModule,
+    MatTableModule,
+    MatToolbarModule,
+    ReactiveFormsModule,
+    RouterModule,
     TranslateModule,
   ],
   declarations: [
@@ -63,17 +78,8 @@ import {AdminListCellDirective} from './list-cell';
     AdminListCellDirective,
     AdminListComponent,
   ],
-  exports: [
-    AdminEditComponent,
-    AdminListCellDirective,
-    AdminListComponent,
-  ],
-  entryComponents: [
-    AdminDeleteConfirmDialogComponent,
-  ],
-  providers: [
-    AdminUserInteractionsService,
-  ]
+  exports: [AdminEditComponent, AdminListCellDirective, AdminListComponent],
+  entryComponents: [AdminDeleteConfirmDialogComponent],
+  providers: [AdminUserInteractionsService],
 })
-export class AdminModule {
-}
+export class AdminModule {}

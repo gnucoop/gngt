@@ -36,13 +36,20 @@ export class AdminUserInteractionsService extends CoreAdminUserInteractionsServi
   askDeleteConfirm(): Observable<boolean> {
     const strings = ['Are you sure you want to delete?', 'Cancel', 'Ok'];
     return this._ts.get(strings).pipe(
-        switchMap(ts => from(this._alert.create({
-                    message: ts[0],
-                    buttons: [{text: ts[1], role: 'cancel'}, {text: ts[2], role: 'confirm'}]
-                  }))),
-        switchMap(alert => from((alert as HTMLIonAlertElement).present()).pipe(mapTo(alert))),
-        switchMap(alert => from((alert as HTMLIonAlertElement).onDidDismiss())),
-        map(evt => (evt as OverlayEventDetail<any>).role === 'confirm'),
+      switchMap(ts =>
+        from(
+          this._alert.create({
+            message: ts[0],
+            buttons: [
+              {text: ts[1], role: 'cancel'},
+              {text: ts[2], role: 'confirm'},
+            ],
+          }),
+        ),
+      ),
+      switchMap(alert => from((alert as HTMLIonAlertElement).present()).pipe(mapTo(alert))),
+      switchMap(alert => from((alert as HTMLIonAlertElement).onDidDismiss())),
+      map(evt => (evt as OverlayEventDetail<any>).role === 'confirm'),
     );
   }
 }

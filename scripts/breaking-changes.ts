@@ -20,8 +20,11 @@ const summary: {[version: string]: string[]} = {};
 
 // Go through all the TS files in the project.
 parsedConfig.fileNames.forEach((fileName: string) => {
-  const sourceFile =
-      ts.createSourceFile(fileName, readFileSync(fileName, 'utf8'), configFile.languageVersion);
+  const sourceFile = ts.createSourceFile(
+    fileName,
+    readFileSync(fileName, 'utf8'),
+    configFile.languageVersion,
+  );
   const lineRanges = tsutils.getLineRanges(sourceFile);
 
   // Go through each of the comments of the file.
@@ -65,18 +68,19 @@ function formatMessage(comment: string, commentRange: ts.CommentRange, lines: ts
   const lineNumber = lines.findIndex(line => line.pos > commentRange.pos);
   const messageMatch = comment.match(/@deprecated(.*)|@breaking-change(.*)/);
   const message = messageMatch ? messageMatch[0] : '';
-  const cleanMessage = message.replace(/[\*\/\r\n]|@[\w-]+/g, '').replace(versionRegex, '').trim();
+  const cleanMessage = message
+    .replace(/[\*\/\r\n]|@[\w-]+/g, '')
+    .replace(versionRegex, '')
+    .trim();
 
   return `Line ${lineNumber}, ${cleanMessage || 'No message'}`;
 }
-
 
 /** Converts a version string into an object. */
 function parseVersion(version: string) {
   const [major = 0, minor = 0, patch = 0] = version.split('.').map(segment => parseInt(segment));
   return {major, minor, patch};
 }
-
 
 /**
  * Checks whether a version has expired, based on the current version.
@@ -91,8 +95,11 @@ function hasExpired(currentVersion: string, breakingChange: string) {
   const current = parseVersion(currentVersion);
   const target = parseVersion(breakingChange);
 
-  return target.major < current.major ||
-      (target.major === current.major && target.minor < current.minor) ||
-      (target.major === current.major && target.minor === current.minor &&
-       target.patch < current.patch);
+  return (
+    target.major < current.major ||
+    (target.major === current.major && target.minor < current.minor) ||
+    (target.major === current.major &&
+      target.minor === current.minor &&
+      target.patch < current.patch)
+  );
 }

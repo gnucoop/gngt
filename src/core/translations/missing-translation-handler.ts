@@ -21,9 +21,8 @@
 
 import {
   MissingTranslationHandler as BaseMissingTranslationHandler,
-  MissingTranslationHandlerParams
+  MissingTranslationHandlerParams,
 } from '@ngx-translate/core';
-
 
 export class MissingTranslationHandler extends BaseMissingTranslationHandler {
   handle(params: MissingTranslationHandlerParams): any {

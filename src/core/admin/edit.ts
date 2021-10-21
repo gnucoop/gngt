@@ -34,7 +34,7 @@ import {
   switchMap,
   take,
   tap,
-  withLatestFrom
+  withLatestFrom,
 } from 'rxjs/operators';
 
 import {AdminEditField} from './edit-field';
@@ -42,8 +42,11 @@ import {ProcessDataFn} from './process-data-fn';
 
 @Directive()
 export abstract class AdminEditComponent<
-    T extends Model = Model, S extends ModelState<T> = ModelState<T>, A extends
-        ModelActionTypes = ModelActionTypes> implements OnDestroy {
+  T extends Model = Model,
+  S extends ModelState<T> = ModelState<T>,
+  A extends ModelActionTypes = ModelActionTypes,
+> implements OnDestroy
+{
   private _title = '';
   get title(): string {
     return this._title;
@@ -80,8 +83,8 @@ export abstract class AdminEditComponent<
     this._cdr.markForCheck();
   }
 
-  private _service: BehaviorSubject<ModelService<T, S, A>|null> =
-      new BehaviorSubject<ModelService<T, S, A>|null>(null);
+  private _service: BehaviorSubject<ModelService<T, S, A> | null> =
+    new BehaviorSubject<ModelService<T, S, A> | null>(null);
   @Input()
   set service(service: ModelService<T, S, A>) {
     this._service.next(service);
@@ -97,21 +100,23 @@ export abstract class AdminEditComponent<
     this._updateForm();
   }
 
-  private _id: BehaviorSubject<number|'new'|null> = new BehaviorSubject<number|'new'|null>(null);
+  private _id: BehaviorSubject<number | 'new' | null> = new BehaviorSubject<number | 'new' | null>(
+    null,
+  );
   @Input()
-  set id(id: number|'new') {
+  set id(id: number | 'new') {
     this._id.next(id);
   }
 
-  private _processObject: ProcessDataFn|Observable<ProcessDataFn>;
+  private _processObject: ProcessDataFn | Observable<ProcessDataFn>;
   @Input()
-  set processObject(processObject: ProcessDataFn|Observable<ProcessDataFn>) {
+  set processObject(processObject: ProcessDataFn | Observable<ProcessDataFn>) {
     this._processObject = processObject;
   }
 
-  private _processFormData: ProcessDataFn|Observable<ProcessDataFn>;
+  private _processFormData: ProcessDataFn | Observable<ProcessDataFn>;
   @Input()
-  set processFormData(processFormData: ProcessDataFn|Observable<ProcessDataFn>) {
+  set processFormData(processFormData: ProcessDataFn | Observable<ProcessDataFn>) {
     this._processFormData = processFormData;
   }
 
@@ -180,99 +185,95 @@ export abstract class AdminEditComponent<
   constructor(private _cdr: ChangeDetectorRef, private _fb: FormBuilder, private _router: Router) {
     this._processFormData = this._defaultProcessData;
 
-    const objObs = combineLatest(this._service, this._id)
-                       .pipe(
-                           filter(([s, i]) => s != null && i != null),
-                           map(([s, i]) => [s, i] as [ModelService<T, S, A>, number | 'new']),
-                           switchMap(([s, i]) => {
-                             if (i === 'new') {
-                               return obsOf({});
-                             }
-                             return s.get(i);
-                           }),
-                           filter(o => o != null),
-                           switchMap(o => {
-                             if (this._processObject) {
-                               if (this._processObject instanceof Observable) {
-                                 return this._processObject.pipe(
-                                     tap(po => po(o)),
-                                     mapTo(o),
-                                 );
-                               } else {
-                                 this._processObject(o);
-                               }
-                             }
-                             return obsOf(o);
-                           }),
-                           shareReplay(1),
-                       );
+    const objObs = combineLatest(this._service, this._id).pipe(
+      filter(([s, i]) => s != null && i != null),
+      map(([s, i]) => [s, i] as [ModelService<T, S, A>, number | 'new']),
+      switchMap(([s, i]) => {
+        if (i === 'new') {
+          return obsOf({});
+        }
+        return s.get(i);
+      }),
+      filter(o => o != null),
+      switchMap(o => {
+        if (this._processObject) {
+          if (this._processObject instanceof Observable) {
+            return this._processObject.pipe(
+              tap(po => po(o)),
+              mapTo(o),
+            );
+          } else {
+            this._processObject(o);
+          }
+        }
+        return obsOf(o);
+      }),
+      shareReplay(1),
+    );
 
-    this.form = combineLatest(objObs, this._updateFormEvt)
-                    .pipe(
-                        map(r => {
-                          const model = r[0];
-                          return this._fb.group((this._fields || []).reduce((prev, cur) => {
-                            const val = model ? (model as any)[cur.name] : null;
-                            (prev as any)[cur.name] = [val, cur.validators];
-                            return prev;
-                          }, {}));
-                        }),
-                        shareReplay(1));
+    this.form = combineLatest(objObs, this._updateFormEvt).pipe(
+      map(r => {
+        const model = r[0];
+        return this._fb.group(
+          (this._fields || []).reduce((prev, cur) => {
+            const val = model ? (model as any)[cur.name] : null;
+            (prev as any)[cur.name] = [val, cur.validators];
+            return prev;
+          }, {}),
+        );
+      }),
+      shareReplay(1),
+    );
 
-    this._valueChanges$ = this.form.pipe(switchMap((form) => form.valueChanges));
+    this._valueChanges$ = this.form.pipe(switchMap(form => form.valueChanges));
 
     const serviceObs = this._service.pipe(filter(s => s != null));
 
-    this._saveSub =
-        this._saveEvt
-            .pipe(
-                withLatestFrom(this.form, serviceObs, this._id),
-                map(r => r.slice(1) as [FormGroup, ModelService<T, S, A>, number | 'new']),
-                filter(([form, service, _id]) => form != null && service != null && form.valid),
-                switchMap(([form, service, id]) => {
-                  const formValue = {...form.value};
-                  this._defaultProcessData(formValue);
-                  if (this._processFormData) {
-                    if (this._processFormData instanceof Observable) {
-                      return this._processFormData.pipe(
-                          tap(pd => pd(formValue)),
-                          mapTo([
-                            formValue, service, id
-                          ] as [any, ModelService<T, S, A>, number | 'new']),
-                      );
-                    } else {
-                      this._processFormData(formValue);
-                    }
-                  }
-                  return obsOf<[any, ModelService<T, S, A>, number | 'new']>(
-                      [formValue, service, id]);
-                }),
-                tap(r => this._loading.next(true)),
-                switchMap(r => {
-                  const [formValue, service, id] =
-                      r as [any, ModelService<T, S, A>, number | 'new'];
-                  if (id === 'new') {
-                    delete formValue['id'];
-                    return service!.create(formValue);
-                  }
-                  return service!.patch(formValue);
-                }),
-                map(obj => obj as T),
-                take(1),
-                switchMap(r => {
-                  if (this._postSaveHook == null) {
-                    return obsOf(r);
-                  }
-                  return this._postSaveHook(r);
-                }),
-                )
-            .subscribe(
-                () => {
-                  this._loading.next(false);
-                  this.goBack();
-                },
-                () => this._loading.next(false),
-            );
+    this._saveSub = this._saveEvt
+      .pipe(
+        withLatestFrom(this.form, serviceObs, this._id),
+        map(r => r.slice(1) as [FormGroup, ModelService<T, S, A>, number | 'new']),
+        filter(([form, service, _id]) => form != null && service != null && form.valid),
+        switchMap(([form, service, id]) => {
+          const formValue = {...form.value};
+          this._defaultProcessData(formValue);
+          if (this._processFormData) {
+            if (this._processFormData instanceof Observable) {
+              return this._processFormData.pipe(
+                tap(pd => pd(formValue)),
+                mapTo([formValue, service, id] as [any, ModelService<T, S, A>, number | 'new']),
+              );
+            } else {
+              this._processFormData(formValue);
+            }
+          }
+          return obsOf<[any, ModelService<T, S, A>, number | 'new']>([formValue, service, id]);
+        }),
+        tap(r => this._loading.next(true)),
+        switchMap(r => {
+          const [formValue, service, id] = r as [any, ModelService<T, S, A>, number | 'new'];
+          if (id === 'new') {
+            delete formValue['id'];
+            return service!.create(formValue);
+          }
+          return service!.patch(formValue);
+        }),
+        map(obj => obj as T),
+        take(1),
+        switchMap(r => {
+          if (this._postSaveHook == null) {
+            return obsOf(r);
+          }
+          return this._postSaveHook(r);
+        }),
+      )
+      .subscribe(
+        () => {
+          this._loading.next(false);
+          this.goBack();
+        },
+        () => this._loading.next(false),
+      );
   }
 
   goBack(): void {

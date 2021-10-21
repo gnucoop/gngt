@@ -23,7 +23,6 @@ import {Action} from '@ngrx/store';
 
 import {User} from './user';
 
-
 export const enum AuthActionTypes {
   Init = '[Auth] Init',
   InitUser = '[Auth] Init user',
@@ -45,7 +44,7 @@ export class InitUser implements Action {
 export class InitUserComplete implements Action {
   readonly type = AuthActionTypes.InitUserComplete;
 
-  constructor(public payload: {user: User|null}) {}
+  constructor(public payload: {user: User | null}) {}
 }
 
 export class InitComplete implements Action {
@@ -65,4 +64,10 @@ export class LogoutConfirmationDismiss implements Action {
 }
 
 export type AuthActionsUnion =
-    Init|InitUser|InitUserComplete|InitComplete|Logout|LogoutConfirmation|LogoutConfirmationDismiss;
+  | Init
+  | InitUser
+  | InitUserComplete
+  | InitComplete
+  | Logout
+  | LogoutConfirmation
+  | LogoutConfirmationDismiss;

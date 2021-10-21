@@ -25,7 +25,7 @@ import {
   ChangeDetectorRef,
   Component,
   Input,
-  ViewEncapsulation
+  ViewEncapsulation,
 } from '@angular/core';
 import {FormBuilder} from '@angular/forms';
 import {MatFormFieldAppearance} from '@angular/material/form-field';

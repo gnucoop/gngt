@@ -21,9 +21,9 @@
 
 export interface JwtOptions {
   tokenGetter?: () => string | null;
-  tokenSetter?: (token: string|null) => void;
+  tokenSetter?: (token: string | null) => void;
   refreshTokenGetter?: () => string | null;
-  refreshTokenSetter?: (refreshToken: string|null) => void;
+  refreshTokenSetter?: (refreshToken: string | null) => void;
   headerName?: string;
   authScheme?: string;
   whitelistedDomains?: string[];

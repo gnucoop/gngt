@@ -24,10 +24,7 @@ import {CalendarModule} from '@gngt/ionic/calendar';
 import {IonicCalendarE2E} from './calendar-e2e';
 
 @NgModule({
-  imports: [
-    CalendarModule,
-  ],
+  imports: [CalendarModule],
   declarations: [IonicCalendarE2E],
 })
-export class IonicCalendarE2eModule {
-}
+export class IonicCalendarE2eModule {}

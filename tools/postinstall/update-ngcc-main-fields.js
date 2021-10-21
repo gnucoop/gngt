@@ -35,8 +35,10 @@ entries.forEach(entry => {
       return;
     }
     const parsedJson = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-    if (parsedJson[NGCC_MAIN_FIELD_NAME] &&
-        parsedJson[MAIN_FIELD_NAME] !== parsedJson[NGCC_MAIN_FIELD_NAME]) {
+    if (
+      parsedJson[NGCC_MAIN_FIELD_NAME] &&
+      parsedJson[MAIN_FIELD_NAME] !== parsedJson[NGCC_MAIN_FIELD_NAME]
+    ) {
       // Update the main field to point to the ngcc main script.
       parsedJson[MAIN_FIELD_NAME] = parsedJson[NGCC_MAIN_FIELD_NAME];
       fs.writeFileSync(filePath, JSON.stringify(parsedJson, null, 2));

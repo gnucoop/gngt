@@ -1,9 +1,7 @@
 import {Component, ViewEncapsulation} from '@angular/core';
 
-
 @Component({selector: 'home', template: `<p>e2e website!</p>`})
-export class Home {
-}
+export class Home {}
 
 @Component({
   selector: 'e2e-app-layout',

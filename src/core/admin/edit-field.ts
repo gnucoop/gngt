@@ -34,5 +34,5 @@ export interface AdminEditField {
   validators?: ValidatorFn[];
   readonly?: boolean;
   hidden?: boolean;
-  choices?: AdminEditFieldChoice[]|Observable<AdminEditFieldChoice[]>;
+  choices?: AdminEditFieldChoice[] | Observable<AdminEditFieldChoice[]>;
 }

@@ -24,12 +24,7 @@ import {NgModule} from '@angular/core';
 import {ChoicesPipe} from './choices-pipe';
 
 @NgModule({
-  declarations: [
-    ChoicesPipe,
-  ],
-  exports: [
-    ChoicesPipe,
-  ],
+  declarations: [ChoicesPipe],
+  exports: [ChoicesPipe],
 })
-export class GngtAdminModule {
-}
+export class GngtAdminModule {}

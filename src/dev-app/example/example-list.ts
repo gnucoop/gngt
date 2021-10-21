@@ -42,7 +42,8 @@ import {EXAMPLE_COMPONENTS} from '@gngt/gngt-examples';
       </mat-expansion-panel>
     </mat-accordion>
   `,
-  styles: [`
+  styles: [
+    `
     mat-expansion-panel {
       box-shadow: none !important;
       border-radius: 0 !important;
@@ -63,7 +64,8 @@ import {EXAMPLE_COMPONENTS} from '@gngt/gngt-examples';
       color: #666;
       font-size: 12px;
     }
-  `]
+  `,
+  ],
 })
 export class ExampleList {
   /** Type of examples being displayed. */

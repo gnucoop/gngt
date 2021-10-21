@@ -28,18 +28,8 @@ import {TranslateModule} from '@ngx-translate/core';
 import {CalendarComponent} from './calendar';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    MatButtonModule,
-    TranslateModule,
-  ],
-  declarations: [
-    CalendarComponent,
-  ],
-  exports: [
-    CalendarComponent,
-  ],
+  imports: [CommonModule, FormsModule, MatButtonModule, TranslateModule],
+  declarations: [CalendarComponent],
+  exports: [CalendarComponent],
 })
-export class CalendarModule {
-}
+export class CalendarModule {}

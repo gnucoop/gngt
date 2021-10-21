@@ -159,7 +159,6 @@ def getAngularUmdTargets():
         "//conditions:default": ANGULAR_LIBRARY_IVY_UMDS,
     })
 
-
 """
   Gets the list of targets for the third party librariers UMD bundles.
 """

@@ -1,7 +1,8 @@
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
 
-const RULE_FAILURE = `Undecorated class defines fields with Angular decorators. Undecorated ` +
+const RULE_FAILURE =
+  `Undecorated class defines fields with Angular decorators. Undecorated ` +
   `classes with Angular fields cannot be extended in Ivy since no definition is generated. ` +
   `Add a "@Directive" decorator to fix this.`;
 
@@ -12,13 +13,17 @@ const RULE_FAILURE = `Undecorated class defines fields with Angular decorators. 
 export class Rule extends Lint.Rules.TypedRule {
   applyWithProgram(sourceFile: ts.SourceFile, program: ts.Program): Lint.RuleFailure[] {
     return this.applyWithWalker(
-        new Walker(sourceFile, this.getOptions(), program.getTypeChecker()));
+      new Walker(sourceFile, this.getOptions(), program.getTypeChecker()),
+    );
   }
 }
 
 class Walker extends Lint.RuleWalker {
   constructor(
-      sourceFile: ts.SourceFile, options: Lint.IOptions, private _typeChecker: ts.TypeChecker) {
+    sourceFile: ts.SourceFile,
+    options: Lint.IOptions,
+    private _typeChecker: ts.TypeChecker,
+  ) {
     super(sourceFile, options);
   }
 
@@ -37,19 +42,21 @@ class Walker extends Lint.RuleWalker {
 
   /** Checks if the specified node has an Angular decorator. */
   private _hasAngularDecorator(node: ts.Node): boolean {
-    return !!node.decorators && node.decorators.some(d => {
-      if (!ts.isCallExpression(d.expression) ||
-          !ts.isIdentifier(d.expression.expression)) {
-        return false;
-      }
+    return (
+      !!node.decorators &&
+      node.decorators.some(d => {
+        if (!ts.isCallExpression(d.expression) || !ts.isIdentifier(d.expression.expression)) {
+          return false;
+        }
 
-      const moduleImport = this._getModuleImportOfIdentifier(d.expression.expression);
-      return moduleImport ? moduleImport.startsWith('@angular/core') : false;
-    });
+        const moduleImport = this._getModuleImportOfIdentifier(d.expression.expression);
+        return moduleImport ? moduleImport.startsWith('@angular/core') : false;
+      })
+    );
   }
 
   /** Gets the module import of the given identifier if imported. */
-  private _getModuleImportOfIdentifier(node: ts.Identifier): string|null {
+  private _getModuleImportOfIdentifier(node: ts.Identifier): string | null {
     const symbol = this._typeChecker.getSymbolAtLocation(node);
     if (!symbol || !symbol.declarations || !symbol.declarations.length) {
       return null;

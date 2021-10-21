@@ -46,10 +46,10 @@ interface DbEntry {
   id: number;
   foo: string;
   counter: number;
-  related: number|DbRelatedEntry;
+  related: number | DbRelatedEntry;
 }
 
-const dbEntries: LocalDoc<DbEntry|DbRelatedEntry>[] = [
+const dbEntries: LocalDoc<DbEntry | DbRelatedEntry>[] = [
   {object_id: 1, table_name: 'table1', object: {id: 1, foo: 'bar', counter: 10, related: 1}},
   {object_id: 2, table_name: 'table1', object: {id: 2, foo: 'baz', counter: 222, related: 2}},
   {object_id: 3, table_name: 'table1', object: {id: 3, foo: 'qux', counter: 97, related: 3}},
@@ -116,25 +116,25 @@ describe('SyncService', () => {
     let syncService: SyncService;
     let httpClient = new MockDownwardHttpClient();
 
-    beforeEach(waitForAsync(() => {
-      curDbName = `${dbName}${new Date().getTime()}`;
-      TestBed.configureTestingModule({
-        imports: [
-          SyncModule.forRoot({
-            baseUrl: 'http://remote/',
-            localDatabaseName: curDbName,
-            plugins: [pouchdbAdapterMemory],
-            adapter: 'memory',
-          }),
-        ],
-        providers: [
-          {provide: HttpClient, useValue: httpClient},
-        ]
-      });
+    beforeEach(
+      waitForAsync(() => {
+        curDbName = `${dbName}${new Date().getTime()}`;
+        TestBed.configureTestingModule({
+          imports: [
+            SyncModule.forRoot({
+              baseUrl: 'http://remote/',
+              localDatabaseName: curDbName,
+              plugins: [pouchdbAdapterMemory],
+              adapter: 'memory',
+            }),
+          ],
+          providers: [{provide: HttpClient, useValue: httpClient}],
+        });
 
-      TestBed.compileComponents();
-      syncService = TestBed.inject(SyncService);
-    }));
+        TestBed.compileComponents();
+        syncService = TestBed.inject(SyncService);
+      }),
+    );
 
     afterEach(() => {
       new pouchDBStatic(curDbName, {adapter: 'memory'}).destroy();
@@ -149,8 +149,9 @@ describe('SyncService', () => {
       syncService.stop();
       const db = new pouchDBStatic<LocalDoc<any>>(curDbName, {adapter: 'memory'});
       const docs = await db.allDocs({include_docs: true});
-      const localDocs = docs.rows.filter(r => r.doc != null && r.doc!.object_id != null)
-                            .map(r => r.doc as LocalDoc<any>);
+      const localDocs = docs.rows
+        .filter(r => r.doc != null && r.doc!.object_id != null)
+        .map(r => r.doc as LocalDoc<any>);
 
       expect(localDocs.length).toBe(2);
 
@@ -215,15 +216,16 @@ describe('SyncService', () => {
             adapter: 'memory',
           }),
         ],
-        providers: [
-          {provide: HttpClient, useClass: MockUpwardHttpClient},
-        ]
+        providers: [{provide: HttpClient, useClass: MockUpwardHttpClient}],
       });
 
       syncService = TestBed.inject(SyncService);
 
       for (let i = 1; i <= 20; i++) {
-        await syncService.create('table1', {foo: `bar${i}`}).pipe(take(1)).toPromise();
+        await syncService
+          .create('table1', {foo: `bar${i}`})
+          .pipe(take(1))
+          .toPromise();
       }
     });
 
@@ -263,13 +265,14 @@ describe('SyncService', () => {
             plugins: [pouchdbAdapterMemory],
             adapter: 'memory',
           }),
-        ]
+        ],
       });
 
       syncService = TestBed.inject(SyncService);
 
-      const db =
-          new pouchDBStatic<LocalDoc<DbEntry|DbRelatedEntry>>(curDbName, {adapter: 'memory'});
+      const db = new pouchDBStatic<LocalDoc<DbEntry | DbRelatedEntry>>(curDbName, {
+        adapter: 'memory',
+      });
       for (let i = 0; i < dbEntries.length; i++) {
         await db.post(dbEntries[i]);
       }
@@ -284,14 +287,13 @@ describe('SyncService', () => {
       expect(obj).toEqual(dbEntries[0].object);
     });
 
-    it('should throw a not_found error when trying to get an unexisting object from local db',
-       async () => {
-         try {
-           await syncService.get('table1', {id: 4}).pipe(take(1)).toPromise();
-         } catch (err) {
-           expect(err).toEqual('not_found');
-         }
-       });
+    it('should throw a not_found error when trying to get an unexisting object from local db', async () => {
+      try {
+        await syncService.get('table1', {id: 4}).pipe(take(1)).toPromise();
+      } catch (err) {
+        expect(err).toEqual('not_found');
+      }
+    });
 
     it('should get desired fields of an object from local database', async () => {
       const fields = ['id', 'counter'];
@@ -312,8 +314,10 @@ describe('SyncService', () => {
 
     it('should list objects from local database', async () => {
       const entries = dbEntries.filter(e => e.table_name === 'table1');
-      const objs =
-          (await syncService.list('table1', {}).pipe(take(1)).toPromise()) as ModelListResult<any>;
+      const objs = (await syncService
+        .list('table1', {})
+        .pipe(take(1))
+        .toPromise()) as ModelListResult<any>;
       expect(entries.length).toEqual(objs.results.length);
       entries.forEach((entry, i) => {
         expect(entry.object).toEqual(objs.results[i]);
@@ -322,9 +326,10 @@ describe('SyncService', () => {
 
     it('should support start and limit params in list', async () => {
       const entries = dbEntries.filter(e => e.table_name === 'table1').slice(1, 3);
-      const objs =
-          (await syncService.list('table1', {start: 1, limit: 2}).pipe(take(1)).toPromise()) as
-          ModelListResult<any>;
+      const objs = (await syncService
+        .list('table1', {start: 1, limit: 2})
+        .pipe(take(1))
+        .toPromise()) as ModelListResult<any>;
       expect(entries.length).toEqual(objs.results.length);
       entries.forEach((entry, i) => {
         expect(entry.object).toEqual(objs.results[i]);
@@ -334,8 +339,10 @@ describe('SyncService', () => {
     it('should support fields param in list', async () => {
       const fields = ['id', 'counter'];
       const entries = dbEntries.filter(e => e.table_name === 'table1');
-      const objs = (await syncService.list('table1', {fields}).pipe(take(1)).toPromise()) as
-          ModelListResult<any>;
+      const objs = (await syncService
+        .list('table1', {fields})
+        .pipe(take(1))
+        .toPromise()) as ModelListResult<any>;
       const undefFields = Object.keys(entries[0].object).filter(f => fields.indexOf(f) === -1);
       expect(entries.length).toEqual(objs.results.length);
       entries.forEach((entry, i) => {
@@ -349,22 +356,26 @@ describe('SyncService', () => {
     it('should support joins param in list', async () => {
       const entries = dbEntries.filter(e => e.table_name === 'table1');
       const joins = [{model: 'table2', property: 'related', fields: ['color']}];
-      const objs = (await syncService.list('table1', {joins}).pipe(take(1)).toPromise()) as
-          ModelListResult<any>;
+      const objs = (await syncService
+        .list('table1', {joins})
+        .pipe(take(1))
+        .toPromise()) as ModelListResult<any>;
       entries.forEach((entry, i) => {
         const related = dbEntries.find(
-            e => e.table_name === 'table2' && e.object_id === (entry.object as DbEntry).related);
+          e => e.table_name === 'table2' && e.object_id === (entry.object as DbEntry).related,
+        );
         expect(related!.object).toEqual(jasmine.objectContaining(objs.results[i].related));
       });
     });
 
     it('should support sort param in list', async () => {
-      const entries =
-          dbEntries.filter(e => e.table_name === 'table1')
-              .sort((a, b) => (a.object as DbEntry).counter - (b.object as DbEntry).counter);
-      const objs =
-          (await syncService.list('table1', {sort: {counter: 'asc'}}).pipe(take(1)).toPromise()) as
-          ModelListResult<any>;
+      const entries = dbEntries
+        .filter(e => e.table_name === 'table1')
+        .sort((a, b) => (a.object as DbEntry).counter - (b.object as DbEntry).counter);
+      const objs = (await syncService
+        .list('table1', {sort: {counter: 'asc'}})
+        .pipe(take(1))
+        .toPromise()) as ModelListResult<any>;
       entries.forEach((entry, i) => {
         expect(entry.object).toEqual(objs.results[i]);
       });
@@ -372,10 +383,10 @@ describe('SyncService', () => {
 
     it('should create an object and save it to the local database', async () => {
       const newObj = {foo: '', counter: 0, related: 1};
-      const expectedId = dbEntries.filter(e => e.table_name === 'table1')
-                             .sort((a, b) => b.object_id - a.object_id)[0]
-                             .object_id +
-          1;
+      const expectedId =
+        dbEntries
+          .filter(e => e.table_name === 'table1')
+          .sort((a, b) => b.object_id - a.object_id)[0].object_id + 1;
       const res = await syncService.create('table1', newObj).pipe(take(1)).toPromise();
       const newObjWithId = {id: expectedId, ...newObj};
       expect(res).toEqual(newObjWithId);

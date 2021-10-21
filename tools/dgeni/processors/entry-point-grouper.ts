@@ -75,7 +75,7 @@ export class EntryPointDoc {
    * Name of the primary export of the entry-point. This export will be showed
    * in the API docs as export when show-casing the import to the entry-point.
    */
-  primaryExportName: string|null = null;
+  primaryExportName: string | null = null;
 
   constructor(name: string) {
     this.name = name;
@@ -186,7 +186,7 @@ export class EntryPointGrouper implements Processor {
    * Walks through the specified API documents and looks for the best
    * API document that could serve as primary export of an entry-point.
    */
-  private _findBestPrimaryExport(docs: ApiDoc[]): ApiDoc|null {
+  private _findBestPrimaryExport(docs: ApiDoc[]): ApiDoc | null {
     // Usually the first doc that is not deprecated is used, but in case there are
     // only deprecated doc, the last deprecated doc is used. We don't want to always
     // skip deprecated docs as they could be still needed for documentation of a
@@ -227,8 +227,8 @@ export class EntryPointGrouper implements Processor {
   }
 
   /** Finds the matching entry-point of the given file path. */
-  private _findMatchingEntryPoint(relativeFilePath: string): string|null {
-    let foundEntryPoint: string|null = null;
+  private _findMatchingEntryPoint(relativeFilePath: string): string | null {
+    let foundEntryPoint: string | null = null;
     for (let entryPoint of this.entryPoints) {
       if (!relativeFilePath.startsWith(entryPoint)) {
         continue;

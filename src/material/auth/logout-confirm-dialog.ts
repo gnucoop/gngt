@@ -30,7 +30,6 @@ import {ChangeDetectionStrategy, Component, ViewEncapsulation} from '@angular/co
   templateUrl: 'logout-confirm-dialog.html',
   styleUrls: ['logout-confirm-dialog.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
 })
-export class LogoutConfirmDialogComponent {
-}
+export class LogoutConfirmDialogComponent {}

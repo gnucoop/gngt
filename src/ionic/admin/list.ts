@@ -27,7 +27,7 @@ import {
   OnDestroy,
   OnInit,
   ViewChild,
-  ViewEncapsulation
+  ViewEncapsulation,
 } from '@angular/core';
 import {AdminListComponent as BaseAdminListComponent} from '@gngt/core/admin';
 import {mergeQueryParams, Model, ModelQueryParams} from '@gngt/core/common';
@@ -45,11 +45,15 @@ import {AdminUserInteractionsService} from './admin-user-interactions';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
 })
-export class AdminListComponent<T extends Model = Model, S extends ModelState<T> = ModelState<T>,
-                                                                   A extends
-                                    ModelActionTypes = ModelActionTypes, MS extends
-                                        ModelService<T, S, A> = ModelService<T, S, A>> extends
-    BaseAdminListComponent<T, S, A, MS> implements OnDestroy, OnInit {
+export class AdminListComponent<
+    T extends Model = Model,
+    S extends ModelState<T> = ModelState<T>,
+    A extends ModelActionTypes = ModelActionTypes,
+    MS extends ModelService<T, S, A> = ModelService<T, S, A>,
+  >
+  extends BaseAdminListComponent<T, S, A, MS>
+  implements OnDestroy, OnInit
+{
   @Input() baseQueryParams: Partial<ModelQueryParams>;
   @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
 
@@ -82,18 +86,17 @@ export class AdminListComponent<T extends Model = Model, S extends ModelState<T>
       return;
     }
 
-    this._querySub = service.getListObjects()
-                         .pipe(
-                             filter(r => r != null),
-                             )
-                         .subscribe(r => {
-                           if (this.infiniteScroll) {
-                             (this.infiniteScroll as any).complete();
-                           }
-                           this._items = [...this._items, ...(r!.results || [])];
-                           this._hasMore = r!.next != null;
-                           this._cdr.markForCheck();
-                         });
+    this._querySub = service
+      .getListObjects()
+      .pipe(filter(r => r != null))
+      .subscribe(r => {
+        if (this.infiniteScroll) {
+          (this.infiniteScroll as any).complete();
+        }
+        this._items = [...this._items, ...(r!.results || [])];
+        this._hasMore = r!.next != null;
+        this._cdr.markForCheck();
+      });
 
     this._loadList();
   }

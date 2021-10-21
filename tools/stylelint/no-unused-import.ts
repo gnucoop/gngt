@@ -5,8 +5,9 @@ import {Result, Root} from 'postcss';
 const ruleName = 'gngt/no-unused-import';
 const messages = utils.ruleMessages(ruleName, {
   expected: (namespace: string) => `Namespace ${namespace} is not being used.`,
-  invalid: (rule: string) => `Failed to extract namespace from ${rule}. material/no-unused-` +
-      `imports Stylelint rule likely needs to be updated.`
+  invalid: (rule: string) =>
+    `Failed to extract namespace from ${rule}. material/no-unused-` +
+    `imports Stylelint rule likely needs to be updated.`,
 });
 
 /** Stylelint plugin that flags unused `@use` statements. */
@@ -30,7 +31,7 @@ const factory = (isEnabled: boolean, _options: never, context: {fix: boolean}) =
             result: result as any,
             ruleName,
             message: messages.invalid(rule.params),
-            node: rule as any
+            node: rule as any,
           });
         } else if (!fileContent.includes(namespace + '.')) {
           if (context.fix) {
@@ -40,7 +41,7 @@ const factory = (isEnabled: boolean, _options: never, context: {fix: boolean}) =
               result: result as any,
               ruleName,
               message: messages.expected(namespace),
-              node: rule as any
+              node: rule as any,
             });
           }
         }
@@ -50,7 +51,7 @@ const factory = (isEnabled: boolean, _options: never, context: {fix: boolean}) =
 };
 
 /** Extracts the namespace of an `@use` rule from its parameters.  */
-function extractNamespaceFromUseStatement(params: string): string|null {
+function extractNamespaceFromUseStatement(params: string): string | null {
   const closeQuoteIndex = Math.max(params.lastIndexOf(`"`), params.lastIndexOf(`'`));
 
   if (closeQuoteIndex > -1) {
@@ -63,14 +64,16 @@ function extractNamespaceFromUseStatement(params: string): string|null {
     }
 
     const openQuoteIndex = Math.max(
-        params.lastIndexOf(`"`, closeQuoteIndex - 1), params.lastIndexOf(`'`, closeQuoteIndex - 1));
+      params.lastIndexOf(`"`, closeQuoteIndex - 1),
+      params.lastIndexOf(`'`, closeQuoteIndex - 1),
+    );
 
     if (openQuoteIndex > -1) {
       const importPath = params
-                             .slice(openQuoteIndex + 1, closeQuoteIndex)
-                             // Sass allows for leading underscores to be omitted and it technically
-                             // supports .scss.
-                             .replace(/^_|(\.import)?\.scss$|\.import$/g, '');
+        .slice(openQuoteIndex + 1, closeQuoteIndex)
+        // Sass allows for leading underscores to be omitted and it technically
+        // supports .scss.
+        .replace(/^_|(\.import)?\.scss$|\.import$/g, '');
 
       // Built-in Sass imports look like `sass:map`.
       if (importPath.startsWith('sass:')) {
