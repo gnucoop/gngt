@@ -28,18 +28,8 @@ import {TranslocoModule} from '@ngneat/transloco';
 import {CalendarComponent} from './calendar';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    TranslocoModule,
-  ],
-  declarations: [
-    CalendarComponent,
-  ],
-  exports: [
-    CalendarComponent,
-  ],
+  imports: [CommonModule, FormsModule, IonicModule, TranslocoModule],
+  declarations: [CalendarComponent],
+  exports: [CalendarComponent],
 })
-export class CalendarModule {
-}
+export class CalendarModule {}

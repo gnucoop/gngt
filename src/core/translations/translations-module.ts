@@ -25,12 +25,7 @@ import {TRANSLOCO_MISSING_HANDLER, TranslocoModule} from '@ngneat/transloco';
 import {MissingTranslationHandler} from './missing-translation-handler';
 
 @NgModule({
-  imports: [
-    TranslocoModule,
-  ],
-  providers: [
-    {provide: TRANSLOCO_MISSING_HANDLER, useClass: MissingTranslationHandler},
-  ],
+  imports: [TranslocoModule],
+  providers: [{provide: TRANSLOCO_MISSING_HANDLER, useClass: MissingTranslationHandler}],
 })
-export class TranslationsModule {
-}
+export class TranslationsModule {}

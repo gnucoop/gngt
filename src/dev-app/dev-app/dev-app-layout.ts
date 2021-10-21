@@ -35,36 +35,35 @@ export class DevAppLayout {
   navGroups = [
     {
       name: 'Common',
-      children:
-          [
-            {name: 'Examples', route: '/examples'},
-            {name: 'Sync', route: '/sync'},
-          ]
+      children: [
+        {name: 'Examples', route: '/examples'},
+        {name: 'Sync', route: '/sync'},
+      ],
     },
     {
       name: 'Material',
-      children:
-          [
-            {name: 'Admin edit', route: '/mat-admin-edit'},
-            {name: 'Admin list', route: '/mat-admin-list'},
-            {name: 'Calendar', route: '/mat-calendar'},
-            {name: 'Login', route: '/mat-login'},
-          ]
+      children: [
+        {name: 'Admin edit', route: '/mat-admin-edit'},
+        {name: 'Admin list', route: '/mat-admin-list'},
+        {name: 'Calendar', route: '/mat-calendar'},
+        {name: 'Login', route: '/mat-login'},
+      ],
     },
     {
       name: 'Ionic',
-      children:
-          [
-            {name: 'Admin edit', route: '/ion-admin-edit'},
-            {name: 'Admin list', route: '/ion-admin-list'},
-            {name: 'Login', route: '/ion-login'},
-          ]
+      children: [
+        {name: 'Admin edit', route: '/ion-admin-edit'},
+        {name: 'Admin list', route: '/ion-admin-list'},
+        {name: 'Login', route: '/ion-login'},
+      ],
     },
   ];
 
   constructor(
-      private _element: ElementRef<HTMLElement>,
-      @Inject(Directionality) public dir: DevAppDirectionality, cdr: ChangeDetectorRef) {
+    private _element: ElementRef<HTMLElement>,
+    @Inject(Directionality) public dir: DevAppDirectionality,
+    cdr: ChangeDetectorRef,
+  ) {
     dir.change.subscribe(() => cdr.markForCheck());
   }
 

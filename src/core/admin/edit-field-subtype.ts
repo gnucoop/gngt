@@ -32,5 +32,5 @@ export const enum AdminEditFieldSubtype {
   Text = 'text',
   Time = 'time',
   Url = 'url',
-  Week = 'week'
+  Week = 'week',
 }

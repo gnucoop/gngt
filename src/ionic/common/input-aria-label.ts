@@ -27,7 +27,7 @@ import {
   Input,
   OnDestroy,
   Optional,
-  Renderer2
+  Renderer2,
 } from '@angular/core';
 import {IonInput} from '@ionic/angular';
 import {Subscription} from 'rxjs';
@@ -37,8 +37,10 @@ export class InputAriaLabelDirective implements AfterViewInit, OnDestroy {
   private _inputLoadSub: Subscription = Subscription.EMPTY;
 
   constructor(
-      @Host() @Optional() private _input: IonInput, private _el: ElementRef,
-      private _renderer: Renderer2) {}
+    @Host() @Optional() private _input: IonInput,
+    private _el: ElementRef,
+    private _renderer: Renderer2,
+  ) {}
 
   private _gngtInputAriaLabel: string;
   @Input('gngtInputAriaLabel')
@@ -68,8 +70,9 @@ export class InputAriaLabelDirective implements AfterViewInit, OnDestroy {
     }
   }
 
-  private _setLabelOnChildren(inputs: HTMLCollectionOf<HTMLInputElement>|
-                              NodeListOf<HTMLInputElement>): void {
+  private _setLabelOnChildren(
+    inputs: HTMLCollectionOf<HTMLInputElement> | NodeListOf<HTMLInputElement>,
+  ): void {
     const inputsNum = inputs.length;
     for (let i = 0; i < inputsNum; i++) {
       const input = inputs.item(i);

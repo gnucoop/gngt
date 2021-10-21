@@ -27,13 +27,7 @@ import {CalendarModule} from '@gngt/material/calendar';
 import {CalendarDemo} from './calendar-demo';
 
 @NgModule({
-  imports: [
-    CalendarModule,
-    RouterModule.forChild([{path: '', component: CalendarDemo}]),
-  ],
-  declarations: [
-    CalendarDemo,
-  ],
+  imports: [CalendarModule, RouterModule.forChild([{path: '', component: CalendarDemo}])],
+  declarations: [CalendarDemo],
 })
-export class CalendarDemoModule {
-}
+export class CalendarDemoModule {}

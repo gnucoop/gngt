@@ -26,13 +26,12 @@ import {
   ModelListParams,
   ModelListResult,
   ModelManager as BaseModelManager,
-  ModelQueryParams
+  ModelQueryParams,
 } from '@gngt/core/common';
 import {SyncService} from '@gngt/core/sync';
 import {Observable} from 'rxjs';
 
 import {ModelOptions} from './model-options';
-
 
 export abstract class ModelManager<M extends Model = Model> extends BaseModelManager {
   private _baseUrl: string;
@@ -43,10 +42,10 @@ export abstract class ModelManager<M extends Model = Model> extends BaseModelMan
   private _useTrailingSlash = false;
 
   constructor(
-      config: ModelOptions,
-      endPoint: string,
-      protected _http: HttpClient,
-      @Optional() syncService?: SyncService,
+    config: ModelOptions,
+    endPoint: string,
+    protected _http: HttpClient,
+    @Optional() syncService?: SyncService,
   ) {
     super();
     this._endPoint = endPoint;
@@ -135,16 +134,17 @@ export abstract class ModelManager<M extends Model = Model> extends BaseModelMan
         paramsArray.push(`fields=${options.fields.join(',')}`);
       }
       if (options.joins) {
-        paramsArray.push(`joins=${
-            options.joins
-                .map(j => {
-                  const join = `${j.model}.${j.property}`;
-                  if (j.fields) {
-                    return `${join}.${j.fields.join(';')}`;
-                  }
-                  return join;
-                })
-                .join(',')}`);
+        paramsArray.push(
+          `joins=${options.joins
+            .map(j => {
+              const join = `${j.model}.${j.property}`;
+              if (j.fields) {
+                return `${join}.${j.fields.join(';')}`;
+              }
+              return join;
+            })
+            .join(',')}`,
+        );
       }
       if (paramsArray.length > 0) {
         params = `?${paramsArray.join('&')}`;

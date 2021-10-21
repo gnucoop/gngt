@@ -30,7 +30,7 @@ import {
   AuthUserInteractionsService as CoreAuthUserInteractionsService,
   JWT_OPTIONS,
   JwtHelperService,
-  JwtInterceptor
+  JwtInterceptor,
 } from '@gngt/core/auth';
 import {CommonModule as CoreCommonModule} from '@gngt/core/common';
 import {CommonModule as IonicCommonModule} from '@gngt/ionic/common';
@@ -49,18 +49,15 @@ import {LoginComponent} from './login';
     IonicModule,
     ReactiveFormsModule,
   ],
-  declarations: [
-    LoginComponent,
+  declarations: [LoginComponent],
+  exports: [CoreAuthModule, LoginComponent],
+  providers: [
+    {
+      provide: CoreAuthUserInteractionsService,
+      useClass: AuthUserInteractionsService,
+      deps: [TranslocoService, AlertController, ToastController],
+    },
   ],
-  exports: [
-    CoreAuthModule,
-    LoginComponent,
-  ],
-  providers: [{
-    provide: CoreAuthUserInteractionsService,
-    useClass: AuthUserInteractionsService,
-    deps: [TranslocoService, AlertController, ToastController]
-  }]
 })
 export class AuthModule {
   static forRoot(options: AuthModuleOptions): ModuleWithProviders<AuthModule> {
@@ -71,7 +68,7 @@ export class AuthModule {
         options.authOptionsProvider || {provide: AUTH_OPTIONS, useValue: options.authConfig},
         options.jwtOptionsProvider || {provide: JWT_OPTIONS, useValue: options.jwtConfig},
         {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
-      ]
+      ],
     };
   }
 }

@@ -22,7 +22,7 @@
 import {ModelJoin} from './model-join';
 
 export interface ModelGetParams {
-  id: number|null;
+  id: number | null;
   fields?: string[];
   joins?: ModelJoin[];
 }

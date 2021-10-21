@@ -28,25 +28,28 @@ import {map, mapTo, switchMap} from 'rxjs/operators';
 
 export class AuthUserInteractionsService extends CoreAuthUserInteractionsService {
   constructor(
-      private _ts: TranslocoService, private _alert: AlertController,
-      private _toast: ToastController) {
+    private _ts: TranslocoService,
+    private _alert: AlertController,
+    private _toast: ToastController,
+  ) {
     super();
   }
 
   askLogoutConfirm(): Observable<boolean> {
     const strings = ['Are you sure you want to logout?', 'Cancel', 'Ok'];
-    return from(this._alert.create({
-             message: this._ts.translate(strings[0]),
-             buttons: [
-               {text: this._ts.translate(strings[1]), role: 'cancel'},
-               {text: this._ts.translate(strings[2]), role: 'confirm'}
-             ],
-           }))
-        .pipe(
-            switchMap(alert => from((alert as HTMLIonAlertElement).present()).pipe(mapTo(alert))),
-            switchMap(alert => from((alert as HTMLIonAlertElement).onDidDismiss())),
-            map(evt => (evt as OverlayEventDetail<any>).role === 'confirm'),
-        );
+    return from(
+      this._alert.create({
+        message: this._ts.translate(strings[0]),
+        buttons: [
+          {text: this._ts.translate(strings[1]), role: 'cancel'},
+          {text: this._ts.translate(strings[2]), role: 'confirm'},
+        ],
+      }),
+    ).pipe(
+      switchMap(alert => from((alert as HTMLIonAlertElement).present()).pipe(mapTo(alert))),
+      switchMap(alert => from((alert as HTMLIonAlertElement).onDidDismiss())),
+      map(evt => (evt as OverlayEventDetail<any>).role === 'confirm'),
+    );
   }
 
   showLoginError(error: string): void {

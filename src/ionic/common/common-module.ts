@@ -24,12 +24,7 @@ import {NgModule} from '@angular/core';
 import {InputAriaLabelDirective} from './input-aria-label';
 
 @NgModule({
-  declarations: [
-    InputAriaLabelDirective,
-  ],
-  exports: [
-    InputAriaLabelDirective,
-  ]
+  declarations: [InputAriaLabelDirective],
+  exports: [InputAriaLabelDirective],
 })
-export class CommonModule {
-}
+export class CommonModule {}

@@ -118,10 +118,10 @@ export class CalendarEntry {
 }
 
 // @public (undocumented)
-export type CalendarEntrySelectedState = ('none' | 'partial' | 'full');
+export type CalendarEntrySelectedState = 'none' | 'partial' | 'full';
 
 // @public (undocumented)
-export type CalendarEntryType = ('day' | 'month' | 'year');
+export type CalendarEntryType = 'day' | 'month' | 'year';
 
 // @public (undocumented)
 export class CalendarPeriod {
@@ -134,13 +134,13 @@ export class CalendarPeriod {
 }
 
 // @public (undocumented)
-export type CalendarPeriodType = ('day' | 'week' | 'month' | 'year');
+export type CalendarPeriodType = 'day' | 'week' | 'month' | 'year';
 
 // @public (undocumented)
-export type CalendarViewMode = ('month' | 'year' | 'decade');
+export type CalendarViewMode = 'month' | 'year' | 'decade';
 
 // @public (undocumented)
-export type CalendarWeekDay = ('monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday');
+export type CalendarWeekDay = 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday';
 
 // (No @packageDocumentation comment for this package)
 

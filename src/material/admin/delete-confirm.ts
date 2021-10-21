@@ -26,7 +26,6 @@ import {ChangeDetectionStrategy, Component, ViewEncapsulation} from '@angular/co
   templateUrl: 'delete-confirm.html',
   styleUrls: ['delete-confirm.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
 })
-export class AdminDeleteConfirmDialogComponent {
-}
+export class AdminDeleteConfirmDialogComponent {}

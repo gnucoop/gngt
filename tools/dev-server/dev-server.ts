@@ -47,8 +47,11 @@ export class DevServer {
   };
 
   constructor(
-      readonly port: number, private _rootPaths: string[], bindUi: boolean,
-      private _historyApiFallback: boolean = false) {
+    readonly port: number,
+    private _rootPaths: string[],
+    bindUi: boolean,
+    private _historyApiFallback: boolean = false,
+  ) {
     if (bindUi === false) {
       this.options.ui = false;
     }
@@ -57,7 +60,7 @@ export class DevServer {
   /** Starts the server on the given port. */
   async start() {
     return new Promise<void>((resolve, reject) => {
-      this.server.init(this.options, (err) => {
+      this.server.init(this.options, err => {
         if (err) {
           reject(err);
         } else {
@@ -97,8 +100,13 @@ export class DevServer {
     // Implements the HTML history API fallback logic based on the requirements of the
     // "connect-history-api-fallback" package. See the conditions for a request being redirected
     // to the index: https://github.com/bripkens/connect-history-api-fallback#introduction
-    if (this._historyApiFallback && req.method === 'GET' && !req.url.includes('.') &&
-        req.headers.accept && req.headers.accept.includes('text/html')) {
+    if (
+      this._historyApiFallback &&
+      req.method === 'GET' &&
+      !req.url.includes('.') &&
+      req.headers.accept &&
+      req.headers.accept.includes('text/html')
+    ) {
       req.url = '/index.html';
     }
 
@@ -114,12 +122,11 @@ export class DevServer {
   }
 
   /** Resolves a given URL from the runfiles using the corresponding manifest path. */
-  private _resolveUrlFromRunfiles(url: string): string|null {
+  private _resolveUrlFromRunfiles(url: string): string | null {
     for (let rootPath of this._rootPaths) {
       try {
         return require.resolve(path.posix.join(rootPath, getManifestPath(url)));
-      } catch {
-      }
+      } catch {}
     }
     return null;
   }

@@ -26,10 +26,7 @@ import {E2E_APP_ROUTES} from './routes';
     IonicCalendarE2eModule,
     MaterialCalendarE2eModule,
   ],
-  declarations: [
-    E2eApp,
-  ],
+  declarations: [E2eApp],
   bootstrap: [E2eApp],
 })
-export class MainModule {
-}
+export class MainModule {}

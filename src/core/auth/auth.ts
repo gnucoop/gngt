@@ -30,7 +30,6 @@ import {LoginResponse} from './login-response';
 import {RefreshTokenResponse} from './refresh-token-response';
 import {User} from './user';
 
-
 @Injectable({providedIn: 'root'})
 export class AuthService {
   constructor(private _http: HttpClient, @Inject(AUTH_OPTIONS) private _config: AuthOptions) {}
@@ -55,11 +54,11 @@ export class AuthService {
     return this._http.get<User>(url);
   }
 
-  getLoggedInUser(): number|null {
+  getLoggedInUser(): number | null {
     return this._config.loggedInUserGetter ? this._config.loggedInUserGetter() : null;
   }
 
-  getMe(): User|null {
+  getMe(): User | null {
     return this._config.meGetter ? this._config.meGetter() : null;
   }
 }

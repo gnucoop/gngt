@@ -35,7 +35,7 @@ export class SyncModule {
         SyncService,
         {provide: HTTP_INTERCEPTORS, useClass: OfflineInterceptor, multi: true},
         {provide: SYNC_OPTIONS, useValue: opts},
-      ]
+      ],
     };
   }
 }

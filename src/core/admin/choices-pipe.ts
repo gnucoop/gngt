@@ -33,8 +33,14 @@ export class ChoicesPipe implements PipeTransform {
     this._asyncPipe = new AsyncPipe(cdr);
   }
 
-  transform(value: AdminEditFieldChoice[]|Observable<AdminEditFieldChoice[]>|
-            Promise<AdminEditFieldChoice[]>|null|undefined): AdminEditFieldChoice[] {
+  transform(
+    value:
+      | AdminEditFieldChoice[]
+      | Observable<AdminEditFieldChoice[]>
+      | Promise<AdminEditFieldChoice[]>
+      | null
+      | undefined,
+  ): AdminEditFieldChoice[] {
     if (value == null) {
       return [];
     }

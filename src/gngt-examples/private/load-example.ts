@@ -8,11 +8,12 @@ import {EXAMPLE_COMPONENTS} from '../example-module';
  * This is used in the `dev-app` and `e2e-app` and assumes ESBuild having created
  * entry-points for the example modules under the `<host>/bundles/` URL.
  */
-export async function loadExample(name: string, injector: Injector)
-    : Promise<{component: Type<any>, injector: Injector}> {
+export async function loadExample(
+  name: string,
+  injector: Injector,
+): Promise<{component: Type<any>; injector: Injector}> {
   const {componentName, module} = EXAMPLE_COMPONENTS[name];
-  const moduleExports = await import(
-      `/bundles/gngt-examples/${module.importSpecifier}/index.js`);
+  const moduleExports = await import(`/bundles/gngt-examples/${module.importSpecifier}/index.js`);
   const moduleType: Type<any> = moduleExports[module.name];
   const componentType: Type<any> = moduleExports[componentName];
   const moduleRef = createNgModuleRef(moduleType, injector);

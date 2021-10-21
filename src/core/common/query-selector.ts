@@ -20,19 +20,21 @@
  */
 
 export type ModelQuerySelector = {
-  [propName: string]: any|{
-    $lt?: any,
-    $gt?: any,
-    $lte?: any,
-    $gte?: any,
-    $eq?: any,
-    $ne?: any,
-    $exists?: any,
-    $in?: any,
-    $nin?: any,
-    $or?: any,
-    $nor?: any,
-    $not?: any,
-    $regex?: any
-  };
+  [propName: string]:
+    | any
+    | {
+        $lt?: any;
+        $gt?: any;
+        $lte?: any;
+        $gte?: any;
+        $eq?: any;
+        $ne?: any;
+        $exists?: any;
+        $in?: any;
+        $nin?: any;
+        $or?: any;
+        $nor?: any;
+        $not?: any;
+        $regex?: any;
+      };
 };

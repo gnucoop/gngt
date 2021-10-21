@@ -22,8 +22,11 @@ type TypeCheckerWithRelationApi = ts.TypeChecker & {
  */
 export class Rule extends Lint.Rules.TypedRule {
   applyWithProgram(sourceFile: ts.SourceFile, program: ts.Program): Lint.RuleFailure[] {
-    const walker = new Walker(sourceFile, this.getOptions(),
-        program.getTypeChecker() as TypeCheckerWithRelationApi);
+    const walker = new Walker(
+      sourceFile,
+      this.getOptions(),
+      program.getTypeChecker() as TypeCheckerWithRelationApi,
+    );
     return this.applyWithWalker(walker);
   }
 }
@@ -41,9 +44,11 @@ class Walker extends Lint.RuleWalker {
   /** Type resolving to the TS internal `undefined` type. */
   private _undefinedType = this._typeChecker.getUndefinedType();
 
-  constructor(sourceFile: ts.SourceFile,
-              options: Lint.IOptions,
-              private _typeChecker: TypeCheckerWithRelationApi) {
+  constructor(
+    sourceFile: ts.SourceFile,
+    options: Lint.IOptions,
+    private _typeChecker: TypeCheckerWithRelationApi,
+  ) {
     super(sourceFile, options);
     this._coercionFunctions = new Set(options.ruleArguments[0] || []);
     this._coercionInterfaces = options.ruleArguments[1] || {};
@@ -82,16 +87,22 @@ class Walker extends Lint.RuleWalker {
 
     if (!hasNull && !hasUndefined) {
       this.addFailureAtNode(
-          node, 'Acceptance member has to accept "null" and "undefined".',
-          this.appendText(node.type.getEnd(), ' | null | undefined'));
+        node,
+        'Acceptance member has to accept "null" and "undefined".',
+        this.appendText(node.type.getEnd(), ' | null | undefined'),
+      );
     } else if (!hasNull) {
       this.addFailureAtNode(
-          node, 'Acceptance member has to accept "null".',
-          this.appendText(node.type.getEnd(), ' | null'));
+        node,
+        'Acceptance member has to accept "null".',
+        this.appendText(node.type.getEnd(), ' | null'),
+      );
     } else if (!hasUndefined) {
       this.addFailureAtNode(
-          node, 'Acceptance member has to accept "undefined".',
-          this.appendText(node.type.getEnd(), ' | undefined'));
+        node,
+        'Acceptance member has to accept "undefined".',
+        this.appendText(node.type.getEnd(), ' | undefined'),
+      );
     }
   }
 
@@ -103,8 +114,11 @@ class Walker extends Lint.RuleWalker {
    */
   private _lintClass(node: ts.ClassDeclaration, sourceClass: ts.ClassDeclaration): void {
     node.members.forEach(member => {
-      if (ts.isSetAccessor(member) && usesCoercion(member, this._coercionFunctions) &&
-          this._shouldCheckSetter(member)) {
+      if (
+        ts.isSetAccessor(member) &&
+        usesCoercion(member, this._coercionFunctions) &&
+        this._shouldCheckSetter(member)
+      ) {
         this._checkForStaticMember(sourceClass, member.name.getText());
       }
     });
@@ -116,7 +130,7 @@ class Walker extends Lint.RuleWalker {
    * @param node Class declaration to be checked.
    */
   private _lintSuperClasses(node: ts.ClassDeclaration): void {
-    let currentClass: ts.ClassDeclaration|null = node;
+    let currentClass: ts.ClassDeclaration | null = node;
 
     while (currentClass) {
       const baseType = getBaseTypeIdentifier(currentClass);
@@ -126,8 +140,10 @@ class Walker extends Lint.RuleWalker {
       }
 
       const symbol = this._typeChecker.getTypeAtLocation(baseType).getSymbol();
-      currentClass = symbol?.valueDeclaration && ts.isClassDeclaration(symbol.valueDeclaration) ?
-          symbol.valueDeclaration : null;
+      currentClass =
+        symbol?.valueDeclaration && ts.isClassDeclaration(symbol.valueDeclaration)
+          ? symbol.valueDeclaration
+          : null;
 
       if (currentClass) {
         this._lintClass(currentClass, node);
@@ -171,14 +187,18 @@ class Walker extends Lint.RuleWalker {
   private _checkForStaticMember(node: ts.ClassDeclaration, setterName: string) {
     const coercionPropertyName = `${TYPE_ACCEPT_MEMBER_PREFIX}${setterName}`;
     const correspondingCoercionProperty = node.members.find(member => {
-      return ts.isPropertyDeclaration(member) &&
-             tsutils.hasModifier(member.modifiers, ts.SyntaxKind.StaticKeyword) &&
-             member.name.getText() === coercionPropertyName;
+      return (
+        ts.isPropertyDeclaration(member) &&
+        tsutils.hasModifier(member.modifiers, ts.SyntaxKind.StaticKeyword) &&
+        member.name.getText() === coercionPropertyName
+      );
     });
 
     if (!correspondingCoercionProperty) {
-      this.addFailureAtNode(node.name || node, `Class must declare static coercion ` +
-                                               `property called ${coercionPropertyName}.`);
+      this.addFailureAtNode(
+        node.name || node,
+        `Class must declare static coercion ` + `property called ${coercionPropertyName}.`,
+      );
     }
   }
 
@@ -194,22 +214,27 @@ class Walker extends Lint.RuleWalker {
       return true;
     }
 
-    const directiveDecorator =
-        node.decorators.find(decorator => isDecoratorCalled(decorator, 'Directive'));
+    const directiveDecorator = node.decorators.find(decorator =>
+      isDecoratorCalled(decorator, 'Directive'),
+    );
 
     if (directiveDecorator) {
       const firstArg = (directiveDecorator.expression as ts.CallExpression).arguments[0];
       const metadata = firstArg && ts.isObjectLiteralExpression(firstArg) ? firstArg : null;
-      const selectorProp = metadata ?
-          metadata.properties.find((prop): prop is ts.PropertyAssignment => {
-            return ts.isPropertyAssignment(prop) && prop.name && ts.isIdentifier(prop.name) &&
-                prop.name.text === 'selector';
-          }) :
-          null;
+      const selectorProp = metadata
+        ? metadata.properties.find((prop): prop is ts.PropertyAssignment => {
+            return (
+              ts.isPropertyAssignment(prop) &&
+              prop.name &&
+              ts.isIdentifier(prop.name) &&
+              prop.name.text === 'selector'
+            );
+          })
+        : null;
       const selectorText =
-          selectorProp != null && ts.isStringLiteralLike(selectorProp.initializer) ?
-          selectorProp.initializer.text :
-          null;
+        selectorProp != null && ts.isStringLiteralLike(selectorProp.initializer)
+          ? selectorProp.initializer.text
+          : null;
 
       // We only want to lint directives with a selector (i.e. no abstract directives).
       return selectorText !== null;
@@ -221,8 +246,10 @@ class Walker extends Lint.RuleWalker {
   /** Determines whether a setter node should be checked by the lint rule. */
   private _shouldCheckSetter(node: ts.SetAccessorDeclaration): boolean {
     const param = node.parameters[0];
-    const types = this._typeChecker.typeToString(this._typeChecker.getTypeAtLocation(param))
-      .split('|').map(name => name.trim());
+    const types = this._typeChecker
+      .typeToString(this._typeChecker.getTypeAtLocation(param))
+      .split('|')
+      .map(name => name.trim());
     // We shouldn't check setters which accept `any` or a `string`.
     return types.every(typeName => typeName !== 'any' && typeName !== 'string');
   }
@@ -237,8 +264,11 @@ function usesCoercion(setter: ts.SetAccessorDeclaration, coercionFunctions: Set<
   let coercionWasUsed = false;
 
   setter.forEachChild(function walk(node: ts.Node) {
-    if (ts.isCallExpression(node) && ts.isIdentifier(node.expression) &&
-        coercionFunctions.has(node.expression.text)) {
+    if (
+      ts.isCallExpression(node) &&
+      ts.isIdentifier(node.expression) &&
+      coercionFunctions.has(node.expression.text)
+    ) {
       coercionWasUsed = true;
     }
 
@@ -253,11 +283,14 @@ function usesCoercion(setter: ts.SetAccessorDeclaration, coercionFunctions: Set<
 }
 
 /** Gets the identifier node of the base type that a class is extending. */
-function getBaseTypeIdentifier(node: ts.ClassDeclaration): ts.Identifier|null {
+function getBaseTypeIdentifier(node: ts.ClassDeclaration): ts.Identifier | null {
   if (node.heritageClauses) {
     for (let clause of node.heritageClauses) {
-      if (clause.token === ts.SyntaxKind.ExtendsKeyword && clause.types.length &&
-          ts.isIdentifier(clause.types[0].expression)) {
+      if (
+        clause.token === ts.SyntaxKind.ExtendsKeyword &&
+        clause.types.length &&
+        ts.isIdentifier(clause.types[0].expression)
+      ) {
         return clause.types[0].expression;
       }
     }
@@ -268,7 +301,9 @@ function getBaseTypeIdentifier(node: ts.ClassDeclaration): ts.Identifier|null {
 
 /** Checks whether a node is a decorator with a particular name. */
 function isDecoratorCalled(node: ts.Decorator, name: string): boolean {
-  return ts.isCallExpression(node.expression) &&
-         ts.isIdentifier(node.expression.expression) &&
-         node.expression.expression.text === name;
+  return (
+    ts.isCallExpression(node.expression) &&
+    ts.isIdentifier(node.expression.expression) &&
+    node.expression.expression.text === name
+  );
 }

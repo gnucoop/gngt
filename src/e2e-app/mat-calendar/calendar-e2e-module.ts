@@ -24,10 +24,7 @@ import {CalendarModule} from '@gngt/material/calendar';
 import {MaterialCalendarE2E} from './calendar-e2e';
 
 @NgModule({
-  imports: [
-    CalendarModule,
-  ],
+  imports: [CalendarModule],
   declarations: [MaterialCalendarE2E],
 })
-export class MaterialCalendarE2eModule {
-}
+export class MaterialCalendarE2eModule {}

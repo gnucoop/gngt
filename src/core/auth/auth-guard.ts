@@ -24,7 +24,7 @@ import {
   ActivatedRouteSnapshot,
   CanActivate,
   CanActivateChild,
-  RouterStateSnapshot
+  RouterStateSnapshot,
 } from '@angular/router';
 import {select, Store} from '@ngrx/store';
 import {Observable} from 'rxjs';
@@ -47,15 +47,18 @@ export class AuthGuard implements CanActivate, CanActivateChild {
 
   private _guard(): Observable<boolean> {
     return this._store.pipe(
-        select(fromAuth.getInit), filter(init => init),
-        concatMap(() => this._store.pipe(select(fromAuth.getLoggedIn))), map(authed => {
-          if (!authed) {
-            this._store.dispatch(new AuthApiActions.LoginRedirect());
-            return false;
-          }
+      select(fromAuth.getInit),
+      filter(init => init),
+      concatMap(() => this._store.pipe(select(fromAuth.getLoggedIn))),
+      map(authed => {
+        if (!authed) {
+          this._store.dispatch(new AuthApiActions.LoginRedirect());
+          return false;
+        }
 
-          return true;
-        }),
-        take(1));
+        return true;
+      }),
+      take(1),
+    );
   }
 }

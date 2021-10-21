@@ -28,14 +28,7 @@ import {SyncModule} from '@gngt/core/sync';
 import {SyncDemo} from './sync-demo';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    SyncModule,
-    RouterModule.forChild([{path: '', component: SyncDemo}]),
-  ],
-  declarations: [
-    SyncDemo,
-  ],
+  imports: [CommonModule, SyncModule, RouterModule.forChild([{path: '', component: SyncDemo}])],
+  declarations: [SyncDemo],
 })
-export class SyncDemoModule {
-}
+export class SyncDemoModule {}

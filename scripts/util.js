@@ -2,8 +2,7 @@ const path = require('path');
 const shelljs = require('shelljs');
 
 /** Map of common typos in target names. The key is the typo, the value is the correct form. */
-const commonTypos = new Map([
-]);
+const commonTypos = new Map([]);
 
 // List of packages where the specified component could be defined in. The script uses the
 // first package that contains the component (if no package is specified explicitly).
@@ -23,7 +22,7 @@ function guessPackageName(name, packagesDir) {
 
   return {
     result: result ? convertPathToPosix(result) : null,
-    attempts
+    attempts,
   };
 }
 
@@ -44,5 +43,5 @@ function correctTypos(target) {
 
 module.exports = {
   guessPackageName,
-  convertPathToPosix
+  convertPathToPosix,
 };

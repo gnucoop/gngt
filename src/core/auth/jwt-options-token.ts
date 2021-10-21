@@ -23,7 +23,6 @@ import {InjectionToken} from '@angular/core';
 
 import {JwtOptions} from './jwt-options';
 
-
 export const JWT_OPTIONS = new InjectionToken<JwtOptions>('JWT_OPTIONS', {
   providedIn: 'root',
   factory: () => ({}),

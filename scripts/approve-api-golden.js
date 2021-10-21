@@ -13,8 +13,14 @@ const projectDir = path.join(__dirname, '../');
 const packageNameGuess = guessPackageName(packageName, path.join(projectDir, 'src'));
 
 if (!packageNameGuess.result) {
-  console.error(chalk.red(`Could not find package for API golden approval called ` +
-    `${chalk.yellow(packageName)}. Looked in packages: \n${packageNameGuess.attempts.join('\n')}`));
+  console.error(
+    chalk.red(
+      `Could not find package for API golden approval called ` +
+        `${chalk.yellow(packageName)}. Looked in packages: \n${packageNameGuess.attempts.join(
+          '\n',
+        )}`,
+    ),
+  );
   process.exit(1);
 }
 

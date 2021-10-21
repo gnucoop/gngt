@@ -27,13 +27,7 @@ import {AdminModule} from '@gngt/ionic/admin';
 import {AdminListDemo} from './admin-list-demo';
 
 @NgModule({
-  imports: [
-    AdminModule,
-    RouterModule.forChild([{path: '', component: AdminListDemo}]),
-  ],
-  declarations: [
-    AdminListDemo,
-  ],
+  imports: [AdminModule, RouterModule.forChild([{path: '', component: AdminListDemo}])],
+  declarations: [AdminListDemo],
 })
-export class AdminListDemoModule {
-}
+export class AdminListDemoModule {}

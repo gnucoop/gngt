@@ -8,11 +8,8 @@ export {MaterialCalendarSimpleExample};
 const EXAMPLES = [MaterialCalendarSimpleExample];
 
 @NgModule({
-  imports: [
-    CalendarModule,
-  ],
+  imports: [CalendarModule],
   declarations: EXAMPLES,
   exports: EXAMPLES,
 })
-export class CalendarExamplesModule {
-}
+export class CalendarExamplesModule {}

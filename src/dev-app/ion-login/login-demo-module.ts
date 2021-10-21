@@ -27,13 +27,7 @@ import {AuthModule} from '@gngt/ionic/auth';
 import {LoginDemo} from './login-demo';
 
 @NgModule({
-  imports: [
-    AuthModule,
-    RouterModule.forChild([{path: '', component: LoginDemo}]),
-  ],
-  declarations: [
-    LoginDemo,
-  ],
+  imports: [AuthModule, RouterModule.forChild([{path: '', component: LoginDemo}])],
+  declarations: [LoginDemo],
 })
-export class LoginDemoModule {
-}
+export class LoginDemoModule {}

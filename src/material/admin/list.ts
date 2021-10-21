@@ -32,7 +32,7 @@ import {
   QueryList,
   TemplateRef,
   ViewChild,
-  ViewEncapsulation
+  ViewEncapsulation,
 } from '@angular/core';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSelect} from '@angular/material/select';
@@ -52,11 +52,15 @@ import {AdminListCellDirective} from './list-cell';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
 })
-export class AdminListComponent<T extends Model = Model, S extends ModelState<T> = ModelState<T>,
-                                                                   A extends
-                                    ModelActionTypes = ModelActionTypes, MS extends
-                                        ModelService<T, S, A> = ModelService<T, S, A>> extends
-    BaseAdminListComponent<T, S, A, MS> implements AfterContentInit, OnDestroy, OnInit {
+export class AdminListComponent<
+    T extends Model = Model,
+    S extends ModelState<T> = ModelState<T>,
+    A extends ModelActionTypes = ModelActionTypes,
+    MS extends ModelService<T, S, A> = ModelService<T, S, A>,
+  >
+  extends BaseAdminListComponent<T, S, A, MS>
+  implements AfterContentInit, OnDestroy, OnInit
+{
   private _dataSource: ModelDataSource<T, S, A, MS>;
   get dataSource(): ModelDataSource<T, S, A, MS> {
     return this._dataSource;

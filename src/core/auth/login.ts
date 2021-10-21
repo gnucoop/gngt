@@ -31,16 +31,13 @@ import * as LoginPageActions from './login-page-actions';
 import * as fromAuth from './reducers';
 
 @Directive({selector: '[gngtLoginUsername]'})
-export class LoginUsernameDirective {
-}
+export class LoginUsernameDirective {}
 
 @Directive({selector: '[gngtLoginPassword]'})
-export class LoginPasswordDirective {
-}
+export class LoginPasswordDirective {}
 
 @Directive({selector: '[gngtLoginAction]'})
-export class LoginActionDirective {
-}
+export class LoginActionDirective {}
 
 @Directive()
 export abstract class LoginComponent implements OnDestroy {
@@ -91,8 +88,10 @@ export abstract class LoginComponent implements OnDestroy {
   private _loginSub: Subscription = Subscription.EMPTY;
 
   constructor(fb: FormBuilder, store: Store<fromAuth.State>, protected _cdr: ChangeDetectorRef) {
-    this.loginForm = fb.group(
-        {username: [null, [Validators.required]], password: [null, [Validators.required]]});
+    this.loginForm = fb.group({
+      username: [null, [Validators.required]],
+      password: [null, [Validators.required]],
+    });
 
     this.valid = this.loginForm.valueChanges.pipe(map(() => this.loginForm.valid));
 

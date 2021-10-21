@@ -30,9 +30,12 @@ import {AdminListHeader} from './list-header';
 
 @Directive()
 export abstract class AdminListComponent<
-    T extends Model = Model, S extends ModelState<T> = ModelState<T>,
-                                       A extends ModelActionTypes = ModelActionTypes, MS extends
-        ModelService<T, S, A> = ModelService<T, S, A>> implements OnDestroy {
+  T extends Model = Model,
+  S extends ModelState<T> = ModelState<T>,
+  A extends ModelActionTypes = ModelActionTypes,
+  MS extends ModelService<T, S, A> = ModelService<T, S, A>,
+> implements OnDestroy
+{
   get title(): string {
     return this._title;
   }
@@ -164,28 +167,25 @@ export abstract class AdminListComponent<
   private _initService(): void {
     this._deletionSub.unsubscribe();
     this._deletionSub = this._deletionEvt
-                            .pipe(
-                                switchMap(
-                                    selected => this._aui.askDeleteConfirm().pipe(
-                                        map(res => ({res, selected})),
-                                        )),
-                                switchMap(r => {
-                                  const {res, selected} = r as {res: boolean, selected: T[]};
-                                  if (res) {
-                                    if (selected.length === 1) {
-                                      return this._service.delete(selected[0]);
-                                    }
-                                    return this._service.deleteAll(selected);
-                                  }
-                                  return obsOf(null);
-                                }),
-                                filter(r => r != null),
-                                take(1),
-                                )
-                            .subscribe(() => {
-                              this._actionProcessed.emit('delete');
-                              this.clearSelection();
-                              this.refreshList();
-                            });
+      .pipe(
+        switchMap(selected => this._aui.askDeleteConfirm().pipe(map(res => ({res, selected})))),
+        switchMap(r => {
+          const {res, selected} = r as {res: boolean; selected: T[]};
+          if (res) {
+            if (selected.length === 1) {
+              return this._service.delete(selected[0]);
+            }
+            return this._service.deleteAll(selected);
+          }
+          return obsOf(null);
+        }),
+        filter(r => r != null),
+        take(1),
+      )
+      .subscribe(() => {
+        this._actionProcessed.emit('delete');
+        this.clearSelection();
+        this.refreshList();
+      });
   }
 }

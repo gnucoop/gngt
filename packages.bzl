@@ -57,11 +57,11 @@ ANGULAR_PACKAGES_CONFIG = [
 ]
 
 THIRD_PARTY_PACKAGES_CONFIG = [
-    ("@gic/angular", "gic-angular", struct(entry_points = [], ngcc=False)),
-    ("@ionic/angular", "ionic-angular", struct(entry_points = [], ngcc=False)),
-    ("@ngneat/transloco", "ngneat-transloco", struct(entry_points = [], ngcc=False)),
-    ("@ngrx/effects", "ngrx-effects", struct(entry_points = [], ngcc=True)),
-    ("@ngrx/store", "ngrx-store", struct(entry_points = [], ngcc=True)),
+    ("@gic/angular", "gic-angular", struct(entry_points = [], ngcc = False)),
+    ("@ionic/angular", "ionic-angular", struct(entry_points = [], ngcc = False)),
+    ("@ngneat/transloco", "ngneat-transloco", struct(entry_points = [], ngcc = False)),
+    ("@ngrx/effects", "ngrx-effects", struct(entry_points = [], ngcc = True)),
+    ("@ngrx/store", "ngrx-store", struct(entry_points = [], ngcc = True)),
 ]
 
 ANGULAR_PACKAGES = [

@@ -52,14 +52,11 @@ import {DEV_APP_ROUTES} from './routes';
     SyncModule.forRoot({baseUrl: '/', localDatabaseName: 'gngt_demo_db'}),
     TranslationsModule,
   ],
-  declarations: [
-    DevAppComponent,
-  ],
+  declarations: [DevAppComponent],
   providers: [
     {provide: OverlayContainer, useClass: FullscreenOverlayContainer},
     {provide: Directionality, useClass: DevAppDirectionality},
   ],
   bootstrap: [DevAppComponent],
 })
-export class MainModule {
-}
+export class MainModule {}

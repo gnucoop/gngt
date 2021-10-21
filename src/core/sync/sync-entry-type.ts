@@ -19,4 +19,4 @@
  *
  */
 
-export type SyncEntryType = 'insert'|'update'|'delete';
+export type SyncEntryType = 'insert' | 'update' | 'delete';

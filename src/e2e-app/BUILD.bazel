@@ -1,5 +1,5 @@
 load("//tools/dev-server:index.bzl", "dev_server")
-load("//tools:defaults.bzl", "ng_module", "sass_binary")
+load("//tools:defaults.bzl", "ng_module")
 load("//tools/esbuild:index.bzl", "esbuild", "esbuild_config")
 load("//src/gngt-examples:config.bzl", "ALL_EXAMPLES")
 load("//tools/angular:index.bzl", "LINKER_PROCESSED_FW_PACKAGES")
@@ -36,8 +36,8 @@ ng_module(
         exclude = ["index.html"],
     ),
     deps = [
-        "//src/gngt-examples/private",
         "//src/core/translations",
+        "//src/gngt-examples/private",
         "//src/ionic/calendar",
         "//src/material/calendar",
         "@npm//@angular/common",

@@ -21,11 +21,9 @@
 
 import {Component} from '@angular/core';
 
-
 @Component({
   selector: 'login-demo',
   templateUrl: 'login-demo.html',
   styleUrls: ['login-demo.css'],
 })
-export class LoginDemo {
-}
+export class LoginDemo {}

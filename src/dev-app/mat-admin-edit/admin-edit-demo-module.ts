@@ -27,13 +27,7 @@ import {AdminModule} from '@gngt/material/admin';
 import {AdminEditDemo} from './admin-edit-demo';
 
 @NgModule({
-  imports: [
-    AdminModule,
-    RouterModule.forChild([{path: '', component: AdminEditDemo}]),
-  ],
-  declarations: [
-    AdminEditDemo,
-  ],
+  imports: [AdminModule, RouterModule.forChild([{path: '', component: AdminEditDemo}])],
+  declarations: [AdminEditDemo],
 })
-export class AdminEditDemoModule {
-}
+export class AdminEditDemoModule {}

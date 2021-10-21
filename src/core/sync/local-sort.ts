@@ -22,22 +22,24 @@
 import {getObjectProperty} from '@gngt/core/common';
 
 export function localSort<T>(
-    docs: PouchDB.Core.ExistingDocument<T>[],
-    sort: (string|{[key: string]: 'asc' | 'desc'})[]): PouchDB.Core.ExistingDocument<T>[] {
+  docs: PouchDB.Core.ExistingDocument<T>[],
+  sort: (string | {[key: string]: 'asc' | 'desc'})[],
+): PouchDB.Core.ExistingDocument<T>[] {
   const sortDirs = {} as {[key: string]: 'asc' | 'desc'};
-  const sortKeys = sort.map(s => {
-                         if (typeof s === 'string') {
-                           sortDirs[s] = 'asc';
-                           return s;
-                         }
-                         const keys = Object.keys(s);
-                         if (keys.length === 1) {
-                           sortDirs[keys[0]] = s[keys[0]];
-                           return keys[0];
-                         }
-                         return null;
-                       })
-                       .filter(k => k != null) as string[];
+  const sortKeys = sort
+    .map(s => {
+      if (typeof s === 'string') {
+        sortDirs[s] = 'asc';
+        return s;
+      }
+      const keys = Object.keys(s);
+      if (keys.length === 1) {
+        sortDirs[keys[0]] = s[keys[0]];
+        return keys[0];
+      }
+      return null;
+    })
+    .filter(k => k != null) as string[];
   if (docs.length === 0 || sortKeys.length === 0) {
     return docs;
   }
@@ -47,9 +49,7 @@ export function localSort<T>(
   sortKeys.forEach(key => {
     sortTypes[key] = typeof getObjectProperty(doc, key);
   });
-  const sortReduce = (
-      obj: PouchDB.Core.ExistingDocument<T>,
-      ) => {
+  const sortReduce = (obj: PouchDB.Core.ExistingDocument<T>) => {
     return (key: string, cur: string) => {
       const field = getObjectProperty(obj, cur);
       if (sortTypes[cur] === 'number') {

@@ -28,12 +28,12 @@ export const DEV_APP_ROUTES: Routes = [
   {
     path: 'ion-admin-edit',
     loadChildren: () =>
-        import('./ion-admin-edit/admin-edit-demo-module').then(m => m.AdminEditDemoModule),
+      import('./ion-admin-edit/admin-edit-demo-module').then(m => m.AdminEditDemoModule),
   },
   {
     path: 'ion-admin-list',
     loadChildren: () =>
-        import('./ion-admin-list/admin-list-demo-module').then(m => m.AdminListDemoModule),
+      import('./ion-admin-list/admin-list-demo-module').then(m => m.AdminListDemoModule),
   },
   {
     path: 'ion-login',
@@ -42,17 +42,17 @@ export const DEV_APP_ROUTES: Routes = [
   {
     path: 'mat-admin-edit',
     loadChildren: () =>
-        import('./mat-admin-edit/admin-edit-demo-module').then(m => m.AdminEditDemoModule),
+      import('./mat-admin-edit/admin-edit-demo-module').then(m => m.AdminEditDemoModule),
   },
   {
     path: 'mat-admin-list',
     loadChildren: () =>
-        import('./mat-admin-list/admin-list-demo-module').then(m => m.AdminListDemoModule)
+      import('./mat-admin-list/admin-list-demo-module').then(m => m.AdminListDemoModule),
   },
   {
     path: 'mat-calendar',
     loadChildren: () =>
-        import('./mat-calendar/calendar-demo-module').then(m => m.CalendarDemoModule)
+      import('./mat-calendar/calendar-demo-module').then(m => m.CalendarDemoModule),
   },
   {
     path: 'mat-login',
@@ -65,7 +65,7 @@ export const DEV_APP_ROUTES: Routes = [
   {
     path: 'examples',
     loadChildren: () =>
-        import('./examples-page/examples-page-module').then(m => m.ExamplesPageModule)
+      import('./examples-page/examples-page-module').then(m => m.ExamplesPageModule),
   },
   {path: '**', component: DevApp404},
 ];

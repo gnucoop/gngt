@@ -27,8 +27,10 @@ const packageJson = require(packageJsonPath);
 packageJson['resolutions'] = packageJson['resolutions'] || {};
 
 // List that contains the names of all installed Angular packages (e.g. "@angular/core")
-const angularPackages = Object.keys({...packageJson.dependencies, ...packageJson.devDependencies})
-  .filter(packageName => packageName.startsWith('@angular/'));
+const angularPackages = Object.keys({
+  ...packageJson.dependencies,
+  ...packageJson.devDependencies,
+}).filter(packageName => packageName.startsWith('@angular/'));
 const packageSuffix = tag ? ` (${tag})` : '';
 
 console.log('Setting up snapshot builds for:\n');

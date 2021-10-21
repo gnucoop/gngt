@@ -31,7 +31,7 @@ export interface AuthOptions {
   tokenKey?: string;
   refreshTokenKey?: string;
   loggedInUserGetter?: () => number | null;
-  loggedInUserSetter?: (id: number|null) => void;
+  loggedInUserSetter?: (id: number | null) => void;
   meGetter?: () => User | null;
-  meSetter?: (user: User|null) => void;
+  meSetter?: (user: User | null) => void;
 }

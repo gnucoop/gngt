@@ -19,26 +19,26 @@
  *
  */
 
-import {
-  AuthActionsUnion,
-  AuthActionTypes,
-} from './auth-actions';
+import {AuthActionsUnion, AuthActionTypes} from './auth-actions';
 import {AuthApiActionsUnion, AuthApiActionTypes} from './auth-api-actions';
 import {User} from './user';
 
 export interface State {
   init: boolean;
-  user: User|null;
-  token: string|null;
+  user: User | null;
+  token: string | null;
 }
 
 export const initialState: State = {
   init: false,
   user: null,
-  token: null
+  token: null,
 };
 
-export function reducer(state = initialState, action: AuthApiActionsUnion|AuthActionsUnion): State {
+export function reducer(
+  state = initialState,
+  action: AuthApiActionsUnion | AuthActionsUnion,
+): State {
   switch (action.type) {
     case AuthApiActionTypes.LoginSuccess: {
       return {

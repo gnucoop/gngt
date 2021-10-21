@@ -54,5 +54,5 @@ module.exports = {
   projectDir: __dirname,
   packagesDir: join(__dirname, 'src'),
   outputDir: join(__dirname, 'dist'),
-  licenseBanner: buildLicense
+  licenseBanner: buildLicense,
 };
