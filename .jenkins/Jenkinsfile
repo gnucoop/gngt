@@ -22,21 +22,6 @@ pipeline {
         sh './scripts/circleci/setup_bazel_binary.sh'
       }
     }
-    stage('Unit tests - View Engine') {
-      steps {
-        sh 'bazel test --build_tag_filters=-docs-package,-e2e --test_tag_filters=-e2e --config=view-engine --build_tests_only -- src/...'
-      }
-    }
-    stage('Build - View Engine') {
-      steps {
-        sh 'bazel build --build_tag_filters=-docs-package,-release-package --config=view-engine -- src/...'
-      }
-    }
-    stage('Test local browsers') {
-      steps {
-        sh 'bazel test --build_tag_filters=-e2e --test_tag_filters=-e2e --build_tests_only -- src/...'
-      }
-    }
     stage('Lint') {
       steps {
         sh 'bazel build //:rollup_globals'
@@ -47,9 +32,14 @@ pipeline {
         sh 'yarn -s ts-circular-deps:check'
       }
     }
-    stage('Integration tests - Partial Ivy') {
+    stage('Build - View Engine') {
       steps {
-        sh 'yarn integration-tests:partial-ivy'
+        sh 'bazel build --build_tag_filters=-docs-package,-release-package --config=view-engine -- src/...'
+      }
+    }
+    stage('Unit tests - View Engine') {
+      steps {
+        sh 'bazel test --build_tag_filters=-docs-package,-e2e --test_tag_filters=-e2e --config=view-engine --build_tests_only -- src/...'
       }
     }
     stage('Integration tests - View Engine') {
@@ -57,9 +47,29 @@ pipeline {
         sh 'yarn integration-tests:view-engine'
       }
     }
+    stage('Build') {
+      steps {
+        sh 'bazel build --build_tag_filters=-docs-package,-release-package -- src/...'
+      }
+    }
+    stage('API golden checks') {
+      steps {
+        sh 'bazel test tools/public_api_guard/...'
+      }
+    }
+    stage('Test local browsers') {
+      steps {
+        sh 'bazel test --build_tag_filters=-e2e --test_tag_filters=-e2e --build_tests_only -- src/...'
+      }
+    }
     stage('E2E tests') {
       steps {
         sh 'yarn e2e --flaky_test_attempts=2'
+      }
+    }
+    stage('Integration tests - Partial Ivy') {
+      steps {
+        sh 'yarn integration-tests:partial-ivy'
       }
     }
     stage('Build release packages') {
@@ -78,16 +88,6 @@ pipeline {
         sh 'yarn ngcc --error-on-failed-entry-point --no-tsconfig'
         sh 'mv node_modules/__ngcc_entry_points__.json.back node_modules/__ngcc_entry_points__.json'
         sh 'rm -Rf node_modules/@gngt'
-      }
-    }
-    stage('Build') {
-      steps {
-        sh 'bazel build --build_tag_filters=-docs-package,-release-package -- src/...'
-      }
-    }
-    stage('API golden checks') {
-      steps {
-        sh 'bazel test tools/public_api_guard/...'
       }
     }
     stage('Save cache') {
