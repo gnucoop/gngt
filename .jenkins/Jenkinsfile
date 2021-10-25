@@ -42,11 +42,6 @@ pipeline {
         sh 'bazel test tools/public_api_guard/...'
       }
     }
-    stage('Integration tests - Partial Ivy') {
-      steps {
-        sh 'yarn integration-tests:partial-ivy'
-      }
-    }
     stage('Integration tests') {
       steps {
         sh 'yarn integration-tests'
@@ -60,6 +55,11 @@ pipeline {
     stage('E2E tests') {
       steps {
         sh 'yarn e2e --flaky_test_attempts=2'
+      }
+    }
+    stage('Integration tests - Partial Ivy') {
+      steps {
+        sh 'yarn integration-tests:partial-ivy'
       }
     }
     stage('Build release packages') {

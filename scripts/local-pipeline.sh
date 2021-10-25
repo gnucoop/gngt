@@ -21,9 +21,6 @@ echo "Build"
 echo "API golden checks"
 "${BAZEL_BINARY}" test tools/public_api_guard/...
 
-echo "Integration tests - Partial Ivy"
-yarn integration-tests:partial-ivy
-
 echo "Integration tests"
 yarn integration-tests
 
@@ -32,6 +29,9 @@ echo "Test local browsers"
 
 echo "E2E tests"
 yarn e2e --flaky_test_attempts=2
+
+echo "Integration tests - Partial Ivy"
+yarn integration-tests:partial-ivy
 
 echo "Build release packages"
 yarn build-and-check-release-output
