@@ -63,7 +63,7 @@
     "@ngrx/effects": "^12.5.0",
     "@ngrx/store": "^12.5.0",
     "core-js-bundle": "^3.8.2",
-    "date-fns": "^2.15.0",
+    "date-fns": "^2.25.0",
     "pouchdb": "~7.0.0",
     "pouchdb-find": "~7.0.0",
     "rxjs": "^6.5.3",
